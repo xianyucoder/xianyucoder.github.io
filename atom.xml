@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>xianyuplus</title>
+  <title>咸鱼学Python</title>
   
-  <subtitle>咸鱼学Python</subtitle>
+  <subtitle>Talk is cheap. Show me your code</subtitle>
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
