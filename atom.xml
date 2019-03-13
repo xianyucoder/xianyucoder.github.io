@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>xianyuplus</title>
   
-  <subtitle>咸鱼普拉思</subtitle>
+  <subtitle>咸鱼学Python</subtitle>
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
