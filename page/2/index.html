@@ -311,7 +311,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/09/numpy实战-分析不同用户季度平均使用时间/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/18/Docker容器与镜像的关系/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="煌金">
@@ -330,8 +330,8 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/12/09/numpy实战-分析不同用户季度平均使用时间/" itemprop="url">
-                  Numpy实战 - 分析不同用户季度平均使用时间
+                <a class="post-title-link" href="/2019/03/18/Docker容器与镜像的关系/" itemprop="url">
+                  Docker容器与镜像的关系
                 </a>
               
             
@@ -357,7 +357,7 @@
                 
               
 
-              <time title="创建时间：2018-12-09 08:39:35" itemprop="dateCreated datePublished" datetime="2018-12-09T08:39:35+08:00">2018-12-09</time>
+              <time title="创建时间：2019-03-18 08:39:35" itemprop="dateCreated datePublished" datetime="2019-03-18T08:39:35+08:00">2019-03-18</time>
             
 
             
@@ -374,7 +374,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-04-06 19:43:09" itemprop="dateModified" datetime="2019-04-06T19:43:09+08:00">2019-04-06</time>
+                <time title="修改时间：2019-04-06 19:57:17" itemprop="dateModified" datetime="2019-04-06T19:57:17+08:00">2019-04-06</time>
               
             
           </span>
@@ -391,7 +391,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据科学/" itemprop="url" rel="index"><span itemprop="name">数据科学</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a></span>
 
                 
                 
@@ -428,384 +428,15 @@
 
       
         
-          <p>本次复习的知识点如下：</p>
-<ul>
-<li>布尔型数组及数据过滤</li>
-<li>多维数组的构造</li>
-<li>使用numpy保存文本文件</li>
-<li>matplotlib折线图绘制</li>
-<li>matplotlib图表常用属性的设置方法</li>
-<li>图表的保存</li>
-</ul>
-<h4 id="关于数据源"><a href="#关于数据源" class="headerlink" title="关于数据源"></a>关于数据源</h4><p>上次的文章发出之后发现忘了补充数据源的链接，之后咸鱼补充在留言区了，有需要动手实践的朋友可以自取，下面是直通车：</p>
-<h4 id="分析目标"><a href="#分析目标" class="headerlink" title="分析目标"></a>分析目标</h4><p>观察上次的数据，数据中有的数据有会员与非会员两种用户类别。<br>这次我们主要分析一下两种类别用户的平均骑行时间对比。<br>
+          <h4 id="容器与镜像的关系"><a href="#容器与镜像的关系" class="headerlink" title="容器与镜像的关系"></a>容器与镜像的关系</h4><p>在实际操作中，我们配置好需要的容器之后可以将它转化为镜像提交到仓库，以便之后使用。</p>
+<p>先看一下容器与镜像的转换关系图:</p>
+<p><img src="https://ws1.sinaimg.cn/mw690/005MnFO1gy1fzmmoi277uj31ic16igpl.jpg" alt></p>
+<h5 id="容器提交-docker-commit"><a href="#容器提交-docker-commit" class="headerlink" title="容器提交(docker commit)"></a>容器提交(docker commit)</h5><p>根据容器生成一个新的镜像</p>
+<p>命令格式:<code>docker commit [参数] 容器[版本]</code></p>
+<p>常用参数:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-a 添加作者</span><br><span class="line">-c 为创建的镜像加入Dockerfile命令</span><br><span class="line">-m 类似git commit -m</span><br><span class="line">-p 提交时暂停容器</span><br></pre></td></tr></table></figure></p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/12/09/numpy实战-分析不同用户季度平均使用时间/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </p></div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/05/numpy实战 - 分析单车季度平均使用时间/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="煌金">
-      <meta itemprop="description" content="不想翻身的咸鱼不是好的程序猿。">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="咸鱼学Python">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/12/05/numpy实战 - 分析单车季度平均使用时间/" itemprop="url">
-                  Numpy实战 - 分析单车季度平均使用时间
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-12-05 08:39:35" itemprop="dateCreated datePublished" datetime="2018-12-05T08:39:35+08:00">2018-12-05</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-04-06 19:43:04" itemprop="dateModified" datetime="2019-04-06T19:43:04+08:00">2019-04-06</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据科学/" itemprop="url" rel="index"><span itemprop="name">数据科学</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-		  
-		  
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>关于数据科学的学习，咸鱼也进行了一段时间，但是光学不练是学一点忘一点，所以咸鱼找了一些某共享单车的数据进行一点简单的数据分析。</p>
-<h4 id="思路整理"><a href="#思路整理" class="headerlink" title="思路整理"></a>思路整理</h4><p>咸鱼也是第一次动手写数据分析相关的代码，所以咸鱼上网找了一张大致的流程图，且以此整理思路分隔代码。</p>
-<p><img src="https://raw.githubusercontent.com/xianyucoder/blogpic/master/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E6%B5%81%E7%A8%8B.png" alt="图 | 源自网络"></p>
-<p>在企业实际开发中各个步骤的代码不会像咸鱼下面的代码一样各块分隔的那么清楚，肯定是相互交织且复杂的。</p>
-<p><img src="https://raw.githubusercontent.com/xianyucoder/blogpic/master/20181223220309.png" alt></p>
-<h4 id="实战"><a href="#实战" class="headerlink" title="实战"></a>实战</h4><h5 id="分析目的"><a href="#分析目的" class="headerlink" title="分析目的"></a>分析目的</h5><p>看标题就知道了，分析各季度共享单车的骑行时间。</p>
-<h5 id="数据收集"><a href="#数据收集" class="headerlink" title="数据收集"></a>数据收集</h5><p>因为这次的数据源自网络，所以先简单看下数据的结构：</p>
-<p><img src="https://raw.githubusercontent.com/xianyucoder/blogpic/master/20181223215115.png" alt></p>
-<p>可以看到数据有9个字段：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;Duration (ms)&quot;,&quot;Start date&quot;,&quot;End date&quot;,&quot;Start station number&quot;,&quot;Start station&quot;,&quot;End station number&quot;,&quot;End station&quot;,&quot;Bike number&quot;,&quot;Member type&quot;</span><br></pre></td></tr></table></figure></p>
-<p>按照我们的目标，我们只需要第一个字段<code>Duration(ms)</code>。<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/12/05/numpy实战 - 分析单车季度平均使用时间/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </p></div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/09/numpy3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="煌金">
-      <meta itemprop="description" content="不想翻身的咸鱼不是好的程序猿。">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="咸鱼学Python">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/11/09/numpy3/" itemprop="url">
-                  Numpy基础(三)
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-11-09 08:39:35" itemprop="dateCreated datePublished" datetime="2018-11-09T08:39:35+08:00">2018-11-09</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-04-06 19:43:54" itemprop="dateModified" datetime="2019-04-06T19:43:54+08:00">2019-04-06</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据科学/" itemprop="url" rel="index"><span itemprop="name">数据科学</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-		  
-		  
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h4 id="numpy读取-写入数组数据"><a href="#numpy读取-写入数组数据" class="headerlink" title="numpy读取/写入数组数据"></a>numpy读取/写入数组数据</h4><p>在我们使用numpy处理了数据之后，可以将数组保存为保存为Numpy专用的二进制格式，当我们这样操作之后，就不能用notepad++等打开看了（乱码）。</p>
-<p>np.load和np.save是读写磁盘数组数据的两个主要函数，默认情况下，数组是以未压缩的原始二进制格式保存在扩展名为.npy的文件中。</p>
-<h5 id="存储数组数据-npy"><a href="#存储数组数据-npy" class="headerlink" title="存储数组数据(npy)"></a>存储数组数据(npy)</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ar = np.random.rand(<span class="number">5</span>,<span class="number">5</span>)</span><br><span class="line">print(ar)</span><br><span class="line">np.save(<span class="string">'arraydata.npy'</span>, ar)</span><br></pre></td></tr></table></figure>
-<h5 id="读取数组数据-npy"><a href="#读取数组数据-npy" class="headerlink" title="读取数组数据(npy)"></a>读取数组数据(npy)</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ar_load =np.load(<span class="string">'arraydata.npy'</span>)</span><br><span class="line">print(ar_load)</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/11/09/numpy3/#more" rel="contents">
+            <a class="btn" href="/2019/03/18/Docker容器与镜像的关系/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -861,7 +492,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/14/Flask基础-响应Response/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/数据分析思维/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="煌金">
@@ -880,8 +511,8 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/10/14/Flask基础-响应Response/" itemprop="url">
-                  Flask基础(4)-响应Response
+                <a class="post-title-link" href="/2019/02/09/数据分析思维/" itemprop="url">
+                  数据分析思维
                 </a>
               
             
@@ -907,179 +538,7 @@
                 
               
 
-              <time title="创建时间：2018-10-14 18:39:35 / 修改时间：01:02:23" itemprop="dateCreated datePublished" datetime="2018-10-14T18:39:35+08:00">2018-10-14</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Flask/" itemprop="url" rel="index"><span itemprop="name">Flask</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-		  
-		  
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h4 id="关于响应（Response）"><a href="#关于响应（Response）" class="headerlink" title="关于响应（Response）"></a>关于响应（Response）</h4><p>视图函数的返回值会被自动转换为一个响应对象，Flask的转换逻辑如下：</p>
-<ul>
-<li><p>如果返回的是一个合法的响应对象，则直接返回。</p>
-</li>
-<li><p>如果返回的是一个字符串，那么Flask会重新创建一个werkzeug.wrappers.Response对象，Response将该字符串作为主体，状态码为200，MIME类型为text/html，然后返回该Response对象。</p>
-</li>
-<li><p>如果返回的是一个元组，元祖中的数据类型是(response,status,headers)。status值会覆盖默认的200状态码，headers可以是一个列表或者字典，作为额外的消息头。</p>
-</li>
-<li><p>如果以上条件都不满足，Flask会假设返回值是一个合法的WSGIt应用程序，并通过Response.force_type(rv,request.environ)转换为一个请求对象。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/10/14/Flask基础-响应Response/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </li></ul></div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/13/Flask基础-URL与视图/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="煌金">
-      <meta itemprop="description" content="不想翻身的咸鱼不是好的程序猿。">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="咸鱼学Python">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/10/13/Flask基础-URL与视图/" itemprop="url">
-                  Flask基础(3)-URL与视图
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-10-13 18:39:35" itemprop="dateCreated datePublished" datetime="2018-10-13T18:39:35+08:00">2018-10-13</time>
+              <time title="创建时间：2019-02-09 08:39:35" itemprop="dateCreated datePublished" datetime="2019-02-09T08:39:35+08:00">2019-02-09</time>
             
 
             
@@ -1096,524 +555,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-10-14 00:59:23" itemprop="dateModified" datetime="2018-10-14T00:59:23+08:00">2018-10-14</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Flask/" itemprop="url" rel="index"><span itemprop="name">Flask</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-		  
-		  
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h4 id="URL与函数的映射"><a href="#URL与函数的映射" class="headerlink" title="URL与函数的映射"></a>URL与函数的映射</h4><p>从新建的文件，我们已经看到，一个URL要与执行函数进行映射，使用的是<a href="mailto:`@app.route" target="_blank" rel="noopener">`@app.route</a><code>装饰器。</code>@app.route<code>装饰器中，可以指定URL的规则来进行更加详细的映射，比如现在要映射一个文章详情的URL，文章详情的URL是</code>/article/id/`，id有可能为1、2、3…,那么可以通过以下方式：<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/10/13/Flask基础-URL与视图/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </p></div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/12/Flask基础-项目设置/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="煌金">
-      <meta itemprop="description" content="不想翻身的咸鱼不是好的程序猿。">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="咸鱼学Python">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/10/12/Flask基础-项目设置/" itemprop="url">
-                  Flask基础(2)-项目设置
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-10-12 18:39:35" itemprop="dateCreated datePublished" datetime="2018-10-12T18:39:35+08:00">2018-10-12</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2018-10-14 00:58:47" itemprop="dateModified" datetime="2018-10-14T00:58:47+08:00">2018-10-14</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Flask/" itemprop="url" rel="index"><span itemprop="name">Flask</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-		  
-		  
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h4 id="为什么学习Flask"><a href="#为什么学习Flask" class="headerlink" title="为什么学习Flask"></a>为什么学习Flask</h4><p>Flask的灵活度非常之高，他不会帮你做太多的决策，即使做已经帮你做出选择，你也能非常容易的更换成你需要的，比如：<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/10/12/Flask基础-项目设置/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </p></div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/11/Flask-web基础/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="煌金">
-      <meta itemprop="description" content="不想翻身的咸鱼不是好的程序猿。">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="咸鱼学Python">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/10/11/Flask-web基础/" itemprop="url">
-                  Flask基础(1)-web基础
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-10-11 18:39:35" itemprop="dateCreated datePublished" datetime="2018-10-11T18:39:35+08:00">2018-10-11</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2018-10-14 00:57:54" itemprop="dateModified" datetime="2018-10-14T00:57:54+08:00">2018-10-14</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Flask/" itemprop="url" rel="index"><span itemprop="name">Flask</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-		  
-		  
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h4 id="url详解"><a href="#url详解" class="headerlink" title="url详解"></a>url详解</h4><p>URL是Uniform Resource Locator的简写，统一资源定位符。</p>
-<p>一个URL由以下几部分组成：<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/10/11/Flask-web基础/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </p></div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/09/numpy2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="煌金">
-      <meta itemprop="description" content="不想翻身的咸鱼不是好的程序猿。">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="咸鱼学Python">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/10/09/numpy2/" itemprop="url">
-                  Numpy基础(二)
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-10-09 08:39:35 / 修改时间：14:06:48" itemprop="dateCreated datePublished" datetime="2018-10-09T08:39:35+08:00">2018-10-09</time>
-            
-
-            
-              
-
+                <time title="修改时间：2019-04-06 19:45:19" itemprop="dateModified" datetime="2019-04-06T19:45:19+08:00">2019-04-06</time>
               
             
           </span>
@@ -1667,23 +609,52 @@
 
       
         
-          <h4 id="Anaconda的基本用法"><a href="#Anaconda的基本用法" class="headerlink" title="Anaconda的基本用法"></a>Anaconda的基本用法</h4><p>按照上篇文章，相信大家都安装好了Anaconda，有朋友在留言区留言希望出一篇关于Anaconda的使用教程，其实Anaconda的基本使用非常简单，基本无需教程。</p>
-<p>在windows下安装好Anaconda后，在所有程序中可以看到Anaconda下有以下几个组件：</p>
-<ul>
-<li>Anaconda Navigator：用于管理工具包和环境的图形界面。</li>
-<li>Anaconda Prompt：用于管理包和环境的命令行界面。</li>
-<li>Jupyter Noterbook：基于Web的交互式计算环境，用于展示数据分析的过程，并且生成容易阅读的文档。</li>
-<li>Spyder：Python集成开发环境，布局类似于Matlab。
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/10/09/numpy2/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
+          
+            <h4 id="数据分析的三种核心思维"><a href="#数据分析的三种核心思维" class="headerlink" title="数据分析的三种核心思维"></a>数据分析的三种核心思维</h4><ul>
+<li>结构化</li>
+<li>公式化</li>
+<li>业务化</li>
+</ul>
+<h4 id="结构化"><a href="#结构化" class="headerlink" title="结构化"></a>结构化</h4><ol>
+<li>单兵作战<ul>
+<li>思维导图</li>
+</ul>
+</li>
+<li>团体作战<ul>
+<li>查看资料及背景将结论列成一张表/卡片</li>
+<li>把表上的结论，根据主题分类</li>
+<li>将同一分类的结论按顺序区分</li>
+<li>讨论同一级别的共通结论，将其结论放入上一段位置</li>
+</ul>
+</li>
+</ol>
+<h4 id="公式化"><a href="#公式化" class="headerlink" title="公式化"></a>公式化</h4><ul>
+<li>加(不同业务的叠加)</li>
+<li>减(业务间的逻辑关系)</li>
+<li>乘除(各种比例或比率)</li>
+</ul>
+<h4 id="业务化"><a href="#业务化" class="headerlink" title="业务化"></a>业务化</h4><h5 id="思维方式"><a href="#思维方式" class="headerlink" title="思维方式"></a>思维方式</h5><ul>
+<li><p>象限法</p>
+<p>核心：象限法是一种策略驱动的思维</p>
+<p>优点：直观清晰对数据进行人工的划分,划分结果可以直接应用与策略</p>
+<p>适用范围：产品分析，客户管理等</p>
+</li>
+<li><p>多维法</p>
+<p>核心：多维法是一种精细驱动的思维</p>
+<p>优点：处理大数据量，维度丰富且复杂的数据有较好的效果，但是维度过多会消耗不少的时间</p>
+<p>适用范围:只要数据齐全且丰富即可适用(注意辛普森悖论)</p>
+</li>
+<li><p>假设法</p>
+<p>核心：假设是一种启发思考的思维</p>
+<p>优点：当没有直观数据戒者线索能分析时，以假设先行的方式进行推断，这是一个论证的过程</p>
+<p>应用：它更多是一种思考方弅，假设—验证—判断</p>
+</li>
+</ul>
+
+          
         
       
-    </li></ul></div>
+    </div>
 
     
 
@@ -1732,7 +703,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/01/numpy1/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/笔试总结1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="煌金">
@@ -1751,8 +722,8 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/10/01/numpy1/" itemprop="url">
-                  Numpy基础(一)
+                <a class="post-title-link" href="/2019/02/09/笔试总结1/" itemprop="url">
+                  Python笔试题(一)
                 </a>
               
             
@@ -1778,7 +749,7 @@
                 
               
 
-              <time title="创建时间：2018-10-01 08:39:35" itemprop="dateCreated datePublished" datetime="2018-10-01T08:39:35+08:00">2018-10-01</time>
+              <time title="创建时间：2019-02-09 08:39:35" itemprop="dateCreated datePublished" datetime="2019-02-09T08:39:35+08:00">2019-02-09</time>
             
 
             
@@ -1795,7 +766,373 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-10-09 14:05:40" itemprop="dateModified" datetime="2018-10-09T14:05:40+08:00">2018-10-09</time>
+                <time title="修改时间：2019-04-06 19:47:45" itemprop="dateModified" datetime="2019-04-06T19:47:45+08:00">2019-04-06</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Python笔试题/" itemprop="url" rel="index"><span itemprop="name">Python笔试题</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+		  
+		  
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h4 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h4><ol>
+<li>以下两段代码，运行结束后的结果是什么？是否相同？原因是什么？</li>
+</ol>
+<p><img src="https://ws1.sinaimg.cn/mw690/005MnFO1gy1g1d1b29r7yj30i60ee75n.jpg" alt="代码一"></p>
+<p><img src="https://ws1.sinaimg.cn/mw690/005MnFO1gy1g1d175tu39j30h80ge75s.jpg" alt="代码二"></p>
+<ol start="2">
+<li><p>4G内存怎么读取一个5G的数据？</p>
+</li>
+<li><p>浅述深浅拷贝</p>
+</li>
+</ol>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/02/09/笔试总结1/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/笔试总结2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="煌金">
+      <meta itemprop="description" content="不想翻身的咸鱼不是好的程序猿。">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="咸鱼学Python">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/09/笔试总结2/" itemprop="url">
+                  Python笔试题(二)
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-02-09 08:39:35" itemprop="dateCreated datePublished" datetime="2019-02-09T08:39:35+08:00">2019-02-09</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-04-06 19:47:48" itemprop="dateModified" datetime="2019-04-06T19:47:48+08:00">2019-04-06</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Python笔试题/" itemprop="url" rel="index"><span itemprop="name">Python笔试题</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+		  
+		  
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>本系列文章素材，题目来源于真实企业笔试题,具体哪来的？平时多水群就好</p>
+<h5 id="第一题"><a href="#第一题" class="headerlink" title="第一题"></a>第一题</h5><p>下图中的打印结果分别是什么？</p>
+<p><img src="https://ws1.sinaimg.cn/mw690/005MnFO1gy1g1f7yri6wcj30p80me0w1.jpg" alt></p>
+<h5 id="第二题"><a href="#第二题" class="headerlink" title="第二题"></a>第二题</h5><p>Python中静态方法、类方法、成员函数作用是什么？</p>
+<h5 id="第三题"><a href="#第三题" class="headerlink" title="第三题"></a>第三题</h5><p>说说对缺省参数的理解？* args是什么？** kwargs是什么？<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/02/09/笔试总结2/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </p></div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/30/pandas6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="煌金">
+      <meta itemprop="description" content="不想翻身的咸鱼不是好的程序猿。">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="咸鱼学Python">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/01/30/pandas6/" itemprop="url">
+                  Pandas基础(六)
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-01-30 08:39:35" itemprop="dateCreated datePublished" datetime="2019-01-30T08:39:35+08:00">2019-01-30</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-04-06 19:43:51" itemprop="dateModified" datetime="2019-04-06T19:43:51+08:00">2019-04-06</time>
               
             
           </span>
@@ -1849,21 +1186,18 @@
 
       
         
-          <h4 id="什么是Numpy？"><a href="#什么是Numpy？" class="headerlink" title="什么是Numpy？"></a>什么是Numpy？</h4><p>Numpy是Python开源的科学计算工具包，是高级的数值编程工具</p>
-<ul>
-<li>强大的N维数组对象:ndarray</li>
-<li>可以对数组结构数据进行运算(不用遍历循环)</li>
-<li>有随机数、线性代数、傅里叶变换等功能
+          <h4 id="时间序列的索引与切片"><a href="#时间序列的索引与切片" class="headerlink" title="时间序列的索引与切片"></a>时间序列的索引与切片</h4><h5 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h5><p>时间序列的索引方法同样是适用于Dataframe，而且在时间序列中由于按照时间先后排序，故不用考虑顺序问题。</p>
+<p>基本位置索引,使用的方法和列表类似：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">from</span> datetime <span class="keyword">import</span> datetime</span><br><span class="line"></span><br><span class="line">rng = pd.date_range(<span class="string">'2017/1'</span>,<span class="string">'2017/3'</span>)</span><br><span class="line">ts = pd.Series(np.random.rand(len(rng)), index = rng)</span><br><span class="line">print(ts.head())</span><br><span class="line"></span><br><span class="line">print(ts[<span class="number">0</span>])</span><br><span class="line">print(ts[:<span class="number">2</span>])</span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line"><span class="number">2017</span><span class="number">-01</span><span class="number">-01</span>    <span class="number">0.107736</span></span><br><span class="line"><span class="number">2017</span><span class="number">-01</span><span class="number">-02</span>    <span class="number">0.887981</span></span><br><span class="line"><span class="number">2017</span><span class="number">-01</span><span class="number">-03</span>    <span class="number">0.712862</span></span><br><span class="line"><span class="number">2017</span><span class="number">-01</span><span class="number">-04</span>    <span class="number">0.920021</span></span><br><span class="line"><span class="number">2017</span><span class="number">-01</span><span class="number">-05</span>    <span class="number">0.317863</span></span><br><span class="line">Freq: D, dtype: float64</span><br><span class="line"><span class="number">0.107735945027</span></span><br><span class="line"><span class="number">2017</span><span class="number">-01</span><span class="number">-01</span>    <span class="number">0.107736</span></span><br><span class="line"><span class="number">2017</span><span class="number">-01</span><span class="number">-02</span>    <span class="number">0.887981</span></span><br><span class="line">Freq: D, dtype: float64</span><br></pre></td></tr></table></figure></p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/10/01/numpy1/#more" rel="contents">
+            <a class="btn" href="/2019/01/30/pandas6/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
           <!--/noindex-->
         
       
-    </li></ul></div>
+    </div>
 
     
 
@@ -1912,7 +1246,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/01/Scrapy CrawlSpider类学习/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/23/pandas5/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="煌金">
@@ -1931,8 +1265,8 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/09/01/Scrapy CrawlSpider类学习/" itemprop="url">
-                  scrapy crawl 实战腾讯招聘
+                <a class="post-title-link" href="/2019/01/23/pandas5/" itemprop="url">
+                  Pandas基础(五)
                 </a>
               
             
@@ -1958,7 +1292,7 @@
                 
               
 
-              <time title="创建时间：2018-09-01 18:39:35" itemprop="dateCreated datePublished" datetime="2018-09-01T18:39:35+08:00">2018-09-01</time>
+              <time title="创建时间：2019-01-23 08:39:35" itemprop="dateCreated datePublished" datetime="2019-01-23T08:39:35+08:00">2019-01-23</time>
             
 
             
@@ -1975,7 +1309,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-10-04 01:43:13" itemprop="dateModified" datetime="2018-10-04T01:43:13+08:00">2018-10-04</time>
+                <time title="修改时间：2019-04-06 19:43:44" itemprop="dateModified" datetime="2019-04-06T19:43:44+08:00">2019-04-06</time>
               
             
           </span>
@@ -1992,7 +1326,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据科学/" itemprop="url" rel="index"><span itemprop="name">数据科学</span></a></span>
 
                 
                 
@@ -2029,20 +1363,733 @@
 
       
         
-          <h4 id="为什么使用CrawlSpider类？"><a href="#为什么使用CrawlSpider类？" class="headerlink" title="为什么使用CrawlSpider类？"></a>为什么使用CrawlSpider类？</h4><p>回顾上一篇文章，我们大多时间都是在寻找下一页的url地址或者是内容的url地址上面，我们的大体思路是这样的：</p>
-<ol>
-<li>从response中提取所有的a标签对应的url地址</li>
-<li>自动的构造自己requests请求，发送给引擎
+          <h4 id="Pandas时期-Period"><a href="#Pandas时期-Period" class="headerlink" title="Pandas时期 - Period"></a>Pandas时期 - Period</h4><h5 id="pd-Period-创建时期"><a href="#pd-Period-创建时期" class="headerlink" title="pd.Period()创建时期"></a>pd.Period()创建时期</h5><p>生成一个以2017-01开始，月为频率的时间构造器：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">p = pd.Period(<span class="string">'2017'</span>, freq = <span class="string">'M'</span>)</span><br><span class="line">print(p, type(p))</span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line"><span class="number">2017</span><span class="number">-01</span> &lt;<span class="class"><span class="keyword">class</span> '<span class="title">pandas</span>.<span class="title">_period</span>.<span class="title">Period</span>'&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>我们可以通过加减整数，将周期整体移动：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">p = pd.Period(<span class="string">'2017'</span>, freq = <span class="string">'M'</span>)</span><br><span class="line">print(p, type(p))</span><br><span class="line">print(p + <span class="number">1</span>)</span><br><span class="line">print(p - <span class="number">2</span>)</span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line"><span class="number">2017</span><span class="number">-02</span></span><br><span class="line"><span class="number">2016</span><span class="number">-11</span></span><br></pre></td></tr></table></figure></p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/09/01/Scrapy CrawlSpider类学习/#more" rel="contents">
+            <a class="btn" href="/2019/01/23/pandas5/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
           <!--/noindex-->
         
       
-    </li></ol></div>
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/22/pandas4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="煌金">
+      <meta itemprop="description" content="不想翻身的咸鱼不是好的程序猿。">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="咸鱼学Python">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/01/22/pandas4/" itemprop="url">
+                  Pandas基础(四)
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-01-22 08:39:35" itemprop="dateCreated datePublished" datetime="2019-01-22T08:39:35+08:00">2019-01-22</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-04-06 19:43:40" itemprop="dateModified" datetime="2019-04-06T19:43:40+08:00">2019-04-06</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据科学/" itemprop="url" rel="index"><span itemprop="name">数据科学</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+		  
+		  
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h4 id="Pandas时间戳索引-DatetimeIndex"><a href="#Pandas时间戳索引-DatetimeIndex" class="headerlink" title="Pandas时间戳索引-DatetimeIndex"></a>Pandas时间戳索引-DatetimeIndex</h4><h4 id="pd-DatetimeIndex-与TimeSeries时间序列"><a href="#pd-DatetimeIndex-与TimeSeries时间序列" class="headerlink" title="pd.DatetimeIndex()与TimeSeries时间序列"></a>pd.DatetimeIndex()与TimeSeries时间序列</h4><p><code>pd.DatetimeIndex()</code>可以直接生成时间戳索引，支持使用str、datetime.datetime。<br>单个时间戳的类型为<code>Timestamp</code>，多个时间戳的类型为<code>DatetimeIndex</code>，示例如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">rng = pd.DatetimeIndex([<span class="string">'12/1/2017'</span>,<span class="string">'12/2/2017'</span>,<span class="string">'12/3/2017'</span>,<span class="string">'12/4/2017'</span>,<span class="string">'12/5/2017'</span>])</span><br><span class="line">print(rng,type(rng))</span><br><span class="line">print(rng[<span class="number">0</span>],type(rng[<span class="number">0</span>]))</span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line">DatetimeIndex([<span class="string">'2017-12-01'</span>, <span class="string">'2017-12-02'</span>, <span class="string">'2017-12-03'</span>, <span class="string">'2017-12-04'</span>,</span><br><span class="line">               <span class="string">'2017-12-05'</span>],</span><br><span class="line">              dtype=<span class="string">'datetime64[ns]'</span>, freq=<span class="literal">None</span>) &lt;<span class="class"><span class="keyword">class</span> '<span class="title">pandas</span>.<span class="title">core</span>.<span class="title">indexes</span>.<span class="title">datetimes</span>.<span class="title">DatetimeIndex</span>'&gt;</span></span><br><span class="line"><span class="class">2017-12-01 00:</span><span class="number">00</span>:<span class="number">00</span> &lt;<span class="class"><span class="keyword">class</span> '<span class="title">pandas</span>.<span class="title">_libs</span>.<span class="title">tslibs</span>.<span class="title">timestamps</span>.<span class="title">Timestamp</span>'&gt;</span></span><br></pre></td></tr></table></figure></p>
+<h5 id="什么是TimeSeries时间序列？"><a href="#什么是TimeSeries时间序列？" class="headerlink" title="什么是TimeSeries时间序列？"></a>什么是TimeSeries时间序列？</h5><p>以<code>DatetimeIndex</code>为index的Series，为TimeSries时间序列<br>举个栗子：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">st = pd.Series(np.random.rand(len(rng)), index = rng)</span><br><span class="line">print(st,type(st))</span><br><span class="line">print(st.index)</span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line"><span class="number">2017</span><span class="number">-12</span><span class="number">-01</span>    <span class="number">0.081920</span></span><br><span class="line"><span class="number">2017</span><span class="number">-12</span><span class="number">-02</span>    <span class="number">0.921781</span></span><br><span class="line"><span class="number">2017</span><span class="number">-12</span><span class="number">-03</span>    <span class="number">0.489779</span></span><br><span class="line"><span class="number">2017</span><span class="number">-12</span><span class="number">-04</span>    <span class="number">0.257632</span></span><br><span class="line"><span class="number">2017</span><span class="number">-12</span><span class="number">-05</span>    <span class="number">0.805373</span></span><br><span class="line">dtype: float64 &lt;<span class="class"><span class="keyword">class</span> '<span class="title">pandas</span>.<span class="title">core</span>.<span class="title">series</span>.<span class="title">Series</span>'&gt;</span></span><br><span class="line"><span class="class"><span class="title">DatetimeIndex</span><span class="params">([<span class="string">'2017-12-01'</span>, <span class="string">'2017-12-02'</span>, <span class="string">'2017-12-03'</span>, <span class="string">'2017-12-04'</span>,</span></span></span><br><span class="line"><span class="class"><span class="params">               <span class="string">'2017-12-05'</span>],</span></span></span><br><span class="line"><span class="class"><span class="params">              dtype=<span class="string">'datetime64[ns]'</span>, freq=None)</span></span></span><br></pre></td></tr></table></figure></p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/01/22/pandas4/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/20/pandas3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="煌金">
+      <meta itemprop="description" content="不想翻身的咸鱼不是好的程序猿。">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="咸鱼学Python">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/01/20/pandas3/" itemprop="url">
+                  Pandas基础(三)
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-01-20 08:39:35" itemprop="dateCreated datePublished" datetime="2019-01-20T08:39:35+08:00">2019-01-20</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-04-06 19:43:36" itemprop="dateModified" datetime="2019-04-06T19:43:36+08:00">2019-04-06</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据科学/" itemprop="url" rel="index"><span itemprop="name">数据科学</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+		  
+		  
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h4 id="时间模块datetime"><a href="#时间模块datetime" class="headerlink" title="时间模块datetime"></a>时间模块datetime</h4><p>在学习时间序列之前我们需要先了解一下datetime模块的基本使用，datetime模块不是pandas库中所包含的。</p>
+<p>但为了能更好的学习pandas中的时间序列，我们可以先学习datetime的基本使用以打好基础，datetime我们主要掌握一下几种方法：<code>datetime.date(), datetime.datetime(), datetime.timedelta()</code></p>
+<h5 id="datetime-date"><a href="#datetime-date" class="headerlink" title="datetime.date"></a>datetime.date</h5><p>我们可以使用<code>datetime.date.today</code>方法返回当前时间，其数据类型为<code>datetime.date</code><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime  </span><br><span class="line">today = datetime.date.today()</span><br><span class="line">print(today,type(today))</span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line"><span class="number">2018</span><span class="number">-10</span><span class="number">-28</span> &lt;<span class="class"><span class="keyword">class</span> '<span class="title">datetime</span>.<span class="title">date</span>'&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>同时我们可以使用<code>datetime.date(年，月，日)</code>的方式输出我们想要的日期的datetime类型。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line">t = datetime.date(<span class="number">2016</span>,<span class="number">6</span>,<span class="number">1</span>)</span><br><span class="line">print(t)</span><br><span class="line"><span class="comment"># (年，月，日) → 直接得到当时日期</span></span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line"><span class="number">2016</span><span class="number">-06</span><span class="number">-01</span></span><br></pre></td></tr></table></figure></p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/01/20/pandas3/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/19/pandas2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="煌金">
+      <meta itemprop="description" content="不想翻身的咸鱼不是好的程序猿。">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="咸鱼学Python">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/01/19/pandas2/" itemprop="url">
+                  Pandas基础(二)
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-01-19 08:39:35" itemprop="dateCreated datePublished" datetime="2019-01-19T08:39:35+08:00">2019-01-19</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-04-06 19:43:30" itemprop="dateModified" datetime="2019-04-06T19:43:30+08:00">2019-04-06</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据科学/" itemprop="url" rel="index"><span itemprop="name">数据科学</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+		  
+		  
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h4 id="Pandas数据结构Series-基本技巧"><a href="#Pandas数据结构Series-基本技巧" class="headerlink" title="Pandas数据结构Series-基本技巧"></a>Pandas数据结构Series-基本技巧</h4><h5 id="数据查看"><a href="#数据查看" class="headerlink" title="数据查看"></a>数据查看</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#查看前五的数据</span></span><br><span class="line">s = pd.Series(np.random.rand(<span class="number">15</span>))</span><br><span class="line">print(s.head())   <span class="comment">#默认查看数据前五条</span></span><br><span class="line"><span class="comment"># 查看后5条数据</span></span><br><span class="line">print(s.tail())   <span class="comment">#默认查看数据的后五条</span></span><br><span class="line"><span class="comment"># 查看前10条数据</span></span><br><span class="line">print(s.head(<span class="number">10</span>))</span><br></pre></td></tr></table></figure>
+<h5 id="重新索引"><a href="#重新索引" class="headerlink" title="重新索引"></a>重新索引</h5><p>重新索引的作用是根据新的索引重新排序，若新的索引不存在则引入缺失值。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># .reindex将会根据索引重新排序，如果当前索引不存在，则引入缺失值</span></span><br><span class="line">s = pd.Series(np.random.rand(<span class="number">5</span>),index=[<span class="string">'a'</span>,<span class="string">'b'</span>,<span class="string">'c'</span>,<span class="string">'d'</span>,<span class="string">'e'</span>])</span><br><span class="line">print(s)</span><br><span class="line"><span class="comment"># 将索引值修改为['c','d','a','f']</span></span><br><span class="line">s1 =  s.reindex([<span class="string">'c'</span>,<span class="string">'d'</span>,<span class="string">'a'</span>,<span class="string">'f'</span>])</span><br><span class="line">print(s1)</span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line">a    <span class="number">0.972218</span></span><br><span class="line">b    <span class="number">0.820531</span></span><br><span class="line">c    <span class="number">0.940448</span></span><br><span class="line">d    <span class="number">0.009572</span></span><br><span class="line">e    <span class="number">0.462811</span></span><br><span class="line">dtype: float64</span><br><span class="line">c    <span class="number">0.940448</span></span><br><span class="line">d    <span class="number">0.009572</span></span><br><span class="line">a    <span class="number">0.972218</span></span><br><span class="line">f         NaN</span><br><span class="line">dtype: float64</span><br></pre></td></tr></table></figure></p>
+<p>如果不想引入缺失值可以使用<code>fill_value</code>指定不存在的索引值为0或其他值<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">s2 = s.reindex([<span class="string">'c'</span>,<span class="string">'d'</span>,<span class="string">'a'</span>,<span class="string">'f'</span>,<span class="string">'aaaaa'</span>], fill_value=<span class="number">0</span>)</span><br><span class="line">print(s2)</span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line">c        <span class="number">0.940448</span></span><br><span class="line">d        <span class="number">0.009572</span></span><br><span class="line">a        <span class="number">0.972218</span></span><br><span class="line">f        <span class="number">0.000000</span></span><br><span class="line">aaaaa    <span class="number">0.000000</span></span><br><span class="line">dtype: float64</span><br></pre></td></tr></table></figure></p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/01/19/pandas2/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/09/pandas1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="煌金">
+      <meta itemprop="description" content="不想翻身的咸鱼不是好的程序猿。">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="咸鱼学Python">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/01/09/pandas1/" itemprop="url">
+                  Pandas基础(一)
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-01-09 08:39:35" itemprop="dateCreated datePublished" datetime="2019-01-09T08:39:35+08:00">2019-01-09</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-04-06 19:43:22" itemprop="dateModified" datetime="2019-04-06T19:43:22+08:00">2019-04-06</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据科学/" itemprop="url" rel="index"><span itemprop="name">数据科学</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+		  
+		  
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h4 id="Pandas是什么？"><a href="#Pandas是什么？" class="headerlink" title="Pandas是什么？"></a>Pandas是什么？</h4><p>Pandas是数据分析的核心工具包，基于Numpy创建，为数据分析而存在。</p>
+<ul>
+<li>一维数组Series + 二维数组Dataframe</li>
+<li>可直接读取数据并做处理(高效简单)</li>
+<li>兼容各种数据库</li>
+<li>支持各种分析方法
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/01/09/pandas1/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </li></ul></div>
 
     
 
@@ -2080,7 +2127,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -2123,7 +2170,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">29</span>
+                    <span class="site-state-item-count">40</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -2144,7 +2191,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">4</span>
+                      
+                    
+                    <span class="site-state-item-count">5</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -2169,7 +2218,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">6</span>
+                      
+                    
+                    <span class="site-state-item-count">7</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
