@@ -116,7 +116,7 @@
 <meta property="og:site_name" content="咸鱼学Python">
 <meta property="og:description" content="Pandas时间戳索引-DatetimeIndexpd.DatetimeIndex()与TimeSeries时间序列pd.DatetimeIndex()可以直接生成时间戳索引，支持使用str、datetime.datetime。单个时间戳的类型为Timestamp，多个时间戳的类型为DatetimeIndex，示例如下：12345678rng = pd.DatetimeIndex([&apos;12/1/2">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-04-06T11:37:59.887Z">
+<meta property="og:updated_time" content="2019-04-06T11:43:40.686Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Pandas基础(四)">
 <meta name="twitter:description" content="Pandas时间戳索引-DatetimeIndexpd.DatetimeIndex()与TimeSeries时间序列pd.DatetimeIndex()可以直接生成时间戳索引，支持使用str、datetime.datetime。单个时间戳的类型为Timestamp，多个时间戳的类型为DatetimeIndex，示例如下：12345678rng = pd.DatetimeIndex([&apos;12/1/2">
@@ -370,7 +370,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-04-06 19:37:59" itemprop="dateModified" datetime="2019-04-06T19:37:59+08:00">2019-04-06</time>
+                <time title="修改时间：2019-04-06 19:43:40" itemprop="dateModified" datetime="2019-04-06T19:43:40+08:00">2019-04-06</time>
               
             
           </span>
@@ -428,6 +428,7 @@
       
         <h4 id="Pandas时间戳索引-DatetimeIndex"><a href="#Pandas时间戳索引-DatetimeIndex" class="headerlink" title="Pandas时间戳索引-DatetimeIndex"></a>Pandas时间戳索引-DatetimeIndex</h4><h4 id="pd-DatetimeIndex-与TimeSeries时间序列"><a href="#pd-DatetimeIndex-与TimeSeries时间序列" class="headerlink" title="pd.DatetimeIndex()与TimeSeries时间序列"></a>pd.DatetimeIndex()与TimeSeries时间序列</h4><p><code>pd.DatetimeIndex()</code>可以直接生成时间戳索引，支持使用str、datetime.datetime。<br>单个时间戳的类型为<code>Timestamp</code>，多个时间戳的类型为<code>DatetimeIndex</code>，示例如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">rng = pd.DatetimeIndex([<span class="string">'12/1/2017'</span>,<span class="string">'12/2/2017'</span>,<span class="string">'12/3/2017'</span>,<span class="string">'12/4/2017'</span>,<span class="string">'12/5/2017'</span>])</span><br><span class="line">print(rng,type(rng))</span><br><span class="line">print(rng[<span class="number">0</span>],type(rng[<span class="number">0</span>]))</span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line">DatetimeIndex([<span class="string">'2017-12-01'</span>, <span class="string">'2017-12-02'</span>, <span class="string">'2017-12-03'</span>, <span class="string">'2017-12-04'</span>,</span><br><span class="line">               <span class="string">'2017-12-05'</span>],</span><br><span class="line">              dtype=<span class="string">'datetime64[ns]'</span>, freq=<span class="literal">None</span>) &lt;<span class="class"><span class="keyword">class</span> '<span class="title">pandas</span>.<span class="title">core</span>.<span class="title">indexes</span>.<span class="title">datetimes</span>.<span class="title">DatetimeIndex</span>'&gt;</span></span><br><span class="line"><span class="class">2017-12-01 00:</span><span class="number">00</span>:<span class="number">00</span> &lt;<span class="class"><span class="keyword">class</span> '<span class="title">pandas</span>.<span class="title">_libs</span>.<span class="title">tslibs</span>.<span class="title">timestamps</span>.<span class="title">Timestamp</span>'&gt;</span></span><br></pre></td></tr></table></figure></p>
 <h5 id="什么是TimeSeries时间序列？"><a href="#什么是TimeSeries时间序列？" class="headerlink" title="什么是TimeSeries时间序列？"></a>什么是TimeSeries时间序列？</h5><p>以<code>DatetimeIndex</code>为index的Series，为TimeSries时间序列<br>举个栗子：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">st = pd.Series(np.random.rand(len(rng)), index = rng)</span><br><span class="line">print(st,type(st))</span><br><span class="line">print(st.index)</span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line"><span class="number">2017</span><span class="number">-12</span><span class="number">-01</span>    <span class="number">0.081920</span></span><br><span class="line"><span class="number">2017</span><span class="number">-12</span><span class="number">-02</span>    <span class="number">0.921781</span></span><br><span class="line"><span class="number">2017</span><span class="number">-12</span><span class="number">-03</span>    <span class="number">0.489779</span></span><br><span class="line"><span class="number">2017</span><span class="number">-12</span><span class="number">-04</span>    <span class="number">0.257632</span></span><br><span class="line"><span class="number">2017</span><span class="number">-12</span><span class="number">-05</span>    <span class="number">0.805373</span></span><br><span class="line">dtype: float64 &lt;<span class="class"><span class="keyword">class</span> '<span class="title">pandas</span>.<span class="title">core</span>.<span class="title">series</span>.<span class="title">Series</span>'&gt;</span></span><br><span class="line"><span class="class"><span class="title">DatetimeIndex</span><span class="params">([<span class="string">'2017-12-01'</span>, <span class="string">'2017-12-02'</span>, <span class="string">'2017-12-03'</span>, <span class="string">'2017-12-04'</span>,</span></span></span><br><span class="line"><span class="class"><span class="params">               <span class="string">'2017-12-05'</span>],</span></span></span><br><span class="line"><span class="class"><span class="params">              dtype=<span class="string">'datetime64[ns]'</span>, freq=None)</span></span></span><br></pre></td></tr></table></figure></p>
+<a id="more"></a>
 <h4 id="pd-date-range-生成日期范围"><a href="#pd-date-range-生成日期范围" class="headerlink" title="pd.date_range()-生成日期范围"></a>pd.date_range()-生成日期范围</h4><p>pd.date_range()生成日期范围有两种生成方式(默认频率是day)：</p>
 <ul>
 <li>起始时间(start) + 结束时间(end)</li>
@@ -574,7 +575,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">26</span>
+                    <span class="site-state-item-count">29</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -593,7 +594,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">3</span>
+                      
+                    
+                    <span class="site-state-item-count">4</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -616,7 +619,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">5</span>
+                      
+                    
+                    <span class="site-state-item-count">6</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>

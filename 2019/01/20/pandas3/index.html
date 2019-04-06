@@ -116,7 +116,7 @@
 <meta property="og:site_name" content="咸鱼学Python">
 <meta property="og:description" content="时间模块datetime在学习时间序列之前我们需要先了解一下datetime模块的基本使用，datetime模块不是pandas库中所包含的。 但为了能更好的学习pandas中的时间序列，我们可以先学习datetime的基本使用以打好基础，datetime我们主要掌握一下几种方法：datetime.date(), datetime.datetime(), datetime.timedelta()">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-04-06T11:38:04.680Z">
+<meta property="og:updated_time" content="2019-04-06T11:43:36.438Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Pandas基础(三)">
 <meta name="twitter:description" content="时间模块datetime在学习时间序列之前我们需要先了解一下datetime模块的基本使用，datetime模块不是pandas库中所包含的。 但为了能更好的学习pandas中的时间序列，我们可以先学习datetime的基本使用以打好基础，datetime我们主要掌握一下几种方法：datetime.date(), datetime.datetime(), datetime.timedelta()">
@@ -370,7 +370,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-04-06 19:38:04" itemprop="dateModified" datetime="2019-04-06T19:38:04+08:00">2019-04-06</time>
+                <time title="修改时间：2019-04-06 19:43:36" itemprop="dateModified" datetime="2019-04-06T19:43:36+08:00">2019-04-06</time>
               
             
           </span>
@@ -430,6 +430,7 @@
 <p>但为了能更好的学习pandas中的时间序列，我们可以先学习datetime的基本使用以打好基础，datetime我们主要掌握一下几种方法：<code>datetime.date(), datetime.datetime(), datetime.timedelta()</code></p>
 <h5 id="datetime-date"><a href="#datetime-date" class="headerlink" title="datetime.date"></a>datetime.date</h5><p>我们可以使用<code>datetime.date.today</code>方法返回当前时间，其数据类型为<code>datetime.date</code><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime  </span><br><span class="line">today = datetime.date.today()</span><br><span class="line">print(today,type(today))</span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line"><span class="number">2018</span><span class="number">-10</span><span class="number">-28</span> &lt;<span class="class"><span class="keyword">class</span> '<span class="title">datetime</span>.<span class="title">date</span>'&gt;</span></span><br></pre></td></tr></table></figure></p>
 <p>同时我们可以使用<code>datetime.date(年，月，日)</code>的方式输出我们想要的日期的datetime类型。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line">t = datetime.date(<span class="number">2016</span>,<span class="number">6</span>,<span class="number">1</span>)</span><br><span class="line">print(t)</span><br><span class="line"><span class="comment"># (年，月，日) → 直接得到当时日期</span></span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line"><span class="number">2016</span><span class="number">-06</span><span class="number">-01</span></span><br></pre></td></tr></table></figure></p>
+<a id="more"></a>
 <h5 id="datetime-datetime"><a href="#datetime-datetime" class="headerlink" title="datetime.datetime"></a>datetime.datetime</h5><p>我们使用<code>datetime.datetime.now</code>方法返回当前时间，其数据类型为<code>datetime.datetime</code><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line">now = datetime.datetime.now()</span><br><span class="line">print(now,type(now))</span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line"><span class="number">2018</span><span class="number">-10</span><span class="number">-28</span> <span class="number">17</span>:<span class="number">34</span>:<span class="number">07.467642</span> &lt;<span class="class"><span class="keyword">class</span> '<span class="title">datetime</span>.<span class="title">datetime</span>'&gt;</span></span><br></pre></td></tr></table></figure></p>
 <p>同样的我们可以使用<code>datetime.datetime(年，月，日，时，分，秒)</code>的形式输出我们想要的<code>datetime.datetime</code>类型的数据。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">t1 = datetime.datetime(<span class="number">2016</span>,<span class="number">6</span>,<span class="number">1</span>)</span><br><span class="line">t2 = datetime.datetime(<span class="number">2014</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">12</span>,<span class="number">44</span>,<span class="number">33</span>)</span><br><span class="line">print(t1,t2)</span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line"><span class="number">2016</span><span class="number">-06</span><span class="number">-01</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> <span class="number">2014</span><span class="number">-01</span><span class="number">-01</span> <span class="number">12</span>:<span class="number">44</span>:<span class="number">33</span></span><br></pre></td></tr></table></figure></p>
 <h5 id="datetime-timedelta"><a href="#datetime-timedelta" class="headerlink" title="datetime.timedelta"></a>datetime.timedelta</h5><p><code>datetime.timedelta</code>代表的数据是时间差数据类型。时间差主要用作时间的加减法，相当于可被识别的时间“差值”<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># datetime.timedelta：时间差</span></span><br><span class="line"></span><br><span class="line">today = datetime.datetime.today()  <span class="comment"># datetime.datetime也有today()方法</span></span><br><span class="line">yestoday = today - datetime.timedelta(<span class="number">1</span>)  <span class="comment">#</span></span><br><span class="line">print(today)</span><br><span class="line">print(yestoday)</span><br><span class="line">print(today - datetime.timedelta(<span class="number">7</span>))</span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line"><span class="number">2018</span><span class="number">-11</span><span class="number">-04</span> <span class="number">14</span>:<span class="number">48</span>:<span class="number">28.967149</span></span><br><span class="line"><span class="number">2018</span><span class="number">-11</span><span class="number">-03</span> <span class="number">14</span>:<span class="number">48</span>:<span class="number">28.967149</span></span><br><span class="line"><span class="number">2018</span><span class="number">-10</span><span class="number">-28</span> <span class="number">14</span>:<span class="number">48</span>:<span class="number">28.967149</span></span><br></pre></td></tr></table></figure></p>
@@ -566,7 +567,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">26</span>
+                    <span class="site-state-item-count">29</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -585,7 +586,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">3</span>
+                      
+                    
+                    <span class="site-state-item-count">4</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -608,7 +611,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">5</span>
+                      
+                    
+                    <span class="site-state-item-count">6</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>

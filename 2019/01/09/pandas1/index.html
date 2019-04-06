@@ -108,18 +108,18 @@
 
 
 
-  <meta name="description" content="Pandas是什么？Pandas是数据分析的核心工具包，基于Numpy创建，为数据分析而存在。  一维数组Series + 二维数组Dataframe 可直接读取数据并做处理(高效简单) 兼容各种数据库 支持各种分析方法  Pandas基本数据结构-Series的基本概念先举个栗子:123456789101112ar = np.random.rand(5)s = pd.Series(ar)prin">
+  <meta name="description" content="Pandas是什么？Pandas是数据分析的核心工具包，基于Numpy创建，为数据分析而存在。  一维数组Series + 二维数组Dataframe 可直接读取数据并做处理(高效简单) 兼容各种数据库 支持各种分析方法">
 <meta name="keywords" content="数据科学">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Pandas基础(一)">
 <meta property="og:url" content="http://yoursite.com/2019/01/09/pandas1/index.html">
 <meta property="og:site_name" content="咸鱼学Python">
-<meta property="og:description" content="Pandas是什么？Pandas是数据分析的核心工具包，基于Numpy创建，为数据分析而存在。  一维数组Series + 二维数组Dataframe 可直接读取数据并做处理(高效简单) 兼容各种数据库 支持各种分析方法  Pandas基本数据结构-Series的基本概念先举个栗子:123456789101112ar = np.random.rand(5)s = pd.Series(ar)prin">
+<meta property="og:description" content="Pandas是什么？Pandas是数据分析的核心工具包，基于Numpy创建，为数据分析而存在。  一维数组Series + 二维数组Dataframe 可直接读取数据并做处理(高效简单) 兼容各种数据库 支持各种分析方法">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-04-06T11:38:19.898Z">
+<meta property="og:updated_time" content="2019-04-06T11:43:22.024Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Pandas基础(一)">
-<meta name="twitter:description" content="Pandas是什么？Pandas是数据分析的核心工具包，基于Numpy创建，为数据分析而存在。  一维数组Series + 二维数组Dataframe 可直接读取数据并做处理(高效简单) 兼容各种数据库 支持各种分析方法  Pandas基本数据结构-Series的基本概念先举个栗子:123456789101112ar = np.random.rand(5)s = pd.Series(ar)prin">
+<meta name="twitter:description" content="Pandas是什么？Pandas是数据分析的核心工具包，基于Numpy创建，为数据分析而存在。  一维数组Series + 二维数组Dataframe 可直接读取数据并做处理(高效简单) 兼容各种数据库 支持各种分析方法">
 
 
 
@@ -370,7 +370,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-04-06 19:38:19" itemprop="dateModified" datetime="2019-04-06T19:38:19+08:00">2019-04-06</time>
+                <time title="修改时间：2019-04-06 19:43:22" itemprop="dateModified" datetime="2019-04-06T19:43:22+08:00">2019-04-06</time>
               
             
           </span>
@@ -431,9 +431,10 @@
 <li>一维数组Series + 二维数组Dataframe</li>
 <li>可直接读取数据并做处理(高效简单)</li>
 <li>兼容各种数据库</li>
-<li>支持各种分析方法</li>
+<li>支持各种分析方法<a id="more"></a>
+<h4 id="Pandas基本数据结构-Series的基本概念"><a href="#Pandas基本数据结构-Series的基本概念" class="headerlink" title="Pandas基本数据结构-Series的基本概念"></a>Pandas基本数据结构-Series的基本概念</h4>先举个栗子:<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">ar = np.random.rand(<span class="number">5</span>)</span><br><span class="line">s = pd.Series(ar)</span><br><span class="line">print(ar)</span><br><span class="line">print(s,type(s))</span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line">[<span class="number">0.1206055</span>  <span class="number">0.83147658</span> <span class="number">0.88649587</span> <span class="number">0.2162775</span>  <span class="number">0.31466148</span>]</span><br><span class="line"><span class="number">0</span>    <span class="number">0.120605</span></span><br><span class="line"><span class="number">1</span>    <span class="number">0.831477</span></span><br><span class="line"><span class="number">2</span>    <span class="number">0.886496</span></span><br><span class="line"><span class="number">3</span>    <span class="number">0.216277</span></span><br><span class="line"><span class="number">4</span>    <span class="number">0.314661</span></span><br><span class="line">dtype: float64 &lt;<span class="class"><span class="keyword">class</span> '<span class="title">pandas</span>.<span class="title">core</span>.<span class="title">series</span>.<span class="title">Series</span>'&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
 </ul>
-<h4 id="Pandas基本数据结构-Series的基本概念"><a href="#Pandas基本数据结构-Series的基本概念" class="headerlink" title="Pandas基本数据结构-Series的基本概念"></a>Pandas基本数据结构-Series的基本概念</h4><p>先举个栗子:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">ar = np.random.rand(<span class="number">5</span>)</span><br><span class="line">s = pd.Series(ar)</span><br><span class="line">print(ar)</span><br><span class="line">print(s,type(s))</span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line">[<span class="number">0.1206055</span>  <span class="number">0.83147658</span> <span class="number">0.88649587</span> <span class="number">0.2162775</span>  <span class="number">0.31466148</span>]</span><br><span class="line"><span class="number">0</span>    <span class="number">0.120605</span></span><br><span class="line"><span class="number">1</span>    <span class="number">0.831477</span></span><br><span class="line"><span class="number">2</span>    <span class="number">0.886496</span></span><br><span class="line"><span class="number">3</span>    <span class="number">0.216277</span></span><br><span class="line"><span class="number">4</span>    <span class="number">0.314661</span></span><br><span class="line">dtype: float64 &lt;<span class="class"><span class="keyword">class</span> '<span class="title">pandas</span>.<span class="title">core</span>.<span class="title">series</span>.<span class="title">Series</span>'&gt;</span></span><br></pre></td></tr></table></figure></p>
 <p>在这里可以看到这里的Series相比与之前学习的ndarray是一个自带索引index的数组 = 一维的数组 + 对应的索引，当pd.Series单单只看values时就是一个ndarray。</p>
 <p>在具体操作方面，Series和ndarray基本相似，包括索引切片的操作差别并不大。</p>
 <h4 id="Pandas基本数据结构-Series的创建方法"><a href="#Pandas基本数据结构-Series的创建方法" class="headerlink" title="Pandas基本数据结构-Series的创建方法"></a>Pandas基本数据结构-Series的创建方法</h4><h5 id="字典创建Series"><a href="#字典创建Series" class="headerlink" title="字典创建Series"></a>字典创建Series</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 字典创建Series</span></span><br><span class="line">dic = &#123;<span class="string">'a'</span>:<span class="number">1</span>, <span class="string">'b'</span>:<span class="number">2</span>, <span class="string">'c'</span>:<span class="number">3</span>&#125;</span><br><span class="line">s = pd.Series(dic)</span><br><span class="line">print(s)</span><br></pre></td></tr></table></figure>
@@ -563,7 +564,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">26</span>
+                    <span class="site-state-item-count">29</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -582,7 +583,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">3</span>
+                      
+                    
+                    <span class="site-state-item-count">4</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -605,7 +608,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">5</span>
+                      
+                    
+                    <span class="site-state-item-count">6</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
