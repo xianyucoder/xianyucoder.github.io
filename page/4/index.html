@@ -311,7 +311,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/01/Scrapy CrawlSpider类学习/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/29/16.2.随机切换UA的下载中间件/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="煌金">
@@ -330,8 +330,8 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/09/01/Scrapy CrawlSpider类学习/" itemprop="url">
-                  scrapy crawl 实战腾讯招聘
+                <a class="post-title-link" href="/2018/11/29/16.2.随机切换UA的下载中间件/" itemprop="url">
+                  随机切换UA中间件实例
                 </a>
               
             
@@ -357,7 +357,7 @@
                 
               
 
-              <time title="创建时间：2018-09-01 18:39:35" itemprop="dateCreated datePublished" datetime="2018-09-01T18:39:35+08:00">2018-09-01</time>
+              <time title="创建时间：2018-11-29 08:39:35" itemprop="dateCreated datePublished" datetime="2018-11-29T08:39:35+08:00">2018-11-29</time>
             
 
             
@@ -374,7 +374,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-10-04 01:43:13" itemprop="dateModified" datetime="2018-10-04T01:43:13+08:00">2018-10-04</time>
+                <time title="修改时间：2019-04-06 21:24:36" itemprop="dateModified" datetime="2019-04-06T21:24:36+08:00">2019-04-06</time>
               
             
           </span>
@@ -428,20 +428,16 @@
 
       
         
-          <h4 id="为什么使用CrawlSpider类？"><a href="#为什么使用CrawlSpider类？" class="headerlink" title="为什么使用CrawlSpider类？"></a>为什么使用CrawlSpider类？</h4><p>回顾上一篇文章，我们大多时间都是在寻找下一页的url地址或者是内容的url地址上面，我们的大体思路是这样的：</p>
-<ol>
-<li>从response中提取所有的a标签对应的url地址</li>
-<li>自动的构造自己requests请求，发送给引擎
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/09/01/Scrapy CrawlSpider类学习/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
+          
+            <h4 id="随机UA下载中间件-初始版"><a href="#随机UA下载中间件-初始版" class="headerlink" title="随机UA下载中间件(初始版)"></a>随机UA下载中间件(初始版)</h4><p>setting文件：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">DOWNLOADER_MIDDLEWARES = &#123;</span><br><span class="line">    <span class="string">'ArticleSpider.middlewares.RandomUserAgentMiddleware'</span>: <span class="number">543</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>middlewares文件：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> fake_useragent <span class="keyword">import</span> UserAgent</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">RandomUserAgentMiddleware</span><span class="params">(object)</span>:</span></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, crawler)</span>:</span></span><br><span class="line">      super(RandomUserAgentMiddleware, self).__init__()</span><br><span class="line">      self.ua = UserAgent()</span><br><span class="line">      self.ua_type = crawler.settings.get(<span class="string">'RANDOM_UA_TYPE'</span>, <span class="string">'random'</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">      @classmethod</span></span><br><span class="line">      <span class="function"><span class="keyword">def</span> <span class="title">from_crawler</span><span class="params">(cls, crawler)</span>:</span></span><br><span class="line">          <span class="keyword">return</span> cls(crawler)</span><br><span class="line">      <span class="function"><span class="keyword">def</span> <span class="title">process_request</span><span class="params">(self, request, spider)</span>:</span></span><br><span class="line">          <span class="function"><span class="keyword">def</span> <span class="title">get_ua</span><span class="params">()</span>:</span></span><br><span class="line">              <span class="keyword">return</span> getattr(self.ua, self.ua_type)</span><br><span class="line">          request.headers.setdefault(<span class="string">'User-Agent'</span>, get_ua())</span><br></pre></td></tr></table></figure></p>
+<h4 id="随机UA、ip下载中间件-升级版"><a href="#随机UA、ip下载中间件-升级版" class="headerlink" title="随机UA、ip下载中间件(升级版)"></a>随机UA、ip下载中间件(升级版)</h4><p>setting文件：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">DOWNLOADER_MIDDLEWARES = &#123;</span><br><span class="line">   <span class="comment"># 'ArticleSpider.middlewares.MyCustomDownloaderMiddleware': 543,</span></span><br><span class="line">    <span class="string">'ArticleSpider.middlewares.rotate_user_agent.RandomUserAgentMiddleware'</span>: <span class="number">400</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>middlewares文件：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> fake_useragent <span class="keyword">import</span> UserAgent</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">RandomUserAgentMiddleware</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, crawler)</span>:</span></span><br><span class="line">        super(RandomUserAgentMiddleware, self).__init__()</span><br><span class="line"></span><br><span class="line">        self.ua = UserAgent()</span><br><span class="line">        self.per_proxy = crawler.settings.get(<span class="string">'RANDOM_UA_PER_PROXY'</span>, <span class="literal">False</span>)</span><br><span class="line">        self.ua_type = crawler.settings.get(<span class="string">'RANDOM_UA_TYPE'</span>, <span class="string">'random'</span>)</span><br><span class="line">        self.proxy2ua = &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">from_crawler</span><span class="params">(cls, crawler)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> cls(crawler)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">process_request</span><span class="params">(self, request, spider)</span>:</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">get_ua</span><span class="params">()</span>:</span></span><br><span class="line">            <span class="string">'''Gets random UA based on the type setting (random, firefox…)'''</span></span><br><span class="line">            <span class="keyword">return</span> getattr(self.ua, self.ua_type)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> self.per_proxy:</span><br><span class="line">            proxy = request.meta.get(<span class="string">'proxy'</span>)</span><br><span class="line">            <span class="keyword">if</span> proxy <span class="keyword">not</span> <span class="keyword">in</span> self.proxy2ua:</span><br><span class="line">                self.proxy2ua[proxy] = get_ua()</span><br><span class="line">                logger.debug(<span class="string">'Assign User-Agent %s to Proxy %s'</span></span><br><span class="line">                             % (self.proxy2ua[proxy], proxy))</span><br><span class="line">            request.headers.setdefault(<span class="string">'User-Agent'</span>, self.proxy2ua[proxy])</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            ua = get_ua()</span><br><span class="line">            request.headers.setdefault(<span class="string">'User-Agent'</span>, get_ua())</span><br></pre></td></tr></table></figure></p>
+
+          
         
       
-    </li></ol></div>
+    </div>
 
     
 
@@ -490,7 +486,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/01/关于requests和json/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/29/16.3.redis数据库存入其他数据库/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="煌金">
@@ -509,8 +505,8 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/09/01/关于requests和json/" itemprop="url">
-                  requests与json的使用技巧
+                <a class="post-title-link" href="/2018/11/29/16.3.redis数据库存入其他数据库/" itemprop="url">
+                  Redis数据库存入其他数据库
                 </a>
               
             
@@ -536,7 +532,7 @@
                 
               
 
-              <time title="创建时间：2018-09-01 18:39:35" itemprop="dateCreated datePublished" datetime="2018-09-01T18:39:35+08:00">2018-09-01</time>
+              <time title="创建时间：2018-11-29 08:39:35" itemprop="dateCreated datePublished" datetime="2018-11-29T08:39:35+08:00">2018-11-29</time>
             
 
             
@@ -553,7 +549,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-10-04 01:42:47" itemprop="dateModified" datetime="2018-10-04T01:42:47+08:00">2018-10-04</time>
+                <time title="修改时间：2019-04-07 15:10:55" itemprop="dateModified" datetime="2019-04-07T15:10:55+08:00">2019-04-07</time>
               
             
           </span>
@@ -607,364 +603,10 @@
 
       
         
-          <h4 id="requests"><a href="#requests" class="headerlink" title="requests"></a>requests</h4><h4 id="requestse基本使用"><a href="#requestse基本使用" class="headerlink" title="requestse基本使用"></a>requestse基本使用</h4><blockquote>
-<p>关于requests基本使用方法参照中文版参考文档：</p>
-<p><a href="http://docs.python-requests.org/zh_CN/latest/index.html" target="_blank" rel="noopener">http://docs.python-requests.org/zh_CN/latest/index.html</a><br>
+          <h4 id="将redis数据库导入mongodb数据库"><a href="#将redis数据库导入mongodb数据库" class="headerlink" title="将redis数据库导入mongodb数据库"></a>将redis数据库导入mongodb数据库</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> json, redis, pymongo</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="comment"># 指定Redis数据库信息</span></span><br><span class="line">    rediscli = redis.StrictRedis(host=<span class="string">'127.0.0.1'</span>, port=<span class="number">6379</span>, db=<span class="number">0</span>)</span><br><span class="line">    <span class="comment"># 指定MongoDB数据库信息</span></span><br><span class="line">    mongocli = pymongo.MongoClient(host=<span class="string">'localhost'</span>, port=<span class="number">27017</span>)</span><br><span class="line">    <span class="comment"># 创建数据库名</span></span><br><span class="line">    db = mongocli[<span class="string">'sina'</span>]</span><br><span class="line">    <span class="comment"># 创建表名</span></span><br><span class="line">    sheet = db[<span class="string">'sina_items'</span>]</span><br><span class="line">    offset = <span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        <span class="comment"># FIFO模式为 blpop，LIFO模式为 brpop，获取键值</span></span><br><span class="line">        source, data = rediscli.blpop([<span class="string">"sinainfospider_redis:items"</span>])</span><br><span class="line">        item = json.loads(data.decode(<span class="string">"utf-8"</span>))</span><br><span class="line">        sheet.insert(item)</span><br><span class="line">        offset += <span class="number">1</span></span><br><span class="line">        print(offset)</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            print(<span class="string">"Processing: %s "</span> % item)</span><br><span class="line">        <span class="keyword">except</span> KeyError:</span><br><span class="line">            print(<span class="string">"Error procesing: %s"</span> % item)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/09/01/关于requests和json/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </p></blockquote></div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/01/初识Scrapy/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="煌金">
-      <meta itemprop="description" content="不想翻身的咸鱼不是好的程序猿。">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="咸鱼学Python">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/01/初识Scrapy/" itemprop="url">
-                  初识Scrapy
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-09-01 18:39:35" itemprop="dateCreated datePublished" datetime="2018-09-01T18:39:35+08:00">2018-09-01</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2018-10-04 01:43:17" itemprop="dateModified" datetime="2018-10-04T01:43:17+08:00">2018-10-04</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-		  
-		  
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h4 id="初识Scrapy"><a href="#初识Scrapy" class="headerlink" title="初识Scrapy"></a>初识Scrapy</h4><h4 id="什么是Scrapy？"><a href="#什么是Scrapy？" class="headerlink" title="什么是Scrapy？"></a>什么是Scrapy？</h4><p><code>Scrapy</code>使用 <code>Python</code> 实现的一个开源爬虫框架，<code>Scrapy</code>基于 <code>twisted</code>这个高性能的事件驱动网络引擎框架，<code>Scrapy</code>爬虫拥有很高的性能。<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/09/01/初识Scrapy/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </p></div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/01/通用爬虫思路总结/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="煌金">
-      <meta itemprop="description" content="不想翻身的咸鱼不是好的程序猿。">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="咸鱼学Python">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/01/通用爬虫思路总结/" itemprop="url">
-                  通用爬虫套路
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-09-01 18:39:35" itemprop="dateCreated datePublished" datetime="2018-09-01T18:39:35+08:00">2018-09-01</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2018-10-04 02:21:20" itemprop="dateModified" datetime="2018-10-04T02:21:20+08:00">2018-10-04</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-		  
-		  
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h4 id="通用爬虫套路"><a href="#通用爬虫套路" class="headerlink" title="通用爬虫套路"></a>通用爬虫套路</h4>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/09/01/通用爬虫思路总结/#more" rel="contents">
+            <a class="btn" href="/2018/11/29/16.3.redis数据库存入其他数据库/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1020,7 +662,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/01/配置virtualenv虚拟环境/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/29/16.scrapy实用demo实例/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="煌金">
@@ -1039,8 +681,8 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/09/01/配置virtualenv虚拟环境/" itemprop="url">
-                  配置虚拟环境
+                <a class="post-title-link" href="/2018/11/29/16.scrapy实用demo实例/" itemprop="url">
+                  Scrapy实用demo实例
                 </a>
               
             
@@ -1066,7 +708,7 @@
                 
               
 
-              <time title="创建时间：2018-09-01 18:39:35" itemprop="dateCreated datePublished" datetime="2018-09-01T18:39:35+08:00">2018-09-01</time>
+              <time title="创建时间：2018-11-29 08:39:35" itemprop="dateCreated datePublished" datetime="2018-11-29T08:39:35+08:00">2018-11-29</time>
             
 
             
@@ -1083,7 +725,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-10-04 01:42:57" itemprop="dateModified" datetime="2018-10-04T01:42:57+08:00">2018-10-04</time>
+                <time title="修改时间：2019-04-07 15:12:38" itemprop="dateModified" datetime="2019-04-07T15:12:38+08:00">2019-04-07</time>
               
             
           </span>
@@ -1137,10 +779,11 @@
 
       
         
-          <h4 id="配置虚拟环境的必要性？"><a href="#配置虚拟环境的必要性？" class="headerlink" title="配置虚拟环境的必要性？"></a>配置虚拟环境的必要性？</h4><p>虚拟环境是一个将不同项目所需求的依赖分别放在独立的地方的一个工具，它给这些工程创建虚拟的Python环境。它解决了“项目X依赖于版本1.x，而项目Y需要项目4.x”的两难问题，而且使你的全局site-packages目录保持干净和可管理。 virtualenv 是一个创建隔绝的Python环境的工具，virtualenv创建一个包含所有必要的可执行文件的文件夹，用来使用Python工程所需的包。</p>
+          <h4 id="搭建ip代理池-简易版"><a href="#搭建ip代理池-简易版" class="headerlink" title="搭建ip代理池(简易版)"></a>搭建ip代理池(简易版)</h4><h4 id="推荐两个scrapy代理的项目"><a href="#推荐两个scrapy代理的项目" class="headerlink" title="推荐两个scrapy代理的项目"></a>推荐两个scrapy代理的项目</h4><p>第一个是免费的代理插件，无需付费<br><code>https://github.com/aivarsk/scrapy-proxies</code></p>
+<p>第二个是需要付费的代理插件<br><code>https://github.com/scrapy-plugins/scrapy-crawlera</code></p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/09/01/配置virtualenv虚拟环境/#more" rel="contents">
+            <a class="btn" href="/2018/11/29/16.scrapy实用demo实例/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1196,7 +839,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/01/多进程详解/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/09/numpy3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="煌金">
@@ -1215,8 +858,8 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/09/01/多进程详解/" itemprop="url">
-                  关于多进程详解
+                <a class="post-title-link" href="/2018/11/09/numpy3/" itemprop="url">
+                  Numpy基础(三)
                 </a>
               
             
@@ -1242,7 +885,7 @@
                 
               
 
-              <time title="创建时间：2018-09-01 18:39:35" itemprop="dateCreated datePublished" datetime="2018-09-01T18:39:35+08:00">2018-09-01</time>
+              <time title="创建时间：2018-11-09 08:39:35" itemprop="dateCreated datePublished" datetime="2018-11-09T08:39:35+08:00">2018-11-09</time>
             
 
             
@@ -1259,7 +902,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-10-04 01:43:09" itemprop="dateModified" datetime="2018-10-04T01:43:09+08:00">2018-10-04</time>
+                <time title="修改时间：2019-04-06 19:43:54" itemprop="dateModified" datetime="2019-04-06T19:43:54+08:00">2019-04-06</time>
               
             
           </span>
@@ -1276,7 +919,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据科学/" itemprop="url" rel="index"><span itemprop="name">数据科学</span></a></span>
 
                 
                 
@@ -1313,21 +956,20 @@
 
       
         
-          <h4 id="进程详解"><a href="#进程详解" class="headerlink" title="进程详解"></a>进程详解</h4><h4 id="并行与并发怎么理解？"><a href="#并行与并发怎么理解？" class="headerlink" title="并行与并发怎么理解？"></a>并行与并发怎么理解？</h4><ul>
-<li>并发：当前任务数多于处理器的核心数，称之为并发</li>
-<li>并行：当前任务数少于或等于处理器核心数，称之为并行</li>
-</ul>
-<p>为了充分利用多核CPU资源，Python中大部分情况下都需要使用多进程。<br>
+          <h4 id="numpy读取-写入数组数据"><a href="#numpy读取-写入数组数据" class="headerlink" title="numpy读取/写入数组数据"></a>numpy读取/写入数组数据</h4><p>在我们使用numpy处理了数据之后，可以将数组保存为保存为Numpy专用的二进制格式，当我们这样操作之后，就不能用notepad++等打开看了（乱码）。</p>
+<p>np.load和np.save是读写磁盘数组数据的两个主要函数，默认情况下，数组是以未压缩的原始二进制格式保存在扩展名为.npy的文件中。</p>
+<h5 id="存储数组数据-npy"><a href="#存储数组数据-npy" class="headerlink" title="存储数组数据(npy)"></a>存储数组数据(npy)</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ar = np.random.rand(<span class="number">5</span>,<span class="number">5</span>)</span><br><span class="line">print(ar)</span><br><span class="line">np.save(<span class="string">'arraydata.npy'</span>, ar)</span><br></pre></td></tr></table></figure>
+<h5 id="读取数组数据-npy"><a href="#读取数组数据-npy" class="headerlink" title="读取数组数据(npy)"></a>读取数组数据(npy)</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ar_load =np.load(<span class="string">'arraydata.npy'</span>)</span><br><span class="line">print(ar_load)</span><br></pre></td></tr></table></figure>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/09/01/多进程详解/#more" rel="contents">
+            <a class="btn" href="/2018/11/09/numpy3/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
           <!--/noindex-->
         
       
-    </p></div>
+    </div>
 
     
 
@@ -1376,7 +1018,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/01/爬虫究竟是合法还是违法的/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/09/15.Scrapy Redis详解/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="煌金">
@@ -1395,8 +1037,8 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/09/01/爬虫究竟是合法还是违法的/" itemprop="url">
-                  爬虫究竟是合法还是违法的？
+                <a class="post-title-link" href="/2018/11/09/15.Scrapy Redis详解/" itemprop="url">
+                  Scrapy-redis 详解
                 </a>
               
             
@@ -1422,7 +1064,7 @@
                 
               
 
-              <time title="创建时间：2018-09-01 18:39:35" itemprop="dateCreated datePublished" datetime="2018-09-01T18:39:35+08:00">2018-09-01</time>
+              <time title="创建时间：2018-11-09 08:39:35" itemprop="dateCreated datePublished" datetime="2018-11-09T08:39:35+08:00">2018-11-09</time>
             
 
             
@@ -1439,7 +1081,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-10-04 01:43:04" itemprop="dateModified" datetime="2018-10-04T01:43:04+08:00">2018-10-04</time>
+                <time title="修改时间：2019-04-06 21:23:06" itemprop="dateModified" datetime="2019-04-06T21:23:06+08:00">2019-04-06</time>
               
             
           </span>
@@ -1493,547 +1135,18 @@
 
       
         
-          <h4 id="爬虫究竟是合法还是违法的？"><a href="#爬虫究竟是合法还是违法的？" class="headerlink" title="爬虫究竟是合法还是违法的？"></a>爬虫究竟是合法还是违法的？</h4><p>随着大数据人工智能的火热，爬虫行业竞争不仅“蒸蒸日上”，也越发地激烈。一篇《你的爬虫会送老板进监狱吗？》在程序猿圈子里被大量转载，甚至有的程序员因为非法获取数据的新闻从而放弃了这一行当。那么，爬虫是什么，它会是悬在程序员头上的达摩克利斯之剑吗？<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/09/01/爬虫究竟是合法还是违法的/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </p></div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/15/中文乱码、unicode和utf8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="煌金">
-      <meta itemprop="description" content="不想翻身的咸鱼不是好的程序猿。">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="咸鱼学Python">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/15/中文乱码、unicode和utf8/" itemprop="url">
-                  中文乱码、unicode和utf8
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-08-15 14:29:35" itemprop="dateCreated datePublished" datetime="2018-08-15T14:29:35+08:00">2018-08-15</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2018-10-04 01:42:36" itemprop="dateModified" datetime="2018-10-04T01:42:36+08:00">2018-10-04</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-		  
-		  
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h4 id="中文乱码、unicode和utf8"><a href="#中文乱码、unicode和utf8" class="headerlink" title="中文乱码、unicode和utf8"></a>中文乱码、unicode和utf8</h4><blockquote>
-<p><a href="http://openskill.cn/article/448" target="_blank" rel="noopener">http://openskill.cn/article/448</a></p>
-<p><a href="https://www.liaoxuefeng.com/wiki/001374738125095c955c1e6d8bb493182103fac9270762a000/001386819196283586a37629844456ca7e5a7faa9b94ee8000" target="_blank" rel="noopener">https://www.liaoxuefeng.com/wiki/001374738125095c955c1e6d8bb493182103fac9270762a000/001386819196283586a37629844456ca7e5a7faa9b94ee8000</a></p>
+          <h4 id="什么是scrapy-redis"><a href="#什么是scrapy-redis" class="headerlink" title="什么是scrapy-redis"></a>什么是scrapy-redis</h4><p>redis-based components for scrapy</p>
+<p>###为什么要学习scrapy-redis？<br>scrapy redis能够实现requests去重，爬虫持久化，能够轻松实现分布式。</p>
+<h4 id="scrapy-redis-详解"><a href="#scrapy-redis-详解" class="headerlink" title="scrapy-redis 详解"></a>scrapy-redis 详解</h4><h4 id="流程图"><a href="#流程图" class="headerlink" title="流程图"></a>流程图</h4><p><img src="https://mmbiz.qpic.cn/mmbiz_png/jqCHqBaKLl3qFicg5cmrLXpbUehXwF4dnLURHIGxng4gxIkEe1qc3z92y8TiaU9j82b2Wiaia7SCfIKJG3lRzE0mjw/0?wx_fmt=png" alt></p>
+<h4 id="scrapy-redis-example-project"><a href="#scrapy-redis-example-project" class="headerlink" title="scrapy-redis example-project"></a>scrapy-redis example-project</h4><p>scrapy-redis的源码中提供了scrapy-redis的示例项目,我们下载下来学习一下。</p>
+<blockquote>
+<p><a href="https://github.com/rmax/scrapy-redis/tree/master/example-project" target="_blank" rel="noopener">https://github.com/rmax/scrapy-redis/tree/master/example-project</a></p>
 </blockquote>
-<p>开始之前我们先了解下ASCII、GB2312、unicode、UTF-8都是啥？<br>
+<p>在<code>example-project</code>中有三个demo,分别是<code>dmoz</code>,<code>myspider_redis</code>,以及<code>mycrawler_redis</code>。</p>
+<p>本次主要是对<code>dmoz</code>这个demo进行学习和实战练习。</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/08/15/中文乱码、unicode和utf8/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </p></div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/15/多线程详解/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="煌金">
-      <meta itemprop="description" content="不想翻身的咸鱼不是好的程序猿。">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="咸鱼学Python">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/15/多线程详解/" itemprop="url">
-                  关于多线程详解
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-08-15 14:29:35" itemprop="dateCreated datePublished" datetime="2018-08-15T14:29:35+08:00">2018-08-15</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2018-10-04 01:43:01" itemprop="dateModified" datetime="2018-10-04T01:43:01+08:00">2018-10-04</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-		  
-		  
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h4 id="多线程详解"><a href="#多线程详解" class="headerlink" title="多线程详解"></a>多线程详解</h4><h4 id="在Python中如何创建多线程？"><a href="#在Python中如何创建多线程？" class="headerlink" title="在Python中如何创建多线程？"></a>在Python中如何创建多线程？</h4><ol>
-<li>通过Thread创建多线程</li>
-<li>通过Thread子类创建多线程</li>
-</ol>
-<p>python的threading模块是对thread做了一些包装的，可以更加方便的被使用，线程的方法和进程的基本相似，这里就不多赘述，下面举几个栗子：<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/08/15/多线程详解/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </p></div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/01/关于深浅拷贝/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="煌金">
-      <meta itemprop="description" content="不想翻身的咸鱼不是好的程序猿。">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="咸鱼学Python">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/01/关于深浅拷贝/" itemprop="url">
-                  关于深浅拷贝
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-08-01 18:39:35" itemprop="dateCreated datePublished" datetime="2018-08-01T18:39:35+08:00">2018-08-01</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2018-10-04 01:42:43" itemprop="dateModified" datetime="2018-10-04T01:42:43+08:00">2018-10-04</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-		  
-		  
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h4 id="关于-is-和"><a href="#关于-is-和" class="headerlink" title="关于 is 和 =="></a>关于 is 和 ==</h4><p>== 是 python 标准操作符中的比较操作符，用来比较判断两个对象的 value(值) 是否相等 。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 例1.1</span></span><br><span class="line">a = <span class="string">'2332424'</span></span><br><span class="line">b = <span class="string">'2332424'</span></span><br><span class="line">print(a == b)</span><br><span class="line"></span><br><span class="line">输出：</span><br><span class="line"><span class="literal">True</span></span><br><span class="line">[Finished <span class="keyword">in</span> <span class="number">0.1</span>s]</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/08/01/关于深浅拷贝/#more" rel="contents">
+            <a class="btn" href="/2018/11/09/15.Scrapy Redis详解/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -2041,6 +1154,881 @@
         
       
     </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/29/24.带密码的代理怎么使用/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="煌金">
+      <meta itemprop="description" content="不想翻身的咸鱼不是好的程序猿。">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="咸鱼学Python">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/10/29/24.带密码的代理怎么使用/" itemprop="url">
+                  带密码的代理怎么使用
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-10-29 08:39:35" itemprop="dateCreated datePublished" datetime="2018-10-29T08:39:35+08:00">2018-10-29</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-04-07 15:15:41" itemprop="dateModified" datetime="2019-04-07T15:15:41+08:00">2019-04-07</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+		  
+		  
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="使用代理处理器"><a href="#使用代理处理器" class="headerlink" title="使用代理处理器"></a>使用代理处理器</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> urllib.request</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">money_proxy_use</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="comment">#第一种方式付费代理发送请求</span></span><br><span class="line">    <span class="comment">#1.代理ip</span></span><br><span class="line">    money_proxy =&#123;<span class="string">"http"</span>:<span class="string">"username:pwd@192.168.12.11:8080"</span>&#125;</span><br><span class="line">    <span class="comment">#2.代理的处理器</span></span><br><span class="line">    proxy_handler=urllib.request.ProxyHandler(money_proxy)</span><br><span class="line">    <span class="comment">#3.通过处理器创建opener</span></span><br><span class="line">    opener = urllib.request.build_opener(proxy_handler)</span><br><span class="line">    <span class="comment">#4.open发送请求</span></span><br><span class="line">    opener.open(<span class="string">"http://www.baidu.com"</span>)</span><br></pre></td></tr></table></figure>
+<h4 id="使用密码管理器"><a href="#使用密码管理器" class="headerlink" title="使用密码管理器"></a>使用密码管理器</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">use_name = <span class="string">"abcname"</span></span><br><span class="line">pwd = <span class="string">"123456"</span></span><br><span class="line">proxy_money = <span class="string">"123.158.63.130:8888"</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">money_proxy_use</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="comment">#2.创建密码管理器,添加用户名和密码</span></span><br><span class="line">    password_manager = urllib.request.HTTPPasswordMgrWithDefaultRealm()</span><br><span class="line">    <span class="comment">#uri定位 uri&gt;url</span></span><br><span class="line">    <span class="comment">#url 资源定位符</span></span><br><span class="line">    password_manager.add_password(<span class="literal">None</span>,proxy_money,use_name,pwd)</span><br><span class="line">    <span class="comment">#3.创建可以验证代理ip的处理器</span></span><br><span class="line">    handle_auth_proxy = urllib.request.ProxyBasicAuthHandler(password_manager)</span><br><span class="line">    <span class="comment">#4.根据处理器创建opener</span></span><br><span class="line">    opener_auth = urllib.request.build_opener(handle_auth_proxy)</span><br><span class="line">    <span class="comment">#5.发送请求</span></span><br><span class="line">    response = opener_auth.open(<span class="string">"http://www.baidu.com"</span>)</span><br><span class="line">    print(response.read())</span><br></pre></td></tr></table></figure>
+<h4 id="认证登录"><a href="#认证登录" class="headerlink" title="认证登录"></a>认证登录</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> urllib.request</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">auth_nei_wang</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="comment">#1.用户名密码</span></span><br><span class="line">    user = <span class="string">"admin"</span></span><br><span class="line">    pwd = <span class="string">"adimin123"</span></span><br><span class="line">    nei_url = <span class="string">"http://192.168.179.66"</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">#2.创建密码管理器</span></span><br><span class="line">    pwd_manager = urllib.request.HTTPPasswordMgrWithDefaultRealm()</span><br><span class="line"></span><br><span class="line">    pwd_manager.add_password(<span class="literal">None</span>,nei_url,user,pwd)</span><br><span class="line"></span><br><span class="line">    <span class="comment">#创建认证处理器(requests)</span></span><br><span class="line">    auth_handler = urllib.request.HTTPBasicAuthHandler(pwd_manager)</span><br><span class="line"></span><br><span class="line">    opener = urllib.request.build_opener(auth_handler)</span><br><span class="line"></span><br><span class="line">    response = opener.open(nei_url)</span><br><span class="line">    print(response)</span><br><span class="line">auth_nei_wang()</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/29/26.scrapy安装报错与setting文件解读/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="煌金">
+      <meta itemprop="description" content="不想翻身的咸鱼不是好的程序猿。">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="咸鱼学Python">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/10/29/26.scrapy安装报错与setting文件解读/" itemprop="url">
+                  scrapy安装报错与setting文件解读
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-10-29 08:39:35" itemprop="dateCreated datePublished" datetime="2018-10-29T08:39:35+08:00">2018-10-29</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-04-07 15:17:40" itemprop="dateModified" datetime="2019-04-07T15:17:40+08:00">2019-04-07</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+		  
+		  
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h4 id="安装scrapy报错"><a href="#安装scrapy报错" class="headerlink" title="安装scrapy报错"></a>安装scrapy报错</h4><p>报错<code>ModuleNotFoundError: No module named &#39;win32api&#39;错误</code></p>
+<p>解决方案：<code>pip install pypiwin32</code>或者<code>pip install -i https://pypi.douban.com/simple pypiwin32</code></p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/10/29/26.scrapy安装报错与setting文件解读/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/14/Flask基础-响应Response/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="煌金">
+      <meta itemprop="description" content="不想翻身的咸鱼不是好的程序猿。">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="咸鱼学Python">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/10/14/Flask基础-响应Response/" itemprop="url">
+                  Flask基础(4)-响应Response
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-10-14 18:39:35 / 修改时间：01:02:23" itemprop="dateCreated datePublished" datetime="2018-10-14T18:39:35+08:00">2018-10-14</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Flask/" itemprop="url" rel="index"><span itemprop="name">Flask</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+		  
+		  
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h4 id="关于响应（Response）"><a href="#关于响应（Response）" class="headerlink" title="关于响应（Response）"></a>关于响应（Response）</h4><p>视图函数的返回值会被自动转换为一个响应对象，Flask的转换逻辑如下：</p>
+<ul>
+<li><p>如果返回的是一个合法的响应对象，则直接返回。</p>
+</li>
+<li><p>如果返回的是一个字符串，那么Flask会重新创建一个werkzeug.wrappers.Response对象，Response将该字符串作为主体，状态码为200，MIME类型为text/html，然后返回该Response对象。</p>
+</li>
+<li><p>如果返回的是一个元组，元祖中的数据类型是(response,status,headers)。status值会覆盖默认的200状态码，headers可以是一个列表或者字典，作为额外的消息头。</p>
+</li>
+<li><p>如果以上条件都不满足，Flask会假设返回值是一个合法的WSGIt应用程序，并通过Response.force_type(rv,request.environ)转换为一个请求对象。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/10/14/Flask基础-响应Response/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </li></ul></div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/13/Flask基础-URL与视图/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="煌金">
+      <meta itemprop="description" content="不想翻身的咸鱼不是好的程序猿。">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="咸鱼学Python">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/10/13/Flask基础-URL与视图/" itemprop="url">
+                  Flask基础(3)-URL与视图
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-10-13 18:39:35" itemprop="dateCreated datePublished" datetime="2018-10-13T18:39:35+08:00">2018-10-13</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2018-10-14 00:59:23" itemprop="dateModified" datetime="2018-10-14T00:59:23+08:00">2018-10-14</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Flask/" itemprop="url" rel="index"><span itemprop="name">Flask</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+		  
+		  
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h4 id="URL与函数的映射"><a href="#URL与函数的映射" class="headerlink" title="URL与函数的映射"></a>URL与函数的映射</h4><p>从新建的文件，我们已经看到，一个URL要与执行函数进行映射，使用的是<a href="mailto:`@app.route" target="_blank" rel="noopener">`@app.route</a><code>装饰器。</code>@app.route<code>装饰器中，可以指定URL的规则来进行更加详细的映射，比如现在要映射一个文章详情的URL，文章详情的URL是</code>/article/id/`，id有可能为1、2、3…,那么可以通过以下方式：<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/10/13/Flask基础-URL与视图/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </p></div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/12/Flask基础-项目设置/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="煌金">
+      <meta itemprop="description" content="不想翻身的咸鱼不是好的程序猿。">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="咸鱼学Python">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/10/12/Flask基础-项目设置/" itemprop="url">
+                  Flask基础(2)-项目设置
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-10-12 18:39:35" itemprop="dateCreated datePublished" datetime="2018-10-12T18:39:35+08:00">2018-10-12</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2018-10-14 00:58:47" itemprop="dateModified" datetime="2018-10-14T00:58:47+08:00">2018-10-14</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Flask/" itemprop="url" rel="index"><span itemprop="name">Flask</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+		  
+		  
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h4 id="为什么学习Flask"><a href="#为什么学习Flask" class="headerlink" title="为什么学习Flask"></a>为什么学习Flask</h4><p>Flask的灵活度非常之高，他不会帮你做太多的决策，即使做已经帮你做出选择，你也能非常容易的更换成你需要的，比如：<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/10/12/Flask基础-项目设置/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </p></div>
 
     
 
@@ -2078,7 +2066,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span>
+    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -2121,7 +2109,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">40</span>
+                    <span class="site-state-item-count">56</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
