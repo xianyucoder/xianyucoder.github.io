@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>咸鱼的博客</title>
+  <title>咸鱼学Python</title>
   
   <subtitle>Talk is cheap. Show me your code</subtitle>
   <link href="/atom.xml" rel="self"/>
@@ -442,50 +442,6 @@
   </entry>
   
   <entry>
-    <title>数据分析思维</title>
-    <link href="http://yoursite.com/2019/02/09/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E6%80%9D%E7%BB%B4/"/>
-    <id>http://yoursite.com/2019/02/09/数据分析思维/</id>
-    <published>2019-02-09T00:39:35.000Z</published>
-    <updated>2019-04-07T07:20:37.990Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="数据分析的三种核心思维"><a href="#数据分析的三种核心思维" class="headerlink" title="数据分析的三种核心思维"></a>数据分析的三种核心思维</h4><ul><li>结构化</li><li>公式化</li><li>业务化</li></ul><h4 id="结构化"><a href="#结构化" class="headerlink" title="结构化"></a>结构化</h4><ol><li>单兵作战<ul><li>思维导图</li></ul></li><li>团体作战<ul><li>查看资料及背景将结论列成一张表/卡片</li><li>把表上的结论，根据主题分类</li><li>将同一分类的结论按顺序区分</li><li>讨论同一级别的共通结论，将其结论放入上一段位置</li></ul></li></ol><h4 id="公式化"><a href="#公式化" class="headerlink" title="公式化"></a>公式化</h4><ul><li>加(不同业务的叠加)</li><li>减(业务间的逻辑关系)</li><li>乘除(各种比例或比率)</li></ul><a id="more"></a><h4 id="业务化"><a href="#业务化" class="headerlink" title="业务化"></a>业务化</h4><h5 id="思维方式"><a href="#思维方式" class="headerlink" title="思维方式"></a>思维方式</h5><ul><li><p>象限法</p><p>核心：象限法是一种策略驱动的思维</p><p>优点：直观清晰对数据进行人工的划分,划分结果可以直接应用与策略</p><p>适用范围：产品分析，客户管理等</p></li><li><p>多维法</p><p>核心：多维法是一种精细驱动的思维</p><p>优点：处理大数据量，维度丰富且复杂的数据有较好的效果，但是维度过多会消耗不少的时间</p><p>适用范围:只要数据齐全且丰富即可适用(注意辛普森悖论)</p></li><li><p>假设法</p><p>核心：假设是一种启发思考的思维</p><p>优点：当没有直观数据戒者线索能分析时，以假设先行的方式进行推断，这是一个论证的过程</p><p>应用：它更多是一种思考方弅，假设—验证—判断</p></li></ul>]]></content>
-    
-    <summary type="html">
-    
-      &lt;h4 id=&quot;数据分析的三种核心思维&quot;&gt;&lt;a href=&quot;#数据分析的三种核心思维&quot; class=&quot;headerlink&quot; title=&quot;数据分析的三种核心思维&quot;&gt;&lt;/a&gt;数据分析的三种核心思维&lt;/h4&gt;&lt;ul&gt;
-&lt;li&gt;结构化&lt;/li&gt;
-&lt;li&gt;公式化&lt;/li&gt;
-&lt;li&gt;业务化&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h4 id=&quot;结构化&quot;&gt;&lt;a href=&quot;#结构化&quot; class=&quot;headerlink&quot; title=&quot;结构化&quot;&gt;&lt;/a&gt;结构化&lt;/h4&gt;&lt;ol&gt;
-&lt;li&gt;单兵作战&lt;ul&gt;
-&lt;li&gt;思维导图&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;团体作战&lt;ul&gt;
-&lt;li&gt;查看资料及背景将结论列成一张表/卡片&lt;/li&gt;
-&lt;li&gt;把表上的结论，根据主题分类&lt;/li&gt;
-&lt;li&gt;将同一分类的结论按顺序区分&lt;/li&gt;
-&lt;li&gt;讨论同一级别的共通结论，将其结论放入上一段位置&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h4 id=&quot;公式化&quot;&gt;&lt;a href=&quot;#公式化&quot; class=&quot;headerlink&quot; title=&quot;公式化&quot;&gt;&lt;/a&gt;公式化&lt;/h4&gt;&lt;ul&gt;
-&lt;li&gt;加(不同业务的叠加)&lt;/li&gt;
-&lt;li&gt;减(业务间的逻辑关系)&lt;/li&gt;
-&lt;li&gt;乘除(各种比例或比率)&lt;/li&gt;
-&lt;/ul&gt;
-    
-    </summary>
-    
-      <category term="数据科学" scheme="http://yoursite.com/categories/%E6%95%B0%E6%8D%AE%E7%A7%91%E5%AD%A6/"/>
-    
-    
-      <category term="数据科学" scheme="http://yoursite.com/tags/%E6%95%B0%E6%8D%AE%E7%A7%91%E5%AD%A6/"/>
-    
-  </entry>
-  
-  <entry>
     <title>Python笔试题(一)</title>
     <link href="http://yoursite.com/2019/02/09/%E7%AC%94%E8%AF%95%E6%80%BB%E7%BB%931/"/>
     <id>http://yoursite.com/2019/02/09/笔试总结1/</id>
@@ -540,6 +496,50 @@
     
     
       <category term="Python笔试题" scheme="http://yoursite.com/tags/Python%E7%AC%94%E8%AF%95%E9%A2%98/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>数据分析思维</title>
+    <link href="http://yoursite.com/2019/02/09/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E6%80%9D%E7%BB%B4/"/>
+    <id>http://yoursite.com/2019/02/09/数据分析思维/</id>
+    <published>2019-02-09T00:39:35.000Z</published>
+    <updated>2019-04-07T07:20:37.990Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="数据分析的三种核心思维"><a href="#数据分析的三种核心思维" class="headerlink" title="数据分析的三种核心思维"></a>数据分析的三种核心思维</h4><ul><li>结构化</li><li>公式化</li><li>业务化</li></ul><h4 id="结构化"><a href="#结构化" class="headerlink" title="结构化"></a>结构化</h4><ol><li>单兵作战<ul><li>思维导图</li></ul></li><li>团体作战<ul><li>查看资料及背景将结论列成一张表/卡片</li><li>把表上的结论，根据主题分类</li><li>将同一分类的结论按顺序区分</li><li>讨论同一级别的共通结论，将其结论放入上一段位置</li></ul></li></ol><h4 id="公式化"><a href="#公式化" class="headerlink" title="公式化"></a>公式化</h4><ul><li>加(不同业务的叠加)</li><li>减(业务间的逻辑关系)</li><li>乘除(各种比例或比率)</li></ul><a id="more"></a><h4 id="业务化"><a href="#业务化" class="headerlink" title="业务化"></a>业务化</h4><h5 id="思维方式"><a href="#思维方式" class="headerlink" title="思维方式"></a>思维方式</h5><ul><li><p>象限法</p><p>核心：象限法是一种策略驱动的思维</p><p>优点：直观清晰对数据进行人工的划分,划分结果可以直接应用与策略</p><p>适用范围：产品分析，客户管理等</p></li><li><p>多维法</p><p>核心：多维法是一种精细驱动的思维</p><p>优点：处理大数据量，维度丰富且复杂的数据有较好的效果，但是维度过多会消耗不少的时间</p><p>适用范围:只要数据齐全且丰富即可适用(注意辛普森悖论)</p></li><li><p>假设法</p><p>核心：假设是一种启发思考的思维</p><p>优点：当没有直观数据戒者线索能分析时，以假设先行的方式进行推断，这是一个论证的过程</p><p>应用：它更多是一种思考方弅，假设—验证—判断</p></li></ul>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h4 id=&quot;数据分析的三种核心思维&quot;&gt;&lt;a href=&quot;#数据分析的三种核心思维&quot; class=&quot;headerlink&quot; title=&quot;数据分析的三种核心思维&quot;&gt;&lt;/a&gt;数据分析的三种核心思维&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;结构化&lt;/li&gt;
+&lt;li&gt;公式化&lt;/li&gt;
+&lt;li&gt;业务化&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&quot;结构化&quot;&gt;&lt;a href=&quot;#结构化&quot; class=&quot;headerlink&quot; title=&quot;结构化&quot;&gt;&lt;/a&gt;结构化&lt;/h4&gt;&lt;ol&gt;
+&lt;li&gt;单兵作战&lt;ul&gt;
+&lt;li&gt;思维导图&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;团体作战&lt;ul&gt;
+&lt;li&gt;查看资料及背景将结论列成一张表/卡片&lt;/li&gt;
+&lt;li&gt;把表上的结论，根据主题分类&lt;/li&gt;
+&lt;li&gt;将同一分类的结论按顺序区分&lt;/li&gt;
+&lt;li&gt;讨论同一级别的共通结论，将其结论放入上一段位置&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id=&quot;公式化&quot;&gt;&lt;a href=&quot;#公式化&quot; class=&quot;headerlink&quot; title=&quot;公式化&quot;&gt;&lt;/a&gt;公式化&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;加(不同业务的叠加)&lt;/li&gt;
+&lt;li&gt;减(业务间的逻辑关系)&lt;/li&gt;
+&lt;li&gt;乘除(各种比例或比率)&lt;/li&gt;
+&lt;/ul&gt;
+    
+    </summary>
+    
+      <category term="数据科学" scheme="http://yoursite.com/categories/%E6%95%B0%E6%8D%AE%E7%A7%91%E5%AD%A6/"/>
+    
+    
+      <category term="数据科学" scheme="http://yoursite.com/tags/%E6%95%B0%E6%8D%AE%E7%A7%91%E5%AD%A6/"/>
     
   </entry>
   
