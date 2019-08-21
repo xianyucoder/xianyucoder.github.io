@@ -498,33 +498,6 @@
   </entry>
   
   <entry>
-    <title>Python笔试题(二)</title>
-    <link href="http://www.xianyucoder.cn/2019/02/09/%E7%AC%94%E8%AF%95%E6%80%BB%E7%BB%932/"/>
-    <id>http://www.xianyucoder.cn/2019/02/09/笔试总结2/</id>
-    <published>2019-02-09T00:39:35.000Z</published>
-    <updated>2019-08-21T15:07:42.096Z</updated>
-    
-    <content type="html"><![CDATA[<p><img src="http://tc.xianyucoder.cn/blog20190821230635.png" alt></p><p>本系列文章素材，题目来源于真实企业笔试题,具体哪来的？平时多水群就好</p><h5 id="第一题"><a href="#第一题" class="headerlink" title="第一题"></a>第一题</h5><p>下图中的打印结果分别是什么？</p><p><img src="http://tc.xianyucoder.cn/blog20190821230651.png" alt></p><h5 id="第二题"><a href="#第二题" class="headerlink" title="第二题"></a>第二题</h5><p>Python中静态方法、类方法、成员函数作用是什么？</p><h5 id="第三题"><a href="#第三题" class="headerlink" title="第三题"></a>第三题</h5><p>说说对缺省参数的理解？* args是什么？** kwargs是什么？<br><a id="more"></a></p><h4 id="答案"><a href="#答案" class="headerlink" title="答案"></a>答案</h4><h5 id="第一题-1"><a href="#第一题-1" class="headerlink" title="第一题"></a>第一题</h5><p>前三个是True,最后一个会报错。</p><p>具前三个为什么输出True,不了解的可以参考下图:</p><p><img src="http://tc.xianyucoder.cn/blog20190821230714.png" alt="图来源于bobby老师的异步IO编程课件"></p><p>最后一个为什么报错，我们可以先看下<code>issubclass</code>的用法:</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">issubclass方法用于判断参数 <span class="class"><span class="keyword">class</span> 是否是类型参数 <span class="title">classinfo</span> 的子类</span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class"><span class="title">issubclass</span><span class="params">(class, classinfo)</span></span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class">参数</span></span><br><span class="line"><span class="class"><span class="title">class</span> -- 类。</span></span><br><span class="line"><span class="class"><span class="title">classinfo</span> -- 类。</span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class">返回值</span></span><br><span class="line"><span class="class">如果 <span class="title">class</span> 是 <span class="title">classinfo</span> 的子类返回 <span class="title">True</span>，否则返回 <span class="title">False</span>。</span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class">以上内容参考:</span>菜鸟教程 - http://www.runoob.com/python/python-func-issubclass.html</span><br></pre></td></tr></table></figure><p>而在题目中b并不是一个类,所以报错。</p><h5 id="第二题-1"><a href="#第二题-1" class="headerlink" title="第二题"></a>第二题</h5><p>我们先理清楚静态函数、类函数分别是什么？</p><p>静态方法是一种普通函数，就位于类定义的命名空间中，它不会对任何实例类型进行操作。使用装饰器@staticmethod定义静态方法。类对象和实例都可以调用静态方法。</p><p>类方法是将类本身作为对象进行操作的方法。类方法使用@classmethod装饰器定义，其第一个参数是类，约定写为cls。</p><p>代码实例可以参考:<a href="https://blog.csdn.net/baidu_20351223/article/details/80160868" target="_blank" rel="noopener">https://blog.csdn.net/baidu_20351223/article/details/80160868</a></p><h5 id="第三题-1"><a href="#第三题-1" class="headerlink" title="第三题"></a>第三题</h5><p>缺省参数是指在调用函数的时候没有传入参数的情况下，调用默认的参数，在调用函数的同时赋值时，所传入的参数会替代默认参数。</p><p>*args 是不定长参数，可以表示输入参数是不确定的，可以任意多个</p><p>** kwargs 是关键词参数，赋值的时候是以键 = 值 的方式，参数是可以任意多对。</p><p>以上两个的使用是在定义函数的时候不确定会传入多少参数时使用。</p><h4 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h4><p>有读者朋友在后台留言，面试题怎么这么简单，说实话，我认真翻了10几份面试题，每一份的题量都不多，其中大部分都是这类基础题，少部分是专业导向比较强的题目和面试的岗位相关，剩下一部分就是算法与数据结构相关的题目。所以咸鱼觉的打好基础才是通关笔试的第一步，当然像宇宙条那种通篇算法题的笔试题也有，这里就刨除这些另谈了。</p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;&lt;img src=&quot;http://tc.xianyucoder.cn/blog20190821230635.png&quot; alt&gt;&lt;/p&gt;
-&lt;p&gt;本系列文章素材，题目来源于真实企业笔试题,具体哪来的？平时多水群就好&lt;/p&gt;
-&lt;h5 id=&quot;第一题&quot;&gt;&lt;a href=&quot;#第一题&quot; class=&quot;headerlink&quot; title=&quot;第一题&quot;&gt;&lt;/a&gt;第一题&lt;/h5&gt;&lt;p&gt;下图中的打印结果分别是什么？&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;http://tc.xianyucoder.cn/blog20190821230651.png&quot; alt&gt;&lt;/p&gt;
-&lt;h5 id=&quot;第二题&quot;&gt;&lt;a href=&quot;#第二题&quot; class=&quot;headerlink&quot; title=&quot;第二题&quot;&gt;&lt;/a&gt;第二题&lt;/h5&gt;&lt;p&gt;Python中静态方法、类方法、成员函数作用是什么？&lt;/p&gt;
-&lt;h5 id=&quot;第三题&quot;&gt;&lt;a href=&quot;#第三题&quot; class=&quot;headerlink&quot; title=&quot;第三题&quot;&gt;&lt;/a&gt;第三题&lt;/h5&gt;&lt;p&gt;说说对缺省参数的理解？* args是什么？** kwargs是什么？&lt;br&gt;
-    
-    </summary>
-    
-      <category term="Python笔试题" scheme="http://www.xianyucoder.cn/categories/Python%E7%AC%94%E8%AF%95%E9%A2%98/"/>
-    
-    
-      <category term="Python笔试题" scheme="http://www.xianyucoder.cn/tags/Python%E7%AC%94%E8%AF%95%E9%A2%98/"/>
-    
-  </entry>
-  
-  <entry>
     <title>Python笔试题(一)</title>
     <link href="http://www.xianyucoder.cn/2019/02/09/%E7%AC%94%E8%AF%95%E6%80%BB%E7%BB%931/"/>
     <id>http://www.xianyucoder.cn/2019/02/09/笔试总结1/</id>
@@ -546,6 +519,33 @@
 &lt;li&gt;&lt;p&gt;浅述深浅拷贝&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
+    
+    </summary>
+    
+      <category term="Python笔试题" scheme="http://www.xianyucoder.cn/categories/Python%E7%AC%94%E8%AF%95%E9%A2%98/"/>
+    
+    
+      <category term="Python笔试题" scheme="http://www.xianyucoder.cn/tags/Python%E7%AC%94%E8%AF%95%E9%A2%98/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Python笔试题(二)</title>
+    <link href="http://www.xianyucoder.cn/2019/02/09/%E7%AC%94%E8%AF%95%E6%80%BB%E7%BB%932/"/>
+    <id>http://www.xianyucoder.cn/2019/02/09/笔试总结2/</id>
+    <published>2019-02-09T00:39:35.000Z</published>
+    <updated>2019-08-21T15:07:42.096Z</updated>
+    
+    <content type="html"><![CDATA[<p><img src="http://tc.xianyucoder.cn/blog20190821230635.png" alt></p><p>本系列文章素材，题目来源于真实企业笔试题,具体哪来的？平时多水群就好</p><h5 id="第一题"><a href="#第一题" class="headerlink" title="第一题"></a>第一题</h5><p>下图中的打印结果分别是什么？</p><p><img src="http://tc.xianyucoder.cn/blog20190821230651.png" alt></p><h5 id="第二题"><a href="#第二题" class="headerlink" title="第二题"></a>第二题</h5><p>Python中静态方法、类方法、成员函数作用是什么？</p><h5 id="第三题"><a href="#第三题" class="headerlink" title="第三题"></a>第三题</h5><p>说说对缺省参数的理解？* args是什么？** kwargs是什么？<br><a id="more"></a></p><h4 id="答案"><a href="#答案" class="headerlink" title="答案"></a>答案</h4><h5 id="第一题-1"><a href="#第一题-1" class="headerlink" title="第一题"></a>第一题</h5><p>前三个是True,最后一个会报错。</p><p>具前三个为什么输出True,不了解的可以参考下图:</p><p><img src="http://tc.xianyucoder.cn/blog20190821230714.png" alt="图来源于bobby老师的异步IO编程课件"></p><p>最后一个为什么报错，我们可以先看下<code>issubclass</code>的用法:</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">issubclass方法用于判断参数 <span class="class"><span class="keyword">class</span> 是否是类型参数 <span class="title">classinfo</span> 的子类</span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class"><span class="title">issubclass</span><span class="params">(class, classinfo)</span></span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class">参数</span></span><br><span class="line"><span class="class"><span class="title">class</span> -- 类。</span></span><br><span class="line"><span class="class"><span class="title">classinfo</span> -- 类。</span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class">返回值</span></span><br><span class="line"><span class="class">如果 <span class="title">class</span> 是 <span class="title">classinfo</span> 的子类返回 <span class="title">True</span>，否则返回 <span class="title">False</span>。</span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class">以上内容参考:</span>菜鸟教程 - http://www.runoob.com/python/python-func-issubclass.html</span><br></pre></td></tr></table></figure><p>而在题目中b并不是一个类,所以报错。</p><h5 id="第二题-1"><a href="#第二题-1" class="headerlink" title="第二题"></a>第二题</h5><p>我们先理清楚静态函数、类函数分别是什么？</p><p>静态方法是一种普通函数，就位于类定义的命名空间中，它不会对任何实例类型进行操作。使用装饰器@staticmethod定义静态方法。类对象和实例都可以调用静态方法。</p><p>类方法是将类本身作为对象进行操作的方法。类方法使用@classmethod装饰器定义，其第一个参数是类，约定写为cls。</p><p>代码实例可以参考:<a href="https://blog.csdn.net/baidu_20351223/article/details/80160868" target="_blank" rel="noopener">https://blog.csdn.net/baidu_20351223/article/details/80160868</a></p><h5 id="第三题-1"><a href="#第三题-1" class="headerlink" title="第三题"></a>第三题</h5><p>缺省参数是指在调用函数的时候没有传入参数的情况下，调用默认的参数，在调用函数的同时赋值时，所传入的参数会替代默认参数。</p><p>*args 是不定长参数，可以表示输入参数是不确定的，可以任意多个</p><p>** kwargs 是关键词参数，赋值的时候是以键 = 值 的方式，参数是可以任意多对。</p><p>以上两个的使用是在定义函数的时候不确定会传入多少参数时使用。</p><h4 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h4><p>有读者朋友在后台留言，面试题怎么这么简单，说实话，我认真翻了10几份面试题，每一份的题量都不多，其中大部分都是这类基础题，少部分是专业导向比较强的题目和面试的岗位相关，剩下一部分就是算法与数据结构相关的题目。所以咸鱼觉的打好基础才是通关笔试的第一步，当然像宇宙条那种通篇算法题的笔试题也有，这里就刨除这些另谈了。</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;img src=&quot;http://tc.xianyucoder.cn/blog20190821230635.png&quot; alt&gt;&lt;/p&gt;
+&lt;p&gt;本系列文章素材，题目来源于真实企业笔试题,具体哪来的？平时多水群就好&lt;/p&gt;
+&lt;h5 id=&quot;第一题&quot;&gt;&lt;a href=&quot;#第一题&quot; class=&quot;headerlink&quot; title=&quot;第一题&quot;&gt;&lt;/a&gt;第一题&lt;/h5&gt;&lt;p&gt;下图中的打印结果分别是什么？&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://tc.xianyucoder.cn/blog20190821230651.png&quot; alt&gt;&lt;/p&gt;
+&lt;h5 id=&quot;第二题&quot;&gt;&lt;a href=&quot;#第二题&quot; class=&quot;headerlink&quot; title=&quot;第二题&quot;&gt;&lt;/a&gt;第二题&lt;/h5&gt;&lt;p&gt;Python中静态方法、类方法、成员函数作用是什么？&lt;/p&gt;
+&lt;h5 id=&quot;第三题&quot;&gt;&lt;a href=&quot;#第三题&quot; class=&quot;headerlink&quot; title=&quot;第三题&quot;&gt;&lt;/a&gt;第三题&lt;/h5&gt;&lt;p&gt;说说对缺省参数的理解？* args是什么？** kwargs是什么？&lt;br&gt;
     
     </summary>
     
