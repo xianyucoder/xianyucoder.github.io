@@ -108,25 +108,26 @@
 
 
 
-  <meta name="description" content="面试官问我会不会APP抓包,我..标题这个题目应该是我面试答的最好的一题了,本文来讲讲APP抓包环境搭建。 App抓包应该是每个爬虫工程师都避不开的话题,在之前我也写过关于自动参与「抽奖助手」抽奖的文章,当时使用的抓包工具是Charles,有需要的朋友可以翻下之前的文章。 App抓包原理 客户端向服务器发起HTTPS请求 抓包工具拦截客户端的请求，伪装成客户端向服务器进行请求 服务器向客户端（实际">
+  <meta name="description" content="面试官问我会不会APP抓包,我.. 标题这个题目应该是我面试答的最好的一题了,本文来讲讲APP抓包环境搭建。 App抓包应该是每个爬虫工程师都避不开的话题,在之前我也写过关于自动参与「抽奖助手」抽奖的文章,当时使用的抓包工具是Charles,有需要的朋友可以翻下之前的文章。 App抓包原理 客户端向服务器发起HTTPS请求 抓包工具拦截客户端的请求，伪装成客户端向服务器进行请求 服务器向客户端（实">
 <meta name="keywords" content="爬虫">
 <meta property="og:type" content="article">
 <meta property="og:title" content="App爬虫环境搭建">
-<meta property="og:url" content="http://yoursite.com/2019/04/07/APP爬虫/index.html">
+<meta property="og:url" content="http://www.xianyucoder.cn/2019/04/07/APP爬虫/index.html">
 <meta property="og:site_name" content="咸鱼学Python">
-<meta property="og:description" content="面试官问我会不会APP抓包,我..标题这个题目应该是我面试答的最好的一题了,本文来讲讲APP抓包环境搭建。 App抓包应该是每个爬虫工程师都避不开的话题,在之前我也写过关于自动参与「抽奖助手」抽奖的文章,当时使用的抓包工具是Charles,有需要的朋友可以翻下之前的文章。 App抓包原理 客户端向服务器发起HTTPS请求 抓包工具拦截客户端的请求，伪装成客户端向服务器进行请求 服务器向客户端（实际">
+<meta property="og:description" content="面试官问我会不会APP抓包,我.. 标题这个题目应该是我面试答的最好的一题了,本文来讲讲APP抓包环境搭建。 App抓包应该是每个爬虫工程师都避不开的话题,在之前我也写过关于自动参与「抽奖助手」抽奖的文章,当时使用的抓包工具是Charles,有需要的朋友可以翻下之前的文章。 App抓包原理 客户端向服务器发起HTTPS请求 抓包工具拦截客户端的请求，伪装成客户端向服务器进行请求 服务器向客户端（实">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://ws1.sinaimg.cn/mw690/005MnFO1gy1g1t0odxjxyj311y0k8405.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/mw690/005MnFO1gy1g1t0svo2zbj30l80bw77o.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/mw690/005MnFO1gy1g1t0tt3ypuj30n60b9td5.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/mw690/005MnFO1gy1g1t0xih1u7j30n60boju3.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/mw690/005MnFO1gy1g1t0zn7gf4j30go09mac0.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/mw690/005MnFO1gy1g1t2i5gijzj307g03x0sl.jpg">
-<meta property="og:updated_time" content="2019-04-07T09:23:59.600Z">
+<meta property="og:image" content="http://tc.xianyucoder.cn/blog20190821225147.png">
+<meta property="og:image" content="http://tc.xianyucoder.cn/blog20190821225210.png">
+<meta property="og:image" content="http://tc.xianyucoder.cn/blog20190821225219.png">
+<meta property="og:image" content="http://tc.xianyucoder.cn/blog20190821225233.png">
+<meta property="og:image" content="http://tc.xianyucoder.cn/blog20190821225314.png">
+<meta property="og:image" content="http://tc.xianyucoder.cn/blog20190821225331.png">
+<meta property="og:image" content="http://tc.xianyucoder.cn/blog20190821225340.png">
+<meta property="og:updated_time" content="2019-08-21T14:54:16.211Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="App爬虫环境搭建">
-<meta name="twitter:description" content="面试官问我会不会APP抓包,我..标题这个题目应该是我面试答的最好的一题了,本文来讲讲APP抓包环境搭建。 App抓包应该是每个爬虫工程师都避不开的话题,在之前我也写过关于自动参与「抽奖助手」抽奖的文章,当时使用的抓包工具是Charles,有需要的朋友可以翻下之前的文章。 App抓包原理 客户端向服务器发起HTTPS请求 抓包工具拦截客户端的请求，伪装成客户端向服务器进行请求 服务器向客户端（实际">
-<meta name="twitter:image" content="https://ws1.sinaimg.cn/mw690/005MnFO1gy1g1t0odxjxyj311y0k8405.jpg">
+<meta name="twitter:description" content="面试官问我会不会APP抓包,我.. 标题这个题目应该是我面试答的最好的一题了,本文来讲讲APP抓包环境搭建。 App抓包应该是每个爬虫工程师都避不开的话题,在之前我也写过关于自动参与「抽奖助手」抽奖的文章,当时使用的抓包工具是Charles,有需要的朋友可以翻下之前的文章。 App抓包原理 客户端向服务器发起HTTPS请求 抓包工具拦截客户端的请求，伪装成客户端向服务器进行请求 服务器向客户端（实">
+<meta name="twitter:image" content="http://tc.xianyucoder.cn/blog20190821225147.png">
 
 
 
@@ -135,7 +136,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/04/07/APP爬虫/">
+  <link rel="canonical" href="http://www.xianyucoder.cn/2019/04/07/APP爬虫/">
 
 
 
@@ -318,11 +319,11 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/07/APP爬虫/">
+    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2019/04/07/APP爬虫/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="煌金">
-      <meta itemprop="description" content="不想翻身的咸鱼不是好的程序猿。">
+      <meta itemprop="description" content="Stay Hungry, Stay Foolish.">
       <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
@@ -360,12 +361,24 @@
                 
               
 
-              <time title="创建时间：2019-04-07 08:39:35 / 修改时间：17:23:59" itemprop="dateCreated datePublished" datetime="2019-04-07T08:39:35+08:00">2019-04-07</time>
+              <time title="创建时间：2019-04-07 08:39:35" itemprop="dateCreated datePublished" datetime="2019-04-07T08:39:35+08:00">2019-04-07</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-08-21 22:54:16" itemprop="dateModified" datetime="2019-08-21T22:54:16+08:00">2019-08-21</time>
               
             
           </span>
@@ -405,6 +418,34 @@
 		  
 
           
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">8.3k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">14 分钟</span>
+              
+            </div>
+          
 
           
 
@@ -421,7 +462,8 @@
       
 
       
-        <h4 id="面试官问我会不会APP抓包-我"><a href="#面试官问我会不会APP抓包-我" class="headerlink" title="面试官问我会不会APP抓包,我.."></a>面试官问我会不会APP抓包,我..</h4><p>标题这个题目应该是我面试答的最好的一题了,本文来讲讲APP抓包环境搭建。</p>
+        <h4 id="面试官问我会不会APP抓包-我"><a href="#面试官问我会不会APP抓包-我" class="headerlink" title="面试官问我会不会APP抓包,我.."></a>面试官问我会不会APP抓包,我..</h4><p><img src="http://tc.xianyucoder.cn/blog20190821225147.png" alt></p>
+<p>标题这个题目应该是我面试答的最好的一题了,本文来讲讲APP抓包环境搭建。</p>
 <p>App抓包应该是每个爬虫工程师都避不开的话题,在之前我也写过关于自动参与「抽奖助手」<br>抽奖的文章,当时使用的抓包工具是Charles,有需要的朋友可以翻下之前的文章。</p>
 <h4 id="App抓包原理"><a href="#App抓包原理" class="headerlink" title="App抓包原理"></a>App抓包原理</h4><ol>
 <li>客户端向服务器发起HTTPS请求</li>
@@ -454,21 +496,21 @@
 <p>Charles</p>
 <h4 id="fiddler安装和使用"><a href="#fiddler安装和使用" class="headerlink" title="fiddler安装和使用"></a>fiddler安装和使用</h4><p>下载:<a href="https://telerik-fiddler.s3.amazonaws.com/fiddler/FiddlerSetup.exe" target="_blank" rel="noopener">https://telerik-fiddler.s3.amazonaws.com/fiddler/FiddlerSetup.exe</a></p>
 <p>安装:一路Next</p>
-<h5 id="主要界面介绍"><a href="#主要界面介绍" class="headerlink" title="主要界面介绍:"></a>主要界面介绍:</h5><p><img src="https://ws1.sinaimg.cn/mw690/005MnFO1gy1g1t0odxjxyj311y0k8405.jpg" alt></p>
+<h5 id="主要界面介绍"><a href="#主要界面介绍" class="headerlink" title="主要界面介绍:"></a>主要界面介绍:</h5><p><img src="http://tc.xianyucoder.cn/blog20190821225210.png" alt></p>
 <p>会话列表界面:</p>
-<p><img src="https://ws1.sinaimg.cn/mw690/005MnFO1gy1g1t0svo2zbj30l80bw77o.jpg" alt></p>
+<p><img src="http://tc.xianyucoder.cn/blog20190821225219.png" alt></p>
 <p>监控面板在点击会话列表界面的某个请求后会出现下面两个界面:</p>
 <p>请求面板:</p>
-<p><img src="https://ws1.sinaimg.cn/mw690/005MnFO1gy1g1t0tt3ypuj30n60b9td5.jpg" alt></p>
+<p><img src="http://tc.xianyucoder.cn/blog20190821225233.png" alt></p>
 <p>响应面板:</p>
-<p><img src="https://ws1.sinaimg.cn/mw690/005MnFO1gy1g1t0xih1u7j30n60boju3.jpg" alt></p>
+<p><img src="http://tc.xianyucoder.cn/blog20190821225314.png" alt></p>
 <h5 id="本地CA证书安装"><a href="#本地CA证书安装" class="headerlink" title="本地CA证书安装"></a>本地CA证书安装</h5><ul>
 <li>点击 Tools - Options - HTTPS - 勾选勾选 Capture HTTPS CONNECTs，勾选 Decrypt HTTPS trafic，会弹出安装证书的提示。一路点是或确定安装即可。</li>
 <li>重启fiddler，点击右侧Actions，能看一个下拉菜单，点击 Export Root Certificate to Desktop，此时证书会生成到桌面上，名为 FiddlerRoot.cer，点OK保存</li>
 <li>点击安装</li>
 </ul>
 <h5 id="连接手机抓包需要的配置"><a href="#连接手机抓包需要的配置" class="headerlink" title="连接手机抓包需要的配置"></a>连接手机抓包需要的配置</h5><p>先设置PC端fiddler:</p>
-<p><img src="https://ws1.sinaimg.cn/mw690/005MnFO1gy1g1t0zn7gf4j30go09mac0.jpg" alt></p>
+<p><img src="http://tc.xianyucoder.cn/blog20190821225331.png" alt></p>
 <p>之后手机需要访问 本地主机IP + 设置的端口，安装证书，证书安装成功后即可抓包。</p>
 <p>以上就是关于Fiddler的安装和简单使用,进阶使用还有很多骚操作,</p>
 <h4 id="mitmproxy安装和使用"><a href="#mitmproxy安装和使用" class="headerlink" title="mitmproxy安装和使用"></a>mitmproxy安装和使用</h4><p>mitmproxy在linux版本下和windows版本下略有不同。</p>
@@ -480,7 +522,7 @@
 <p>mitmweb - windows下的可视化界面工具</p>
 <p>在windows下仅支持后两种组件的使用。</p>
 <h5 id="证书配置"><a href="#证书配置" class="headerlink" title="证书配置"></a>证书配置</h5><p>在安装目录下可以看到以下这些文件:</p>
-<p><img src="https://ws1.sinaimg.cn/mw690/005MnFO1gy1g1t2i5gijzj307g03x0sl.jpg" alt></p>
+<p><img src="http://tc.xianyucoder.cn/blog20190821225340.png" alt></p>
 <table>
 <thead>
 <tr>
@@ -629,7 +671,7 @@
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
               <p class="site-author-name" itemprop="name">煌金</p>
-              <p class="site-description motion-element" itemprop="description">不想翻身的咸鱼不是好的程序猿。</p>
+              <p class="site-description motion-element" itemprop="description">Stay Hungry, Stay Foolish.</p>
           </div>
 
           
@@ -761,7 +803,21 @@
   <span class="author" itemprop="copyrightHolder">煌金</span>
 
   
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+    <span title="站点总字数">176k</span>
+  
 
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+    <span title="站点阅读时长">4:53</span>
   
 </div>
 

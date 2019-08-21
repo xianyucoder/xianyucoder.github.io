@@ -108,30 +108,31 @@
 
 
 
-  <meta name="description" content="有不少的朋友读了之前的一系列的Docker文章一脸懵逼，这和Python有什么关系？ Docker可以用来减轻我们搭建环境的繁琐步骤，我们完全可以把类似selenium等环境用Docker容器部署好，在代码里直接使用远端的selenium,简单方便。 使用Docker容器中的Python环境进行开发环境准备:腾讯云CentOS 7 + Docker 修改Docker配置简易版本: 编辑Docker">
+  <meta name="description" content="有不少的朋友读了之前的一系列的Docker文章一脸懵逼，这和Python有什么关系？ Docker可以用来减轻我们搭建环境的繁琐步骤，我们完全可以把类似selenium等环境用Docker容器部署好，在代码里直接使用远端的selenium,简单方便。 使用Docker容器中的Python环境进行开发环境准备:腾讯云CentOS 7 + Docker 修改Docker配置简易版本: 编辑Docke">
 <meta name="keywords" content="Docker">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Docker容器">
-<meta property="og:url" content="http://yoursite.com/2019/04/05/配置Python环境与Docker/index.html">
+<meta property="og:url" content="http://www.xianyucoder.cn/2019/04/05/配置Python环境与Docker/index.html">
 <meta property="og:site_name" content="咸鱼学Python">
-<meta property="og:description" content="有不少的朋友读了之前的一系列的Docker文章一脸懵逼，这和Python有什么关系？ Docker可以用来减轻我们搭建环境的繁琐步骤，我们完全可以把类似selenium等环境用Docker容器部署好，在代码里直接使用远端的selenium,简单方便。 使用Docker容器中的Python环境进行开发环境准备:腾讯云CentOS 7 + Docker 修改Docker配置简易版本: 编辑Docker">
+<meta property="og:description" content="有不少的朋友读了之前的一系列的Docker文章一脸懵逼，这和Python有什么关系？ Docker可以用来减轻我们搭建环境的繁琐步骤，我们完全可以把类似selenium等环境用Docker容器部署好，在代码里直接使用远端的selenium,简单方便。 使用Docker容器中的Python环境进行开发环境准备:腾讯云CentOS 7 + Docker 修改Docker配置简易版本: 编辑Docke">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://ws1.sinaimg.cn/mw690/005MnFO1gy1g0xywyuv1ej30go0cnamr.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/mw690/005MnFO1gy1g0xz0tmafcj30ts0c43zk.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/mw690/005MnFO1gy1g0xz2ay8xgj30di0go75x.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/mw690/005MnFO1gy1g0xzbblkvzj30go0b940l.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/mw690/005MnFO1gy1g0xzcitn0cj30go0ad3z7.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/mw690/005MnFO1gy1g0xzg1q7b2j30go0dxtfh.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/mw690/005MnFO1gy1g0xzi2vjkgj30go0dy0ub.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/mw690/005MnFO1gy1g0xzl8spb8j30go0dy75p.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/mw690/005MnFO1gy1g0xzw7vdgwj30g306zt99.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/mw690/005MnFO1gy1g0xzxajd99j30do0gon0m.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/mw690/005MnFO1gy1g0y1e5zfcqj30go09ajss.jpg">
-<meta property="og:updated_time" content="2019-04-06T11:57:12.106Z">
+<meta property="og:image" content="http://tc.xianyucoder.cn/blog20190821223443.png">
+<meta property="og:image" content="http://tc.xianyucoder.cn/blog20190821225749.png">
+<meta property="og:image" content="http://tc.xianyucoder.cn/blog20190821225804.png">
+<meta property="og:image" content="http://tc.xianyucoder.cn/blog20190821225817.png">
+<meta property="og:image" content="http://tc.xianyucoder.cn/blog20190821225830.png">
+<meta property="og:image" content="http://tc.xianyucoder.cn/blog20190821225841.png">
+<meta property="og:image" content="http://tc.xianyucoder.cn/blog20190821225851.png">
+<meta property="og:image" content="http://tc.xianyucoder.cn/blog20190821225900.png">
+<meta property="og:image" content="http://tc.xianyucoder.cn/blog20190821225912.png">
+<meta property="og:image" content="http://tc.xianyucoder.cn/blog20190821225931.png">
+<meta property="og:image" content="http://tc.xianyucoder.cn/blog20190821225945.png">
+<meta property="og:image" content="http://tc.xianyucoder.cn/blog20190821225954.png">
+<meta property="og:updated_time" content="2019-08-21T15:00:08.913Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Docker容器">
-<meta name="twitter:description" content="有不少的朋友读了之前的一系列的Docker文章一脸懵逼，这和Python有什么关系？ Docker可以用来减轻我们搭建环境的繁琐步骤，我们完全可以把类似selenium等环境用Docker容器部署好，在代码里直接使用远端的selenium,简单方便。 使用Docker容器中的Python环境进行开发环境准备:腾讯云CentOS 7 + Docker 修改Docker配置简易版本: 编辑Docker">
-<meta name="twitter:image" content="https://ws1.sinaimg.cn/mw690/005MnFO1gy1g0xywyuv1ej30go0cnamr.jpg">
+<meta name="twitter:description" content="有不少的朋友读了之前的一系列的Docker文章一脸懵逼，这和Python有什么关系？ Docker可以用来减轻我们搭建环境的繁琐步骤，我们完全可以把类似selenium等环境用Docker容器部署好，在代码里直接使用远端的selenium,简单方便。 使用Docker容器中的Python环境进行开发环境准备:腾讯云CentOS 7 + Docker 修改Docker配置简易版本: 编辑Docke">
+<meta name="twitter:image" content="http://tc.xianyucoder.cn/blog20190821223443.png">
 
 
 
@@ -140,7 +141,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/04/05/配置Python环境与Docker/">
+  <link rel="canonical" href="http://www.xianyucoder.cn/2019/04/05/配置Python环境与Docker/">
 
 
 
@@ -323,11 +324,11 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/05/配置Python环境与Docker/">
+    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2019/04/05/配置Python环境与Docker/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="煌金">
-      <meta itemprop="description" content="不想翻身的咸鱼不是好的程序猿。">
+      <meta itemprop="description" content="Stay Hungry, Stay Foolish.">
       <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
@@ -382,7 +383,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-04-06 19:57:12" itemprop="dateModified" datetime="2019-04-06T19:57:12+08:00">2019-04-06</time>
+                <time title="修改时间：2019-08-21 23:00:08" itemprop="dateModified" datetime="2019-08-21T23:00:08+08:00">2019-08-21</time>
               
             
           </span>
@@ -422,6 +423,34 @@
 		  
 
           
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">4.9k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">8 分钟</span>
+              
+            </div>
+          
 
           
 
@@ -438,7 +467,8 @@
       
 
       
-        <p>有不少的朋友读了之前的一系列的Docker文章一脸懵逼，这和Python有什么关系？</p>
+        <p><img src="http://tc.xianyucoder.cn/blog20190821223443.png" alt></p>
+<p>有不少的朋友读了之前的一系列的Docker文章一脸懵逼，这和Python有什么关系？</p>
 <p>Docker可以用来减轻我们搭建环境的繁琐步骤，我们完全可以把类似selenium等环境用Docker容器部署好，在代码里直接使用远端的selenium,简单方便。</p>
 <h4 id="使用Docker容器中的Python环境进行开发"><a href="#使用Docker容器中的Python环境进行开发" class="headerlink" title="使用Docker容器中的Python环境进行开发"></a>使用Docker容器中的Python环境进行开发</h4><p>环境准备:腾讯云CentOS 7 + Docker</p>
 <h5 id="修改Docker配置"><a href="#修改Docker配置" class="headerlink" title="修改Docker配置"></a>修改Docker配置</h5><p>简易版本:</p>
@@ -454,33 +484,33 @@
 <p>将文件对应配置项修改后保存:</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">将</span><br><span class="line">ExecStart=/usr/bin/dockerd</span><br><span class="line">改为</span><br><span class="line">ExecStart=/usr/bin/dockerd -H unix:///var/run/docker.sock -H tcp://<span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span>:<span class="number">2375</span></span><br></pre></td></tr></table></figure>
 <h5 id="配置Pycharm"><a href="#配置Pycharm" class="headerlink" title="配置Pycharm"></a>配置Pycharm</h5><p>首先打开Pycharm中Docker的显示项:</p>
-<p><img src="https://ws1.sinaimg.cn/mw690/005MnFO1gy1g0xywyuv1ej30go0cnamr.jpg" alt></p>
-<p>修改Docker配置:<br><img src="https://ws1.sinaimg.cn/mw690/005MnFO1gy1g0xz0tmafcj30ts0c43zk.jpg" alt></p>
-<p>在下图对应的地方填入你之前编辑的Docker配置:<br><img src="https://ws1.sinaimg.cn/mw690/005MnFO1gy1g0xz2ay8xgj30di0go75x.jpg" alt></p>
+<p><img src="http://tc.xianyucoder.cn/blog20190821225749.png" alt></p>
+<p>修改Docker配置:<br><img src="http://tc.xianyucoder.cn/blog20190821225804.png" alt></p>
+<p>在下图对应的地方填入你之前编辑的Docker配置:<br><img src="http://tc.xianyucoder.cn/blog20190821225817.png" alt></p>
 <p>这里注意格式: tcp://host:ports</p>
 <p>配置好后提示连接成功即可。</p>
 <h5 id="配置远程Docker的镜像作为Pycharm的解释器"><a href="#配置远程Docker的镜像作为Pycharm的解释器" class="headerlink" title="配置远程Docker的镜像作为Pycharm的解释器"></a>配置远程Docker的镜像作为Pycharm的解释器</h5><p>点开配置,点击新增配置:</p>
-<p><img src="https://ws1.sinaimg.cn/mw690/005MnFO1gy1g0xzbblkvzj30go0b940l.jpg" alt></p>
+<p><img src="http://tc.xianyucoder.cn/blog20190821225830.png" alt></p>
 <p>在新增项中选择Docker，这里会自动加载你连接的Docker服务中包含Python的全部镜像:</p>
-<p><img src="https://ws1.sinaimg.cn/mw690/005MnFO1gy1g0xzcitn0cj30go0ad3z7.jpg" alt></p>
+<p><img src="http://tc.xianyucoder.cn/blog20190821225841.png" alt></p>
 <h5 id="配置代码的自动上传"><a href="#配置代码的自动上传" class="headerlink" title="配置代码的自动上传"></a>配置代码的自动上传</h5><p>你以为到上面就结束了吗？解释器是配置好了，但是你的代码还在本地，所以需要配置代码自动上传到云服务器。</p>
-<p>首先找到对应的选项,之前没有配置过的话这里选项是灰色的，需要先配置, 点击 configuration :<br><img src="https://ws1.sinaimg.cn/mw690/005MnFO1gy1g0xzg1q7b2j30go0dxtfh.jpg" alt></p>
+<p>首先找到对应的选项,之前没有配置过的话这里选项是灰色的，需要先配置, 点击 configuration :<br><img src="http://tc.xianyucoder.cn/blog20190821225851.png" alt></p>
 <p>点击加号，填入对应的配置，填完可以测试一下是否可用:</p>
-<p><img src="https://ws1.sinaimg.cn/mw690/005MnFO1gy1g0xzi2vjkgj30go0dy0ub.jpg" alt></p>
+<p><img src="http://tc.xianyucoder.cn/blog20190821225900.png" alt></p>
 <p>如果不能使用，建议登录控制台，配置相关的安全组配置。</p>
 <p>切换到隔壁的mapping选项卡,按照下图配置相关的路径和要上传到服务器上的路径:</p>
-<p><img src="https://ws1.sinaimg.cn/mw690/005MnFO1gy1g0xzl8spb8j30go0dy75p.jpg" alt></p>
+<p><img src="http://tc.xianyucoder.cn/blog20190821225912.png" alt></p>
 <p>以上都做完之后，返回本小节的第一张图，有自动上传选项将它勾起，之后当你的文件有更改就会自动上传至服务器指定的路径下。</p>
 <p>到这里，你以为结束了那就太天真了。</p>
 <h5 id="解决代码自动上传后运行报错"><a href="#解决代码自动上传后运行报错" class="headerlink" title="解决代码自动上传后运行报错"></a>解决代码自动上传后运行报错</h5><p>当你上传代码后，运行后报错“无法找到对应的文件夹/文件”,这是因为这个时候我们的代码仅仅上传到了服务器上，但是我们的Python解释器是运行在容器中，而我们容器查找代码是查找的数据卷，所以这个时候就需要我们在配置中做一个简单的地址映射。</p>
 <p>先看下上面一大段所涉及的原理图:</p>
-<p><img src="https://ws1.sinaimg.cn/mw690/005MnFO1gy1g0xzw7vdgwj30g306zt99.jpg" alt></p>
+<p><img src="http://tc.xianyucoder.cn/blog20190821225931.png" alt></p>
 <p>接下来我们开始配置,全局的地址映射:</p>
-<p><img src="https://ws1.sinaimg.cn/mw690/005MnFO1gy1g0xzxajd99j30do0gon0m.jpg" alt></p>
+<p><img src="http://tc.xianyucoder.cn/blog20190821225945.png" alt></p>
 <p>在Docke组件中编辑配置，添加path mapping<br>效果：当我们配置云服务路径时会自动将我们本地路径映射过去</p>
 <p>设置Python默认的mapping为对应的路径:</p>
 <p>这里注意一点:这里的container path 指的是容器中路径,结合上面的原理图，全部的映射过程是 本地路径 -&gt; 云服务器路径 -&gt; 容器路径</p>
-<p><img src="https://ws1.sinaimg.cn/mw690/005MnFO1gy1g0y1e5zfcqj30go09ajss.jpg" alt></p>
+<p><img src="http://tc.xianyucoder.cn/blog20190821225954.png" alt></p>
 <p>以上就是本次文章的全部内容了，如果对这其中的原理有不明白的咸鱼建议可以重新温习下之前关于数据卷的部分，如果还是不明白可以直接无视原理，按图索骥直接配好了事，当然欢迎大家留言交流~ ~</p>
 
       
@@ -591,7 +621,7 @@
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
               <p class="site-author-name" itemprop="name">煌金</p>
-              <p class="site-description motion-element" itemprop="description">不想翻身的咸鱼不是好的程序猿。</p>
+              <p class="site-description motion-element" itemprop="description">Stay Hungry, Stay Foolish.</p>
           </div>
 
           
@@ -723,7 +753,21 @@
   <span class="author" itemprop="copyrightHolder">煌金</span>
 
   
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+    <span title="站点总字数">176k</span>
+  
 
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+    <span title="站点阅读时长">4:53</span>
   
 </div>
 

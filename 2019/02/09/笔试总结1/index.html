@@ -112,18 +112,18 @@
 <meta name="keywords" content="Python笔试题">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Python笔试题(一)">
-<meta property="og:url" content="http://yoursite.com/2019/02/09/笔试总结1/index.html">
+<meta property="og:url" content="http://www.xianyucoder.cn/2019/02/09/笔试总结1/index.html">
 <meta property="og:site_name" content="咸鱼学Python">
 <meta property="og:description" content="题目 以下两段代码，运行结束后的结果是什么？是否相同？原因是什么？     4G内存怎么读取一个5G的数据？  浅述深浅拷贝">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://ws1.sinaimg.cn/mw690/005MnFO1gy1g1d1b29r7yj30i60ee75n.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/mw690/005MnFO1gy1g1d175tu39j30h80ge75s.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/mw690/005MnFO1gy1g1d1vpa9c8j30q40sewif.jpg">
-<meta property="og:updated_time" content="2019-04-06T11:47:45.213Z">
+<meta property="og:image" content="http://tc.xianyucoder.cn/blog20190821230520.png">
+<meta property="og:image" content="http://tc.xianyucoder.cn/blog20190821230536.png">
+<meta property="og:image" content="http://tc.xianyucoder.cn/blog20190821230545.png">
+<meta property="og:updated_time" content="2019-08-21T15:05:55.435Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python笔试题(一)">
 <meta name="twitter:description" content="题目 以下两段代码，运行结束后的结果是什么？是否相同？原因是什么？     4G内存怎么读取一个5G的数据？  浅述深浅拷贝">
-<meta name="twitter:image" content="https://ws1.sinaimg.cn/mw690/005MnFO1gy1g1d1b29r7yj30i60ee75n.jpg">
+<meta name="twitter:image" content="http://tc.xianyucoder.cn/blog20190821230520.png">
 
 
 
@@ -132,7 +132,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/02/09/笔试总结1/">
+  <link rel="canonical" href="http://www.xianyucoder.cn/2019/02/09/笔试总结1/">
 
 
 
@@ -315,11 +315,11 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/笔试总结1/">
+    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2019/02/09/笔试总结1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="煌金">
-      <meta itemprop="description" content="不想翻身的咸鱼不是好的程序猿。">
+      <meta itemprop="description" content="Stay Hungry, Stay Foolish.">
       <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
@@ -374,7 +374,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-04-06 19:47:45" itemprop="dateModified" datetime="2019-04-06T19:47:45+08:00">2019-04-06</time>
+                <time title="修改时间：2019-08-21 23:05:55" itemprop="dateModified" datetime="2019-08-21T23:05:55+08:00">2019-08-21</time>
               
             
           </span>
@@ -414,6 +414,34 @@
 		  
 
           
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">2.9k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">5 分钟</span>
+              
+            </div>
+          
 
           
 
@@ -433,8 +461,8 @@
         <h4 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h4><ol>
 <li>以下两段代码，运行结束后的结果是什么？是否相同？原因是什么？</li>
 </ol>
-<p><img src="https://ws1.sinaimg.cn/mw690/005MnFO1gy1g1d1b29r7yj30i60ee75n.jpg" alt="代码一"></p>
-<p><img src="https://ws1.sinaimg.cn/mw690/005MnFO1gy1g1d175tu39j30h80ge75s.jpg" alt="代码二"></p>
+<p><img src="http://tc.xianyucoder.cn/blog20190821230520.png" alt></p>
+<p><img src="http://tc.xianyucoder.cn/blog20190821230536.png" alt></p>
 <ol start="2">
 <li><p>4G内存怎么读取一个5G的数据？</p>
 </li>
@@ -449,7 +477,7 @@
 <p>2.实现方法有两种。</p>
 <p>实现方法一:</p>
 <p>方法一的实现思路是通过生成器,一次读取少量数据,标准答案是根据文件实现，这里给出的例子是咸鱼学习bobby老师的课程时记录的例子,不知道如何使用生成器完成这个需求的朋友可以参考:</p>
-<p><img src="https://ws1.sinaimg.cn/mw690/005MnFO1gy1g1d1vpa9c8j30q40sewif.jpg" alt></p>
+<p><img src="http://tc.xianyucoder.cn/blog20190821230545.png" alt></p>
 <p>实现方法二:</p>
 <p>在linux系统下使用split可以分割文件,对于多行文件可以使用按行分割的方式,对于单行的大文件可以采用按文件大小分割。</p>
 <p>按文件行数分割:<code>split -l 300 large_file.log smallfile_prefix</code></p>
@@ -565,7 +593,7 @@
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
               <p class="site-author-name" itemprop="name">煌金</p>
-              <p class="site-description motion-element" itemprop="description">不想翻身的咸鱼不是好的程序猿。</p>
+              <p class="site-description motion-element" itemprop="description">Stay Hungry, Stay Foolish.</p>
           </div>
 
           
@@ -697,7 +725,21 @@
   <span class="author" itemprop="copyrightHolder">煌金</span>
 
   
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+    <span title="站点总字数">176k</span>
+  
 
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+    <span title="站点阅读时长">4:53</span>
   
 </div>
 

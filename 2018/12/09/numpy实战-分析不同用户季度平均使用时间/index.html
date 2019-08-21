@@ -112,18 +112,18 @@
 <meta name="keywords" content="数据科学">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Numpy实战 - 分析不同用户季度平均使用时间">
-<meta property="og:url" content="http://yoursite.com/2018/12/09/numpy实战-分析不同用户季度平均使用时间/index.html">
+<meta property="og:url" content="http://www.xianyucoder.cn/2018/12/09/numpy实战-分析不同用户季度平均使用时间/index.html">
 <meta property="og:site_name" content="咸鱼学Python">
 <meta property="og:description" content="本次复习的知识点如下：  布尔型数组及数据过滤 多维数组的构造 使用numpy保存文本文件 matplotlib折线图绘制 matplotlib图表常用属性的设置方法 图表的保存  关于数据源上次的文章发出之后发现忘了补充数据源的链接，之后咸鱼补充在留言区了，有需要动手实践的朋友可以自取，下面是直通车： 分析目标观察上次的数据，数据中有的数据有会员与非会员两种用户类别。这次我们主要分析一下两种类别">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://raw.githubusercontent.com/xianyucoder/blogpic/master/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E6%B5%81%E7%A8%8B.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/xianyucoder/blogpic/master/duration_trend.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/xianyucoder/blogpic/master/20190106203628.png">
-<meta property="og:updated_time" content="2019-04-06T11:43:09.438Z">
+<meta property="og:image" content="http://tc.xianyucoder.cn/blog20190821224153.png">
+<meta property="og:image" content="http://tc.xianyucoder.cn/blog20190821224334.png">
+<meta property="og:image" content="http://tc.xianyucoder.cn/blog20190821224350.png">
+<meta property="og:updated_time" content="2019-08-21T14:44:07.722Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Numpy实战 - 分析不同用户季度平均使用时间">
 <meta name="twitter:description" content="本次复习的知识点如下：  布尔型数组及数据过滤 多维数组的构造 使用numpy保存文本文件 matplotlib折线图绘制 matplotlib图表常用属性的设置方法 图表的保存  关于数据源上次的文章发出之后发现忘了补充数据源的链接，之后咸鱼补充在留言区了，有需要动手实践的朋友可以自取，下面是直通车： 分析目标观察上次的数据，数据中有的数据有会员与非会员两种用户类别。这次我们主要分析一下两种类别">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/xianyucoder/blogpic/master/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E6%B5%81%E7%A8%8B.png">
+<meta name="twitter:image" content="http://tc.xianyucoder.cn/blog20190821224153.png">
 
 
 
@@ -132,7 +132,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/12/09/numpy实战-分析不同用户季度平均使用时间/">
+  <link rel="canonical" href="http://www.xianyucoder.cn/2018/12/09/numpy实战-分析不同用户季度平均使用时间/">
 
 
 
@@ -315,11 +315,11 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/09/numpy实战-分析不同用户季度平均使用时间/">
+    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2018/12/09/numpy实战-分析不同用户季度平均使用时间/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="煌金">
-      <meta itemprop="description" content="不想翻身的咸鱼不是好的程序猿。">
+      <meta itemprop="description" content="Stay Hungry, Stay Foolish.">
       <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
@@ -374,7 +374,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-04-06 19:43:09" itemprop="dateModified" datetime="2019-04-06T19:43:09+08:00">2019-04-06</time>
+                <time title="修改时间：2019-08-21 22:44:07" itemprop="dateModified" datetime="2019-08-21T22:44:07+08:00">2019-08-21</time>
               
             
           </span>
@@ -414,6 +414,34 @@
 		  
 
           
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">8.3k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">14 分钟</span>
+              
+            </div>
+          
 
           
 
@@ -442,7 +470,7 @@
 <h4 id="关于数据源"><a href="#关于数据源" class="headerlink" title="关于数据源"></a>关于数据源</h4><p>上次的文章发出之后发现忘了补充数据源的链接，之后咸鱼补充在留言区了，有需要动手实践的朋友可以自取，下面是直通车：</p>
 <h4 id="分析目标"><a href="#分析目标" class="headerlink" title="分析目标"></a>分析目标</h4><p>观察上次的数据，数据中有的数据有会员与非会员两种用户类别。<br>这次我们主要分析一下两种类别用户的平均骑行时间对比。<br><a id="more"></a></p>
 <h4 id="数据读取与数据清洗"><a href="#数据读取与数据清洗" class="headerlink" title="数据读取与数据清洗"></a>数据读取与数据清洗</h4><p>根据上次的流程示意图我们主要遵循下面几个步骤：</p>
-<p><img src="https://raw.githubusercontent.com/xianyucoder/blogpic/master/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E6%B5%81%E7%A8%8B.png" alt="图 | 源自网络"></p>
+<p><img src="http://tc.xianyucoder.cn/blog20190821224153.png" alt></p>
 <p>但是在实际操作中发现，本次的实战数据非常干净，完全可以把我们的数据读取和数据清洗代码结合到一起来实现代码简化的目的。</p>
 <p>此处代码可以简化为：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 数据读取，数据清洗</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">data_collection</span><span class="params">()</span>:</span></span><br><span class="line">    clndata_arr_list = []</span><br><span class="line">    <span class="keyword">for</span> data_filename <span class="keyword">in</span> data_filenames:</span><br><span class="line">        file = os.path.join(data_path, data_filename)</span><br><span class="line">        data_arr = np.loadtxt(file, skiprows=<span class="number">1</span>, delimiter=<span class="string">','</span>, dtype=bytes).astype(str)</span><br><span class="line">        cln_data_arr = np.core.defchararray.replace(data_arr, <span class="string">'"'</span>, <span class="string">''</span>)</span><br><span class="line">        clndata_arr_list.append(cln_data_arr)</span><br><span class="line">    <span class="keyword">return</span> clndata_arr_list</span><br></pre></td></tr></table></figure></p>
 <p>在上一篇的文章中，具体的实现原理已经做过说明这里就不多做赘述。</p>
@@ -452,8 +480,8 @@
 <p>这里我们传入一个<code>member_type</code>，用单个标量<code>member_type</code>和取出的向量<code>cln_data[:, -1]</code>做比较，以筛选出我们需要的数据。</p>
 <p>在数学上标量和向量是没办法比对的,毕竟维度不同，但是在numpy中它的广播机制很好的为我们实现了这一需求，numpy可以将单个标量变成比对数据同样的数据维度，这样就可以进行一对一比对，达到使用布尔型数组筛选数据的需求了。</p>
 <p>至于其余关于数据如何取出平均值等操作在上一篇文章已经做了介绍，接下来进入数据可视化展示的部分。</p>
-<h4 id="结果展示"><a href="#结果展示" class="headerlink" title="结果展示"></a>结果展示</h4><p>生成的折线图：<br><img src="https://raw.githubusercontent.com/xianyucoder/blogpic/master/duration_trend.png" alt></p>
-<p>生成的csv表格：<br><img src="https://raw.githubusercontent.com/xianyucoder/blogpic/master/20190106203628.png" alt></p>
+<h4 id="结果展示"><a href="#结果展示" class="headerlink" title="结果展示"></a>结果展示</h4><p>生成的折线图：<br><img src="http://tc.xianyucoder.cn/blog20190821224334.png" alt></p>
+<p>生成的csv表格：<br><img src="http://tc.xianyucoder.cn/blog20190821224350.png" alt></p>
 <p>生成的数据图表上次美化不少，具体实现可以看下下面的代码，具体美化属性都标注在注释当中。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 结果展示</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">show_data</span><span class="params">(member_mean_duration_list, casual_mean_duration_list)</span>:</span></span><br><span class="line">    <span class="comment"># 构造多维数组</span></span><br><span class="line">    <span class="comment"># 使用fmt方式输出指定格式的数据格式，默认输出科学计数的格式</span></span><br><span class="line">    mean_duraion_arr = np.array([member_mean_duration_list, casual_mean_duration_list]).transpose()</span><br><span class="line">    np.savetxt(<span class="string">'./mean_duration.csv'</span>, mean_duraion_arr, delimiter=<span class="string">','</span>,</span><br><span class="line">               header=<span class="string">'Member Mean Duraion, Casual Mean Duraion'</span>, fmt=<span class="string">'%.4f'</span>,</span><br><span class="line">               comments=<span class="string">''</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 生成空白画布</span></span><br><span class="line">    plt.figure()</span><br><span class="line">    <span class="comment"># color指定显示的折线颜色</span></span><br><span class="line">    <span class="comment"># linestyle指定折线的样式</span></span><br><span class="line">    <span class="comment"># marker指定节点样式</span></span><br><span class="line">    plt.plot(member_mean_duration_list, color=<span class="string">'g'</span>, linestyle=<span class="string">'-'</span>, marker=<span class="string">'o'</span>, label=<span class="string">'Member'</span>)</span><br><span class="line">    plt.plot(casual_mean_duration_list, color=<span class="string">'r'</span>, linestyle=<span class="string">'--'</span>, marker=<span class="string">'*'</span>, label=<span class="string">'Casual'</span>)</span><br><span class="line">    plt.title(<span class="string">'Member vs Casual'</span>)</span><br><span class="line">    <span class="comment"># rotation指定下标的倾斜角度</span></span><br><span class="line">    plt.xticks(range(<span class="number">0</span>, <span class="number">4</span>), [<span class="string">'1st'</span>, <span class="string">'2nd'</span>, <span class="string">'3rd'</span>, <span class="string">'4th'</span>], rotation=<span class="number">45</span>)</span><br><span class="line">    <span class="comment"># xlabel x，y轴的标题</span></span><br><span class="line">    plt.xlabel(<span class="string">'Quarter'</span>)</span><br><span class="line">    plt.ylabel(<span class="string">'Mean duration (min)'</span>)</span><br><span class="line">    plt.legend(loc=<span class="string">'best'</span>)</span><br><span class="line">    plt.tight_layout()</span><br><span class="line"></span><br><span class="line">    plt.savefig(<span class="string">'./duration_trend.png'</span>)</span><br><span class="line">    plt.show()</span><br></pre></td></tr></table></figure>
 
@@ -565,7 +593,7 @@
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
               <p class="site-author-name" itemprop="name">煌金</p>
-              <p class="site-description motion-element" itemprop="description">不想翻身的咸鱼不是好的程序猿。</p>
+              <p class="site-description motion-element" itemprop="description">Stay Hungry, Stay Foolish.</p>
           </div>
 
           
@@ -697,7 +725,21 @@
   <span class="author" itemprop="copyrightHolder">煌金</span>
 
   
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+    <span title="站点总字数">176k</span>
+  
 
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+    <span title="站点阅读时长">4:53</span>
   
 </div>
 

@@ -112,19 +112,19 @@
 <meta name="keywords" content="Python">
 <meta property="og:type" content="article">
 <meta property="og:title" content="requests与json的使用技巧">
-<meta property="og:url" content="http://yoursite.com/2018/09/01/关于requests和json/index.html">
+<meta property="og:url" content="http://www.xianyucoder.cn/2018/09/01/关于requests和json/index.html">
 <meta property="og:site_name" content="咸鱼学Python">
 <meta property="og:description" content="requestsrequestse基本使用 关于requests基本使用方法参照中文版参考文档： http://docs.python-requests.org/zh_CN/latest/index.html">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://pfzcysktf.bkt.clouddn.com/blog/181004/h873FGA2ch.png?imageslim">
-<meta property="og:image" content="http://pfzcysktf.bkt.clouddn.com/blog/181004/19ggG85hBm.jpg?imageslim">
-<meta property="og:image" content="http://pfzcysktf.bkt.clouddn.com/blog/181004/d7lf2bKc6d.jpg?imageslim">
-<meta property="og:image" content="http://pfzcysktf.bkt.clouddn.com/blog/181004/IBBDH2I48k.jpg?imageslim">
-<meta property="og:updated_time" content="2018-10-03T17:42:47.000Z">
+<meta property="og:image" content="http://tc.xianyucoder.cn/blog/181004/h873FGA2ch.png?imageslim">
+<meta property="og:image" content="http://tc.xianyucoder.cn/blog/181004/19ggG85hBm.jpg?imageslim">
+<meta property="og:image" content="http://tc.xianyucoder.cn/blog/181004/d7lf2bKc6d.jpg?imageslim">
+<meta property="og:image" content="http://tc.xianyucoder.cn/blog/181004/IBBDH2I48k.jpg?imageslim">
+<meta property="og:updated_time" content="2019-08-21T15:02:12.096Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="requests与json的使用技巧">
 <meta name="twitter:description" content="requestsrequestse基本使用 关于requests基本使用方法参照中文版参考文档： http://docs.python-requests.org/zh_CN/latest/index.html">
-<meta name="twitter:image" content="http://pfzcysktf.bkt.clouddn.com/blog/181004/h873FGA2ch.png?imageslim">
+<meta name="twitter:image" content="http://tc.xianyucoder.cn/blog/181004/h873FGA2ch.png?imageslim">
 
 
 
@@ -133,7 +133,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/09/01/关于requests和json/">
+  <link rel="canonical" href="http://www.xianyucoder.cn/2018/09/01/关于requests和json/">
 
 
 
@@ -316,11 +316,11 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/01/关于requests和json/">
+    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2018/09/01/关于requests和json/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="煌金">
-      <meta itemprop="description" content="不想翻身的咸鱼不是好的程序猿。">
+      <meta itemprop="description" content="Stay Hungry, Stay Foolish.">
       <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
@@ -375,7 +375,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-10-04 01:42:47" itemprop="dateModified" datetime="2018-10-04T01:42:47+08:00">2018-10-04</time>
+                <time title="修改时间：2019-08-21 23:02:12" itemprop="dateModified" datetime="2019-08-21T23:02:12+08:00">2019-08-21</time>
               
             
           </span>
@@ -415,6 +415,34 @@
 		  
 
           
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">11k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">18 分钟</span>
+              
+            </div>
+          
 
           
 
@@ -437,10 +465,10 @@
 </blockquote>
 <h4 id="response-text-和response-content的区别"><a href="#response-text-和response-content的区别" class="headerlink" title="response.text 和response.content的区别"></a>response.text 和response.content的区别</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">response.text</span><br><span class="line">类型：str</span><br><span class="line">解码类型： 根据HTTP 头部对响应的编码作出有根据的推测，推测的文本编码</span><br><span class="line">如何修改编码方式：response.encoding=”gbk”</span><br><span class="line"></span><br><span class="line">response.content</span><br><span class="line">类型：bytes</span><br><span class="line">解码类型：没有指定</span><br><span class="line">如何修改编码方式：response.content.deocde(“utf8”)</span><br><span class="line"></span><br><span class="line">更推荐使用response.content.deocde()的方式获取响应的html页面</span><br></pre></td></tr></table></figure>
 <h4 id="requests使用代理"><a href="#requests使用代理" class="headerlink" title="requests使用代理"></a>requests使用代理</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">requests.get(<span class="string">"http://www.baidu.com"</span>, proxies = proxies)</span><br><span class="line">proxies = &#123;</span><br><span class="line">	<span class="string">"http"</span>: <span class="string">"http://12.34.56.79:9527"</span>,</span><br><span class="line">	<span class="string">"https"</span>: <span class="string">"https://12.34.56.79:9527"</span>,</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
-<h5 id="代理的基本原理"><a href="#代理的基本原理" class="headerlink" title="代理的基本原理"></a>代理的基本原理</h5><p><img src="http://pfzcysktf.bkt.clouddn.com/blog/181004/h873FGA2ch.png?imageslim" alt="mark"></p>
+<h5 id="代理的基本原理"><a href="#代理的基本原理" class="headerlink" title="代理的基本原理"></a>代理的基本原理</h5><p><img src="http://tc.xianyucoder.cn/blog/181004/h873FGA2ch.png?imageslim" alt="mark"></p>
 <h5 id="正向代理与反向代理"><a href="#正向代理与反向代理" class="headerlink" title="正向代理与反向代理"></a>正向代理与反向代理</h5><p>正向代理：浏览器明确知道要访问的是什么服务器，只不过目前无法达到，需要通过代理来帮助完成这个请求操作。</p>
 <p>反向代理：浏览器不知道任何关于要请求的服务器的信息，需要通过Nginx请求。</p>
-<p><img src="http://pfzcysktf.bkt.clouddn.com/blog/181004/19ggG85hBm.jpg?imageslim" alt="mark"></p>
+<p><img src="http://tc.xianyucoder.cn/blog/181004/19ggG85hBm.jpg?imageslim" alt="mark"></p>
 <h4 id="requests模拟登录的几种方法"><a href="#requests模拟登录的几种方法" class="headerlink" title="requests模拟登录的几种方法"></a>requests模拟登录的几种方法</h4><ol>
 <li><p>实例化session，使用session发送post/get请求登录后的页面</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">session = requests.session()</span><br><span class="line">response = session.get(url,headers)</span><br></pre></td></tr></table></figure>
@@ -461,9 +489,9 @@
 <h4 id="json"><a href="#json" class="headerlink" title="json"></a>json</h4><h4 id="json的基本使用"><a href="#json的基本使用" class="headerlink" title="json的基本使用"></a>json的基本使用</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">json.loads() <span class="comment">#json字符串转化为python数据类型</span></span><br><span class="line">json.dumps() <span class="comment">#python数据类型转化为json字符串</span></span><br><span class="line">json.load()  <span class="comment">#包含json的类文件对象转化为python数据类型</span></span><br><span class="line">json.dump()  <span class="comment">#python数据类型转化为包含json的类文件对象</span></span><br></pre></td></tr></table></figure>
 <h4 id="什么是类文件对象？"><a href="#什么是类文件对象？" class="headerlink" title="什么是类文件对象？"></a>什么是类文件对象？</h4><p>具有read()或者write()方法的对象就是类文件对象，<code>f = open(“a.txt”,”r”) f</code>就是类文件对象</p>
 <h4 id="如何优雅的查看json"><a href="#如何优雅的查看json" class="headerlink" title="如何优雅的查看json?"></a>如何优雅的查看json?</h4><p>我们经常在打印json数据的时候会遇到，像下图这样的情况</p>
-<p><img src="http://pfzcysktf.bkt.clouddn.com/blog/181004/d7lf2bKc6d.jpg?imageslim" alt="mark"></p>
+<p><img src="http://tc.xianyucoder.cn/blog/181004/d7lf2bKc6d.jpg?imageslim" alt="mark"></p>
 <p>我们只要在打印的时候使用<code>pprint</code>就可以完美避开这种情况了，效果如下：</p>
-<p><img src="http://pfzcysktf.bkt.clouddn.com/blog/181004/IBBDH2I48k.jpg?imageslim" alt="mark"></p>
+<p><img src="http://tc.xianyucoder.cn/blog/181004/IBBDH2I48k.jpg?imageslim" alt="mark"></p>
 <p>我们想要实现上图只需要<code>pip install pprint</code>并在打印时使用<code>pprint</code>即可，而在保存时只需要添加”indent=2”参数，就可以保存为pprint的样式。</p>
 
       
@@ -574,7 +602,7 @@
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
               <p class="site-author-name" itemprop="name">煌金</p>
-              <p class="site-description motion-element" itemprop="description">不想翻身的咸鱼不是好的程序猿。</p>
+              <p class="site-description motion-element" itemprop="description">Stay Hungry, Stay Foolish.</p>
           </div>
 
           
@@ -706,7 +734,21 @@
   <span class="author" itemprop="copyrightHolder">煌金</span>
 
   
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+    <span title="站点总字数">176k</span>
+  
 
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+    <span title="站点阅读时长">4:53</span>
   
 </div>
 

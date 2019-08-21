@@ -112,20 +112,20 @@
 <meta name="keywords" content="数据科学">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Numpy实战 - 分析单车季度平均使用时间">
-<meta property="og:url" content="http://yoursite.com/2018/12/05/numpy实战 - 分析单车季度平均使用时间/index.html">
+<meta property="og:url" content="http://www.xianyucoder.cn/2018/12/05/numpy实战 - 分析单车季度平均使用时间/index.html">
 <meta property="og:site_name" content="咸鱼学Python">
 <meta property="og:description" content="关于数据科学的学习，咸鱼也进行了一段时间，但是光学不练是学一点忘一点，所以咸鱼找了一些某共享单车的数据进行一点简单的数据分析。 思路整理咸鱼也是第一次动手写数据分析相关的代码，所以咸鱼上网找了一张大致的流程图，且以此整理思路分隔代码。  在企业实际开发中各个步骤的代码不会像咸鱼下面的代码一样各块分隔的那么清楚，肯定是相互交织且复杂的。  实战分析目的看标题就知道了，分析各季度共享单车的骑行时间。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://raw.githubusercontent.com/xianyucoder/blogpic/master/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E6%B5%81%E7%A8%8B.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/xianyucoder/blogpic/master/20181223220309.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/xianyucoder/blogpic/master/20181223215115.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/xianyucoder/blogpic/master/Figure_1.png">
+<meta property="og:image" content="http://tc.xianyucoder.cn/blog20190821224153.png">
+<meta property="og:image" content="http://tc.xianyucoder.cn/blog20190821224432.png">
+<meta property="og:image" content="http://tc.xianyucoder.cn/blog20190821224441.png">
+<meta property="og:image" content="http://tc.xianyucoder.cn/blog20190821224456.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/xianyucoder/blogpic/master/Figure_2.png">
-<meta property="og:updated_time" content="2019-04-06T11:43:04.270Z">
+<meta property="og:updated_time" content="2019-08-21T14:45:10.114Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Numpy实战 - 分析单车季度平均使用时间">
 <meta name="twitter:description" content="关于数据科学的学习，咸鱼也进行了一段时间，但是光学不练是学一点忘一点，所以咸鱼找了一些某共享单车的数据进行一点简单的数据分析。 思路整理咸鱼也是第一次动手写数据分析相关的代码，所以咸鱼上网找了一张大致的流程图，且以此整理思路分隔代码。  在企业实际开发中各个步骤的代码不会像咸鱼下面的代码一样各块分隔的那么清楚，肯定是相互交织且复杂的。  实战分析目的看标题就知道了，分析各季度共享单车的骑行时间。">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/xianyucoder/blogpic/master/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E6%B5%81%E7%A8%8B.png">
+<meta name="twitter:image" content="http://tc.xianyucoder.cn/blog20190821224153.png">
 
 
 
@@ -134,7 +134,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/12/05/numpy实战 - 分析单车季度平均使用时间/">
+  <link rel="canonical" href="http://www.xianyucoder.cn/2018/12/05/numpy实战 - 分析单车季度平均使用时间/">
 
 
 
@@ -317,11 +317,11 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/05/numpy实战 - 分析单车季度平均使用时间/">
+    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2018/12/05/numpy实战 - 分析单车季度平均使用时间/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="煌金">
-      <meta itemprop="description" content="不想翻身的咸鱼不是好的程序猿。">
+      <meta itemprop="description" content="Stay Hungry, Stay Foolish.">
       <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
@@ -376,7 +376,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-04-06 19:43:04" itemprop="dateModified" datetime="2019-04-06T19:43:04+08:00">2019-04-06</time>
+                <time title="修改时间：2019-08-21 22:45:10" itemprop="dateModified" datetime="2019-08-21T22:45:10+08:00">2019-08-21</time>
               
             
           </span>
@@ -416,6 +416,34 @@
 		  
 
           
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">13k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">21 分钟</span>
+              
+            </div>
+          
 
           
 
@@ -434,12 +462,12 @@
       
         <p>关于数据科学的学习，咸鱼也进行了一段时间，但是光学不练是学一点忘一点，所以咸鱼找了一些某共享单车的数据进行一点简单的数据分析。</p>
 <h4 id="思路整理"><a href="#思路整理" class="headerlink" title="思路整理"></a>思路整理</h4><p>咸鱼也是第一次动手写数据分析相关的代码，所以咸鱼上网找了一张大致的流程图，且以此整理思路分隔代码。</p>
-<p><img src="https://raw.githubusercontent.com/xianyucoder/blogpic/master/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E6%B5%81%E7%A8%8B.png" alt="图 | 源自网络"></p>
+<p><img src="http://tc.xianyucoder.cn/blog20190821224153.png" alt></p>
 <p>在企业实际开发中各个步骤的代码不会像咸鱼下面的代码一样各块分隔的那么清楚，肯定是相互交织且复杂的。</p>
-<p><img src="https://raw.githubusercontent.com/xianyucoder/blogpic/master/20181223220309.png" alt></p>
+<p><img src="http://tc.xianyucoder.cn/blog20190821224432.png" alt></p>
 <h4 id="实战"><a href="#实战" class="headerlink" title="实战"></a>实战</h4><h5 id="分析目的"><a href="#分析目的" class="headerlink" title="分析目的"></a>分析目的</h5><p>看标题就知道了，分析各季度共享单车的骑行时间。</p>
 <h5 id="数据收集"><a href="#数据收集" class="headerlink" title="数据收集"></a>数据收集</h5><p>因为这次的数据源自网络，所以先简单看下数据的结构：</p>
-<p><img src="https://raw.githubusercontent.com/xianyucoder/blogpic/master/20181223215115.png" alt></p>
+<p><img src="http://tc.xianyucoder.cn/blog20190821224441.png" alt></p>
 <p>可以看到数据有9个字段：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;Duration (ms)&quot;,&quot;Start date&quot;,&quot;End date&quot;,&quot;Start station number&quot;,&quot;Start station&quot;,&quot;End station number&quot;,&quot;End station&quot;,&quot;Bike number&quot;,&quot;Member type&quot;</span><br></pre></td></tr></table></figure></p>
 <p>按照我们的目标，我们只需要第一个字段<code>Duration(ms)</code>。<br><a id="more"></a><br>所以第一步先读取已经下载好的数据之后在第二步数据清洗中取出需要的字段：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 数据收集</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">data_collection</span><span class="params">()</span>:</span></span><br><span class="line">    data_arr_list = []</span><br><span class="line">    <span class="keyword">for</span> data_filename <span class="keyword">in</span> data_filenames:</span><br><span class="line">        file = os.path.join(data_path, data_filename)</span><br><span class="line">        data_arr = np.loadtxt(file,dtype=bytes,delimiter=<span class="string">','</span>, skiprows=<span class="number">1</span>).astype(str)</span><br><span class="line">        data_arr_list.append(data_arr)</span><br><span class="line">    <span class="keyword">return</span> data_arr_list</span><br></pre></td></tr></table></figure>
@@ -449,7 +477,7 @@
 <h5 id="数据分析"><a href="#数据分析" class="headerlink" title="数据分析"></a>数据分析</h5><p>计算平均值在numpy中提供了计算函数，直接调用即可。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 数据分析</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">mean_data</span><span class="params">(duration_min_list)</span>:</span></span><br><span class="line">    duration_mean_list = []</span><br><span class="line">    <span class="keyword">for</span> duration_min <span class="keyword">in</span> duration_min_list:</span><br><span class="line">        duration_mean = np.mean(duration_min)</span><br><span class="line">        duration_mean_list.append(duration_mean)</span><br><span class="line">    <span class="keyword">return</span> duration_mean_list</span><br></pre></td></tr></table></figure></p>
 <h5 id="结果展示"><a href="#结果展示" class="headerlink" title="结果展示"></a>结果展示</h5><p>这里可视化展示使用的是matplotlib.pyplot库,咸鱼目前还没有写相关的入门文章，可以上网看下文档学习下简单使用即可，之后会有系列文章写可视化的内容。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 数据展示</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">show_data</span><span class="params">(duration_mean_list)</span>:</span></span><br><span class="line">    plt.figure()</span><br><span class="line">    name_list = [<span class="string">'第一季度'</span>, <span class="string">'第二季度'</span>, <span class="string">'第三季度'</span>, <span class="string">'第四季度'</span>]</span><br><span class="line">    plt.bar(range(len(duration_mean_list)),duration_mean_list,tick_label = name_list)</span><br><span class="line">    plt.show()</span><br></pre></td></tr></table></figure>
-<h4 id="成果展示"><a href="#成果展示" class="headerlink" title="成果展示"></a>成果展示</h4><p><img src="https://raw.githubusercontent.com/xianyucoder/blogpic/master/Figure_1.png" alt></p>
+<h4 id="成果展示"><a href="#成果展示" class="headerlink" title="成果展示"></a>成果展示</h4><p><img src="http://tc.xianyucoder.cn/blog20190821224456.png" alt></p>
 <p>单单从上面的图可以看到以炎热的夏季和凉爽的秋季为主调的二三季度的骑行时间要高于春冬为主调的一四季度，以此判断气温变化对人们使用的共享单车的影响。</p>
 <h4 id="一些踩过的坑"><a href="#一些踩过的坑" class="headerlink" title="一些踩过的坑"></a>一些踩过的坑</h4><h5 id="关于数据读取-一"><a href="#关于数据读取-一" class="headerlink" title="关于数据读取(一)"></a>关于数据读取(一)</h5><p>在python中字符串是有字节字符串和文本字符串之分的，我们通常说的字符串是指文本字符串。而使用numpy的loadtxt函数读取的字符串默认是字节字符串，输出的话字符串前面会有个b，形如b’……’。通常是需要转换的，如果不转换将会出现问题。</p>
 <p>在<code>数据收集</code>部分如果不注意这一点，在<code>数据清洗</code>部分，字段的格式就会因为<code>Duration</code>的值多了一个<code>b</code>转化上就会报错。</p>
@@ -571,7 +599,7 @@
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
               <p class="site-author-name" itemprop="name">煌金</p>
-              <p class="site-description motion-element" itemprop="description">不想翻身的咸鱼不是好的程序猿。</p>
+              <p class="site-description motion-element" itemprop="description">Stay Hungry, Stay Foolish.</p>
           </div>
 
           
@@ -703,7 +731,21 @@
   <span class="author" itemprop="copyrightHolder">煌金</span>
 
   
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+    <span title="站点总字数">176k</span>
+  
 
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+    <span title="站点阅读时长">4:53</span>
   
 </div>
 

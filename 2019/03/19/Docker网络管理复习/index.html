@@ -108,23 +108,24 @@
 
 
 
-  <meta name="description" content="为什么需要容器的网络管理？容器的网络默认与宿主机、与其他容器相互隔离，且容器中可以运行一些网络应用，比如nginx、web应用、数据库等，如果需要让外部也可以访问这些容器中运行的网络应用，那么就需要配置网络来实现。 同样的，不同需求下，容器与宿主机的通信有不同的业务状态这时候就需要容器网络管理以达成管理不同业务下相关的网络配置。 Docker中的网络驱动模式有那些？bridge network(网">
+  <meta name="description" content="为什么需要容器的网络管理？容器的网络默认与宿主机、与其他容器相互隔离，且容器中可以运行一些网络应用，比如nginx、web应用、数据库等，如果需要让外部也可以访问这些容器中运行的网络应用，那么就需要配置网络来实现。 同样的，不同需求下，容器与宿主机的通信有不同的业务状态这时候就需要容器网络管理以达成管理不同业务下相关的网络配置。 Docker中的网络驱动模式有那些？bridge network(">
 <meta name="keywords" content="Docker">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Docker网络">
-<meta property="og:url" content="http://yoursite.com/2019/03/19/Docker网络管理复习/index.html">
+<meta property="og:url" content="http://www.xianyucoder.cn/2019/03/19/Docker网络管理复习/index.html">
 <meta property="og:site_name" content="咸鱼学Python">
-<meta property="og:description" content="为什么需要容器的网络管理？容器的网络默认与宿主机、与其他容器相互隔离，且容器中可以运行一些网络应用，比如nginx、web应用、数据库等，如果需要让外部也可以访问这些容器中运行的网络应用，那么就需要配置网络来实现。 同样的，不同需求下，容器与宿主机的通信有不同的业务状态这时候就需要容器网络管理以达成管理不同业务下相关的网络配置。 Docker中的网络驱动模式有那些？bridge network(网">
+<meta property="og:description" content="为什么需要容器的网络管理？容器的网络默认与宿主机、与其他容器相互隔离，且容器中可以运行一些网络应用，比如nginx、web应用、数据库等，如果需要让外部也可以访问这些容器中运行的网络应用，那么就需要配置网络来实现。 同样的，不同需求下，容器与宿主机的通信有不同的业务状态这时候就需要容器网络管理以达成管理不同业务下相关的网络配置。 Docker中的网络驱动模式有那些？bridge network(">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://ws1.sinaimg.cn/mw690/005MnFO1gy1fzmr8izeo9j31dy12sdte.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/mw690/005MnFO1gy1fzmqzx4isqj31280mwwgj.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/mw690/005MnFO1gy1fzmr0f7kp0j30ww0d8gn2.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/mw690/005MnFO1gy1fzmr0upi9ij30vy0lkgmk.jpg">
-<meta property="og:updated_time" content="2019-04-06T11:57:15.886Z">
+<meta property="og:image" content="http://tc.xianyucoder.cn/blog20190821223443.png">
+<meta property="og:image" content="http://tc.xianyucoder.cn/blog005MnFO1gy1fzmr8izeo9j31dy12sdte.png">
+<meta property="og:image" content="http://tc.xianyucoder.cn/blog005MnFO1gy1fzmqzx4isqj31280mwwgj.png">
+<meta property="og:image" content="http://tc.xianyucoder.cn/blog005MnFO1gy1fzmr0f7kp0j30ww0d8gn2.png">
+<meta property="og:image" content="http://tc.xianyucoder.cn/blog005MnFO1gy1fzmr0upi9ij30vy0lkgmk.png">
+<meta property="og:updated_time" content="2019-08-21T14:49:07.621Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Docker网络">
-<meta name="twitter:description" content="为什么需要容器的网络管理？容器的网络默认与宿主机、与其他容器相互隔离，且容器中可以运行一些网络应用，比如nginx、web应用、数据库等，如果需要让外部也可以访问这些容器中运行的网络应用，那么就需要配置网络来实现。 同样的，不同需求下，容器与宿主机的通信有不同的业务状态这时候就需要容器网络管理以达成管理不同业务下相关的网络配置。 Docker中的网络驱动模式有那些？bridge network(网">
-<meta name="twitter:image" content="https://ws1.sinaimg.cn/mw690/005MnFO1gy1fzmr8izeo9j31dy12sdte.jpg">
+<meta name="twitter:description" content="为什么需要容器的网络管理？容器的网络默认与宿主机、与其他容器相互隔离，且容器中可以运行一些网络应用，比如nginx、web应用、数据库等，如果需要让外部也可以访问这些容器中运行的网络应用，那么就需要配置网络来实现。 同样的，不同需求下，容器与宿主机的通信有不同的业务状态这时候就需要容器网络管理以达成管理不同业务下相关的网络配置。 Docker中的网络驱动模式有那些？bridge network(">
+<meta name="twitter:image" content="http://tc.xianyucoder.cn/blog20190821223443.png">
 
 
 
@@ -133,7 +134,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/03/19/Docker网络管理复习/">
+  <link rel="canonical" href="http://www.xianyucoder.cn/2019/03/19/Docker网络管理复习/">
 
 
 
@@ -316,11 +317,11 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/19/Docker网络管理复习/">
+    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2019/03/19/Docker网络管理复习/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="煌金">
-      <meta itemprop="description" content="不想翻身的咸鱼不是好的程序猿。">
+      <meta itemprop="description" content="Stay Hungry, Stay Foolish.">
       <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
@@ -375,7 +376,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-04-06 19:57:15" itemprop="dateModified" datetime="2019-04-06T19:57:15+08:00">2019-04-06</time>
+                <time title="修改时间：2019-08-21 22:49:07" itemprop="dateModified" datetime="2019-08-21T22:49:07+08:00">2019-08-21</time>
               
             
           </span>
@@ -415,6 +416,34 @@
 		  
 
           
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">6.9k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">11 分钟</span>
+              
+            </div>
+          
 
           
 
@@ -431,7 +460,8 @@
       
 
       
-        <h4 id="为什么需要容器的网络管理？"><a href="#为什么需要容器的网络管理？" class="headerlink" title="为什么需要容器的网络管理？"></a>为什么需要容器的网络管理？</h4><p>容器的网络默认与宿主机、与其他容器相互隔离，且容器中可以运行一些网络应用，比如nginx、web应用、数据库等，如果需要让外部也可以访问这些容器中运行的网络应用，那么就需要配置网络来实现。</p>
+        <p><img src="http://tc.xianyucoder.cn/blog20190821223443.png" alt></p>
+<h4 id="为什么需要容器的网络管理？"><a href="#为什么需要容器的网络管理？" class="headerlink" title="为什么需要容器的网络管理？"></a>为什么需要容器的网络管理？</h4><p>容器的网络默认与宿主机、与其他容器相互隔离，且容器中可以运行一些网络应用，比如nginx、web应用、数据库等，如果需要让外部也可以访问这些容器中运行的网络应用，那么就需要配置网络来实现。</p>
 <p>同样的，不同需求下，容器与宿主机的通信有不同的业务状态这时候就需要容器网络管理以达成管理不同业务下相关的网络配置。</p>
 <h4 id="Docker中的网络驱动模式有那些？"><a href="#Docker中的网络驱动模式有那些？" class="headerlink" title="Docker中的网络驱动模式有那些？"></a>Docker中的网络驱动模式有那些？</h4><p>bridge network(网桥)模式:默认的网络模式，类似虚拟机的nat模式</p>
 <p>host network(主机)模式:容器与宿主机之间的网络无隔离，即容器直接使用宿主机网络</p>
@@ -456,7 +486,7 @@
 <p>docker network inspect [参数] 网络</p>
 <p>docker inspect [参数] 网络</p>
 <p>常用参数:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-f 根据format输出结果</span><br></pre></td></tr></table></figure></p>
-<p><img src="https://ws1.sinaimg.cn/mw690/005MnFO1gy1fzmr8izeo9j31dy12sdte.jpg" alt></p>
+<p><img src="http://tc.xianyucoder.cn/blog005MnFO1gy1fzmr8izeo9j31dy12sdte.png" alt></p>
 <h5 id="使用网络-docker-run"><a href="#使用网络-docker-run" class="headerlink" title="使用网络(docker run)"></a>使用网络(docker run)</h5><p>命令格式:docker run/create –network 网络</p>
 <p>注意:默认情况下，docker创建或启动容器时，会默认使用名为bridge的网络</p>
 <h5 id="网络连接与断开-docker-network-connect-disconnect"><a href="#网络连接与断开-docker-network-connect-disconnect" class="headerlink" title="网络连接与断开(docker network connect /disconnect)"></a>网络连接与断开(docker network connect /disconnect)</h5><p>命令格式:</p>
@@ -473,7 +503,7 @@
 <li>每一容器具有单独的IP</li>
 <li>bridge网络模式下宿主机与容器服务使用的端口可以重复</li>
 </ul>
-<p><img src="https://ws1.sinaimg.cn/mw690/005MnFO1gy1fzmqzx4isqj31280mwwgj.jpg" alt="bridge原理示意图"></p>
+<p><img src="http://tc.xianyucoder.cn/blog005MnFO1gy1fzmqzx4isqj31280mwwgj.png" alt></p>
 <ol start="2">
 <li>bridge网络模式下的端口映射<br>根据上面关于bridge的特点我们可以知道访问bridge网络模式的设备，需要端口映射。</li>
 </ol>
@@ -487,11 +517,11 @@
 <li>外部可以直接访问容器，不需要端口映射</li>
 <li>容器IP就是宿主机的IP</li>
 </ul>
-<p><img src="https://ws1.sinaimg.cn/mw690/005MnFO1gy1fzmr0f7kp0j30ww0d8gn2.jpg" alt="host网络模式示意图"></p>
+<p><img src="http://tc.xianyucoder.cn/blog005MnFO1gy1fzmr0f7kp0j30ww0d8gn2.png" alt></p>
 <p>除了普通的host网络模式外，同样还有特殊版本的host网络模式(container网络模式)。</p>
 <p>container网络模式的特点:</p>
 <p>其实就是容器共享其他容器的网络,相当于该容器,在网络层面上，将其他容器作为“主机”。它们之间的网络没有隔离。</p>
-<p><img src="https://ws1.sinaimg.cn/mw690/005MnFO1gy1fzmr0upi9ij30vy0lkgmk.jpg" alt="container网络模式"></p>
+<p><img src="http://tc.xianyucoder.cn/blog005MnFO1gy1fzmr0upi9ij30vy0lkgmk.png" alt></p>
 <p>container网络模式的使用:</p>
 <p>docker run/create –network container:容器</p>
 <h5 id="none、overlay与macvlan网络模式"><a href="#none、overlay与macvlan网络模式" class="headerlink" title="none、overlay与macvlan网络模式"></a>none、overlay与macvlan网络模式</h5><p>none网络模式的特点:</p>
@@ -620,7 +650,7 @@
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
               <p class="site-author-name" itemprop="name">煌金</p>
-              <p class="site-description motion-element" itemprop="description">不想翻身的咸鱼不是好的程序猿。</p>
+              <p class="site-description motion-element" itemprop="description">Stay Hungry, Stay Foolish.</p>
           </div>
 
           
@@ -752,7 +782,21 @@
   <span class="author" itemprop="copyrightHolder">煌金</span>
 
   
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+    <span title="站点总字数">176k</span>
+  
 
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+    <span title="站点阅读时长">4:53</span>
   
 </div>
 
