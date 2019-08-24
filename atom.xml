@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>咸鱼学Python</title>
+  <title>咸鱼自我满足的日常</title>
   
-  <subtitle>Talk is cheap. Show me your code</subtitle>
+  <subtitle>You See See You, One Day Day.</subtitle>
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.xianyucoder.cn/"/>
