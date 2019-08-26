@@ -1,6 +1,174 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[Apk打包流程梳理和加载流程学习]]></title>
+    <url>%2F2019%2F08%2F26%2F%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%AD%A6%E4%B9%A0-apk%E6%89%93%E5%8C%85%E6%B5%81%E7%A8%8B%E6%A2%B3%E7%90%86%2F</url>
+    <content type="text"><![CDATA[想要学习逆向必须先熟悉APP编译的流程。 安卓加载流程java 代码 – &gt; 加载布局文件 –&gt; 资源文件 资料参考链接： https://juejin.im/entry/58b78d1b61ff4b006cd47e5b 新版官网示意图 编译器将您的源代码转换成 DEX（Dalvik Executable) 文件（其中包括运行在 Android 设备上的字节码），将所有其他内容转换成已编译资源。 APK 打包器将 DEX 文件和已编译资源合并成单个 APK。不过，必须先签署 APK，才能将应用安装并部署到 Android 设备上。 APK 打包器使用调试或发布密钥库签署您的 APK： 如果您构建的是调试版本的应用（即专用于测试和分析的应用），打包器会使用调试密钥库签署您的应用。Android Studio 自动使用调试密钥库配置新项目。 如果您构建的是打算向外发布的发布版本应用，打包器会使用发布密钥库签署您的应用。要创建发布密钥库，请阅读在 Android Studio 中签署您的应用 在生成最终 APK 之前，打包器会使用 zipalign 工具对应用进行优化，减少其在设备上运行时的内存占用。 旧版官网示意图 通过aapt打包res资源文件，生成R.java、resources.arsc和res文件（二进制 &amp; 非二进制如res/raw和pic保持原样） 处理.aidl文件，生成对应的Java接口文件 通过Java Compiler编译R.java、Java接口文件、Java源文件，生成.class文件 通过dex命令，将.class文件和第三方库中的.class文件处理生成classes.dex 通过apkbuilder工具，将aapt生成的resources.arsc和res文件、assets文件和classes.dex一起打包生成apk 通过Jarsigner工具，对上面的apk进行debug或release签名 通过zipalign工具，将签名后的apk进行对齐处理。 安卓项目的文件结构与安卓apk的文件结构存在着一一对应的关系。 安卓应用开发的本质是：将源代码和各种资源文件编译整合成一个apk。 安卓逆向的本质是：想办法将apk转化为源代码和资源文件。 简单来说，apk就是一个带有签名的zip格式的压缩包，签名为了保护开发者的权益和标识apk。做为android逆向学习的第一步，了解apk的文件结构和生成过程是很有必要的。为了提升apk的安全性能，现在很多安卓应用程序的核心代码都采用NDK开发，所以生成的apk中会多出一个lib文件夹用于存放so文件。]]></content>
+      <categories>
+        <category>App逆向</category>
+      </categories>
+      <tags>
+        <tag>打包流程</tag>
+        <tag>加载流程</tag>
+        <tag>APP编译</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[App逆向实基础学习]]></title>
+    <url>%2F2019%2F08%2F26%2F%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%AD%A6%E4%B9%A01-%E9%80%86%E5%90%91%E5%9F%BA%E7%A1%80%2F</url>
+    <content type="text"><![CDATA[常见加密算法编码 escape unescape encodeURIComponent decodeURIComponent Base64 所有的数据都能被编码为只用65个字符就能表示的文本。标准的Base64每行为76个字符，每行末尾添加一个回车换行符(\r\n)。不论每行是否满76个字符，都要添加一个回车换行符。 65字符：A~Z a~z 0~9 + / =URL Base64算法中，为了安全，会把 + 替换成 - ，把 / 替换成 _= 有时候用 ~ 或 . 代替 Base64的应用密钥,密文,图片,数据简单加密或者预处理 Base64编码解码与btoa、atob Hex 二进制数据最常用的一种表示方式。 用0-9 a-f 16个字符表示。每个十六进制字符代表4bit。也就是2个十六进制字符代表一个字节。 在实际应用中，尤其在密钥初始化的时候，一定要分清楚自己传进去的密钥是哪种方式编码的，采用对应方式解析，才能得到正确的结果 单向散列函数(消息摘要算法) 不管明文多长，散列后的密文定长 明文不一样，散列后结果一定不一样 散列后的密文不可逆 一般用于校验数据完整性、签名 sign 由于密文不可逆，所以后台无法还原，也就是说他要验证，会在后台以跟前台一样的方式去重新签名一遍。也就是说他会把源数据和签名后的值一起提交到后台。所以我们要保证在签名时候的数据和提交上去的源数据一致,这种算法特喜欢在内部加入时间戳 常见算法 MD5 SHA1 SHA256 SHA512 HmacMD5 HmacSHA1 HmacSHA256 加密算法加密和解密的过程是可逆的 对称加密算法 加密/解密使用相同的密钥 DES 数据加密标准 3DES TripleDES DESede AES 高级加密标准 根据密钥长度不同又分为AES-128 AES-192 AES-256 其中AES-192 AES-256在Java中使用需获取无政策限制权限文件 CryptoJS提供ECB,CBC,CFB,OFB,CTR五种模式填充提供NoPadding ZeroPadding Pkcs7(Pkcs5) Iso10126 Iso97971 AnsiX923 非对称加密算法 RSA 使用公钥加密，使用私钥解密 公钥是公开的，私钥保密 加密处理安全，但是性能极差，单次加密长度有限制 pkcs1padding 明文最大字节数为密钥字节数-11密文与密钥等长 NoPadding 明文最大字节数为密钥字节数 密文与密钥等长 RSA既可用于数据交换，也可用于数据校验 数据校验通常结合消息摘要算法 MD5withRSA 等 两种加密算法常见结合套路 随机生成密钥 密钥用于AES/DES/3DES加密数据 RSA对密钥加密 提交加密后的密钥和加密后的数据给服务器 APK基本结构 lib:各种平台下使用的对应的so文件 META-INF文件夹:存放工程一些属性文件 CERT.RSA:公钥和加密算法描述 CERT.SF:加密文件，他是使用私钥对摘要明文加密后得到的密文信息,只有使用私钥配对的公钥才能解密该文件 MANIFEST.MF:程序清单文件，他包含包中所有文件的摘要明文 resource.arsc:资源加密(语言包)对res目录下的资源的一个索引文件,保存了原工程中strings.xml等文件内容 drawable:图片 layout:布局 menu:菜单 AndriodMainfest.xml:清单文件(图标、界面、权限、入口),安卓工程的基础配置属性文件。 classes.dex:java代码编译得到的Dalvik VM能直接执行的文件 assets:资源文件(图片、音频、数据库、网页、配置文件等) res:资源文件，需要编译 res目录与assets目录区别在哪？ res目录下的资源文件在编译时会自动生成索引文件(R.java),在java代码中用R.xxx.yyy来引用 asset目录下的资源文件不需要生成索引，在java代码中需要用AssetManager中访问。 一般来说,除了音频和视频资源(需要放在raw或asset下),用java开发的安卓工程使用到的资源文件都会放到res下；使用c++游戏引擎的资源文件均需要放在asset下。 JVM、DVM与ART JVM:Java虚拟机，运行的是.java文件编译后的.class文件 DVM:Android4.4及以前使用的都是Dalvik虚拟机，我们知道Apk在打包的过程中会先将java等源码通过javac编译成.class文件，但是我们的Dalvik虚拟机只会执行.dex文件，这个时候dx会将.class文件转换成Dalvik虚拟机执行的.dex文件。Dalvik虚拟机在启动的时候会先将.dex文件转换成快速运行的机器码，又因为65535这个问题，导致我们在应用冷启动的时候有一个合包的过程，最后导致的一个结果就是我们的app启动慢，这就是Dalvik虚拟机的JIT特性。 Dalvik是google专门为安卓操作系统设计的一个虚拟机，经过深度的优化,虽然安卓上的程序是使用java来开发的，但是Dalvik和标准的java虚拟机JVM还是两回事,Dalvik VM是基于寄存器的，而JVM是基于栈的；Dalvik有专属的文件执行格式dex,JVM则执行的是java字节码。 通过Dalvik的字节码我们不能直接看到原来的逻辑代码,这是需要借助如Apktool或dex2jar+jd-gui工具来帮助查看,但是注意的是最终我们修改APK需要操作的是.smali文件，而不是导出来的java文件重新编译。 ART:ART虚拟机是在Android5.0才开始使用的Android虚拟机，ART虚拟机必须要兼容Dalvik虚拟机的特性，但是ART有一个很好的特性AOT（ahead of time），这个特性就是我们在安装APK的时候就将dex直接处理成可直接供ART虚拟机使用的机器码，ART虚拟机将.dex文件转换成可直接运行的.oat文件，ART虚拟机天生支持多dex，所以也不会有一个合包的过程，所以ART虚拟机会很大的提升APP冷启动速度。Xposed hook的是Java代码，所以Xposed不支持5.0以及以上系统。 安卓分区Android通常有以下分区（用df 来查看分区情况） System分区: 就是我们刷ROM的分区 Data分区: 分区就是我们装APK的分区 Catch分区: 是缓存分区 SDCard分区: 就是挂载的SD卡。 data分区常见目录：app、system、data、local、misc data/data目录存放的是所有APK程序数据的目录，每个APK对就一个自己的Data目录，就是在data/data/目录下，会产生一个跟 Package一样的目录。比如有一个APK,它的包名叫com.test.hello则,在data/data/目录下会有一个 com.test.hello的目录,这个APK只能操作此目录,不能操作其它APK的目录 data/app目录用户安装的APK放在这里。我们如果把APK放入这个文件夹下面的话，就算安装好了。这就叫静默安装。不用管APK文件里面的lib目录下的库文件，系统会自动帮我们放入调用库 data/misc目录保存WIFI帐号，VPN设置信息等。比如保存了一个WIFI连接帐号，则此目录下的WIFI目录下面wpa_supplicant.conf可以查看到 system分区常用目录：app、lib、xbin、bin、media、framework system/app目录存放系统自带的APK。将APK放入到System/app目录下，也是静默安装 system/lib目录存放APK程序用到的库文件 system/bin目录和system/xbin目录存放的是shell命令 system/framework目录启用Android系统所用到框架，如一些jar文件 sd卡目录：/sdcard /mnt/sdcard]]></content>
+      <categories>
+        <category>App逆向</category>
+      </categories>
+      <tags>
+        <tag>app逆向</tag>
+        <tag>基础</tag>
+        <tag>编码</tag>
+        <tag>加密</tag>
+        <tag>apk基本结构</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[App签名]]></title>
+    <url>%2F2019%2F08%2F26%2F%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%AD%A6%E4%B9%A01.2-apk%E7%AD%BE%E5%90%8D%2F</url>
+    <content type="text"><![CDATA[什么是签名？如果这个问题不是放在Android开发中来问，如果是放在一个普通的版块，我想大家都知道签名的含义。可往往就是将一些生活中常用的术语放在计算机这种专业领域，大家就开始迷惑了。计算机所做的事情，或者说编程语言所做的事情，不正是在尽可能地模拟现实吗？所以，计算机中所说的签名和生活中所说的签名在本质上是一样的，它所起到的作用也是一致的！ 为什么要给Android应用程序签名？如果只能用一句简单的话语来回答这个问题的话，我会说：“这是Android系统所要求的”。Android系统要求每一个Android应用程序必须要经过数字签名才能够安装到系统中，也就是说如果一个Android应用程序没有经过数字签名，是没有办法安装到系统中的！Android通过数字签名来标识应用程序的作者和在应用程序之间建立信任关系，不是用来决定最终用户可以安装哪些应用程序。这个数字签名由应用程序的作者完成，并不需要权威的数字证书签名机构认证，它只是用来让应用程序包自我认证的。 为什么我开发的Android应用程序没有做什么签名也能在模拟器和手机上运行？你没有给Android应用程序签名并不代表Android应用程序没有被签名。为了方便我们开发调试程序，ADT会自动的使用debug密钥为应用程序签名。debug密钥？它在哪？debug密钥是一个名为debug.keystore的文件，它的位置：系统盘符:/Documents and Settings/liufeng/.android/debug.keystore liufeng对应于你自己的windows操作系统用户名，怎么样，是不是已经找到它了。这也就意味着，如果我们想拥有自己的签名，而不是让ADT帮我们签名的话，我们也要有一个属于自己的密钥文件（*.keystore）。 如果你以前的程序是采用默认签名的方式（即debug签名），一旦换了新的签名应用将不能覆盖安装，必须将原先的程序卸载掉，才能安装上。因为程序覆盖安装主要检查两点：1）两个程序的入口Activity是否相同。两个程序如果包名不一样，即使其它所有代码完全一样，也不会被视为同一个程序的不同版本；2）两个程序所采用的签名是否相同。如果两个程序所采用的签名不同，即使包名相同，也不会被视为同一个程序的不同版本，不能覆盖安装。另外，可能有人可能会认为反正debug签名的应用程序也能安装使用，那也没有必要自己签名了嘛。千万不要这样想，debug签名的应用程序有这样两个限制，或者说风险：1）debug签名的应用程序不能在Android Market上架销售，它会强制你使用自己的签名； 2）debug.keystore在不同的机器上所生成的可能都不一样，就意味着如果你换了机器进行apk版本升级，那么将会出现上面那种程序不能覆盖安装的问题。不要小视这个问题，如果你开发的程序只有你自己使用，当然无所谓，卸载再安装就可以了。但要是你的软件有很多使用客户，这就是大问题了，就相当于软件不具备升级功能！]]></content>
+      <categories>
+        <category>App逆向</category>
+      </categories>
+      <tags>
+        <tag>app逆向</tag>
+        <tag>签名</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[App逆向之smali学习]]></title>
+    <url>%2F2019%2F08%2F26%2F%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%AD%A6%E4%B9%A02-smali%E8%AF%AD%E6%B3%95%2F</url>
+    <content type="text"><![CDATA[smali文件什么是smali文件？Smali，Baksmali分别是指安卓系统里的Java虚拟机（Dalvik）所使用的一种。dex格式文件的汇编器，反汇编器。其语法是一种宽松式的Jasmin/dedexer语法，而且它实现了.dex格式所有功能（注解，调试信息，线路信息等） 当我们对APK文件进行反编译后，便会生成此类的文件，小编在此对smali文件进行简要的介绍。其中在Davlik字节码中，寄存器都是32位的，能够支持任何类型，64位类型（Long/Double）用2个寄存器表示；Dalvik字节码有两种类型：原始类型；引用类型（包括对象和数组） 原始类型1234567891011B---byteC---charD---doubleF---floatI---intJ---longS---shortV---voidZ---boolean[XXX---arrayLxxx/yyy---object 这里解析下最后两项，数组的表示方式是: 在基本类型前加上前中括号“[”，例如int数组和float数组分别表示为：[I、[F；对象的表示则以L作为开头，格式是LpackageName/objectName;（注意必须有个分号跟在最后），例如String对象在smali中为：Ljava/lang/String;，其中java/lang对应java.lang包，String就是定义在该包中的一个对象。 或许有人问，既然类是用LpackageName/objectName;来表示，那类里面的内部类又如何在smali中引用呢？答案是：LpackageName/objectName$subObjectName;。也就是在内部类前加“$”符号，关于“$”符号更多的规则将在后面谈到。 方法的定义 方法的定义一般为： 1Func-Name (Para-Type1Para-Type2Para-Type3...)Return-Type 注意参数与参数之间没有任何分隔符12345671. hello ()V --&gt; void hello()2. hello (III)Z --&gt; boolean hello(int, int, int)3. hello (Z[I[ILjava/lang/String;J)Ljava/lang/String;--&gt;String hello (boolean, int[], int[], String, long) Smali基本语法1234567891011121314.field private isFlag:z 定义变量.method 方法.parameter 方法参数.prologue 方法开始.line 123 此方法位于第123行invoke-super 调用父函数const/high16 v0, 0x7fo3 把0x7fo3赋值给v0invoke-direct 调用函数return-void 函数返回void.end method 函数结束new-instance 创建实例iput-object 对象赋值iget-object 调用对象invoke-static 调用静态函数 smali条件分支1234567891011121314条件跳转分支：&quot;if-eq vA, vB, :cond_**&quot; 如果vA等于vB则跳转到:cond_**&quot;if-ne vA, vB, :cond_**&quot; 如果vA不等于vB则跳转到:cond_**&quot;if-lt vA, vB, :cond_**&quot; 如果vA小于vB则跳转到:cond_**&quot;if-ge vA, vB, :cond_**&quot; 如果vA大于等于vB则跳转到:cond_**&quot;if-gt vA, vB, :cond_**&quot; 如果vA大于vB则跳转到:cond_**&quot;if-le vA, vB, :cond_**&quot; 如果vA小于等于vB则跳转到:cond_**&quot;if-eqz vA, :cond_**&quot; 如果vA等于0则跳转到:cond_**&quot;if-nez vA, :cond_**&quot; 如果vA不等于0则跳转到:cond_**&quot;if-ltz vA, :cond_**&quot; 如果vA小于0则跳转到:cond_**&quot;if-gez vA, :cond_**&quot; 如果vA大于等于0则跳转到:cond_**&quot;if-gtz vA, :cond_**&quot; 如果vA大于0则跳转到:cond_**&quot;if-lez vA, :cond_**&quot; 如果vA小于等于0则跳转到:cond_** 深入smaliSmali中的包信息12345678.class public Lcom/aaaaa; .super Lcom/bbbbb;.source &quot;ccccc.java&quot;它是com.aaaaa这个package下的一个类（第1行）继承自com.bbbbb这个类（第2行）这是一个由ccccc.java编译得到的smali文件（第3行） Smali中的声明 一般来说在Smali文件中是这个样子的： 12345# annotations.annotation systemLdalvik/annotation/MemberClasses; value = &#123; Lcom/aaa$qqq;, Lcom/aaa$www; &#125; .end annotation 这个声明是内部类的声明：aaa这个类它有两个成员内部类——qqq和www，内部类将在后面小节中会有提及。 Smali的成员变量 成员变量格式是:.field public/private [static] [final] varName:&lt;类型&gt; 对于不同的成员变量也有不同的指令:一般来说，获取的指令有：iget、sget、iget-boolean、sget-boolean、iget-object、sget-object等。 操作的指令有：iput、sput、iput-boolean、sput-boolean、iput-object、sput-object等。没有“-object”后缀的表示操作的成员变量对象是基本数据类型，带“-object”表示操作的成员变量是对象类型，特别地，boolean类型则使用带“-boolean”的指令操作。 实例: 1sget-object v0, Lcom/aaa;-&gt;ID:Ljava/lang/String; sget-object就是用来获取变量值并保存到紧接着的参数的寄存器中，本例中，它获取ID这个String类型的成员变量并放到v0这个寄存器中。 注意：前面需要该变量所属的类的类型，后面需要加一个冒号和该成员变量的类型，中间是“-&gt;”表示所属关系。 1iget-object v0, p0, Lcom/aaa;-&gt;view:Lcom/aaa/view; 可以看到iget-object指令比sget-object多了一个参数，就是该变量所在类的实例，在这里就是p0即“this”。 获取array的话我们用aget和aget-object，指令使用和上述一致 put指令的使用和get指令是统一的如下：123const/4 v3, 0x0sput-object v3, Lcom/aaa;-&gt;timer:Lcom/aaa/timer; 相当于：this.timer= null; 123.local v0, args:Landroid/os/Message; const/4 v1, 0x12 iput v1, v0, Landroid/os/Message;-&gt;what:I 相当于：args.what = 18;（args是Message的实例） 寄存器知识寄存器是什么意思呢？ 在smali里的所有操作都必须经过寄存器来进行：本地寄存器用v开头数字结尾的符号来表示，如v0、v1、v2、…参数寄存器则使用p开头数字结尾的符号来表示，如p0、p1、p2、…特别注意的是，p0不一定是函数中的第一个参数，在非static函数中，p0代指“this”，p1表示函数的第一个参数，p2代表函数中的第二个参数…而在static函数中p0才对应第一个参数（因为Java的static方法中没有this方法) 12const/4 v0, 0x1iput-boolean v0, p0, Lcom/aaa;-&gt;IsRegistered:Z 我们来分析一下上面的两句smali代码，首先它使用了v0本地寄存器，并把值0x1存到v0中，然后第二句用iput-boolean这个指令把v0中的值存放到com.aaa.IsRegistered这个成员变量中。即相当于：this.IsRegistered= true;（上面说过，在非static函数中p0代表的是“this”，在这里就是com.aaa实例）。 ####]]></content>
+      <categories>
+        <category>App逆向</category>
+      </categories>
+      <tags>
+        <tag>app逆向</tag>
+        <tag>smali学习</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[聪明工作-如何从互联网中高效摄取信息？]]></title>
+    <url>%2F2019%2F08%2F26%2F%E8%81%AA%E6%95%8F%E5%B7%A5%E4%BD%9C-%E5%A6%82%E4%BD%95%E4%BB%8E%E4%BA%92%E8%81%94%E7%BD%91%E4%B8%AD%E6%9C%89%E9%AB%98%E6%95%88%E6%91%84%E5%8F%96%E4%BF%A1%E6%81%AF%EF%BC%9F%2F</url>
+    <content type="text"><![CDATA[如何从互联网中有高效摄取信息？信息源检查清单 信息源的目的（想学什么？） 信息源的质量 信息源的半衰期 = 信息的有效时间 信息源的稀缺程度 = 价值高低 信息的半衰期越久，稀缺程度越高，价值越大 对于信息源掌握主动权 （区分 push 和 pull ) = 人人喜闻乐见的，终会趋于庸俗。 警惕回声效应，应该从多角度获取信息 处理信息的能力 速读 通过关键词快速判读信息的价值 溯源 知道自己读过什么 = 稍后读 保留信息来源，随时进行回顾 吸纳 记录下来后应该对信息进行自我归纳，才能吸收成为自己的东西]]></content>
+      <categories>
+        <category>聪明工作</category>
+      </categories>
+      <tags>
+        <tag>信息摄取</tag>
+        <tag>互联网</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[聪明工作-如何做好任务管理？]]></title>
+    <url>%2F2019%2F08%2F26%2F%E8%81%AA%E6%98%8E%E5%B7%A5%E4%BD%9C-%E5%A6%82%E4%BD%95%E5%81%9A%E5%A5%BD%E4%BB%BB%E5%8A%A1%E7%AE%A1%E7%90%86%EF%BC%9F%2F</url>
+    <content type="text"><![CDATA[任务管理就是人生规划 长期任务（人生规划） 健康 教育 理财 中期任务（职业规划） 实现自我价值 短期任务（周计划，日计划） 双任务系统 今天必须做完的事（短期或中期任务） 对自己很重要的事情（长期任务） 理解任务管理的体系（LTF体系） list tag filter 高级任务管理注重的点在与 filter 的使用 OmniFocus &amp; Todoist 团队协作：Teambition 大量数据的任务管理：在线表格工具]]></content>
+      <categories>
+        <category>聪明工作</category>
+      </categories>
+      <tags>
+        <tag>任务管理</tag>
+        <tag>任务管理体系</tag>
+        <tag>LTF体系</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[聪明工作-如何做好文件管理？]]></title>
+    <url>%2F2019%2F08%2F26%2F%E8%81%AA%E6%98%8E%E5%B7%A5%E4%BD%9C-%E5%A6%82%E4%BD%95%E5%81%9A%E5%A5%BD%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86%EF%BC%9F%2F</url>
+    <content type="text"><![CDATA[文件管理文件的「生命周期」 = 新建 + 修改 + 移动 +删除 桌面文件整理 给新建文件好好取个名字 时间 + 类型 + 文件内容 + 版本号 做好桌面文件的关联和归档 合理安排桌面的文件夹 下载目录整理 推荐工具：Everything，Droplt，Total Commander]]></content>
+      <categories>
+        <category>聪明工作</category>
+      </categories>
+      <tags>
+        <tag>文件管理</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[聪明工作-如何做好笔记整理和思维导图？]]></title>
+    <url>%2F2019%2F08%2F26%2F%E8%81%AA%E6%98%8E%E5%B7%A5%E4%BD%9C-%E5%A6%82%E4%BD%95%E5%81%9A%E5%A5%BD%E7%AC%94%E8%AE%B0%E6%95%B4%E7%90%86%EF%BC%9F%2F</url>
+    <content type="text"><![CDATA[笔记整理了解笔记整理的基本原则 记重点 过于详细的记录反而拉低效率，只记关键字 先收集 把笔记变成收集箱，关键字要记成 可回溯 记下来的笔记以后要能找到 不同类型笔记工具的优缺 电子笔记整理更方便，可编辑，已分享 纸笔更自然 选择适合自己的笔记APP记完笔记推荐使用费曼学习法 思维导图为什么使用思维导图信息接受速度太快，导致「消化不良」 思维导图的逻辑简单理解 节约时间和精力 应用范围很广泛 头脑风暴 书摘 决策 商务提案 目标设定 思维导图的通用技巧最重要就是敢记，思维导图就是为了帮助我们整理思路，所以不要怕记错记杂 内容：多记，速记 形式：注意结构，清晰简明 只记关键词，避免整句记录 自创常用字标签，提高记录速度 如何选择思维导图 iThoughtsX Xmind MindNode（多文件导入导出）]]></content>
+      <categories>
+        <category>聪明工作</category>
+      </categories>
+      <tags>
+        <tag>笔记整理</tag>
+        <tag>思维导图</tag>
+        <tag>通用技巧</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[聪明工作-知识记忆与知识内化]]></title>
+    <url>%2F2019%2F08%2F26%2F%E8%81%AA%E6%98%8E%E5%B7%A5%E4%BD%9C-%E7%9F%A5%E8%AF%86%E8%AE%B0%E5%BF%86%E4%B8%8E%E7%9F%A5%E8%AF%86%E5%86%85%E5%8C%96%2F</url>
+    <content type="text"><![CDATA[知识记忆与知识内化人们对于记忆的三个误区 最好的记忆方法就是不断重复 存进电脑，就不用记在脑子里了 信息过载的时代，「多」并不是优势 买书如山倒，读书如抽丝 互联网的信息 != 硬盘里的文件 != 你掌握的知识 从海量信息中获得有价值的部分，并转化为自己内在的知识储备，才是要紧事 聪明人靠创意不靠记忆 不少所谓创意型的人才，只是所谓的搬运工 第一步，把信息记下来 知识内化的三个理论和九个方法理论1：必要难度理论我们应该让自己学习记忆的过程始终保持必要的难度，这种难度虽然在最初会减慢你的学习速度，但是长期来看对学习效果更加有利。 记忆的两种维度 存储强度 提取强度 记忆过程越容易，忘记的越快，反之则越难忘记 四个提升记忆内化效果的方法方法1：建立复述意识 你缺的是复述的习惯和意识 学习完你需要告诉自己，你看完这个你总得记住点什么 康奈尔笔记法 方法2：间隔学习法 间隔穿插着学习 方法3：费曼学习法 选择一个概念 把它讲给小孩子听（非专业人士）听 发现理解不到位的地方，返回原始材料继续学习 回顾和简化信息 方法4：为了记忆的输出 输出，是为了更好地强化自己的记忆 理论2：遗忘曲线理论 在日常学习工作的过程中学习和记忆的东西都是不断追加的，所以使用遗忘曲线学习记忆成本太高。 降低遗忘曲线使用成本的工具 Anki = ankisrs.net 理论3：记忆宫殿方法5：提升既视感 既视感，将抽象的知识、信息图像化 方法6：情绪记忆（调动感官，记忆过程中接受刺激的感官越多，在回忆的时候越清晰） 长期记忆系统 外显性记忆 陈述性记忆 语义记忆 情景记忆 内隐性记忆 程序性记忆 情绪记忆 方法7：用联想解除记忆封印 将数字的音，型，意，进行预编码 将图片两两组合为故事 一边回忆故事，一边逆向匹配数字 方法8：在记忆宫殿里讲故事]]></content>
+      <categories>
+        <category>聪明工作</category>
+      </categories>
+      <tags>
+        <tag>知识记忆</tag>
+        <tag>知识内化</tag>
+        <tag>费曼学习法</tag>
+        <tag>必要难度理论</tag>
+        <tag>间隔学习法</tag>
+        <tag>遗忘曲线</tag>
+        <tag>记忆宫殿</tag>
+        <tag>情绪记忆</tag>
+        <tag>知识储备</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[聪明工作-如何做好信息收集？]]></title>
+    <url>%2F2019%2F08%2F26%2F%E8%81%AA%E6%98%8E%E5%B7%A5%E4%BD%9C-%E5%A6%82%E4%BD%95%E9%AB%98%E6%95%88%E6%95%B0%E6%8D%AE%E6%94%B6%E9%9B%86%EF%BC%9F%2F</url>
+    <content type="text"><![CDATA[高效数据收集 数据收集 = 表单数据 问卷星 金数据 麦客 腾讯问卷 Airtable 数据处理 Excel 比较适合这个环节 数据应用]]></content>
+      <categories>
+        <category>聪明工作</category>
+      </categories>
+      <tags>
+        <tag>数据收集</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[聪明工作-邮件礼仪]]></title>
+    <url>%2F2019%2F08%2F26%2F%E8%81%AA%E6%98%8E%E5%B7%A5%E4%BD%9C-%E9%82%AE%E4%BB%B6%E7%A4%BC%E4%BB%AA%2F</url>
+    <content type="text"><![CDATA[邮件礼仪 邮箱的名称 邮箱的注册名，如「wuyanzu@163.com」 不太正式的邮箱注册名 纯数字，qq邮箱 包含其他数字，如生日：wyz19931023@163.com 较为稳妥的邮箱注册名 姓名拼音 拼音（姓）+英文名，Jack.Wu@163.com 对外展示的名字 邮箱收件时上方发件人的名字 拒绝使用QQ有一大原因是因为之前QQ邮箱之前默认使用QQ昵称当做发件人名称，有些过于非主流了 推荐使用 中文姓名 英文名+姓 如果经常频繁沟通，建议使用，公司名+职位+姓名 收件人、CC和BCC的区别 收件人：直接相关的人，大多数时候，你希望他们做出回应（听众） CC（抄送）：让对方了解下，不需要对方回应（旁听） BCC（密送）：被填入BCC一栏的收件人，将对其他收件人隐藏。（类似网易邮箱的群发单显） 谁要抄送，谁不需要抄送，请先搞清楚公司架构及事务的相关人员（问你的直接上级） 如何写好邮件？ 邮件正文 忌长篇大论，提倡ABC法则 A - Action（行动）：一句话总结希望收件人做的事情 B - Background（背景）：解释事件背景和细节 C - Close（结束语）：一两句结束邮件的礼貌用语 可以放上一些相关联系人，比如有哪件事情需要了解详情的时候应该联系谁+联系方式 间接等于 5W 法则 A = who，when，what，where B = why 邮件标题 内容：精简 Action 的内容 格式：在标题前面加上邮件类型 - 通知，请求 写邮件的顺序 附件：很容易在最后被忘记 正文：方便在正文中提及附件 标题：方便总结正文内容来起标题 收件人：写好内容，更容易判断收件人，CC等关系 关于附件的好习惯 千万别发一份邮件，正文只有几个字 建议在正文简要说明附件中的关键信息以及注意文件的格式 养成好的附件命名习惯 文件修改的日期 版本号 序列号等 自动回复如何设置 自动回复的错误用法 你的来信我已经收到。。。 自动回复的正确用法 休假或外出的时候才会用 阐述你正在休假 如果很急的话，可以联系谁（姓名 + 联系方式） 如果不是很急的话，你大概什么时间可以回复 邮件管理 遵循FAST法则管理 Filter 过滤 把符合规则的邮件自动归类到某个分类的文件夹下（如过滤器，过滤规则，来信分类等功能） Archive 归档 将已经阅读或已经处理的邮件转移到「归档」的文件夹下 Snooze 延后 不能马上处理或马上回复的邮件 适用于简单，稍后才需要完成的任务 Transfer 流转 大型任务清单，任务比较复杂，可能需要进一步细化和重新分配 这里的流转存在两种意思 一是在你的任务处理层面上的流转，比如流转细分到你的 todolist 或其他任务管理软件上 二是这个任务需要多人合作，比如会议结束后把邮件中汇总的任务细化分配给各个负责人 如何进一步整理邮件？ 文件夹 标签（标签的三个维度）- 以过滤器自动打标签 来源标签：以发件人所在的公司部门，或是外部合作方、客户的名字命名 类型标签：以邮件属性命名，如任务、通知、用户反馈、新闻订阅等 项目标签：以邮件所属项目名字命名 高级的邮件检索功能 *：匹配 AND：包含 -：排除 has:document - 找出带word文档的邮件 has:spreadsheet - 找出带有exceld的邮件 has:presentation - 找出带有ppt的邮件 参考 https://support.google.com/mail/answer/7190]]></content>
+      <categories>
+        <category>聪明工作</category>
+      </categories>
+      <tags>
+        <tag>邮件礼仪</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[聪明工作-遭遇裁员怎么办？]]></title>
+    <url>%2F2019%2F08%2F26%2F%E8%81%AA%E6%98%8E%E5%B7%A5%E4%BD%9C-%E8%A2%AB%E7%A6%BB%E8%81%8C%E4%B9%8B%E5%90%8E%E5%BA%94%E8%AF%A5%E5%81%9A%E4%BB%80%E4%B9%88%3F%2F</url>
+    <content type="text"><![CDATA[现在市场上被离职的方式形形色色,并不都是法律条款规定里的模式,所以有必要了解基本的法律规定,这里咸鱼分享一下在极客时间「白话法律42讲」里学习到的一些知识要点,希望在维权路上帮到你。 先引用周老师在专栏里的两个例子: 口头裁员有效吗？我国《劳动合同法》明确规定，劳动合同的签订、变更、解除都需要用书面的形式，公司应用书面通知 小蔡，而不能口头裁员。结合小蔡的描述，公司只是口头提出，但实际上双方没有解除劳动关系，劳动 合同也继续生效。 劳动关系存续期间，能否找新的工作，签新的劳动合同？虽然劳动关系继续，但是既然公司有裁员的意向，作为员工，提前找好新工作是无可厚非的，法律也不 禁止。但在上一份劳动合同解除之前，尽量不要签新的劳动合同，否则会让自已陷入被动。 比如说，原公司可能倒打一耙，以你“在劳动关系存续期间，签署新的劳动合同，严重影响工作”为由， 提出解除劳动合同，你反而成了过错方，得不到补偿。再或者，公司变卦，不放你走了，对下家公司你 就成了违约方。 如果公司不提出解除劳动合同，则需要继续工作； 如果公司依然是口头解除，不给书面文件，则可以取证（证据包括比较多，比如说工作证、工资 条、劳动合同、辞退相关证据、工资发放情况、录音录像、证人证言、社保等），依法提出解除劳 动合同，并要求经济补偿。 接下来再详细聊聊技术人应该知道的具体的事项。 什么是劳动合同解除?简单来说就是劳动合同规定的时间还没到,双方任意一方提出解除合同。所以这里就要分情况分析了: 协商解除 员工单方面解除 公司单方面解除 前两种情况这里就不细讲,一般不会有太多的坑,甚至在公司过错的前提下，员工还享有法定的解释权。(通常指公司未按时发放工资,未按时缴纳社保等) 这里需要注意的是第三点: 公司单方面解除劳动合同,在法律上只有三种情况下公司才可以单方面解除合同: 员工存在过错(违反公司制度、违法犯罪、简历弄虚作假等) 员工没有过错,但是在因为一些因素不能正常工作(患病、受伤(非工伤)、无法胜任工作、外部条件发生变化) 特殊情况下的经济性裁员 而这里的第三点才是我们关注的重点。 经济性裁员经济性裁员这里是指员工没有过错,公司单方面解除劳动合同。那么特殊情况下的经济性裁员又是什么东西呢？ 公司破产 公司经营困难 企业转产，技术革新 劳动合同订立时客观情况发生重大变化，导致合同不能继续履行的 裁员补偿了解完上面比较枯燥的概念问题,就到了关键的地方了,被离职什么情况下有补偿?被离职的补偿怎么算? 什么情况下有补偿? 由公司提出和员工协商一致解除劳动合同 由员工提出,理由是公司存在过错(通常指公司未按时发放工资,未按时缴纳社保等) 公司提前三十天解除合同,员工无过错 被离职的补偿怎么算? 每满一年支付一个月的工资 六个月以上没满一年，按一年计算,补偿一个月工资 不满半年，支付半个月工资 经济赔偿金怎么算?公司违反法律规定(公司是不能毫无理由的解除与劳动者的劳动合同的，否则就会要求给经济赔偿金)解除劳动合同。如: 员工在孕期，哺乳期,产期,在规定医疗期等特殊情况 公司没有合法理由,页面有按照法定的流程解除合同 公司要向员工支付经济赔偿金,经济赔偿金是上面计算出来金额乘二 其余情况的赔偿参考: https://www.66law.cn/laws/146137.aspx n + 1 是什么?经常在脉脉上看到有 n + 1之类的说法,这里的n就是上面的经济补偿金,1这里指的是公司没有提前三十天通知你就需要支付额外的1个月工资。 n一般按照前12个月的平均工资算,1是按照上个月工资算,且n最高为12,1最高不高于公司所在地年度职工平均工资的三倍,若高于则按三倍计算。 总结一下其实还有很多关于技术人应该懂得法律知识,建议大家不妨订阅学习一下,可以避开不少雷区。 之前咸鱼也写过一篇关于爬虫是否违规的一篇普法文,感兴趣的朋友可以看看: 看到这希望对于被离职,能有自己的一套应对策略,不会成为无头苍蝇,再之,没有遇到被离职的技术人也更应该注意提升自己。]]></content>
+      <categories>
+        <category>聪明工作</category>
+      </categories>
+      <tags>
+        <tag>裁员</tag>
+        <tag>维权</tag>
+        <tag>离职</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[App逆向实战和AndroidKiller简单使用]]></title>
+    <url>%2F2019%2F08%2F26%2F%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%AD%A6%E4%B9%A05-AndroidKiller%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8%E5%92%8C%E5%AE%9E%E6%88%98%2F</url>
+    <content type="text"><![CDATA[先聊聊为什么学习安卓逆向大数据的普及，好像没有一手数据收集能力就要落伍了似得，不少无关开发的岗位都加上需要初级数据采集的能力要求，越来越多的 title 加上 数据 的字眼提升逼格。 渐渐初级爬虫工程师的饭越来越不好吃，中高级的爬虫的招聘需求也添加上 JS 逆向+ APP 逆向的要求，所以有一手破签逆向的技术也越来越吃香。 APP逆向其实已经属于安全方面的内容，而我们爬虫工程师要做的其实远没有逆向工程师那么多和精，只要拿到请求中加密参数的加密方法，再用 Python 模拟加密即可。 为了面包，学习吧。 学习资源推荐关于逆向的前置知识，可以参考之前发过的几篇基础文章，同时咸鱼也推荐下面这些学习资源，希望能帮助你快速入门（伸手党福利？？？）： 吾爱破解入门教程集合贴：http://t.cn/Ai8hXHzs 推荐关注的博客： 尼古拉斯·赵四：https://blog.csdn.net/jiangwei0910410003 鬼哥：https://blog.csdn.net/guiguzi1110?viewmode=contents 天天记小本子上的lilac：https://blog.csdn.net/qq_38851536 推荐逆向书籍： 《Android软件安全与逆向分析》 《Android应用安全防护和逆向分析》 《JAVA加密与解密的艺术》第二版 推荐关注的公众号： 小周码字 编程美丽 妄为写代码 其实还有好多好多的资源，请善用搜索。 以上仅为我的个人推荐，大佬请无视~ 接下来是咸鱼动手跟着做的第一个项目，某个小游戏的付费破解，了解AndriodKiller逆向工具的使用。 AndriodKiller的简单使用和实战在使用这个逆向工具，需要先检查本地的 JAVA 开发环境是否安装。 命令行下输入： 1java -version -- 输出JAVA jdk 版本 如果出现无版本信息输出或其他报错请参照相关博客或后台回复 【逆向环境搭建】获取相关搭建视频。 接下来是 AndriodKiller 的安装了，在吾爱的网站上提供了相关的 绿色免安装版本，找到软件可以直接点击使用。 【良心】 打开界面后是下面这样的： 打开后第一件事是在 AndriodKiller 的配置中配置 jdk 的安装路径之后既可以通过拖入需要反编译的受害者，即可打开进行分析： 我们这次要完成一款小游戏的付费破解，我们先安装未破解的APP看看能不能通过未破解的APP找到思路。 通过一番把玩，发现进入支付流程后取消支付会弹出相应提示语，顺着这个思路我们在反编译后的文件中检索一下看能不能找到对应的代码： 我们点击进去看看，发现了我们搜索的字符串： 反编译的代码不太方便查看，我们可以通过查看还原为java代码理解相关的逻辑： 可以看到，还原后的代码中支付失败，支付取消在同一个方法中，支付成功的逻辑为单独一个方法。 所以我们可以试试通过直接把支付成功的代码逻辑直接替换到支付失败的那个方法中来破解支付 替换过后查看字符串，发现整个类文件中就只剩下支付成功的方法了。 保存文件之后我们编译一下试试是否成功吧。 编译后，控制台输入如下代表编译成功。 打开 APP - 商店 随便购买一个道具，但是不完成支付，点击取消支付，可以看到左上角的道具数量增加了。说明我们的操作是成功的。（为避免破解不成功或误操作导致的扣费，请使用未插卡的机器测试） OK，到这里我们就完成了第一个安卓APP的逆向破解，当然这个是非常简单的逆向项目。 Tip AndriodKiller 并不是万能的，有些项目是没办法反编译成功的，所以需要搭配其他的逆向工具使用 AndriodKiller 在第一次导入项目时，会一直卡在反编译成功，xxxx但是没有打开项目，需要收到重启AndriodKiller ，在工程中打开刚刚的项目。 AndriodKiller 转化为 java 代码时在 java 代码中是无法编辑的，需要返回到 smali 中修改，所以 smali语法相当关键，需要好好研究不要对 软件自带的 转换功能过多依赖，且在 smali 中修改后要记得 ctrl + s保存，之后再编译。 在编译过程中出现报错，报错日志大致如下： 12345678910111213141516171819202122232425262728293031当前 Apktool 使用版本：apktool_2.3.0正在编译 APK，请稍等...&gt;I: Using Apktool 2.3.0&gt;I: Smaling smali folder into classes.dex...&gt;I: Building resources...&gt;S: WARNING: Could not write to (C:\Users\i\AppData\Local\apktool\framework), using C:\Users\i\AppData\Local\Temp\ instead...&gt;S: Please be aware this is a volatile directory and frameworks could go missing, please utilize --frame-path if the default storage directory is unavailable&gt;W: E:\AndroidKiller_v1.3.1\projects\idm下载\Project\res\values-v23\styles.xml:8: error: Error retrieving parent for item: No resource found that matches the given name '@android:style/WindowTitle'.&gt;W: &gt;W: E:\AndroidKiller_v1.3.1\projects\idm下载\Project\res\values-v23\styles.xml:9: error: Error retrieving parent for item: No resource found that matches the given name '@android:style/WindowTitleBackground'.&gt;W: &gt;W: E:\AndroidKiller_v1.3.1\projects\idm下载\Project\res\values-v24\styles.xml:7: error: Error retrieving parent for item: No resource found that matches the given name '@android:style/Animation.DropDownUp'.&gt;W: &gt;W: E:\AndroidKiller_v1.3.1\projects\idm下载\Project\res\values-v24\styles.xml:8: error: Error retrieving parent for item: No resource found that matches the given name '@android:style/Animation.DropDownDown'.&gt;W: &gt;Exception in thread "main" brut.androlib.AndrolibException: brut.androlib.AndrolibException: brut.common.BrutException: could not exec (exit code = 1): [C:\Users\i\AppData\Local\Temp\brut_util_Jar_6839346043621878032.tmp, p, --min-sdk-version, 16, --target-sdk-version, 26, --version-code, 1, --version-name, 1.0, --no-version-vectors, -F, C:\Users\i\AppData\Local\Temp\APKTOOL8354570300607898895.tmp, -0, resources.arsc, -0, arsc, -I, C:\Users\i\AppData\Local\Temp\1.apk, -S, E:\AndroidKiller_v1.3.1\projects\idm下载\Project\res, -M, E:\AndroidKiller_v1.3.1\projects\idm下载\Project\AndroidManifest.xml]&gt; at brut.androlib.Androlib.buildResourcesFull(Androlib.java:485)&gt; at brut.androlib.Androlib.buildResources(Androlib.java:419)&gt; at brut.androlib.Androlib.build(Androlib.java:318)&gt; at brut.androlib.Androlib.build(Androlib.java:270)&gt; at brut.apktool.Main.cmdBuild(Main.java:224)&gt; at brut.apktool.Main.main(Main.java:75)&gt;Caused by: brut.androlib.AndrolibException: brut.common.BrutException: could not exec (exit code = 1): [C:\Users\i\AppData\Local\Temp\brut_util_Jar_6839346043621878032.tmp, p, --min-sdk-version, 16, --target-sdk-version, 26, --version-code, 1, --version-name, 1.0, --no-version-vectors, -F, C:\Users\i\AppData\Local\Temp\APKTOOL8354570300607898895.tmp, -0, resources.arsc, -0, arsc, -I, C:\Users\i\AppData\Local\Temp\1.apk, -S, E:\AndroidKiller_v1.3.1\projects\idm下载\Project\res, -M, E:\AndroidKiller_v1.3.1\projects\idm下载\Project\AndroidManifest.xml]&gt; at brut.androlib.res.AndrolibResources.aaptPackage(AndrolibResources.java:454)&gt; at brut.androlib.Androlib.buildResourcesFull(Androlib.java:471)&gt; ... 5 more&gt;Caused by: brut.common.BrutException: could not exec (exit code = 1): [C:\Users\i\AppData\Local\Temp\brut_util_Jar_6839346043621878032.tmp, p, --min-sdk-version, 16, --target-sdk-version, 26, --version-code, 1, --version-name, 1.0, --no-version-vectors, -F, C:\Users\i\AppData\Local\Temp\APKTOOL8354570300607898895.tmp, -0, resources.arsc, -0, arsc, -I, C:\Users\i\AppData\Local\Temp\1.apk, -S, E:\AndroidKiller_v1.3.1\projects\idm下载\Project\res, -M, E:\AndroidKiller_v1.3.1\projects\idm下载\Project\AndroidManifest.xml]&gt; at brut.util.OS.exec(OS.java:95)&gt; at brut.androlib.res.AndrolibResources.aaptPackage(AndrolibResources.java:448)&gt; ... 6 moreAPK 编译失败，无法继续下一步签名! 我的解决方案是：替换 AndriodKiller 目录下 bin\apktool\apktool 中的 ShakaApktool.jar 为更新的版本即可成功编译，签名。]]></content>
+      <categories>
+        <category>App逆向</category>
+      </categories>
+      <tags>
+        <tag>app逆向实战</tag>
+        <tag>逆向资源</tag>
+        <tag>AndroidKiller</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[App爬虫环境搭建]]></title>
     <url>%2F2019%2F04%2F07%2Fapp_spider%2F</url>
     <content type="text"><![CDATA[本文来讲讲APP抓包环境搭建。App抓包应该是每个爬虫工程师都避不开的话题,在之前我也写过关于自动参与「抽奖助手」抽奖的文章,当时使用的抓包工具是Charles,有需要的朋友可以翻下之前的文章。 App抓包原理 客户端向服务器发起HTTPS请求 抓包工具拦截客户端的请求，伪装成客户端向服务器进行请求 服务器向客户端（实际上是抓包工具）返回服务器的CA证书 抓包工具拦截服务器的响应，获取服务器证书公钥，然后自己制作一张证书，将服务器证书替换后发送给客户端。（这一步，抓包工具拿到了服务器证书的公钥） 客户端接收到服务器（实际上是抓包工具）的证书后，生成一个对称密钥，用抓包工具的公钥加密，发送给“服务器”（抓包工具） 抓包工具拦截客户端的响应，用自己的私钥解密对称密钥，然后用服务器证书公钥加密，发送给服务器。（这一步，抓包工具拿到了对称密钥） 服务器用自己的私钥解密对称密钥，向客户端（抓包工具）发送响应 抓包工具拦截服务器的响应，替换成自己的证书后发送给客户端 爬虫的本质就是「骗」过服务器,各种反反爬手段就是增强信任的过程,不停的让服务器相信你是自己人如果你被反爬了,就是你骗术不精,被发现了。 App数据好抓吗？App数据有易有难,目前我还是停留在简单的部分,这里简单说下我理解的(如果说错求放过): 简单: app的数据比web端数据更容易抓取，基本都是http、https协议，返回的数据格式也相对规整,大多是json格式 困难: 1.需要反编译的知识,需要分析加密算法 2.需要脱壳+反编译 3.需要破解各式各类的签名,证书。。 所以一个爬虫工程师慢慢就需要掌握以下技能: java编程基础 android编程基础 app逆向 app脱壳 破解加密 … 从入门到全栈 常用抓包工具fiddler mitmproxy Charles fiddler安装和使用下载:https://telerik-fiddler.s3.amazonaws.com/fiddler/FiddlerSetup.exe 安装:一路Next 主要界面介绍: 会话列表界面: 监控面板在点击会话列表界面的某个请求后会出现下面两个界面: 请求面板: 响应面板: 本地CA证书安装 点击 Tools - Options - HTTPS - 勾选勾选 Capture HTTPS CONNECTs，勾选 Decrypt HTTPS trafic，会弹出安装证书的提示。一路点是或确定安装即可。 重启fiddler，点击右侧Actions，能看一个下拉菜单，点击 Export Root Certificate to Desktop，此时证书会生成到桌面上，名为 FiddlerRoot.cer，点OK保存 点击安装 连接手机抓包需要的配置先设置PC端fiddler: 之后手机需要访问 本地主机IP + 设置的端口，安装证书，证书安装成功后即可抓包。 以上就是关于Fiddler的安装和简单使用,进阶使用还有很多骚操作, mitmproxy安装和使用mitmproxy在linux版本下和windows版本下略有不同。 linux下借助pip,可以一键安装:pip install mitmproxy windows 下需要安装Microsoft Visual C++ V14.0以上,之后再使用pip install mitmproxy安装 mitmproxy有三大组件: mitmproxy - linux下的抓包组件 mitmdump - python交互 mitmweb - windows下的可视化界面工具 在windows下仅支持后两种组件的使用。 证书配置在安装目录下可以看到以下这些文件: 文件名 文件简介 mitmproxy-ca.pem PEM格式的证书私钥 mitmproxy-ca-cert.pem PEM格式证书，适用于大多数非Windows平台 mitmproxy-ca-cert.p12 PKCS12格式的证书，适用于Windows平台 mitmproxy-ca-cert.cer 与mitmproxy-ca-cert.pem相同，只是改变了后缀，适用于部分Android平台 mitmproxy-dhparam.pem PEM格式的秘钥文件，用于增强SSL安全性 window安装证书双击mitmproxy-ca.p12,一路确定直至结束。期间会弹出警告点击“确认”即可。 Mac安装证书Mac下双击mitmproxy-ca-cert.pem即可弹出钥匙串管理页面，然后找到mitmproxy证书，打开其设置选项，选择“始终信任”即可 Android/iPhone安装证书方法一: 将mitmproxy-ca-cert.pem发送到手机上点击安装就可以了,苹果手机点击安装描述文件即可。 方法二: 在linux下启动 mitmproxy,命令为mitmproxy -p 8889,同时将手机代理设置为linux的IP地址与端口后访问mitm.it安装证书。 简单使用mitmproxy过滤功能的使用举例: 123456输入z,清除屏幕上全部的包输入f,进入编辑模式,可在最下面编辑条件,ESC或Enter退出编辑!(~c 200) #显示所有返回不是200的请求!(~c 200) &amp; ~d baidu.com #显示域名包含baidu.com,返回不是200的请求~m post &amp; ~u baidu #显示请求的链接里面包含baidu的post请求~d baidu.com (http://baidu.com) 过滤所有域名包含baidu.com (http://baidu.com)的包 mitmproxy断点功能的使用举例:123456789输入i,进入编辑模式,可在最下面编辑条件,ESC或Enter退出编辑断点的条件和过滤是一样的,符合条件的链接会被拦截~d baidu.com &amp; ~m get域名包含baidu.com的get 请求会被拦截按Enter进入详情页,在详情页输入e进入模式,可以修改各项数据完成后,回到请求显示列表,输入a,将请求放行.1.请求重放2.选中需要重放的请求,输入r可以重放请求,也可以先编辑后再重放3.输入Q可退出程序 mitmproxy经常配合appium使用: 首先我们需要写一个抓包的脚本,类似下面这个:12345678import jsondef response(flow): if 'aweme/v1/user/follower/list/' in flow.request.url: for user in json.loads(flow.response.text)['followers']: info = &#123;&#125; nfo['share_id'] = user['uid'] info['_id'] = user['short_id'] save_task(info) 注意:这里的方法名必须使用response 编写完抓包的脚本后,使用 mitmdump -p [port] -s [脚本文件] 启动,配合appium自动化脚本即可实现app自动化抓包。 Charles的使用之前写过了相关的实战,可以直接看下面的文章。 以上是我面试后的一点总结,希望对你有所帮助~]]></content>
@@ -492,8 +660,20 @@
         <category>爬虫</category>
       </categories>
       <tags>
-        <tag>Python</tag>
         <tag>爬虫</tag>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[request模拟登陆]]></title>
+    <url>%2F2018%2F09%2F01%2Frequets-login%2F</url>
+    <content type="text"><![CDATA[requests模拟登录获取本地cookie12345678import resession = requests.session()session.cookies = cookielib.LWPCookieJar(filename="cookies.txt")try: session.cookies.load(ignore_discard=True)except: print ("cookie未能加载") 123allow_redirects=False --禁止重定向session.cookies.save() --调用save方法保存cookie 手动输入验证码(实例)12345678910111213141516171819def get_captcha(): import time t = str(int(time.time()*1000)) captcha_url = "https://www.zhihu.com/captcha.gif?r=&#123;0&#125;&amp;type=login".format(t) t = session.get(captcha_url, headers=header) with open("captcha.jpg","wb") as f: f.write(t.content) f.close() from PIL import Image try: im = Image.open('captcha.jpg') im.show() im.close() except: pass captcha = input("输入验证码\n&gt;") return captcha]]></content>
+      <categories>
+        <category>爬虫</category>
+      </categories>
+      <tags>
+        <tag>爬虫</tag>
+        <tag>Python</tag>
       </tags>
   </entry>
   <entry>
@@ -508,18 +688,6 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[request模拟登陆]]></title>
-    <url>%2F2018%2F09%2F01%2Frequets-login%2F</url>
-    <content type="text"><![CDATA[requests模拟登录获取本地cookie12345678import resession = requests.session()session.cookies = cookielib.LWPCookieJar(filename="cookies.txt")try: session.cookies.load(ignore_discard=True)except: print ("cookie未能加载") 123allow_redirects=False --禁止重定向session.cookies.save() --调用save方法保存cookie 手动输入验证码(实例)12345678910111213141516171819def get_captcha(): import time t = str(int(time.time()*1000)) captcha_url = "https://www.zhihu.com/captcha.gif?r=&#123;0&#125;&amp;type=login".format(t) t = session.get(captcha_url, headers=header) with open("captcha.jpg","wb") as f: f.write(t.content) f.close() from PIL import Image try: im = Image.open('captcha.jpg') im.show() im.close() except: pass captcha = input("输入验证码\n&gt;") return captcha]]></content>
-      <categories>
-        <category>爬虫</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
-        <tag>爬虫</tag>
-      </tags>
-  </entry>
-  <entry>
     <title><![CDATA[初识Scrapy]]></title>
     <url>%2F2018%2F09%2F01%2Fscrapy1%2F</url>
     <content type="text"><![CDATA[初识Scrapy什么是Scrapy？Scrapy使用 Python 实现的一个开源爬虫框架，Scrapy基于 twisted这个高性能的事件驱动网络引擎框架，Scrapy爬虫拥有很高的性能。 Scrapy内置数据提取器（Selector），支持XPath和 Scrapy自己的 CSS Selector语法 并且支持正则表达式，方便从网页提取信息。 交互式的命令行工具，方便测试 Selector 和 debugging爬虫 支持将数据导出为 JSON，CSV，XML格式。 可推展性强，运行自己编写特定功能的插件 内置了很多拓展和中间件用于处理： cookies和 session HTTP的压缩，认证，缓存 robots.txt 爬虫深度限制 Scrapy流程图 其中： Scrapy Engine(引擎): 负责Spider、ItemPipeline、Downloader、Scheduler中间的通讯，信号、数据传递等。 Scheduler(调度器): 它负责接受引擎发送过来的Request请求，并按照一定的方式进行整理排列，入队，当引擎需要时，交还给引擎。 Downloader（下载器）：负责下载Scrapy Engine(引擎)发送的所有Requests请求，并将其获取到的Responses交还给Scrapy Engine(引擎)，由引擎交给Spider来处理， Spider（爬虫）：它负责处理所有Responses,从中分析提取数据，获取Item字段需要的数据，并将需要跟进的URL提交给引擎，再次进入Scheduler(调度器)， Item Pipeline(管道)：它负责处理Spider中获取到的Item，并进行进行后期处理（详细分析、过滤、存储等）的地方. Downloader Middlewares（下载中间件）：你可以当作是一个可以自定义扩展下载功能的组件。 Spider Middlewares（Spider中间件）：你可以理解为是一个可以自定扩展和操作引擎和Spider中间通信的功能组件（比如进入Spider的Responses;和从Spider出去的Requests） 制作 Scrapy 爬虫 的步骤?1234新建项目(scrapy startproject xxx)：新建一个新的爬虫项目明确目标（编写items.py）：明确你想要抓取的目标制作爬虫（spiders/xxspider.py）：制作爬虫开始爬取网页存储内容（pipelines.py）：设计管道存储爬取内容 如何安装Scrapy?在windows系统下安装Scrapy在windows 64bit系统下安装Scrapy需要安装以下依赖库： 123456pip install wheellxml-4.2.1-cp36-cp36m-win_amd64.whlpyOpenSSL-17.5.0-py2.py3-none-any.whlpywin32-221.win-amd64-py3.6.exeTwisted-17.9.0-cp36-cp36m-win_amd64.whlpip install scrapy 在linux下安装Scrapy系统版本为ubuntu 16.04 12sudo apt-get install build-essential python3-dev libssl-dev libffi-dev libxml2 libxml2-dev libxslt1-dev zlib1g-devpip install scrapy Scrapy文件结构我们在windows命令行模式下输入以下命令创建Scrapy项目： 1scrapy startproject 项目名称 可以看到创建了以下文件： 其中： 123456scrapy.cfg ：项目的配置文件xxSpider/ ：项目的Python模块，将会从这里引用代码xxSpider/items.py ：项目的目标文件xxSpider/pipelines.py ：项目的管道文件xxSpider/settings.py ：项目的设置文件xxSpider/spiders/ ：存储爬虫代码目录 Scrapy单文件demo创建完Scrapy项目，还是要上手实验一下才能更好的理解，所以我根据之前我在楼+课程中的学习笔记写了一个Scrapy单文件Demo，使用这个单文件Demo能快速爬取实验楼全部课程信息。首先看下单文件的内容结构： 1234567891011121314# -*- coding:utf-8 -*-import scrapyclass ShiyanlouCoursesSpider(scrapy.Spider): """ 所有 scrapy 爬虫需要写一个 Spider 类，这个类要继承 scrapy.Spider 类。在这个类中定义要请求的网站和链接、如何从返回的网页提取数据等等。 """ # 爬虫标识符号，在 scrapy 项目中可能会有多个爬虫，name 用于标识每个爬虫，不能相同 name = 'shiyanlou-courses' def start_requests(self): """ 需要返回一个可迭代的对象，迭代的元素是scrapy.Request对象，可迭代对象可以是一个列表或者迭代器，这样 scrapy 就知道有哪些网页需要爬取了。scrapy.Request接受一个 url 参数和一个 callback 参数，url 指明要爬取的网页，callback 是一个回调函数用于处理返回的网页，通常是一个提取数据的 parse 函数。 """ def parse(self, response): """ 这个方法作为 `scrapy.Request` 的 callback，在里面编写提取数据的代码。scrapy 中的下载器会下载 `start_reqeusts` 中定义的每个 `Request` 并且结果封装为一个 response 对象传入这个方法。 """ pass 因为实验楼的网页结构还是很简单的，所以解析部分就不做赘述，直接上单文件完整代码： 12345678910111213141516171819202122232425# -*- coding:utf-8 -*-import scrapyclass ShiyanlouCoursesSpider(scrapy.Spider): def start_requests(self): # 课程列表页面 url 模版 url_tmpl = 'https://www.shiyanlou.com/courses/?category=all&amp;course_type=all&amp;fee=all&amp;tag=all&amp;page=&#123;&#125;' # 所有要爬取的页面 urls = (url_tmpl.format(i) for i in range(1, 23)) # 返回一个生成器，生成 Request 对象，生成器是可迭代对象 for url in urls: yield scrapy.Request(url=url, callback=self.parse) def parse(self, response): # 遍历每个课程的 div.course-body for course in response.css('div.course-body'): # 使用 css 语法对每个 course 提取数据 yield &#123; # 课程名称 'name': course.css('div.course-name::text').extract_first(), # 课程描述 'description': course.css('div.course-desc::text').extract_first(), # 课程类型，实验楼的课程有免费，会员，训练营三种，免费课程并没有字样显示，也就是说没有 span.pull-right 这个标签，没有这个标签就代表时免费课程，使用默认值 `免费｀就可以了。 'type': course.css('div.course-footer span.pull-right::text').extract_first(default='Free'), # 注意 // 前面的 .，没有点表示整个文档所有的 div.course-body，有 . 才表示当前迭代的这个 div.course-body 'students': course.xpath('.//span[contains(@class, "pull-left")]/text()[2]').re_first('[^\d]*(\d*)[^\d]*') &#125; 保存文件，使用scrapy runspider xx.py -o data.json运行代码，这里使用 -o参数将结果输出为json格式。]]></content>
@@ -527,8 +695,8 @@
         <category>爬虫</category>
       </categories>
       <tags>
-        <tag>Python</tag>
         <tag>爬虫</tag>
+        <tag>Python</tag>
       </tags>
   </entry>
   <entry>
@@ -539,8 +707,8 @@
         <category>爬虫</category>
       </categories>
       <tags>
-        <tag>Python</tag>
         <tag>爬虫</tag>
+        <tag>Python</tag>
       </tags>
   </entry>
   <entry>

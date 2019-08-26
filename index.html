@@ -362,7 +362,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2019/04/07/app_spider/">
+    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2019/08/26/安卓逆向学习-apk打包流程梳理/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="煌金">
@@ -381,8 +381,8 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/04/07/app_spider/" itemprop="url">
-                  App爬虫环境搭建
+                <a class="post-title-link" href="/2019/08/26/安卓逆向学习-apk打包流程梳理/" itemprop="url">
+                  Apk打包流程梳理和加载流程学习
                 </a>
               
             
@@ -408,24 +408,12 @@
                 
               
 
-              <time title="创建时间：2019-04-07 08:39:35" itemprop="dateCreated datePublished" datetime="2019-04-07T08:39:35+08:00">2019-04-07</time>
+              <time title="创建时间：2019-08-26 18:39:35 / 修改时间：19:15:01" itemprop="dateCreated datePublished" datetime="2019-08-26T18:39:35+08:00">2019-08-26</time>
             
 
             
               
 
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-08-22 16:37:33" itemprop="dateModified" datetime="2019-08-22T16:37:33+08:00">2019-08-22</time>
               
             
           </span>
@@ -442,7 +430,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/爬虫/" itemprop="url" rel="index"><span itemprop="name">爬虫</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/App逆向/" itemprop="url" rel="index"><span itemprop="name">App逆向</span></a></span>
 
                 
                 
@@ -457,8 +445,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/04/07/app_spider/#comments" itemprop="discussionUrl">
-                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2019/04/07/app_spider/" itemprop="commentCount"></span>
+                <a href="/2019/08/26/安卓逆向学习-apk打包流程梳理/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2019/08/26/安卓逆向学习-apk打包流程梳理/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -482,7 +470,7 @@
                 
                   <span class="post-meta-item-text">本文字数：</span>
                 
-                <span title="本文字数">8.1k</span>
+                <span title="本文字数">2.1k</span>
               
 
               
@@ -496,7 +484,7 @@
                 
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
-                <span title="阅读时长">13 分钟</span>
+                <span title="阅读时长">3 分钟</span>
               
             </div>
           
@@ -517,468 +505,20 @@
 
       
         
-          <p>本文来讲讲APP抓包环境搭建。<br>App抓包应该是每个爬虫工程师都避不开的话题,在之前我也写过关于自动参与「抽奖助手」<br>抽奖的文章,当时使用的抓包工具是Charles,有需要的朋友可以翻下之前的文章。</p>
-<h4 id="App抓包原理"><a href="#App抓包原理" class="headerlink" title="App抓包原理"></a>App抓包原理</h4><ol>
-<li>客户端向服务器发起HTTPS请求</li>
-<li>抓包工具拦截客户端的请求，伪装成客户端向服务器进行请求</li>
-<li>服务器向客户端（实际上是抓包工具）返回服务器的CA证书</li>
-<li>抓包工具拦截服务器的响应，获取服务器证书公钥，然后自己制作一张证书，<br>将服务器证书替换后发送给客户端。（这一步，抓包工具拿到了服务器证书的公钥）</li>
-<li>客户端接收到服务器（实际上是抓包工具）的证书后，生成一个对称密钥，<br>用抓包工具的公钥加密，发送给“服务器”（抓包工具）</li>
-<li>抓包工具拦截客户端的响应，用自己的私钥解密对称密钥，然后用服务器证书公钥加密，<br>发送给服务器。（这一步，抓包工具拿到了对称密钥）</li>
-<li>服务器用自己的私钥解密对称密钥，向客户端（抓包工具）发送响应</li>
-<li>抓包工具拦截服务器的响应，替换成自己的证书后发送给客户端</li>
-</ol>
-<p>爬虫的本质就是「骗」过服务器,各种反反爬手段就是增强信任的过程,不停的让服务器相信你是自己人<br>如果你被反爬了,就是你骗术不精,被发现了。<br>
+          
+          想要学习逆向必须先熟悉APP编译的流程。
+安卓加载流程java 代码 – &gt; 加载布局文件 –&gt; 资源文件
+资料参考链接：
+
+https://juejin.im/entry/58b78d1b61ff4b006cd47e5b
+
+新版官网示意图
+
+编译器将您的源代码转换成 DEX（Dalvi
+          ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/04/07/app_spider/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </p></div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2019/04/06/scrapy-intrduct/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="煌金">
-      <meta itemprop="description" content="Stay Hungry, Stay Foolish.">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="咸鱼自我满足的日常">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/04/06/scrapy-intrduct/" itemprop="url">
-                  scrapy要点复习与常用框架复习
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-04-06 08:39:35" itemprop="dateCreated datePublished" datetime="2019-04-06T08:39:35+08:00">2019-04-06</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-08-22 16:45:11" itemprop="dateModified" datetime="2019-08-22T16:45:11+08:00">2019-08-22</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2019/04/06/scrapy-intrduct/#comments" itemprop="discussionUrl">
-                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2019/04/06/scrapy-intrduct/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-		  
-		  
-
-          
-            <div class="post-symbolscount">
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">本文字数：</span>
-                
-                <span title="本文字数">12k</span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">19 分钟</span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h4 id="Scrapy工作流程与注意点"><a href="#Scrapy工作流程与注意点" class="headerlink" title="Scrapy工作流程与注意点"></a>Scrapy工作流程与注意点</h4><ol>
-<li>从spiders抓取请求requests经过爬虫中间件发送给引擎</li>
-<li>引擎将请求发送给调度器，调度器对请求进行调度</li>
-<li>调度器将调度排序好的请求发送给引擎(调度器维护的是一个LIFO的队列，广度优先)</li>
-<li>引擎将请求经过下载中间件发送给下载器</li>
-<li>下载器将请求返回的response经过下载中间件发送给引擎</li>
-<li>引擎将下载器返回的response返回给爬虫中间件</li>
-<li>爬虫中间件将解析的字段与request返回给引擎</li>
-<li>引擎将解析的字段发送给项目管道，将新的request发送给调度器</li>
-</ol>
-<ul>
-<li>注意点</li>
-<li>第四点是我们能应对反爬的最后一步，换代理，加cookie，换ua等等</li>
-<li>第五点最好是能在这里校验数据，不是正确的数据不传给spider</li>
-</ul>
-<p><img src="http://tc.xianyucoder.cn/blog005MnFO1gy1g0zs8zdqd1j30sr0ckdkb.png" alt><br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/04/06/scrapy-intrduct/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </p></div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2019/04/06/scrapy-splash_and_splash/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="煌金">
-      <meta itemprop="description" content="Stay Hungry, Stay Foolish.">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="咸鱼自我满足的日常">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/04/06/scrapy-splash_and_splash/" itemprop="url">
-                  scrapy-splash与splash
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-04-06 08:39:35" itemprop="dateCreated datePublished" datetime="2019-04-06T08:39:35+08:00">2019-04-06</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-08-22 16:46:16" itemprop="dateModified" datetime="2019-08-22T16:46:16+08:00">2019-08-22</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/爬虫/" itemprop="url" rel="index"><span itemprop="name">爬虫</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2019/04/06/scrapy-splash_and_splash/#comments" itemprop="discussionUrl">
-                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2019/04/06/scrapy-splash_and_splash/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-		  
-		  
-
-          
-            <div class="post-symbolscount">
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">本文字数：</span>
-                
-                <span title="本文字数">2.3k</span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">4 分钟</span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h4 id="splash介绍"><a href="#splash介绍" class="headerlink" title="splash介绍"></a>splash介绍</h4><p>splash是一个针对js的渲染服务，它内置了一个浏览器和http接口，基于python3和twisted引擎，所以是可以异步处理任务。</p>
-<h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><p><a href="https://splash.readthedocs.io/en/stable/install.html" target="_blank" rel="noopener">https://splash.readthedocs.io/en/stable/install.html</a></p>
-<p>只有mac和linux支持，也可以通过docker安装。</p>
-<p>使用<code>docker pull scrapinghub/splash</code></p>
-<p>使用<code>docker run -p 8050:8050 -p 5023 scrapinghub/splash</code>运行镜像</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/04/06/scrapy-splash_and_splash/#more" rel="contents">
+            <a class="btn" href="/2019/08/26/安卓逆向学习-apk打包流程梳理/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1034,7 +574,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2019/04/05/python-and-docker/">
+    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2019/08/26/安卓逆向学习1-逆向基础/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="煌金">
@@ -1053,8 +593,8 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/04/05/python-and-docker/" itemprop="url">
-                  Docker容器
+                <a class="post-title-link" href="/2019/08/26/安卓逆向学习1-逆向基础/" itemprop="url">
+                  App逆向实基础学习
                 </a>
               
             
@@ -1080,24 +620,12 @@
                 
               
 
-              <time title="创建时间：2019-04-05 08:39:35" itemprop="dateCreated datePublished" datetime="2019-04-05T08:39:35+08:00">2019-04-05</time>
+              <time title="创建时间：2019-08-26 18:39:35 / 修改时间：19:19:24" itemprop="dateCreated datePublished" datetime="2019-08-26T18:39:35+08:00">2019-08-26</time>
             
 
             
               
 
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-08-21 23:00:08" itemprop="dateModified" datetime="2019-08-21T23:00:08+08:00">2019-08-21</time>
               
             
           </span>
@@ -1114,7 +642,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/App逆向/" itemprop="url" rel="index"><span itemprop="name">App逆向</span></a></span>
 
                 
                 
@@ -1129,8 +657,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/04/05/python-and-docker/#comments" itemprop="discussionUrl">
-                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2019/04/05/python-and-docker/" itemprop="commentCount"></span>
+                <a href="/2019/08/26/安卓逆向学习1-逆向基础/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2019/08/26/安卓逆向学习1-逆向基础/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -1154,7 +682,7 @@
                 
                   <span class="post-meta-item-text">本文字数：</span>
                 
-                <span title="本文字数">4.9k</span>
+                <span title="本文字数">5.2k</span>
               
 
               
@@ -1168,7 +696,7 @@
                 
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
-                <span title="阅读时长">8 分钟</span>
+                <span title="阅读时长">9 分钟</span>
               
             </div>
           
@@ -1189,18 +717,25 @@
 
       
         
-          <p><img src="http://tc.xianyucoder.cn/blog20190821223443.png" alt></p>
-<p>有不少的朋友读了之前的一系列的Docker文章一脸懵逼，这和Python有什么关系？</p>
-<p>Docker可以用来减轻我们搭建环境的繁琐步骤，我们完全可以把类似selenium等环境用Docker容器部署好，在代码里直接使用远端的selenium,简单方便。</p>
-<h4 id="使用Docker容器中的Python环境进行开发"><a href="#使用Docker容器中的Python环境进行开发" class="headerlink" title="使用Docker容器中的Python环境进行开发"></a>使用Docker容器中的Python环境进行开发</h4><p>环境准备:腾讯云CentOS 7 + Docker</p>
-<h5 id="修改Docker配置"><a href="#修改Docker配置" class="headerlink" title="修改Docker配置"></a>修改Docker配置</h5><p>简易版本:</p>
-<p>编辑Docker相关配置文件:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/docker/daemon.json</span><br></pre></td></tr></table></figure></p>
-<p>插入下面的配置:</p>
-<p>注意这里是标准的json格式,格式出错Docker重启不了<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">"hosts"</span>: [<span class="string">"tcp://0.0.0.0:2375"</span>,<span class="string">"unix:///var/run/docker.sock"</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>重载Docker配置:<code>systemctl daemon-reload</code></p>
+          
+          常见加密算法编码
+escape
+
+unescape
+
+
+encodeURIComponent
+
+decodeURIComponent
+
+
+Base64
+
+所有的数据都能被编码为只用65个字符就能表示的文本。标准的Base64每行为76个字符，每行末尾添加一个回车换行符(\r\n)。不论每行是否满76
+          ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/04/05/python-and-docker/#more" rel="contents">
+            <a class="btn" href="/2019/08/26/安卓逆向学习1-逆向基础/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1256,7 +791,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2019/04/04/Dockerfile/">
+    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2019/08/26/安卓逆向学习1.2-apk签名/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="煌金">
@@ -1275,8 +810,8 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/04/04/Dockerfile/" itemprop="url">
-                  Dockerfile总结
+                <a class="post-title-link" href="/2019/08/26/安卓逆向学习1.2-apk签名/" itemprop="url">
+                  App签名
                 </a>
               
             
@@ -1302,24 +837,12 @@
                 
               
 
-              <time title="创建时间：2019-04-04 08:39:35" itemprop="dateCreated datePublished" datetime="2019-04-04T08:39:35+08:00">2019-04-04</time>
+              <time title="创建时间：2019-08-26 18:39:35 / 修改时间：19:18:25" itemprop="dateCreated datePublished" datetime="2019-08-26T18:39:35+08:00">2019-08-26</time>
             
 
             
               
 
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-08-22 16:46:43" itemprop="dateModified" datetime="2019-08-22T16:46:43+08:00">2019-08-22</time>
               
             
           </span>
@@ -1336,7 +859,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/App逆向/" itemprop="url" rel="index"><span itemprop="name">App逆向</span></a></span>
 
                 
                 
@@ -1351,8 +874,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/04/04/Dockerfile/#comments" itemprop="discussionUrl">
-                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2019/04/04/Dockerfile/" itemprop="commentCount"></span>
+                <a href="/2019/08/26/安卓逆向学习1.2-apk签名/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2019/08/26/安卓逆向学习1.2-apk签名/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -1376,7 +899,7 @@
                 
                   <span class="post-meta-item-text">本文字数：</span>
                 
-                <span title="本文字数">3.8k</span>
+                <span title="本文字数">1.7k</span>
               
 
               
@@ -1390,7 +913,7 @@
                 
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
-                <span title="阅读时长">6 分钟</span>
+                <span title="阅读时长">3 分钟</span>
               
             </div>
           
@@ -1411,21 +934,440 @@
 
       
         
-          <p><img src="http://tc.xianyucoder.cn/blog20190821223443.png" alt></p>
-<h4 id="什么是Dockerfile"><a href="#什么是Dockerfile" class="headerlink" title="什么是Dockerfile?"></a>什么是Dockerfile?</h4><p>Dockerfile其实就是根据特定的语法格式撰写出来的一个普通的文本文件，可以使用docker build命令依次执行在Dockerfile中定义的一系列命令，最终生成一个新的镜像</p>
-<p>如果你想要定制属于自己的镜像Dockerfile是你必不可少的工具。</p>
-<h4 id="docker-build的使用"><a href="#docker-build的使用" class="headerlink" title="docker build的使用"></a>docker build的使用</h4><p>想要构建定制化的镜像，可以使用docker build运行Dockerfile构建镜像</p>
-<p>命令格式: <code>docker build [参数] PATH | URL</code><br>
+          
+          什么是签名？如果这个问题不是放在Android开发中来问，如果是放在一个普通的版块，我想大家都知道签名的含义。可往往就是将一些生活中常用的术语放在计算机这种专业领域，大家就开始迷惑了。计算机所做的事情，或者说编程语言所做的事情，不正是在尽可能地模拟现实吗？所以，计算机中所说的签名和生活中所说的签名在
+          ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/04/04/Dockerfile/#more" rel="contents">
+            <a class="btn" href="/2019/08/26/安卓逆向学习1.2-apk签名/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
           <!--/noindex-->
         
       
-    </p></div>
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2019/08/26/安卓逆向学习2-smali语法/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="煌金">
+      <meta itemprop="description" content="Stay Hungry, Stay Foolish.">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="咸鱼自我满足的日常">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/08/26/安卓逆向学习2-smali语法/" itemprop="url">
+                  App逆向之smali学习
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-08-26 18:39:35 / 修改时间：19:17:50" itemprop="dateCreated datePublished" datetime="2019-08-26T18:39:35+08:00">2019-08-26</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/App逆向/" itemprop="url" rel="index"><span itemprop="name">App逆向</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/08/26/安卓逆向学习2-smali语法/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2019/08/26/安卓逆向学习2-smali语法/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+		  
+		  
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">11k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">18 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          smali文件什么是smali文件？Smali，Baksmali分别是指安卓系统里的Java虚拟机（Dalvik）所使用的一种。dex格式文件的汇编器，反汇编器。其语法是一种宽松式的Jasmin/dedexer语法，而且它实现了.dex格式所有功能（注解，调试信息，线路信息等）
+当我们对APK文件进
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/08/26/安卓逆向学习2-smali语法/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2019/08/26/聪敏工作-如何从互联网中有高效摄取信息？/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="煌金">
+      <meta itemprop="description" content="Stay Hungry, Stay Foolish.">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="咸鱼自我满足的日常">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/08/26/聪敏工作-如何从互联网中有高效摄取信息？/" itemprop="url">
+                  聪明工作-如何从互联网中高效摄取信息？
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-08-26 18:39:35 / 修改时间：18:55:20" itemprop="dateCreated datePublished" datetime="2019-08-26T18:39:35+08:00">2019-08-26</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/聪明工作/" itemprop="url" rel="index"><span itemprop="name">聪明工作</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/08/26/聪敏工作-如何从互联网中有高效摄取信息？/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2019/08/26/聪敏工作-如何从互联网中有高效摄取信息？/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+		  
+		  
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">728</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">1 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          如何从互联网中有高效摄取信息？信息源检查清单
+信息源的目的（想学什么？）
+信息源的质量
+信息源的半衰期 = 信息的有效时间
+信息源的稀缺程度 = 价值高低
+信息的半衰期越久，稀缺程度越高，价值越大
+
+
+对于信息源掌握主动权
+（区分 push 和 pull ) = 人人喜闻乐见的，终会趋于庸俗。
+
+
+
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/08/26/聪敏工作-如何从互联网中有高效摄取信息？/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
 
     
 
@@ -1463,7 +1405,7 @@
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1508,7 +1450,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">56</span>
+                    <span class="site-state-item-count">69</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -1533,7 +1475,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">6</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">8</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -1560,7 +1506,79 @@
                     
                       
                     
-                    <span class="site-state-item-count">7</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">43</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -1640,7 +1658,7 @@
       <i class="fa fa-area-chart"></i>
     </span>
     
-    <span title="站点总字数">175k</span>
+    <span title="站点总字数">195k</span>
   
 
   
@@ -1649,7 +1667,7 @@
       <i class="fa fa-coffee"></i>
     </span>
     
-    <span title="站点阅读时长">4:52</span>
+    <span title="站点阅读时长">5:25</span>
   
 </div>
 
