@@ -114,13 +114,13 @@
 
 
 
-  <meta name="description" content="正文先来看看今天的受害者： aHR0cDovL3d3dy5taWd1dmlkZW8uY29tL21ncy93ZWJzaXRlL3ByZC9pbmRleC5odG1s 一、分析密码加密这次分析的是他登陆的三个参数，先分析登陆逻辑，抓个包看看。 可以看到这里用的是弹出的窗口登陆【图1-1】，为了避免主页其他元素的干扰抓包，我们可以通过右键 查看框架源代码 的方式打开登陆框分析抓包【图1-2】。   把">
+  <meta name="description" content="正文先来看看今天的受害者： 1aHR0cDovL3d3dy5taWd1dmlkZW8uY29tL21ncy93ZWJzaXRlL3ByZC9pbmRleC5odG1s 一、分析密码加密这次分析的是他登陆的三个参数，先分析登陆逻辑，抓个包看看。 可以看到这里用的是弹出的窗口登陆【图1-1】，为了避免主页其他元素的干扰抓包，我们可以通过右键 查看框架源代码 的方式打开登陆框分析抓包【图1-2】。">
 <meta name="keywords" content="js逆向,密码加密,咪咕视频,指纹加密">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JS逆向-咪咕视频密码加密与指纹分析">
 <meta property="og:url" content="http://www.xianyucoder.cn/2019/09/03/每日JS-咪咕视频-RSA/index.html">
 <meta property="og:site_name" content="咸鱼自我满足的日常">
-<meta property="og:description" content="正文先来看看今天的受害者： aHR0cDovL3d3dy5taWd1dmlkZW8uY29tL21ncy93ZWJzaXRlL3ByZC9pbmRleC5odG1s 一、分析密码加密这次分析的是他登陆的三个参数，先分析登陆逻辑，抓个包看看。 可以看到这里用的是弹出的窗口登陆【图1-1】，为了避免主页其他元素的干扰抓包，我们可以通过右键 查看框架源代码 的方式打开登陆框分析抓包【图1-2】。   把">
+<meta property="og:description" content="正文先来看看今天的受害者： 1aHR0cDovL3d3dy5taWd1dmlkZW8uY29tL21ncy93ZWJzaXRlL3ByZC9pbmRleC5odG1s 一、分析密码加密这次分析的是他登陆的三个参数，先分析登陆逻辑，抓个包看看。 可以看到这里用的是弹出的窗口登陆【图1-1】，为了避免主页其他元素的干扰抓包，我们可以通过右键 查看框架源代码 的方式打开登陆框分析抓包【图1-2】。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://tc.xianyucoder.cn/blog20190831193910.png">
 <meta property="og:image" content="http://tc.xianyucoder.cn/blog20190831194312.png">
@@ -136,10 +136,10 @@
 <meta property="og:image" content="http://tc.xianyucoder.cn/blog20190831231157.png">
 <meta property="og:image" content="http://tc.xianyucoder.cn/blog20190831231614.png">
 <meta property="og:image" content="http://tc.xianyucoder.cn/blog20190831232044.png">
-<meta property="og:updated_time" content="2019-09-30T02:02:34.808Z">
+<meta property="og:updated_time" content="2019-09-30T02:43:18.939Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JS逆向-咪咕视频密码加密与指纹分析">
-<meta name="twitter:description" content="正文先来看看今天的受害者： aHR0cDovL3d3dy5taWd1dmlkZW8uY29tL21ncy93ZWJzaXRlL3ByZC9pbmRleC5odG1s 一、分析密码加密这次分析的是他登陆的三个参数，先分析登陆逻辑，抓个包看看。 可以看到这里用的是弹出的窗口登陆【图1-1】，为了避免主页其他元素的干扰抓包，我们可以通过右键 查看框架源代码 的方式打开登陆框分析抓包【图1-2】。   把">
+<meta name="twitter:description" content="正文先来看看今天的受害者： 1aHR0cDovL3d3dy5taWd1dmlkZW8uY29tL21ncy93ZWJzaXRlL3ByZC9pbmRleC5odG1s 一、分析密码加密这次分析的是他登陆的三个参数，先分析登陆逻辑，抓个包看看。 可以看到这里用的是弹出的窗口登陆【图1-1】，为了避免主页其他元素的干扰抓包，我们可以通过右键 查看框架源代码 的方式打开登陆框分析抓包【图1-2】。">
 <meta name="twitter:image" content="http://tc.xianyucoder.cn/blog20190831193910.png">
 
 
@@ -436,7 +436,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-09-30 10:02:34" itemprop="dateModified" datetime="2019-09-30T10:02:34+08:00">2019-09-30</time>
+                <time title="修改时间：2019-09-30 10:43:18" itemprop="dateModified" datetime="2019-09-30T10:43:18+08:00">2019-09-30</time>
               
             
           </span>
@@ -496,7 +496,7 @@
                 
                   <span class="post-meta-item-text">本文字数：</span>
                 
-                <span title="本文字数">7.3k</span>
+                <span title="本文字数">7.5k</span>
               
 
               
@@ -510,7 +510,7 @@
                 
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
-                <span title="阅读时长">12 分钟</span>
+                <span title="阅读时长">13 分钟</span>
               
             </div>
           
@@ -531,7 +531,7 @@
 
       
         <h4 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h4><p>先来看看今天的受害者：</p>
-<p>aHR0cDovL3d3dy5taWd1dmlkZW8uY29tL21ncy93ZWJzaXRlL3ByZC9pbmRleC5odG1s</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">aHR0cDovL3d3dy5taWd1dmlkZW8uY29tL21ncy93ZWJzaXRlL3ByZC9pbmRleC5odG1s</span><br></pre></td></tr></table></figure>
 <h4 id="一、分析密码加密"><a href="#一、分析密码加密" class="headerlink" title="一、分析密码加密"></a>一、分析密码加密</h4><p>这次分析的是他登陆的三个参数，先分析登陆逻辑，抓个包看看。</p>
 <p>可以看到这里用的是弹出的窗口登陆【图1-1】，为了避免主页其他元素的干扰抓包，我们可以通过右键 查看框架源代码 的方式打开登陆框分析抓包【图1-2】。</p>
 <p><img src="http://tc.xianyucoder.cn/blog20190831193910.png" alt="图1-1"></p>
