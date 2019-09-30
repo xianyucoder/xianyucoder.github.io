@@ -27,7 +27,7 @@
   <entry>
     <title><![CDATA[JS逆向-58同城密码加密分析]]></title>
     <url>%2F2019%2F09%2F16%2F%E6%AF%8F%E6%97%A5JS-58%E5%90%8C%E5%9F%8E%E5%AF%86%E7%A0%81%E5%8A%A0%E5%AF%86%E4%B8%8E%E6%8C%87%E7%BA%B9%E5%88%86%E6%9E%90-RSA%2F</url>
-    <content type="text"><![CDATA[目标网站： 1aHR0cHM6Ly9wYXNzcG9ydC41OC5jb20vbG9naW4vP3BhdGg9aHR0cHMlM0EvL2Z6LjU4LmNvbS8mUEdUSUQ9MGQxMDAwMDAtMDAxMy0wMjk0LTFjZWItYjU3NTBiZDIwNmU5JkNsaWNrSUQ9Mg== 抓包分析与加密定位老规矩先抓包看看【图1-1】 今天主要分析的是划线的三个参数，先一个一个来研究一下。 先看看密码的加密，按照之前的思路我们测试了password的相关搜索项，但是搜索出来的结果都不尽如人意。【图1-2】 同时这个请求也不是XHR请求，所以xhr断点也用不上了。 搜索的结果中比较有相关性的是【图1-2】标注的部分，但是在文件的搜索项里搜索password是找不到加密位置的。 我简单总结了几种办法，虽然并不一定适用于其他网站的加密，算是提供一种新的思路。 第一、搜索相关的的提示语，就像在之前的我做的第一个 APP 逆向的项目中，我就是搜索相关的提示语找到了扣费逻辑的代码，这里也可以按照这样的思路。 在这个网站的加密里点击登陆，点击后按钮变为登录中...，搜索相关提示语再逐步打断点一直追下去是可以找到加密位置的，不过这是个下下策，耗时太长，很容易追丢了，为了这个不值当。（不推荐使用） 第二、参考开头的搜索关键字的方法，这里搜索的是encrypt，经常遇到加密的变量或方法是encrypt(XX)这样的形式。 第三、试试从网页中找找答案，之前做过一些简单的例子是将 js 的代码直接写到页面中自执行或者采用隐藏域传递值的方式，比如：像PublicKey这类比较有特色的值，如果能找到对我们的帮助是很大的。 按照上面总结的几种方法，我们再次搜索【图1-3】 又搜索到这个熟悉的文件，这次我们进去搜索一次，这次找到了好多类似加密的地方，为了省事我把所有相关的值都打上了断点，再次登录。【图1-4】 到这里就定位到加密的地方了。 继续追进去可以看到进入的是一个VM【图1-5】 到这里就没有什么难度了，密码的加密就是 RSA + eval。 如果你很幸运先找到了eval加密的地方，但是不知道怎么解决，可以参考之前一篇关于js混淆的文章。 —-&gt; 点我看文章 或者直接打开浏览器的开发者工具切换到console选项卡，把相关的eval代码粘贴进去，将代码开头的eval替换为console.log，就可以得到原来的代码了。【图1-6】 接下来看的是两个指纹相关的参数，这里就比较简单了，直接搜索fingerprint就可以找到相关加密文件，直接在里面打断点就可以了。【图1-7】 这里的注意点是想要重新生成指纹，记得要刷新页面才可以。 尾关于指纹的加密生成讲的比较简单，需要学习案例的朋友可以访问下面的网址。 https://lengyue.me/ 也可以看看冷月打来之前的关于某个网站指纹加密的视频教程。 链接 : https://pan.baidu.com/s/1Y8pcacZbHF1DXW0znzmZKQ 密码:vkmf 失效请留言。 EOF]]></content>
+    <content type="text"><![CDATA[目标网站： 123aHR0cHM6Ly9wYXNzcG9ydC41OC5jb20vbG9naW4vP3BhdGg9aHR0cHMlM0EvL2Z6LjU4LmNvbS8mUEdUSUQ9MGQxMDAwMDAtMDAxMy0wMjk0LTFjZWItYjU3NTBiZDIwNmU5JkNsaWNrSUQ9Mg== 抓包分析与加密定位老规矩先抓包看看【图1-1】 今天主要分析的是划线的三个参数，先一个一个来研究一下。 先看看密码的加密，按照之前的思路我们测试了password的相关搜索项，但是搜索出来的结果都不尽如人意。【图1-2】 同时这个请求也不是XHR请求，所以xhr断点也用不上了。 搜索的结果中比较有相关性的是【图1-2】标注的部分，但是在文件的搜索项里搜索password是找不到加密位置的。 我简单总结了几种办法，虽然并不一定适用于其他网站的加密，算是提供一种新的思路。 第一、搜索相关的的提示语，就像在之前的我做的第一个 APP 逆向的项目中，我就是搜索相关的提示语找到了扣费逻辑的代码，这里也可以按照这样的思路。 在这个网站的加密里点击登陆，点击后按钮变为登录中...，搜索相关提示语再逐步打断点一直追下去是可以找到加密位置的，不过这是个下下策，耗时太长，很容易追丢了，为了这个不值当。（不推荐使用） 第二、参考开头的搜索关键字的方法，这里搜索的是encrypt，经常遇到加密的变量或方法是encrypt(XX)这样的形式。 第三、试试从网页中找找答案，之前做过一些简单的例子是将 js 的代码直接写到页面中自执行或者采用隐藏域传递值的方式，比如：像PublicKey这类比较有特色的值，如果能找到对我们的帮助是很大的。 按照上面总结的几种方法，我们再次搜索【图1-3】 又搜索到这个熟悉的文件，这次我们进去搜索一次，这次找到了好多类似加密的地方，为了省事我把所有相关的值都打上了断点，再次登录。【图1-4】 到这里就定位到加密的地方了。 继续追进去可以看到进入的是一个VM【图1-5】 到这里就没有什么难度了，密码的加密就是 RSA + eval。 如果你很幸运先找到了eval加密的地方，但是不知道怎么解决，可以参考之前一篇关于js混淆的文章。 —-&gt; 点我看文章 或者直接打开浏览器的开发者工具切换到console选项卡，把相关的eval代码粘贴进去，将代码开头的eval替换为console.log，就可以得到原来的代码了。【图1-6】 接下来看的是两个指纹相关的参数，这里就比较简单了，直接搜索fingerprint就可以找到相关加密文件，直接在里面打断点就可以了。【图1-7】 这里的注意点是想要重新生成指纹，记得要刷新页面才可以。 尾关于指纹的加密生成讲的比较简单，需要学习案例的朋友可以访问下面的网址。 https://lengyue.me/ 也可以看看冷月打来之前的关于某个网站指纹加密的视频教程。 链接 : https://pan.baidu.com/s/1Y8pcacZbHF1DXW0znzmZKQ 密码:vkmf 失效请留言。 EOF]]></content>
       <categories>
         <category>js逆向</category>
       </categories>
@@ -40,7 +40,7 @@
   <entry>
     <title><![CDATA[JS逆向-叮当快药 sign 加密分析]]></title>
     <url>%2F2019%2F09%2F16%2F%E6%AF%8F%E6%97%A5JS-%E5%8F%AE%E5%BD%93%E5%BF%AB%E8%8D%AF-MD5%2F</url>
-    <content type="text"><![CDATA[今日份的网站 1aHR0cDovL3d3dy5kZGt5LmNvbS9jb21tb2RpdHkuaHRtbD9kZGt5Y2FjaGU9YTdiMTllODc5ZDJmMmYyNzlkMzU2ZjVhZmE2ZDVjZmY= 这个网站的加密比较简单，是那种新手做过一遍就对 JS 逆向充满信心的小练手。 分析请求先分析请求，看看需要的参数有没什么搞头【图1-1】 比较明显的是 sign 其他的参数好像没有什么特别的地方。 先定位 sign 的位置【图1-2】 直接搜索参数就看到结果了，点击搜索的结果文件在文件内再搜索一次，可以看到有 3 个结果。【图1-3】 到这里就看到 sign 的加密了。 接下来继续分析逻辑，这里的 sign 值是 y，y的值是通过MD5(f)获取的，而f又是t.get(&quot;method&quot;) + p + r的结果，经过一通分析，可以的得到下面的逻辑： 1234567var l = t.keys().sort(), p = ""; l.length;for (var g in l) &#123; var m = l[g]; p += m + t.get(m)&#125;sign = md5(t.get("method") + p + r) 接下来只需要把我们不知道的值通过断点的方式调试出来，这个加密我们就完成解密了。 所以先给不知道的值打上断点，不清楚就打上断点不要怕麻烦，像【图1-4】这样。 重新请求一下，就进入到我们打的断点里了，我们可以通过在 console 中打印变量的值来理解逻辑。【图1-5】 明白需要的变量的值之后，我们就可以开始扣取 JS 或者用 Python 复写加密的逻辑了。 因为这次的加密比较简单，我们试试用 Python 复写一遍加密。（主要是 Python 的 md5 用起来蛮舒服的） 这里的逻辑比较简单没啥好分析的，我就直接上代码了。 12345678910111213141516171819202122232425262728293031323334353637import timefrom hashlib import md5def get_sign(): timeStamp = time.time() localTime = time.localtime(timeStamp) strTime = time.strftime("%Y-%m-%d %H:%M:%S", localTime) l = ["method", "orderTypeId", "orgcode", "pageNo", "pageSize", "plat", "platform", "shopId", "t", "v", "versionName"] t = &#123; 'method': 'ddsy.product.query.orgcode.product.list.b2c', 'orderTypeId': '0', 'orgcode': '010502,010503,010504,010505,010506,010507', 'pageNo': '1', 'pageSize': '100', 'plat': 'H5', 'platform': 'H5', 'shopId': '-1', # 't': '2019-9-23 22:4:16', 't': '&#123;&#125;'.format(strTime), 'v': '1.0', 'versionName': '3.2.0' &#125; p = '' for i in range(0, 11): m = l[i] p += m + t.get(m) f = t['method'] + p + '6C57AB91A1308E26B797F4CD382AC79D' print(f) sign = md5value(f).upper() print(sign) return signdef md5value(s): a = md5(s.encode()).hexdigest() return a 到这里其实就没有什么难度了，直接带入 sign 请求就完事了。【图1-6】 EOF]]></content>
+    <content type="text"><![CDATA[今日份的网站 12aHR0cDovL3d3dy5kZGt5LmNvbS9jb21tb2RpdHkuaHRtbD9kZGt5Y2FjaGU9YTdiMTllODc5ZDJmMmYyNzlkMzU2ZjVhZmE2ZDVjZmY= 这个网站的加密比较简单，是那种新手做过一遍就对 JS 逆向充满信心的小练手。 分析请求先分析请求，看看需要的参数有没什么搞头【图1-1】 比较明显的是 sign 其他的参数好像没有什么特别的地方。 先定位 sign 的位置【图1-2】 直接搜索参数就看到结果了，点击搜索的结果文件在文件内再搜索一次，可以看到有 3 个结果。【图1-3】 到这里就看到 sign 的加密了。 接下来继续分析逻辑，这里的 sign 值是 y，y的值是通过MD5(f)获取的，而f又是t.get(&quot;method&quot;) + p + r的结果，经过一通分析，可以的得到下面的逻辑： 1234567var l = t.keys().sort(), p = ""; l.length;for (var g in l) &#123; var m = l[g]; p += m + t.get(m)&#125;sign = md5(t.get("method") + p + r) 接下来只需要把我们不知道的值通过断点的方式调试出来，这个加密我们就完成解密了。 所以先给不知道的值打上断点，不清楚就打上断点不要怕麻烦，像【图1-4】这样。 重新请求一下，就进入到我们打的断点里了，我们可以通过在 console 中打印变量的值来理解逻辑。【图1-5】 明白需要的变量的值之后，我们就可以开始扣取 JS 或者用 Python 复写加密的逻辑了。 因为这次的加密比较简单，我们试试用 Python 复写一遍加密。（主要是 Python 的 md5 用起来蛮舒服的） 这里的逻辑比较简单没啥好分析的，我就直接上代码了。 12345678910111213141516171819202122232425262728293031323334353637import timefrom hashlib import md5def get_sign(): timeStamp = time.time() localTime = time.localtime(timeStamp) strTime = time.strftime("%Y-%m-%d %H:%M:%S", localTime) l = ["method", "orderTypeId", "orgcode", "pageNo", "pageSize", "plat", "platform", "shopId", "t", "v", "versionName"] t = &#123; 'method': 'ddsy.product.query.orgcode.product.list.b2c', 'orderTypeId': '0', 'orgcode': '010502,010503,010504,010505,010506,010507', 'pageNo': '1', 'pageSize': '100', 'plat': 'H5', 'platform': 'H5', 'shopId': '-1', # 't': '2019-9-23 22:4:16', 't': '&#123;&#125;'.format(strTime), 'v': '1.0', 'versionName': '3.2.0' &#125; p = '' for i in range(0, 11): m = l[i] p += m + t.get(m) f = t['method'] + p + '6C57AB91A1308E26B797F4CD382AC79D' print(f) sign = md5value(f).upper() print(sign) return signdef md5value(s): a = md5(s.encode()).hexdigest() return a 到这里其实就没有什么难度了，直接带入 sign 请求就完事了。【图1-6】 EOF]]></content>
       <categories>
         <category>js逆向</category>
       </categories>
@@ -145,6 +145,21 @@
       </tags>
   </entry>
   <entry>
+    <title><![CDATA[App逆向实基础学习]]></title>
+    <url>%2F2019%2F08%2F26%2F%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%AD%A6%E4%B9%A01-%E9%80%86%E5%90%91%E5%9F%BA%E7%A1%80%2F</url>
+    <content type="text"><![CDATA[常见加密算法编码 escape unescape encodeURIComponent decodeURIComponent Base64 所有的数据都能被编码为只用65个字符就能表示的文本。标准的Base64每行为76个字符，每行末尾添加一个回车换行符(\r\n)。不论每行是否满76个字符，都要添加一个回车换行符。 65字符：A~Z a~z 0~9 + / =URL Base64算法中，为了安全，会把 + 替换成 - ，把 / 替换成 _= 有时候用 ~ 或 . 代替 Base64的应用密钥,密文,图片,数据简单加密或者预处理 Base64编码解码与btoa、atob Hex 二进制数据最常用的一种表示方式。 用0-9 a-f 16个字符表示。每个十六进制字符代表4bit。也就是2个十六进制字符代表一个字节。 在实际应用中，尤其在密钥初始化的时候，一定要分清楚自己传进去的密钥是哪种方式编码的，采用对应方式解析，才能得到正确的结果 单向散列函数(消息摘要算法) 不管明文多长，散列后的密文定长 明文不一样，散列后结果一定不一样 散列后的密文不可逆 一般用于校验数据完整性、签名 sign 由于密文不可逆，所以后台无法还原，也就是说他要验证，会在后台以跟前台一样的方式去重新签名一遍。也就是说他会把源数据和签名后的值一起提交到后台。所以我们要保证在签名时候的数据和提交上去的源数据一致,这种算法特喜欢在内部加入时间戳 常见算法 MD5 SHA1 SHA256 SHA512 HmacMD5 HmacSHA1 HmacSHA256 加密算法加密和解密的过程是可逆的 对称加密算法 加密/解密使用相同的密钥 DES 数据加密标准 3DES TripleDES DESede AES 高级加密标准 根据密钥长度不同又分为AES-128 AES-192 AES-256 其中AES-192 AES-256在Java中使用需获取无政策限制权限文件 CryptoJS提供ECB,CBC,CFB,OFB,CTR五种模式填充提供NoPadding ZeroPadding Pkcs7(Pkcs5) Iso10126 Iso97971 AnsiX923 非对称加密算法 RSA 使用公钥加密，使用私钥解密 公钥是公开的，私钥保密 加密处理安全，但是性能极差，单次加密长度有限制 pkcs1padding 明文最大字节数为密钥字节数-11密文与密钥等长 NoPadding 明文最大字节数为密钥字节数 密文与密钥等长 RSA既可用于数据交换，也可用于数据校验 数据校验通常结合消息摘要算法 MD5withRSA 等 两种加密算法常见结合套路 随机生成密钥 密钥用于AES/DES/3DES加密数据 RSA对密钥加密 提交加密后的密钥和加密后的数据给服务器 APK基本结构 lib:各种平台下使用的对应的so文件 META-INF文件夹:存放工程一些属性文件 CERT.RSA:公钥和加密算法描述 CERT.SF:加密文件，他是使用私钥对摘要明文加密后得到的密文信息,只有使用私钥配对的公钥才能解密该文件 MANIFEST.MF:程序清单文件，他包含包中所有文件的摘要明文 resource.arsc:资源加密(语言包)对res目录下的资源的一个索引文件,保存了原工程中strings.xml等文件内容 drawable:图片 layout:布局 menu:菜单 AndriodMainfest.xml:清单文件(图标、界面、权限、入口),安卓工程的基础配置属性文件。 classes.dex:java代码编译得到的Dalvik VM能直接执行的文件 assets:资源文件(图片、音频、数据库、网页、配置文件等) res:资源文件，需要编译 res目录与assets目录区别在哪？ res目录下的资源文件在编译时会自动生成索引文件(R.java),在java代码中用R.xxx.yyy来引用 asset目录下的资源文件不需要生成索引，在java代码中需要用AssetManager中访问。 一般来说,除了音频和视频资源(需要放在raw或asset下),用java开发的安卓工程使用到的资源文件都会放到res下；使用c++游戏引擎的资源文件均需要放在asset下。 JVM、DVM与ART JVM:Java虚拟机，运行的是.java文件编译后的.class文件 DVM:Android4.4及以前使用的都是Dalvik虚拟机，我们知道Apk在打包的过程中会先将java等源码通过javac编译成.class文件，但是我们的Dalvik虚拟机只会执行.dex文件，这个时候dx会将.class文件转换成Dalvik虚拟机执行的.dex文件。Dalvik虚拟机在启动的时候会先将.dex文件转换成快速运行的机器码，又因为65535这个问题，导致我们在应用冷启动的时候有一个合包的过程，最后导致的一个结果就是我们的app启动慢，这就是Dalvik虚拟机的JIT特性。 Dalvik是google专门为安卓操作系统设计的一个虚拟机，经过深度的优化,虽然安卓上的程序是使用java来开发的，但是Dalvik和标准的java虚拟机JVM还是两回事,Dalvik VM是基于寄存器的，而JVM是基于栈的；Dalvik有专属的文件执行格式dex,JVM则执行的是java字节码。 通过Dalvik的字节码我们不能直接看到原来的逻辑代码,这是需要借助如Apktool或dex2jar+jd-gui工具来帮助查看,但是注意的是最终我们修改APK需要操作的是.smali文件，而不是导出来的java文件重新编译。 ART:ART虚拟机是在Android5.0才开始使用的Android虚拟机，ART虚拟机必须要兼容Dalvik虚拟机的特性，但是ART有一个很好的特性AOT（ahead of time），这个特性就是我们在安装APK的时候就将dex直接处理成可直接供ART虚拟机使用的机器码，ART虚拟机将.dex文件转换成可直接运行的.oat文件，ART虚拟机天生支持多dex，所以也不会有一个合包的过程，所以ART虚拟机会很大的提升APP冷启动速度。Xposed hook的是Java代码，所以Xposed不支持5.0以及以上系统。 安卓分区Android通常有以下分区（用df 来查看分区情况） System分区: 就是我们刷ROM的分区 Data分区: 分区就是我们装APK的分区 Catch分区: 是缓存分区 SDCard分区: 就是挂载的SD卡。 data分区常见目录：app、system、data、local、misc data/data目录存放的是所有APK程序数据的目录，每个APK对就一个自己的Data目录，就是在data/data/目录下，会产生一个跟 Package一样的目录。比如有一个APK,它的包名叫com.test.hello则,在data/data/目录下会有一个 com.test.hello的目录,这个APK只能操作此目录,不能操作其它APK的目录 data/app目录用户安装的APK放在这里。我们如果把APK放入这个文件夹下面的话，就算安装好了。这就叫静默安装。不用管APK文件里面的lib目录下的库文件，系统会自动帮我们放入调用库 data/misc目录保存WIFI帐号，VPN设置信息等。比如保存了一个WIFI连接帐号，则此目录下的WIFI目录下面wpa_supplicant.conf可以查看到 system分区常用目录：app、lib、xbin、bin、media、framework system/app目录存放系统自带的APK。将APK放入到System/app目录下，也是静默安装 system/lib目录存放APK程序用到的库文件 system/bin目录和system/xbin目录存放的是shell命令 system/framework目录启用Android系统所用到框架，如一些jar文件 sd卡目录：/sdcard /mnt/sdcard]]></content>
+      <categories>
+        <category>App逆向</category>
+      </categories>
+      <tags>
+        <tag>基础</tag>
+        <tag>app逆向</tag>
+        <tag>编码</tag>
+        <tag>加密</tag>
+        <tag>apk基本结构</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[App签名]]></title>
     <url>%2F2019%2F08%2F26%2F%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%AD%A6%E4%B9%A01.2-apk%E7%AD%BE%E5%90%8D%2F</url>
     <content type="text"><![CDATA[什么是签名？如果这个问题不是放在Android开发中来问，如果是放在一个普通的版块，我想大家都知道签名的含义。可往往就是将一些生活中常用的术语放在计算机这种专业领域，大家就开始迷惑了。计算机所做的事情，或者说编程语言所做的事情，不正是在尽可能地模拟现实吗？所以，计算机中所说的签名和生活中所说的签名在本质上是一样的，它所起到的作用也是一致的！ 为什么要给Android应用程序签名？如果只能用一句简单的话语来回答这个问题的话，我会说：“这是Android系统所要求的”。Android系统要求每一个Android应用程序必须要经过数字签名才能够安装到系统中，也就是说如果一个Android应用程序没有经过数字签名，是没有办法安装到系统中的！Android通过数字签名来标识应用程序的作者和在应用程序之间建立信任关系，不是用来决定最终用户可以安装哪些应用程序。这个数字签名由应用程序的作者完成，并不需要权威的数字证书签名机构认证，它只是用来让应用程序包自我认证的。 为什么我开发的Android应用程序没有做什么签名也能在模拟器和手机上运行？你没有给Android应用程序签名并不代表Android应用程序没有被签名。为了方便我们开发调试程序，ADT会自动的使用debug密钥为应用程序签名。debug密钥？它在哪？debug密钥是一个名为debug.keystore的文件，它的位置：系统盘符:/Documents and Settings/liufeng/.android/debug.keystore liufeng对应于你自己的windows操作系统用户名，怎么样，是不是已经找到它了。这也就意味着，如果我们想拥有自己的签名，而不是让ADT帮我们签名的话，我们也要有一个属于自己的密钥文件（*.keystore）。 如果你以前的程序是采用默认签名的方式（即debug签名），一旦换了新的签名应用将不能覆盖安装，必须将原先的程序卸载掉，才能安装上。因为程序覆盖安装主要检查两点：1）两个程序的入口Activity是否相同。两个程序如果包名不一样，即使其它所有代码完全一样，也不会被视为同一个程序的不同版本；2）两个程序所采用的签名是否相同。如果两个程序所采用的签名不同，即使包名相同，也不会被视为同一个程序的不同版本，不能覆盖安装。另外，可能有人可能会认为反正debug签名的应用程序也能安装使用，那也没有必要自己签名了嘛。千万不要这样想，debug签名的应用程序有这样两个限制，或者说风险：1）debug签名的应用程序不能在Android Market上架销售，它会强制你使用自己的签名； 2）debug.keystore在不同的机器上所生成的可能都不一样，就意味着如果你换了机器进行apk版本升级，那么将会出现上面那种程序不能覆盖安装的问题。不要小视这个问题，如果你开发的程序只有你自己使用，当然无所谓，卸载再安装就可以了。但要是你的软件有很多使用客户，这就是大问题了，就相当于软件不具备升级功能！]]></content>
@@ -169,18 +184,16 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[App逆向实基础学习]]></title>
-    <url>%2F2019%2F08%2F26%2F%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%AD%A6%E4%B9%A01-%E9%80%86%E5%90%91%E5%9F%BA%E7%A1%80%2F</url>
-    <content type="text"><![CDATA[常见加密算法编码 escape unescape encodeURIComponent decodeURIComponent Base64 所有的数据都能被编码为只用65个字符就能表示的文本。标准的Base64每行为76个字符，每行末尾添加一个回车换行符(\r\n)。不论每行是否满76个字符，都要添加一个回车换行符。 65字符：A~Z a~z 0~9 + / =URL Base64算法中，为了安全，会把 + 替换成 - ，把 / 替换成 _= 有时候用 ~ 或 . 代替 Base64的应用密钥,密文,图片,数据简单加密或者预处理 Base64编码解码与btoa、atob Hex 二进制数据最常用的一种表示方式。 用0-9 a-f 16个字符表示。每个十六进制字符代表4bit。也就是2个十六进制字符代表一个字节。 在实际应用中，尤其在密钥初始化的时候，一定要分清楚自己传进去的密钥是哪种方式编码的，采用对应方式解析，才能得到正确的结果 单向散列函数(消息摘要算法) 不管明文多长，散列后的密文定长 明文不一样，散列后结果一定不一样 散列后的密文不可逆 一般用于校验数据完整性、签名 sign 由于密文不可逆，所以后台无法还原，也就是说他要验证，会在后台以跟前台一样的方式去重新签名一遍。也就是说他会把源数据和签名后的值一起提交到后台。所以我们要保证在签名时候的数据和提交上去的源数据一致,这种算法特喜欢在内部加入时间戳 常见算法 MD5 SHA1 SHA256 SHA512 HmacMD5 HmacSHA1 HmacSHA256 加密算法加密和解密的过程是可逆的 对称加密算法 加密/解密使用相同的密钥 DES 数据加密标准 3DES TripleDES DESede AES 高级加密标准 根据密钥长度不同又分为AES-128 AES-192 AES-256 其中AES-192 AES-256在Java中使用需获取无政策限制权限文件 CryptoJS提供ECB,CBC,CFB,OFB,CTR五种模式填充提供NoPadding ZeroPadding Pkcs7(Pkcs5) Iso10126 Iso97971 AnsiX923 非对称加密算法 RSA 使用公钥加密，使用私钥解密 公钥是公开的，私钥保密 加密处理安全，但是性能极差，单次加密长度有限制 pkcs1padding 明文最大字节数为密钥字节数-11密文与密钥等长 NoPadding 明文最大字节数为密钥字节数 密文与密钥等长 RSA既可用于数据交换，也可用于数据校验 数据校验通常结合消息摘要算法 MD5withRSA 等 两种加密算法常见结合套路 随机生成密钥 密钥用于AES/DES/3DES加密数据 RSA对密钥加密 提交加密后的密钥和加密后的数据给服务器 APK基本结构 lib:各种平台下使用的对应的so文件 META-INF文件夹:存放工程一些属性文件 CERT.RSA:公钥和加密算法描述 CERT.SF:加密文件，他是使用私钥对摘要明文加密后得到的密文信息,只有使用私钥配对的公钥才能解密该文件 MANIFEST.MF:程序清单文件，他包含包中所有文件的摘要明文 resource.arsc:资源加密(语言包)对res目录下的资源的一个索引文件,保存了原工程中strings.xml等文件内容 drawable:图片 layout:布局 menu:菜单 AndriodMainfest.xml:清单文件(图标、界面、权限、入口),安卓工程的基础配置属性文件。 classes.dex:java代码编译得到的Dalvik VM能直接执行的文件 assets:资源文件(图片、音频、数据库、网页、配置文件等) res:资源文件，需要编译 res目录与assets目录区别在哪？ res目录下的资源文件在编译时会自动生成索引文件(R.java),在java代码中用R.xxx.yyy来引用 asset目录下的资源文件不需要生成索引，在java代码中需要用AssetManager中访问。 一般来说,除了音频和视频资源(需要放在raw或asset下),用java开发的安卓工程使用到的资源文件都会放到res下；使用c++游戏引擎的资源文件均需要放在asset下。 JVM、DVM与ART JVM:Java虚拟机，运行的是.java文件编译后的.class文件 DVM:Android4.4及以前使用的都是Dalvik虚拟机，我们知道Apk在打包的过程中会先将java等源码通过javac编译成.class文件，但是我们的Dalvik虚拟机只会执行.dex文件，这个时候dx会将.class文件转换成Dalvik虚拟机执行的.dex文件。Dalvik虚拟机在启动的时候会先将.dex文件转换成快速运行的机器码，又因为65535这个问题，导致我们在应用冷启动的时候有一个合包的过程，最后导致的一个结果就是我们的app启动慢，这就是Dalvik虚拟机的JIT特性。 Dalvik是google专门为安卓操作系统设计的一个虚拟机，经过深度的优化,虽然安卓上的程序是使用java来开发的，但是Dalvik和标准的java虚拟机JVM还是两回事,Dalvik VM是基于寄存器的，而JVM是基于栈的；Dalvik有专属的文件执行格式dex,JVM则执行的是java字节码。 通过Dalvik的字节码我们不能直接看到原来的逻辑代码,这是需要借助如Apktool或dex2jar+jd-gui工具来帮助查看,但是注意的是最终我们修改APK需要操作的是.smali文件，而不是导出来的java文件重新编译。 ART:ART虚拟机是在Android5.0才开始使用的Android虚拟机，ART虚拟机必须要兼容Dalvik虚拟机的特性，但是ART有一个很好的特性AOT（ahead of time），这个特性就是我们在安装APK的时候就将dex直接处理成可直接供ART虚拟机使用的机器码，ART虚拟机将.dex文件转换成可直接运行的.oat文件，ART虚拟机天生支持多dex，所以也不会有一个合包的过程，所以ART虚拟机会很大的提升APP冷启动速度。Xposed hook的是Java代码，所以Xposed不支持5.0以及以上系统。 安卓分区Android通常有以下分区（用df 来查看分区情况） System分区: 就是我们刷ROM的分区 Data分区: 分区就是我们装APK的分区 Catch分区: 是缓存分区 SDCard分区: 就是挂载的SD卡。 data分区常见目录：app、system、data、local、misc data/data目录存放的是所有APK程序数据的目录，每个APK对就一个自己的Data目录，就是在data/data/目录下，会产生一个跟 Package一样的目录。比如有一个APK,它的包名叫com.test.hello则,在data/data/目录下会有一个 com.test.hello的目录,这个APK只能操作此目录,不能操作其它APK的目录 data/app目录用户安装的APK放在这里。我们如果把APK放入这个文件夹下面的话，就算安装好了。这就叫静默安装。不用管APK文件里面的lib目录下的库文件，系统会自动帮我们放入调用库 data/misc目录保存WIFI帐号，VPN设置信息等。比如保存了一个WIFI连接帐号，则此目录下的WIFI目录下面wpa_supplicant.conf可以查看到 system分区常用目录：app、lib、xbin、bin、media、framework system/app目录存放系统自带的APK。将APK放入到System/app目录下，也是静默安装 system/lib目录存放APK程序用到的库文件 system/bin目录和system/xbin目录存放的是shell命令 system/framework目录启用Android系统所用到框架，如一些jar文件 sd卡目录：/sdcard /mnt/sdcard]]></content>
+    <title><![CDATA[聪明工作-如何做好任务管理？]]></title>
+    <url>%2F2019%2F08%2F26%2F%E8%81%AA%E6%98%8E%E5%B7%A5%E4%BD%9C-%E5%A6%82%E4%BD%95%E5%81%9A%E5%A5%BD%E4%BB%BB%E5%8A%A1%E7%AE%A1%E7%90%86%EF%BC%9F%2F</url>
+    <content type="text"><![CDATA[任务管理就是人生规划 长期任务（人生规划） 健康 教育 理财 中期任务（职业规划） 实现自我价值 短期任务（周计划，日计划） 双任务系统 今天必须做完的事（短期或中期任务） 对自己很重要的事情（长期任务） 理解任务管理的体系（LTF体系） list tag filter 高级任务管理注重的点在与 filter 的使用 OmniFocus &amp; Todoist 团队协作：Teambition 大量数据的任务管理：在线表格工具]]></content>
       <categories>
-        <category>App逆向</category>
+        <category>聪明工作</category>
       </categories>
       <tags>
-        <tag>基础</tag>
-        <tag>app逆向</tag>
-        <tag>编码</tag>
-        <tag>加密</tag>
-        <tag>apk基本结构</tag>
+        <tag>任务管理</tag>
+        <tag>任务管理体系</tag>
+        <tag>LTF体系</tag>
       </tags>
   </entry>
   <entry>
@@ -193,19 +206,6 @@
       <tags>
         <tag>信息摄取</tag>
         <tag>互联网</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[聪明工作-如何做好任务管理？]]></title>
-    <url>%2F2019%2F08%2F26%2F%E8%81%AA%E6%98%8E%E5%B7%A5%E4%BD%9C-%E5%A6%82%E4%BD%95%E5%81%9A%E5%A5%BD%E4%BB%BB%E5%8A%A1%E7%AE%A1%E7%90%86%EF%BC%9F%2F</url>
-    <content type="text"><![CDATA[任务管理就是人生规划 长期任务（人生规划） 健康 教育 理财 中期任务（职业规划） 实现自我价值 短期任务（周计划，日计划） 双任务系统 今天必须做完的事（短期或中期任务） 对自己很重要的事情（长期任务） 理解任务管理的体系（LTF体系） list tag filter 高级任务管理注重的点在与 filter 的使用 OmniFocus &amp; Todoist 团队协作：Teambition 大量数据的任务管理：在线表格工具]]></content>
-      <categories>
-        <category>聪明工作</category>
-      </categories>
-      <tags>
-        <tag>任务管理</tag>
-        <tag>任务管理体系</tag>
-        <tag>LTF体系</tag>
       </tags>
   </entry>
   <entry>
@@ -233,6 +233,17 @@
       </tags>
   </entry>
   <entry>
+    <title><![CDATA[聪明工作-如何做好信息收集？]]></title>
+    <url>%2F2019%2F08%2F26%2F%E8%81%AA%E6%98%8E%E5%B7%A5%E4%BD%9C-%E5%A6%82%E4%BD%95%E9%AB%98%E6%95%88%E6%95%B0%E6%8D%AE%E6%94%B6%E9%9B%86%EF%BC%9F%2F</url>
+    <content type="text"><![CDATA[高效数据收集 数据收集 = 表单数据 问卷星 金数据 麦客 腾讯问卷 Airtable 数据处理 Excel 比较适合这个环节 数据应用]]></content>
+      <categories>
+        <category>聪明工作</category>
+      </categories>
+      <tags>
+        <tag>数据收集</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[聪明工作-知识记忆与知识内化]]></title>
     <url>%2F2019%2F08%2F26%2F%E8%81%AA%E6%98%8E%E5%B7%A5%E4%BD%9C-%E7%9F%A5%E8%AF%86%E8%AE%B0%E5%BF%86%E4%B8%8E%E7%9F%A5%E8%AF%86%E5%86%85%E5%8C%96%2F</url>
     <content type="text"><![CDATA[知识记忆与知识内化人们对于记忆的三个误区 最好的记忆方法就是不断重复 存进电脑，就不用记在脑子里了 信息过载的时代，「多」并不是优势 买书如山倒，读书如抽丝 互联网的信息 != 硬盘里的文件 != 你掌握的知识 从海量信息中获得有价值的部分，并转化为自己内在的知识储备，才是要紧事 聪明人靠创意不靠记忆 不少所谓创意型的人才，只是所谓的搬运工 第一步，把信息记下来 知识内化的三个理论和九个方法理论1：必要难度理论我们应该让自己学习记忆的过程始终保持必要的难度，这种难度虽然在最初会减慢你的学习速度，但是长期来看对学习效果更加有利。 记忆的两种维度 存储强度 提取强度 记忆过程越容易，忘记的越快，反之则越难忘记 四个提升记忆内化效果的方法方法1：建立复述意识 你缺的是复述的习惯和意识 学习完你需要告诉自己，你看完这个你总得记住点什么 康奈尔笔记法 方法2：间隔学习法 间隔穿插着学习 方法3：费曼学习法 选择一个概念 把它讲给小孩子听（非专业人士）听 发现理解不到位的地方，返回原始材料继续学习 回顾和简化信息 方法4：为了记忆的输出 输出，是为了更好地强化自己的记忆 理论2：遗忘曲线理论 在日常学习工作的过程中学习和记忆的东西都是不断追加的，所以使用遗忘曲线学习记忆成本太高。 降低遗忘曲线使用成本的工具 Anki = ankisrs.net 理论3：记忆宫殿方法5：提升既视感 既视感，将抽象的知识、信息图像化 方法6：情绪记忆（调动感官，记忆过程中接受刺激的感官越多，在回忆的时候越清晰） 长期记忆系统 外显性记忆 陈述性记忆 语义记忆 情景记忆 内隐性记忆 程序性记忆 情绪记忆 方法7：用联想解除记忆封印 将数字的音，型，意，进行预编码 将图片两两组合为故事 一边回忆故事，一边逆向匹配数字 方法8：在记忆宫殿里讲故事]]></content>
@@ -249,17 +260,6 @@
         <tag>记忆宫殿</tag>
         <tag>情绪记忆</tag>
         <tag>知识储备</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[聪明工作-如何做好信息收集？]]></title>
-    <url>%2F2019%2F08%2F26%2F%E8%81%AA%E6%98%8E%E5%B7%A5%E4%BD%9C-%E5%A6%82%E4%BD%95%E9%AB%98%E6%95%88%E6%95%B0%E6%8D%AE%E6%94%B6%E9%9B%86%EF%BC%9F%2F</url>
-    <content type="text"><![CDATA[高效数据收集 数据收集 = 表单数据 问卷星 金数据 麦客 腾讯问卷 Airtable 数据处理 Excel 比较适合这个环节 数据应用]]></content>
-      <categories>
-        <category>聪明工作</category>
-      </categories>
-      <tags>
-        <tag>数据收集</tag>
       </tags>
   </entry>
   <entry>
