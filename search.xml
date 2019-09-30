@@ -1,6 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[JS逆向-裁判文书网加密分析20190902版]]></title>
+    <url>%2F2019%2F09%2F17%2F%E6%AF%8F%E6%97%A5JS-%E8%A3%81%E5%88%A4%E6%96%87%E4%B9%A6%E7%BD%91-190902%E7%89%88%2F</url>
+    <content type="text"><![CDATA[裁判文书网20190902版列表页 __RequestVerificationToken搜索关键词__RequestVerificationToken 【图1-1】 找到base.random(24)这个方法，这个复制出来就解决了。 12345678function get_random(size)&#123; var str = "", arr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']; for(var i=0; i&lt;size; i++)&#123; str += arr[Math.round(Math.random() * (arr.length-1))]; &#125; return str;&#125; Ciphertext通过XHR断点，查看堆栈信息【图2-1】 加密位置为【图2-2】 直接扣取ciphertext这个方法的代码即可，这里展示部分代码： 12345678910111213cipher=function()&#123; var date = new Date(); var timestamp = date.getTime().toString(); var salt =get_random(24); var year=date.getFullYear().toString(); var month = (date.getMonth()+1&lt;10 ? "0"+(date.getMonth()+1) : date.getMonth()).toString(); var day = (date.getDate()&lt;10 ? "0"+date.getDate() : date.getDate()).toString(); var iv =year+month+day; var enc = DES3.encrypt(timestamp,salt,iv).toString(); var str = salt+iv+enc; var ciphertext = strTobinary(str); return ciphertext;&#125; pageld这个参数在首页点击时自动带入，经过测试并不是必须项，可以通过分析首页的源码查看到调用的方法。 12345678910function get_uuid()&#123; var guid = ""; for (var i = 1; i &lt;= 32; i++) &#123; var n = Math.floor(Math.random() * 16.0).toString(16); guid += n; // if ((i == 8) || (i == 12) || (i == 16) || (i == 20)) guid += // "-"; &#125; return guid;&#125;]]></content>
+      <categories>
+        <category>js逆向</category>
+      </categories>
+      <tags>
+        <tag>js逆向</tag>
+        <tag>裁判文书网</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[反反爬-巧破 Cloudflare 5秒盾]]></title>
+    <url>%2F2019%2F09%2F16%2F%E5%8F%8D%E5%8F%8D%E7%88%AC-%E5%B7%A7%E7%A0%B4%20Cloudflare%205%E7%A7%92%E7%9B%BE%2F</url>
+    <content type="text"><![CDATA[巧破 Cloudflare 5秒盾相信下面这个界面大家都不会陌生。【图1-1】 当我们第一次访问使用 CloudFlare 加速的网站时，网站就会出现让我们等待 5 秒种的提示，当我们需要的通过爬虫爬取这类网站的时候，应该如何爬取呢？ 分析请求首先我们需要分析在这个等待的时间里浏览器做了哪些操作。 通过抓包，我们可以看到在等待的过程中，浏览器做了下面的三次请求【图1-2】- 【图1-4】： 【图1-2】请求 1 写入 cookie 字段 __cfduid 【图1-3】请求 2 带有疑似加密的请求参数请求并写入 cookie 字段 cf_clearance 【图1-4】请求 3 带上前面写入的cookie 请求网站首页，返回首页内容。 这整个过程需要的请求现在已经分析清楚了，接下来就是使用 Python 实现这个请求流程，不过是这样的话就配不上这个标题了。 先说说这个按照正常流程是怎么实现抓取绕过的： 使用浏览器模拟技术请求目标网站，例如：Selenium、 PhantomJS等 破解请求 2 的加密参数使用请求库模拟整个请求过程 这两个方法当然是可以抓取的，但是都不符合标题的巧字。 接下来给大家介绍一个专门为了绕过这个 CloudFlare 开发的 Python 库 cloudflare-scrape 用上它就可以无感爬取使用了 CloudFlare 的网站，使用这个库非常简单。 安装使用 pip install cfscrape 安装cloudflare-scrape，同时确认本地是否安装node.js开发环境，如果没有，需要安装配置nodejs开发环境。 使用实例处理 get 请求的 CloudFlare 12345678import cfscrape# 实例化一个create_scraper对象scraper = cfscrape.create_scraper()# 请求报错，可以加上时延# scraper = cfscrape.create_scraper(delay = 10)# 获取网页源代码web_data = scraper.get("https://wallhere.com/").contentprint(web_data) 处理 post 请求的 CloudFlare 123456# import cfscrape# 实例化一个create_scraper对象scraper = cfscrape.create_scraper()# 获取真实网页源代码web_data = scraper.post("http://example.com").contentprint(web_data) 使用cloudflare-scrape后整个请求过程如丝般顺滑。 总结今天的水文到这里就结束了，很高兴又水了一篇文章。 之后抽个时间讲讲请求 2 中的加密参数如何生成，这样就可以再水一篇，敬请期待~ EOF]]></content>
+      <categories>
+        <category>反反爬</category>
+      </categories>
+      <tags>
+        <tag>反反爬</tag>
+        <tag>Cloudflare</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[JS逆向-58同城密码加密分析]]></title>
+    <url>%2F2019%2F09%2F16%2F%E6%AF%8F%E6%97%A5JS-58%E5%90%8C%E5%9F%8E%E5%AF%86%E7%A0%81%E5%8A%A0%E5%AF%86%E4%B8%8E%E6%8C%87%E7%BA%B9%E5%88%86%E6%9E%90-RSA%2F</url>
+    <content type="text"><![CDATA[目标网站： aHR0cHM6Ly9wYXNzcG9ydC41OC5jb20vbG9naW4vP3BhdGg9aHR0cHMlM0EvL2Z6LjU4LmNvbS8mUEdUSUQ9MGQxMDAwMDAtMDAxMy0wMjk0LTFjZWItYjU3NTBiZDIwNmU5JkNsaWNrSUQ9Mg== 抓包分析与加密定位老规矩先抓包看看【图1-1】 今天主要分析的是划线的三个参数，先一个一个来研究一下。 先看看密码的加密，按照之前的思路我们测试了password的相关搜索项，但是搜索出来的结果都不尽如人意。【图1-2】 同时这个请求也不是XHR请求，所以xhr断点也用不上了。 搜索的结果中比较有相关性的是【图1-2】标注的部分，但是在文件的搜索项里搜索password是找不到加密位置的。 我简单总结了几种办法，虽然并不一定适用于其他网站的加密，算是提供一种新的思路。 第一、搜索相关的的提示语，就像在之前的我做的第一个 APP 逆向的项目中，我就是搜索相关的提示语找到了扣费逻辑的代码，这里也可以按照这样的思路。 在这个网站的加密里点击登陆，点击后按钮变为登录中...，搜索相关提示语再逐步打断点一直追下去是可以找到加密位置的，不过这是个下下策，耗时太长，很容易追丢了，为了这个不值当。（不推荐使用） 第二、参考开头的搜索关键字的方法，这里搜索的是encrypt，经常遇到加密的变量或方法是encrypt(XX)这样的形式。 第三、试试从网页中找找答案，之前做过一些简单的例子是将 js 的代码直接写到页面中自执行或者采用隐藏域传递值的方式，比如：像PublicKey这类比较有特色的值，如果能找到对我们的帮助是很大的。 按照上面总结的几种方法，我们再次搜索【图1-3】 又搜索到这个熟悉的文件，这次我们进去搜索一次，这次找到了好多类似加密的地方，为了省事我把所有相关的值都打上了断点，再次登录。【图1-4】 到这里就定位到加密的地方了。 继续追进去可以看到进入的是一个VM【图1-5】 到这里就没有什么难度了，密码的加密就是 RSA + eval。 如果你很幸运先找到了eval加密的地方，但是不知道怎么解决，可以参考之前一篇关于js混淆的文章。 —-&gt; 点我看文章 或者直接打开浏览器的开发者工具切换到console选项卡，把相关的eval代码粘贴进去，将代码开头的eval替换为console.log，就可以得到原来的代码了。【图1-6】 接下来看的是两个指纹相关的参数，这里就比较简单了，直接搜索fingerprint就可以找到相关加密文件，直接在里面打断点就可以了。【图1-7】 这里的注意点是想要重新生成指纹，记得要刷新页面才可以。 尾关于指纹的加密生成讲的比较简单，需要学习案例的朋友可以访问下面的网址。 https://lengyue.me/ 也可以看看冷月打来之前的关于某个网站指纹加密的视频教程。 链接 : https://pan.baidu.com/s/1Y8pcacZbHF1DXW0znzmZKQ 密码:vkmf 失效请留言。 EOF]]></content>
+      <categories>
+        <category>js逆向</category>
+      </categories>
+      <tags>
+        <tag>js逆向</tag>
+        <tag>密码加密</tag>
+        <tag>58同城</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[JS逆向-叮当快药 sign 加密分析]]></title>
+    <url>%2F2019%2F09%2F16%2F%E6%AF%8F%E6%97%A5JS-%E5%8F%AE%E5%BD%93%E5%BF%AB%E8%8D%AF-MD5%2F</url>
+    <content type="text"><![CDATA[今日份的网站 aHR0cDovL3d3dy5kZGt5LmNvbS9jb21tb2RpdHkuaHRtbD9kZGt5Y2FjaGU9YTdiMTllODc5ZDJmMmYyNzlkMzU2ZjVhZmE2ZDVjZmY= 这个网站的加密比较简单，是那种新手做过一遍就对 JS 逆向充满信心的小练手。 分析请求先分析请求，看看需要的参数有没什么搞头【图1-1】 比较明显的是 sign 其他的参数好像没有什么特别的地方。 先定位 sign 的位置【图1-2】 直接搜索参数就看到结果了，点击搜索的结果文件在文件内再搜索一次，可以看到有 3 个结果。【图1-3】 到这里就看到 sign 的加密了。 接下来继续分析逻辑，这里的 sign 值是 y，y的值是通过MD5(f)获取的，而f又是t.get(&quot;method&quot;) + p + r的结果，经过一通分析，可以的得到下面的逻辑： 1234567var l = t.keys().sort(), p = ""; l.length;for (var g in l) &#123; var m = l[g]; p += m + t.get(m)&#125;sign = md5(t.get("method") + p + r) 接下来只需要把我们不知道的值通过断点的方式调试出来，这个加密我们就完成解密了。 所以先给不知道的值打上断点，不清楚就打上断点不要怕麻烦，像【图1-4】这样。 重新请求一下，就进入到我们打的断点里了，我们可以通过在 console 中打印变量的值来理解逻辑。【图1-5】 明白需要的变量的值之后，我们就可以开始扣取 JS 或者用 Python 复写加密的逻辑了。 因为这次的加密比较简单，我们试试用 Python 复写一遍加密。（主要是 Python 的 md5 用起来蛮舒服的） 这里的逻辑比较简单没啥好分析的，我就直接上代码了。 12345678910111213141516171819202122232425262728293031323334353637import timefrom hashlib import md5def get_sign(): timeStamp = time.time() localTime = time.localtime(timeStamp) strTime = time.strftime("%Y-%m-%d %H:%M:%S", localTime) l = ["method", "orderTypeId", "orgcode", "pageNo", "pageSize", "plat", "platform", "shopId", "t", "v", "versionName"] t = &#123; 'method': 'ddsy.product.query.orgcode.product.list.b2c', 'orderTypeId': '0', 'orgcode': '010502,010503,010504,010505,010506,010507', 'pageNo': '1', 'pageSize': '100', 'plat': 'H5', 'platform': 'H5', 'shopId': '-1', # 't': '2019-9-23 22:4:16', 't': '&#123;&#125;'.format(strTime), 'v': '1.0', 'versionName': '3.2.0' &#125; p = '' for i in range(0, 11): m = l[i] p += m + t.get(m) f = t['method'] + p + '6C57AB91A1308E26B797F4CD382AC79D' print(f) sign = md5value(f).upper() print(sign) return signdef md5value(s): a = md5(s.encode()).hexdigest() return a 到这里其实就没有什么难度了，直接带入 sign 请求就完事了。【图1-6】 EOF]]></content>
+      <categories>
+        <category>js逆向</category>
+      </categories>
+      <tags>
+        <tag>js逆向</tag>
+        <tag>sign</tag>
+        <tag>叮当快药</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[JS逆向-新浪二手房与房天下加密分析]]></title>
+    <url>%2F2019%2F09%2F07%2F%E6%AF%8F%E6%97%A5JS-%E6%88%BF%E5%A4%A9%E4%B8%8B%2B%E6%96%B0%E6%B5%AA%E4%BA%8C%E6%89%8B%E6%88%BF-RSA%2F</url>
+    <content type="text"><![CDATA[X天下密码加密分析本次的受害者： aHR0cHM6Ly9wYXNzcG9ydC5mYW5nLmNvbS8= 分析通过输入错误密码抓包查看加密字段。【图1-1】 直接通过检索pwd:定位加密位置【图1-2】。 根据检索结果给对应的位置打上断点【图1-3】，并把划线的代码复制出来备用。 重新发起请求，发现这些参数大概是下面这样的： 123// that.password.val() 输入的密码：11111111111// encryptedString 是加密方法encryptedString(key_to_encode, that.password.val()) 根据上面分析就少了一个 key_to_encode，直接检索可以找到下面的结果【图1-4】： 很明显的 RSA 加密，同时追进去就看到encryptedString的加密逻辑了，一起扣出来组装一下就得到加密逻辑了【图1-5】： XX二手房密码加密分析本次的受害者： aHR0cDovL2ouZXNmLmxlanUuY29tL3VjZW50ZXIvbG9naW4= 分析同样使用错误密码测试登陆【图2-1】 这里password和ckey两个参数疑似加密，我们先检索一遍。 ckey是在页面适用隐藏域传递的值【图2-2】 password的检索结果比较多，不过从文件名看第三个文件关联性比较强。【图2-3】 我们打开第三个文件，并格式化搜索一下【图2-4】。 有没有发现这个加密规律和上面 X天下 的加密非常像，而且还有RSA的加密标志，publickey 连下面的 encryptedString 加密方法都似曾相识【图2-5】？同时参考 X天下例子的【图1-3】 到这里就没有悬念了，直接用上一个例子的代码就可以实现加密，如果你想自己扣出来也是可以的，但是咸鱼感觉没有必要。]]></content>
+      <categories>
+        <category>js逆向</category>
+      </categories>
+      <tags>
+        <tag>js逆向</tag>
+        <tag>密码加密</tag>
+        <tag>新浪二手房</tag>
+        <tag>房天下</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[JS逆向-粉笔网密码加密]]></title>
+    <url>%2F2019%2F09%2F06%2F%E6%AF%8F%E6%97%A5JS-%E7%B2%89%E7%AC%94%E7%BD%91-RSA%2F</url>
+    <content type="text"><![CDATA[aHR0cHM6Ly9mZW5iaS5jb20vcGFnZS9ob21l 参数加密的逻辑分析先抓包看看这次分析的参数【图1-1】 这个参数的值看着像Base64 ，我们不急着下结论，先搜索参数名看看。 有读者朋友纠结于搜索password = or password：这样需要搜索两遍是不是浪费时间了，不如直接搜索password来的方便快捷。 咸鱼之所以这样搜索是出于自己的习惯，定位加密位置的方法有很多大家有兴趣可以多尝试不要局限于搜索参数，例如：Js Hook，XHR 断点等等，怎么舒服怎么来就好。 经过搜索参数名password:在一个文件中定位到 3 处疑似加密的位置。【图1-2】 这里有两种方法判断加密位置： 给所有搜索到的结果打上断点，再次刷新看看进入到哪个断点当中 阅读上下文，分析大概的代码逻辑 我们用第一种试试，打上断点重新发起请求，可以看到成功断上了。【图1-3】 这里的this.password是测试的密码，我们需要分析的就是这个this.encrypt的逻辑是什么样的。 我们进入到this.encrypt这个函数中，发现有熟悉的 RSA 加密标志this.publicKey【图1-4】 在文件中再搜索一次publicKey，能够看到文件中已经声明了这个变量【图1-5】 继续进入到函数内部查看逻辑，发现进入的就是加密逻辑的文件了。【图1-6】 这一整个流程分析下来，可以发现前面的传参部分，在Python调用中我们完全可以跳过，只要给【图1-6】中的Js加密逻辑传入publicKey与明文密码就可以实现这个网站的密码加密逻辑了，既然这么简单，我们就动手试试。 参数加密的代码实现接上面的分析，我们直接复制了【图1-6】截图所示的全部代码。 接着在编辑器中加上一些我们自己的逻辑类似这样【图2-1】。 注：前939行都是复制的 Js 文件代码 试着运行一下，看看报错。 运行的报错提示，window is undefine【图2-2】，遇到这种情况我们可以试试在代码上加上window的声明。 1var window = &#123;&#125; 再次运行看看，这里再次提示{} is not a function，【图2-3】到这里新手朋友有点慌了，不知道怎么处理。 比较方便的处理方式是直接在(function(av) {前加上!，就是这么简单。 具体用法，这里套用一下百度： 使用括号包裹定义函数体，解析器将会以函数表达式的方式去调用定义函数。也就是说，任何能将函数变成一个函数表达式的作法，都可以使解析器正确的调用定义函数。而 ! 就是其中一个，而 + - || 都有这样的功能。 继续调试，这次提示变成了navigator is not defined【图2-4】 有了上次的经验，我们在代码里加入声明navigator。 1var navigator = &#123;&#125; 再次运行就得到加密后的结果咯~【图2-5】 总结这次的加密是比较简单的 RSA 加密，使用文件中包含的公钥对密码的值进行加密，且Js代码没有进过混淆，适合新手练手增加手感。]]></content>
+      <categories>
+        <category>js逆向</category>
+      </categories>
+      <tags>
+        <tag>js逆向</tag>
+        <tag>RSA</tag>
+        <tag>密码加密</tag>
+        <tag>粉笔网</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[JS逆向-极贷助手密码加密]]></title>
+    <url>%2F2019%2F09%2F05%2F%E6%AF%8F%E6%97%A5JS-%E6%9E%81%E8%B4%B7%E5%8A%A9%E6%89%8B-aes%2F</url>
+    <content type="text"><![CDATA[极X助手aHR0cHM6Ly93d3cuamlkYWlob21lLmNvbS9vZmZpY2VyLyMvbG9naW4= 先抓包看看这次要分析的参数。【图1-1】 看到【图1-1】里是没有加密参数名的。所以为了快速定位到加密的位置，我们试试 XHR 断点。 切换到 控制台 - Source 选项卡 ，如【图1-2】位置填入下面的内容。 接着我们再发起一次请求，可以看到断点打上了。【图1-3】 我们点击左下角的{}格式化 JS 看看断点断上的位置有没有我们需要的内容。【图1-4】 我们可以看到这里函数 y传入一个参数t，t中包含我们需要的提交数据【图1-5】。但是在这个断点位置并不能找到参数加密的地方，所以我们需要点击右侧的堆栈往上看看。 我们通过查看堆栈信息，找到了这里【图1-6】。发现在这里出现了 params相关的的操作，所以这里的可能包含的就是我们需要的加密位置，我们根据提示进去看看这里的加密逻辑是什么样的。 可以看到这里把经过处理的密码和用户名传入后，再次做了另一次加密处理后得到了变量i。 1var r = t.randomKey(16), i = t.aesEncrypt(JSON.stringify(e), r); 我们分别把变量i需要的参数分别跟进去看看生成规则。【图1-8】是变量r的生成规则是一串随机的字符串。 接下来是加密变量i的加密方法【图1-9】。 接下来只需要把这些参数的方法复制到编辑器中进一步的补全就可以了。 Tip: 这里的参数e是我们传入的用户名和密码，在【图1-6】的 54-55 行中传入，且密码经过了一层MD5的加密。 这里很多朋友纠结于类似 i.enc.Utf8.parse 这里的i如何补全，其实这里的i 就是我们常用的CryptoJS，只要引入后，直接替换就可以了，不用扣取整个JS。]]></content>
+      <categories>
+        <category>js逆向</category>
+      </categories>
+      <tags>
+        <tag>js逆向</tag>
+        <tag>密码加密</tag>
+        <tag>极贷助手</tag>
+        <tag>AES</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[JS逆向-空中网密码加密]]></title>
+    <url>%2F2019%2F09%2F04%2F%E6%AF%8F%E6%97%A5JS-%E7%A9%BA%E4%B8%AD%E7%BD%91%2F</url>
+    <content type="text"><![CDATA[aHR0cHM6Ly9wYXNzcG9ydC5rb25nemhvbmcuY29tL2xvZ2lu 参数位置分析先来看看加密的请求【图1-1】，之前在一篇加密总结的文章中提到过关于这个网站的加密，感兴趣的朋友可以回顾一下。 之前介绍过很多关于加密参数如何搜索的文章，就不啰嗦咯。 除了搜索加密参数之外，同样还要注意id 和 calssname等标志性的属性，能够帮助我们进一步定位加密位置。 通过密码框的id = password_txt 快速定位至网站的加密入口。【图1-2】 通过逐步调试进入虚拟引擎中加密码的位置打上断点。【图1-3】 上图中的encrypt这个方法才是我们需要的加密方法，所以继续最近去看看逻辑。 这里通过悬停在对应方法上没有提示加密的位置的，小伙伴表示无法进入下一步，我们可以选中方法后点击提示即可跳转【图1-4】 顺利跳转进加密方法的位置后，就可以直接抠出来补全了。【图1-5】 tip: 这里的第二个参数是在【图1-1】中上一条请求中返回的哦 补全加密JS先扣取【图1-5】中框选的方法到编辑器中，根据断点把需要的参数传入【图2-1】 这样在编辑器中的结果就像现在这样了【图2-2】 运行之后就是得到的加密参数喽。 总结这个网站的加密比较适合有一点点的新手作为练手项目，涉及多次的浏览器调试可以很好的帮助新手进一步的了解浏览器的调试技巧。]]></content>
+      <categories>
+        <category>js逆向</category>
+      </categories>
+      <tags>
+        <tag>js逆向</tag>
+        <tag>密码加密</tag>
+        <tag>空中网</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[JS逆向-咪咕视频密码加密与指纹分析]]></title>
+    <url>%2F2019%2F09%2F03%2F%E6%AF%8F%E6%97%A5JS-%E5%92%AA%E5%92%95%E8%A7%86%E9%A2%91-RSA%2F</url>
+    <content type="text"><![CDATA[正文先来看看今天的受害者： aHR0cDovL3d3dy5taWd1dmlkZW8uY29tL21ncy93ZWJzaXRlL3ByZC9pbmRleC5odG1s 一、分析密码加密这次分析的是他登陆的三个参数，先分析登陆逻辑，抓个包看看。 可以看到这里用的是弹出的窗口登陆【图1-1】，为了避免主页其他元素的干扰抓包，我们可以通过右键 查看框架源代码 的方式打开登陆框分析抓包【图1-2】。 把打开的源代码页面地址栏中的 view-source:删除即可打开以下页面【图1-3】： 接下来用错误的账号密码登陆一波，可以看到如下的包【图1-4】，不过通过上面的 publickey 隐隐猜到这里的加密参数可能和 RSA 有关，先来找找密码加密的位置： 照常搜索一下 enpassword ，预料之中是没有搜索到有用的结果【图1-5】，不过定位元素可以通过 name 定位 也可以通过 class 定位，所以同样试试 J_RsaPsd，果然找到像样的文件了【图1-6】。 在打开的文件里检索J_RsaPsd，可以看到有3个相关的结果(熟悉加密的已经可以看出这里是 RSA 加密)，我们通过把所有相关的结果都打上断点【图1-6】，并通过重新发起一次登录请求，来判断哪个J_RsaPsd是密码的加密逻辑。 通过重新发起请求，断点断在 333 行【图1-8】。 我们先复制整段代码： 123c.setPublic(a.result.modulus, a.result.publicExponent);var d = c.encrypt(b.val());b.siblings(".J_RsaPsd").val(d) 我们通过控制台看看这些参数分别是什么【图1-9】。 通过前文抓包和JS页面的代码，我们判断密码的加密是RSA加密，所以我们就需要找齐RSA加密的需要的几个要素，比如他的公钥 ，因为RSA是非对称加密本地使用公钥加密，服务器上使用私钥解密。再看看【图1-8】上的几个参数不知道你们有没想起开头【图1-4】我提及的那条抓包。我们切换到 控制台-Network 看看【图1-10】。 1&#123;"status":2000,"message":"","header":&#123;&#125;,"result":&#123;"publicExponent":"010001","modulus":"00833c4af965ff7a8409f8b5d5a83d87f2f19d7c1eb40dc59a98d2346cbb145046b2c6facc25b5cc363443f0f7ebd9524b7c1e1917bf7d849212339f6c1d3711b115ecb20f0c89fc2182a985ea28cbb4adf6a321ff7e715ba9b8d7261d1c140485df3b705247a70c28c9068caabbedbf9510dada6d13d99e57642b853a73406817"&#125;&#125; 是不是和我们在【图1-9】中打印出来的数值完全相同 tip : 这里的b.val()是我输入的错误密码。 这里我们找齐了加密需要的参数，其实我觉得没必要扣JS，但是我知道。。 不要我觉得，你要你觉得 所以偷懒用之前扣的代码测试一下： 1234567891011121314151617181920-----------此处省略500行-----------function bodyRSA()&#123; //setMaxDigits(130); var key = RSAUtils.getKeyPair("010001","","00833c4af965ff7a8409f8b5d5a83d87f2f19d7c1eb40dc59a98d2346cbb145046b2c6facc25b5cc363443f0f7ebd9524b7c1e1917bf7d849212339f6c1d3711b115ecb20f0c89fc2182a985ea28cbb4adf6a321ff7e715ba9b8d7261d1c140485df3b705247a70c28c9068caabbedbf9510dada6d13d99e57642b853a73406817"); return key&#125;function get_encrypt(password) &#123; key = bodyRSA(); var a = RSAUtils.encryptedString(key,password) //var b = RSAUtils.encryptedString(key,username) console.log(a) console.log('----------------------------------') //console.log(b) return a&#125;get_encrypt('11111111111') 二、分析FingerPrintDetail与fingerPrint根据第一部分的【图1-5】和图【1-6】可以很快定位加密的位置，这里就不说了【图2-1】。 追进去分析一下rsaFingerprint的逻辑，可以看到其实和密码加密用的是一样的RSA加密【图2-2】只是部分参数不同。 这里比较疑惑的是$.fingerprint.result和$.fingerprint.details是怎么来的。 通过检索$.fingerprint根据查找的结果找到他的位置【图2-3】 继续向上查找，最终找到这里，发现是根据浏览器的请求头等信息生成的一串哈希值【图2-4】。 这个值如果不修改请求头信息，那么这个值就是固定不变的，如果修改请求头信息，那么就需要重新生成这段hash，这就是这个的浏览器指纹信息。 因为我们这里只是抱着学习的态度学习，所以就不瞎搞，不过这个整段的代码也比较简单没事可以扣一扣。 tip: 如果想要分析这个指纹的算法，记得要刷新一下页面才可以进入断点。 三、总结结合之前的建议，文章的配图都标注了序号，希望能够起到一定梳理思路的作用。 这个网站的加密总体还是只用RSA的加密算法就可以搞定了，整体加密算法比较简单有经验的老哥直接通过加密库就可以实现，如果想练练手的也可以抠出来试试，只要头发多，肝就完事了。]]></content>
+      <categories>
+        <category>js逆向</category>
+      </categories>
+      <tags>
+        <tag>js逆向</tag>
+        <tag>密码加密</tag>
+        <tag>咪咕视频</tag>
+        <tag>指纹加密</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[JS逆向-楚楚街密码加密]]></title>
+    <url>%2F2019%2F09%2F02%2F%E6%AF%8F%E6%97%A5JS-xx%E8%A1%97%E7%99%BB%E9%99%86%E5%AF%86%E7%A0%81%E5%8A%A0%E5%AF%86-md5%2Brsa%2F</url>
+    <content type="text"><![CDATA[XX 街登陆密码加密aHR0cDovL3NlbGxlci5jaHVjaHVqaWUuY29tL3NxZS5waHA/cz0vVXNlci9pbmRleA== 这个加密太简单了，五秒定位真的不是吹，所以直接来。 输入错误的账号密码，发起登陆请求，可以看到登录包里有个password的加密字段。所以我们依次搜索password:+password :+password=+password = 很快得到下面的结果【图1-1】，直接用python实现就完事了~ X博登陆密码与相关加密参数解析aHR0cHM6Ly93d3cud2VpYm8uY29tL2xvZ2luLnBocA== 用 Chrome 浏览器抓包相信大家都会，前面抓包我们跳过，直接到加密参数分析的地方。 Tip: 这次的加密不是异步的 不要在 XHR 选项卡傻乎乎的等了。 微博登陆框是嵌在页面中的加上微博的登陆页面图片以及要加载的东西很多，所以我们需要注意的包主要有两个： 登陆前返回相关加密秘钥的包【图2-1】 发起登陆请求的包【图2-2】 到这里就很清晰了，我们搞定 su 和 sp 就完事了。 先来看看 su 这个其实不要搜索，看着是不是很像我们开头的编码结果，由 a-zA-Z[0-9]+/= 这几种字符组成的编码 熟悉的就只有 Base64 , 我们直接找一个在线工具验证一下我们的猜想。【图2-3】 当然我们也可以试试搜索 参数名 su 【图2-4】，很明显搜索结果也验证了我们的猜想。 接下来看看 sp 在我们上面搜索 su 的地方我们找到了密码加密的地方，已经用红框框出主要的逻辑【图2-5】，接下来我们打上断点找找缺失的参数都是什么。 这里的参数都是比较简单的首先是 me.servertime 、me.rsaPubkey 和 me.nonce【图2-6】 这三个参数在上一个请求包都有同名的参数返回可以参考【图2-1】。 我们现在已经找齐了全部的参数，接下来需要切换到 webstorm 中调试出我们整体的加密算法。 直接粘贴 789 - 791 行的代码到编辑框中补全成下面这样。 1234567function get_sp() &#123; var f = new sinaSSOEncoder.RSAKey; f.setPublic(me.rsaPubkey, "10001"); b = f.encrypt([me.servertime, me.nonce].join("\t") + "\n" + b) return b&#125;get_sp() 虽然知道运行肯定报错，但是我们需要的就是报错的信息。【图2-7】 提示 sinaSSOEncoder is not defined ，我们回到浏览器调试窗口找 sinaSSOEncoder在哪儿定义的。可以直接在页面中搜索 var sinaSSOEncoder 结果就只有一个【图2-8】 接下来复制 sinaSSOEncoder的全部内容到编辑器中，第1048-1981行。继续运行并提示navigator is not defined，我们定义它为{}。接下来会提示 me 未定义【图2-9】。 但是我们调试过都知道这个 me.rsaPubkey 是在【图2-1】中返回的，所以我们把它替换掉。同理替换到我们已知的的其他参数。现在就只剩下 b 参数是未知的了。 我们向下运行，可以看到b参数就是我们输入的密码【图2-10】，我们继续替换再次运行，发现没有东西输出，也没有报错，我们在函数中加上一句 打印语句，看看返回的 b是什么结果，可以看到已经得到了加密后的结果了。【图2-11】 总结这次主要把如何扣一个简单的加密算法做了详解，这里包含了基础的JS知识，或许看不明白为什么是复制这些代码而不是其他的，这里我建议可以适当补充一些JS基础语法的知识。等到下次有类似的加密算法时，你可以自己做出判断复制扣取哪些，这样学的更快。 JS逆向学习的文章每一篇都是很简单的案例，希望看完可以自己动手扣一遍。 每天一题，头发掉的更快。]]></content>
+      <categories>
+        <category>js逆向</category>
+      </categories>
+      <tags>
+        <tag>js逆向</tag>
+        <tag>密码加密</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[Apk打包流程梳理和加载流程学习]]></title>
     <url>%2F2019%2F08%2F26%2F%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%AD%A6%E4%B9%A0-apk%E6%89%93%E5%8C%85%E6%B5%81%E7%A8%8B%E6%A2%B3%E7%90%86%2F</url>
     <content type="text"><![CDATA[想要学习逆向必须先熟悉APP编译的流程。 安卓加载流程java 代码 – &gt; 加载布局文件 –&gt; 资源文件 资料参考链接： https://juejin.im/entry/58b78d1b61ff4b006cd47e5b 新版官网示意图 编译器将您的源代码转换成 DEX（Dalvik Executable) 文件（其中包括运行在 Android 设备上的字节码），将所有其他内容转换成已编译资源。 APK 打包器将 DEX 文件和已编译资源合并成单个 APK。不过，必须先签署 APK，才能将应用安装并部署到 Android 设备上。 APK 打包器使用调试或发布密钥库签署您的 APK： 如果您构建的是调试版本的应用（即专用于测试和分析的应用），打包器会使用调试密钥库签署您的应用。Android Studio 自动使用调试密钥库配置新项目。 如果您构建的是打算向外发布的发布版本应用，打包器会使用发布密钥库签署您的应用。要创建发布密钥库，请阅读在 Android Studio 中签署您的应用 在生成最终 APK 之前，打包器会使用 zipalign 工具对应用进行优化，减少其在设备上运行时的内存占用。 旧版官网示意图 通过aapt打包res资源文件，生成R.java、resources.arsc和res文件（二进制 &amp; 非二进制如res/raw和pic保持原样） 处理.aidl文件，生成对应的Java接口文件 通过Java Compiler编译R.java、Java接口文件、Java源文件，生成.class文件 通过dex命令，将.class文件和第三方库中的.class文件处理生成classes.dex 通过apkbuilder工具，将aapt生成的resources.arsc和res文件、assets文件和classes.dex一起打包生成apk 通过Jarsigner工具，对上面的apk进行debug或release签名 通过zipalign工具，将签名后的apk进行对齐处理。 安卓项目的文件结构与安卓apk的文件结构存在着一一对应的关系。 安卓应用开发的本质是：将源代码和各种资源文件编译整合成一个apk。 安卓逆向的本质是：想办法将apk转化为源代码和资源文件。 简单来说，apk就是一个带有签名的zip格式的压缩包，签名为了保护开发者的权益和标识apk。做为android逆向学习的第一步，了解apk的文件结构和生成过程是很有必要的。为了提升apk的安全性能，现在很多安卓应用程序的核心代码都采用NDK开发，所以生成的apk中会多出一个lib文件夹用于存放so文件。]]></content>
@@ -21,8 +152,8 @@
         <category>App逆向</category>
       </categories>
       <tags>
-        <tag>app逆向</tag>
         <tag>基础</tag>
+        <tag>app逆向</tag>
         <tag>编码</tag>
         <tag>加密</tag>
         <tag>apk基本结构</tag>
@@ -132,17 +263,6 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[聪明工作-邮件礼仪]]></title>
-    <url>%2F2019%2F08%2F26%2F%E8%81%AA%E6%98%8E%E5%B7%A5%E4%BD%9C-%E9%82%AE%E4%BB%B6%E7%A4%BC%E4%BB%AA%2F</url>
-    <content type="text"><![CDATA[邮件礼仪 邮箱的名称 邮箱的注册名，如「wuyanzu@163.com」 不太正式的邮箱注册名 纯数字，qq邮箱 包含其他数字，如生日：wyz19931023@163.com 较为稳妥的邮箱注册名 姓名拼音 拼音（姓）+英文名，Jack.Wu@163.com 对外展示的名字 邮箱收件时上方发件人的名字 拒绝使用QQ有一大原因是因为之前QQ邮箱之前默认使用QQ昵称当做发件人名称，有些过于非主流了 推荐使用 中文姓名 英文名+姓 如果经常频繁沟通，建议使用，公司名+职位+姓名 收件人、CC和BCC的区别 收件人：直接相关的人，大多数时候，你希望他们做出回应（听众） CC（抄送）：让对方了解下，不需要对方回应（旁听） BCC（密送）：被填入BCC一栏的收件人，将对其他收件人隐藏。（类似网易邮箱的群发单显） 谁要抄送，谁不需要抄送，请先搞清楚公司架构及事务的相关人员（问你的直接上级） 如何写好邮件？ 邮件正文 忌长篇大论，提倡ABC法则 A - Action（行动）：一句话总结希望收件人做的事情 B - Background（背景）：解释事件背景和细节 C - Close（结束语）：一两句结束邮件的礼貌用语 可以放上一些相关联系人，比如有哪件事情需要了解详情的时候应该联系谁+联系方式 间接等于 5W 法则 A = who，when，what，where B = why 邮件标题 内容：精简 Action 的内容 格式：在标题前面加上邮件类型 - 通知，请求 写邮件的顺序 附件：很容易在最后被忘记 正文：方便在正文中提及附件 标题：方便总结正文内容来起标题 收件人：写好内容，更容易判断收件人，CC等关系 关于附件的好习惯 千万别发一份邮件，正文只有几个字 建议在正文简要说明附件中的关键信息以及注意文件的格式 养成好的附件命名习惯 文件修改的日期 版本号 序列号等 自动回复如何设置 自动回复的错误用法 你的来信我已经收到。。。 自动回复的正确用法 休假或外出的时候才会用 阐述你正在休假 如果很急的话，可以联系谁（姓名 + 联系方式） 如果不是很急的话，你大概什么时间可以回复 邮件管理 遵循FAST法则管理 Filter 过滤 把符合规则的邮件自动归类到某个分类的文件夹下（如过滤器，过滤规则，来信分类等功能） Archive 归档 将已经阅读或已经处理的邮件转移到「归档」的文件夹下 Snooze 延后 不能马上处理或马上回复的邮件 适用于简单，稍后才需要完成的任务 Transfer 流转 大型任务清单，任务比较复杂，可能需要进一步细化和重新分配 这里的流转存在两种意思 一是在你的任务处理层面上的流转，比如流转细分到你的 todolist 或其他任务管理软件上 二是这个任务需要多人合作，比如会议结束后把邮件中汇总的任务细化分配给各个负责人 如何进一步整理邮件？ 文件夹 标签（标签的三个维度）- 以过滤器自动打标签 来源标签：以发件人所在的公司部门，或是外部合作方、客户的名字命名 类型标签：以邮件属性命名，如任务、通知、用户反馈、新闻订阅等 项目标签：以邮件所属项目名字命名 高级的邮件检索功能 *：匹配 AND：包含 -：排除 has:document - 找出带word文档的邮件 has:spreadsheet - 找出带有exceld的邮件 has:presentation - 找出带有ppt的邮件 参考 https://support.google.com/mail/answer/7190]]></content>
-      <categories>
-        <category>聪明工作</category>
-      </categories>
-      <tags>
-        <tag>邮件礼仪</tag>
-      </tags>
-  </entry>
-  <entry>
     <title><![CDATA[聪明工作-遭遇裁员怎么办？]]></title>
     <url>%2F2019%2F08%2F26%2F%E8%81%AA%E6%98%8E%E5%B7%A5%E4%BD%9C-%E8%A2%AB%E7%A6%BB%E8%81%8C%E4%B9%8B%E5%90%8E%E5%BA%94%E8%AF%A5%E5%81%9A%E4%BB%80%E4%B9%88%3F%2F</url>
     <content type="text"><![CDATA[现在市场上被离职的方式形形色色,并不都是法律条款规定里的模式,所以有必要了解基本的法律规定,这里咸鱼分享一下在极客时间「白话法律42讲」里学习到的一些知识要点,希望在维权路上帮到你。 先引用周老师在专栏里的两个例子: 口头裁员有效吗？我国《劳动合同法》明确规定，劳动合同的签订、变更、解除都需要用书面的形式，公司应用书面通知 小蔡，而不能口头裁员。结合小蔡的描述，公司只是口头提出，但实际上双方没有解除劳动关系，劳动 合同也继续生效。 劳动关系存续期间，能否找新的工作，签新的劳动合同？虽然劳动关系继续，但是既然公司有裁员的意向，作为员工，提前找好新工作是无可厚非的，法律也不 禁止。但在上一份劳动合同解除之前，尽量不要签新的劳动合同，否则会让自已陷入被动。 比如说，原公司可能倒打一耙，以你“在劳动关系存续期间，签署新的劳动合同，严重影响工作”为由， 提出解除劳动合同，你反而成了过错方，得不到补偿。再或者，公司变卦，不放你走了，对下家公司你 就成了违约方。 如果公司不提出解除劳动合同，则需要继续工作； 如果公司依然是口头解除，不给书面文件，则可以取证（证据包括比较多，比如说工作证、工资 条、劳动合同、辞退相关证据、工资发放情况、录音录像、证人证言、社保等），依法提出解除劳 动合同，并要求经济补偿。 接下来再详细聊聊技术人应该知道的具体的事项。 什么是劳动合同解除?简单来说就是劳动合同规定的时间还没到,双方任意一方提出解除合同。所以这里就要分情况分析了: 协商解除 员工单方面解除 公司单方面解除 前两种情况这里就不细讲,一般不会有太多的坑,甚至在公司过错的前提下，员工还享有法定的解释权。(通常指公司未按时发放工资,未按时缴纳社保等) 这里需要注意的是第三点: 公司单方面解除劳动合同,在法律上只有三种情况下公司才可以单方面解除合同: 员工存在过错(违反公司制度、违法犯罪、简历弄虚作假等) 员工没有过错,但是在因为一些因素不能正常工作(患病、受伤(非工伤)、无法胜任工作、外部条件发生变化) 特殊情况下的经济性裁员 而这里的第三点才是我们关注的重点。 经济性裁员经济性裁员这里是指员工没有过错,公司单方面解除劳动合同。那么特殊情况下的经济性裁员又是什么东西呢？ 公司破产 公司经营困难 企业转产，技术革新 劳动合同订立时客观情况发生重大变化，导致合同不能继续履行的 裁员补偿了解完上面比较枯燥的概念问题,就到了关键的地方了,被离职什么情况下有补偿?被离职的补偿怎么算? 什么情况下有补偿? 由公司提出和员工协商一致解除劳动合同 由员工提出,理由是公司存在过错(通常指公司未按时发放工资,未按时缴纳社保等) 公司提前三十天解除合同,员工无过错 被离职的补偿怎么算? 每满一年支付一个月的工资 六个月以上没满一年，按一年计算,补偿一个月工资 不满半年，支付半个月工资 经济赔偿金怎么算?公司违反法律规定(公司是不能毫无理由的解除与劳动者的劳动合同的，否则就会要求给经济赔偿金)解除劳动合同。如: 员工在孕期，哺乳期,产期,在规定医疗期等特殊情况 公司没有合法理由,页面有按照法定的流程解除合同 公司要向员工支付经济赔偿金,经济赔偿金是上面计算出来金额乘二 其余情况的赔偿参考: https://www.66law.cn/laws/146137.aspx n + 1 是什么?经常在脉脉上看到有 n + 1之类的说法,这里的n就是上面的经济补偿金,1这里指的是公司没有提前三十天通知你就需要支付额外的1个月工资。 n一般按照前12个月的平均工资算,1是按照上个月工资算,且n最高为12,1最高不高于公司所在地年度职工平均工资的三倍,若高于则按三倍计算。 总结一下其实还有很多关于技术人应该懂得法律知识,建议大家不妨订阅学习一下,可以避开不少雷区。 之前咸鱼也写过一篇关于爬虫是否违规的一篇普法文,感兴趣的朋友可以看看: 看到这希望对于被离职,能有自己的一套应对策略,不会成为无头苍蝇,再之,没有遇到被离职的技术人也更应该注意提升自己。]]></content>
@@ -156,6 +276,17 @@
       </tags>
   </entry>
   <entry>
+    <title><![CDATA[聪明工作-邮件礼仪]]></title>
+    <url>%2F2019%2F08%2F26%2F%E8%81%AA%E6%98%8E%E5%B7%A5%E4%BD%9C-%E9%82%AE%E4%BB%B6%E7%A4%BC%E4%BB%AA%2F</url>
+    <content type="text"><![CDATA[邮件礼仪 邮箱的名称 邮箱的注册名，如「wuyanzu@163.com」 不太正式的邮箱注册名 纯数字，qq邮箱 包含其他数字，如生日：wyz19931023@163.com 较为稳妥的邮箱注册名 姓名拼音 拼音（姓）+英文名，Jack.Wu@163.com 对外展示的名字 邮箱收件时上方发件人的名字 拒绝使用QQ有一大原因是因为之前QQ邮箱之前默认使用QQ昵称当做发件人名称，有些过于非主流了 推荐使用 中文姓名 英文名+姓 如果经常频繁沟通，建议使用，公司名+职位+姓名 收件人、CC和BCC的区别 收件人：直接相关的人，大多数时候，你希望他们做出回应（听众） CC（抄送）：让对方了解下，不需要对方回应（旁听） BCC（密送）：被填入BCC一栏的收件人，将对其他收件人隐藏。（类似网易邮箱的群发单显） 谁要抄送，谁不需要抄送，请先搞清楚公司架构及事务的相关人员（问你的直接上级） 如何写好邮件？ 邮件正文 忌长篇大论，提倡ABC法则 A - Action（行动）：一句话总结希望收件人做的事情 B - Background（背景）：解释事件背景和细节 C - Close（结束语）：一两句结束邮件的礼貌用语 可以放上一些相关联系人，比如有哪件事情需要了解详情的时候应该联系谁+联系方式 间接等于 5W 法则 A = who，when，what，where B = why 邮件标题 内容：精简 Action 的内容 格式：在标题前面加上邮件类型 - 通知，请求 写邮件的顺序 附件：很容易在最后被忘记 正文：方便在正文中提及附件 标题：方便总结正文内容来起标题 收件人：写好内容，更容易判断收件人，CC等关系 关于附件的好习惯 千万别发一份邮件，正文只有几个字 建议在正文简要说明附件中的关键信息以及注意文件的格式 养成好的附件命名习惯 文件修改的日期 版本号 序列号等 自动回复如何设置 自动回复的错误用法 你的来信我已经收到。。。 自动回复的正确用法 休假或外出的时候才会用 阐述你正在休假 如果很急的话，可以联系谁（姓名 + 联系方式） 如果不是很急的话，你大概什么时间可以回复 邮件管理 遵循FAST法则管理 Filter 过滤 把符合规则的邮件自动归类到某个分类的文件夹下（如过滤器，过滤规则，来信分类等功能） Archive 归档 将已经阅读或已经处理的邮件转移到「归档」的文件夹下 Snooze 延后 不能马上处理或马上回复的邮件 适用于简单，稍后才需要完成的任务 Transfer 流转 大型任务清单，任务比较复杂，可能需要进一步细化和重新分配 这里的流转存在两种意思 一是在你的任务处理层面上的流转，比如流转细分到你的 todolist 或其他任务管理软件上 二是这个任务需要多人合作，比如会议结束后把邮件中汇总的任务细化分配给各个负责人 如何进一步整理邮件？ 文件夹 标签（标签的三个维度）- 以过滤器自动打标签 来源标签：以发件人所在的公司部门，或是外部合作方、客户的名字命名 类型标签：以邮件属性命名，如任务、通知、用户反馈、新闻订阅等 项目标签：以邮件所属项目名字命名 高级的邮件检索功能 *：匹配 AND：包含 -：排除 has:document - 找出带word文档的邮件 has:spreadsheet - 找出带有exceld的邮件 has:presentation - 找出带有ppt的邮件 参考 https://support.google.com/mail/answer/7190]]></content>
+      <categories>
+        <category>聪明工作</category>
+      </categories>
+      <tags>
+        <tag>邮件礼仪</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[App逆向实战和AndroidKiller简单使用]]></title>
     <url>%2F2019%2F08%2F26%2F%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%AD%A6%E4%B9%A05-AndroidKiller%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8%E5%92%8C%E5%AE%9E%E6%88%98%2F</url>
     <content type="text"><![CDATA[先聊聊为什么学习安卓逆向大数据的普及，好像没有一手数据收集能力就要落伍了似得，不少无关开发的岗位都加上需要初级数据采集的能力要求，越来越多的 title 加上 数据 的字眼提升逼格。 渐渐初级爬虫工程师的饭越来越不好吃，中高级的爬虫的招聘需求也添加上 JS 逆向+ APP 逆向的要求，所以有一手破签逆向的技术也越来越吃香。 APP逆向其实已经属于安全方面的内容，而我们爬虫工程师要做的其实远没有逆向工程师那么多和精，只要拿到请求中加密参数的加密方法，再用 Python 模拟加密即可。 为了面包，学习吧。 学习资源推荐关于逆向的前置知识，可以参考之前发过的几篇基础文章，同时咸鱼也推荐下面这些学习资源，希望能帮助你快速入门（伸手党福利？？？）： 吾爱破解入门教程集合贴：http://t.cn/Ai8hXHzs 推荐关注的博客： 尼古拉斯·赵四：https://blog.csdn.net/jiangwei0910410003 鬼哥：https://blog.csdn.net/guiguzi1110?viewmode=contents 天天记小本子上的lilac：https://blog.csdn.net/qq_38851536 推荐逆向书籍： 《Android软件安全与逆向分析》 《Android应用安全防护和逆向分析》 《JAVA加密与解密的艺术》第二版 推荐关注的公众号： 小周码字 编程美丽 妄为写代码 其实还有好多好多的资源，请善用搜索。 以上仅为我的个人推荐，大佬请无视~ 接下来是咸鱼动手跟着做的第一个项目，某个小游戏的付费破解，了解AndriodKiller逆向工具的使用。 AndriodKiller的简单使用和实战在使用这个逆向工具，需要先检查本地的 JAVA 开发环境是否安装。 命令行下输入： 1java -version -- 输出JAVA jdk 版本 如果出现无版本信息输出或其他报错请参照相关博客或后台回复 【逆向环境搭建】获取相关搭建视频。 接下来是 AndriodKiller 的安装了，在吾爱的网站上提供了相关的 绿色免安装版本，找到软件可以直接点击使用。 【良心】 打开界面后是下面这样的： 打开后第一件事是在 AndriodKiller 的配置中配置 jdk 的安装路径之后既可以通过拖入需要反编译的受害者，即可打开进行分析： 我们这次要完成一款小游戏的付费破解，我们先安装未破解的APP看看能不能通过未破解的APP找到思路。 通过一番把玩，发现进入支付流程后取消支付会弹出相应提示语，顺着这个思路我们在反编译后的文件中检索一下看能不能找到对应的代码： 我们点击进去看看，发现了我们搜索的字符串： 反编译的代码不太方便查看，我们可以通过查看还原为java代码理解相关的逻辑： 可以看到，还原后的代码中支付失败，支付取消在同一个方法中，支付成功的逻辑为单独一个方法。 所以我们可以试试通过直接把支付成功的代码逻辑直接替换到支付失败的那个方法中来破解支付 替换过后查看字符串，发现整个类文件中就只剩下支付成功的方法了。 保存文件之后我们编译一下试试是否成功吧。 编译后，控制台输入如下代表编译成功。 打开 APP - 商店 随便购买一个道具，但是不完成支付，点击取消支付，可以看到左上角的道具数量增加了。说明我们的操作是成功的。（为避免破解不成功或误操作导致的扣费，请使用未插卡的机器测试） OK，到这里我们就完成了第一个安卓APP的逆向破解，当然这个是非常简单的逆向项目。 Tip AndriodKiller 并不是万能的，有些项目是没办法反编译成功的，所以需要搭配其他的逆向工具使用 AndriodKiller 在第一次导入项目时，会一直卡在反编译成功，xxxx但是没有打开项目，需要收到重启AndriodKiller ，在工程中打开刚刚的项目。 AndriodKiller 转化为 java 代码时在 java 代码中是无法编辑的，需要返回到 smali 中修改，所以 smali语法相当关键，需要好好研究不要对 软件自带的 转换功能过多依赖，且在 smali 中修改后要记得 ctrl + s保存，之后再编译。 在编译过程中出现报错，报错日志大致如下： 12345678910111213141516171819202122232425262728293031当前 Apktool 使用版本：apktool_2.3.0正在编译 APK，请稍等...&gt;I: Using Apktool 2.3.0&gt;I: Smaling smali folder into classes.dex...&gt;I: Building resources...&gt;S: WARNING: Could not write to (C:\Users\i\AppData\Local\apktool\framework), using C:\Users\i\AppData\Local\Temp\ instead...&gt;S: Please be aware this is a volatile directory and frameworks could go missing, please utilize --frame-path if the default storage directory is unavailable&gt;W: E:\AndroidKiller_v1.3.1\projects\idm下载\Project\res\values-v23\styles.xml:8: error: Error retrieving parent for item: No resource found that matches the given name '@android:style/WindowTitle'.&gt;W: &gt;W: E:\AndroidKiller_v1.3.1\projects\idm下载\Project\res\values-v23\styles.xml:9: error: Error retrieving parent for item: No resource found that matches the given name '@android:style/WindowTitleBackground'.&gt;W: &gt;W: E:\AndroidKiller_v1.3.1\projects\idm下载\Project\res\values-v24\styles.xml:7: error: Error retrieving parent for item: No resource found that matches the given name '@android:style/Animation.DropDownUp'.&gt;W: &gt;W: E:\AndroidKiller_v1.3.1\projects\idm下载\Project\res\values-v24\styles.xml:8: error: Error retrieving parent for item: No resource found that matches the given name '@android:style/Animation.DropDownDown'.&gt;W: &gt;Exception in thread "main" brut.androlib.AndrolibException: brut.androlib.AndrolibException: brut.common.BrutException: could not exec (exit code = 1): [C:\Users\i\AppData\Local\Temp\brut_util_Jar_6839346043621878032.tmp, p, --min-sdk-version, 16, --target-sdk-version, 26, --version-code, 1, --version-name, 1.0, --no-version-vectors, -F, C:\Users\i\AppData\Local\Temp\APKTOOL8354570300607898895.tmp, -0, resources.arsc, -0, arsc, -I, C:\Users\i\AppData\Local\Temp\1.apk, -S, E:\AndroidKiller_v1.3.1\projects\idm下载\Project\res, -M, E:\AndroidKiller_v1.3.1\projects\idm下载\Project\AndroidManifest.xml]&gt; at brut.androlib.Androlib.buildResourcesFull(Androlib.java:485)&gt; at brut.androlib.Androlib.buildResources(Androlib.java:419)&gt; at brut.androlib.Androlib.build(Androlib.java:318)&gt; at brut.androlib.Androlib.build(Androlib.java:270)&gt; at brut.apktool.Main.cmdBuild(Main.java:224)&gt; at brut.apktool.Main.main(Main.java:75)&gt;Caused by: brut.androlib.AndrolibException: brut.common.BrutException: could not exec (exit code = 1): [C:\Users\i\AppData\Local\Temp\brut_util_Jar_6839346043621878032.tmp, p, --min-sdk-version, 16, --target-sdk-version, 26, --version-code, 1, --version-name, 1.0, --no-version-vectors, -F, C:\Users\i\AppData\Local\Temp\APKTOOL8354570300607898895.tmp, -0, resources.arsc, -0, arsc, -I, C:\Users\i\AppData\Local\Temp\1.apk, -S, E:\AndroidKiller_v1.3.1\projects\idm下载\Project\res, -M, E:\AndroidKiller_v1.3.1\projects\idm下载\Project\AndroidManifest.xml]&gt; at brut.androlib.res.AndrolibResources.aaptPackage(AndrolibResources.java:454)&gt; at brut.androlib.Androlib.buildResourcesFull(Androlib.java:471)&gt; ... 5 more&gt;Caused by: brut.common.BrutException: could not exec (exit code = 1): [C:\Users\i\AppData\Local\Temp\brut_util_Jar_6839346043621878032.tmp, p, --min-sdk-version, 16, --target-sdk-version, 26, --version-code, 1, --version-name, 1.0, --no-version-vectors, -F, C:\Users\i\AppData\Local\Temp\APKTOOL8354570300607898895.tmp, -0, resources.arsc, -0, arsc, -I, C:\Users\i\AppData\Local\Temp\1.apk, -S, E:\AndroidKiller_v1.3.1\projects\idm下载\Project\res, -M, E:\AndroidKiller_v1.3.1\projects\idm下载\Project\AndroidManifest.xml]&gt; at brut.util.OS.exec(OS.java:95)&gt; at brut.androlib.res.AndrolibResources.aaptPackage(AndrolibResources.java:448)&gt; ... 6 moreAPK 编译失败，无法继续下一步签名! 我的解决方案是：替换 AndriodKiller 目录下 bin\apktool\apktool 中的 ShakaApktool.jar 为更新的版本即可成功编译，签名。]]></content>
@@ -166,6 +297,213 @@
         <tag>app逆向实战</tag>
         <tag>逆向资源</tag>
         <tag>AndroidKiller</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[JS逆向-QQ空间密码加密]]></title>
+    <url>%2F2019%2F07%2F16%2Fjs%E5%8A%A0%E5%AF%86%E5%AD%A6%E4%B9%A003-QQ%E7%A9%BA%E9%97%B4%E8%A7%A3%E5%AF%86%E6%80%9D%E8%B7%AF%2F</url>
+    <content type="text"><![CDATA[QQ空间的解密思路本篇文章只是提供解密思路,不提供代码。 找了一圈发现越是大厂加密越是简单,安全防护之类的完全不靠js加密,扫码登陆才是关键。比如微信公众号平台的登陆加密就是简单的MD5,但人家有扫码登陆,此类情况比比皆是,所以爬虫越来越难做了。 老规矩先找加密位置,相比于上一次的XXTEA加密,这次的加密参数是p,这个关键字太过常见,我们不以这个作为检索条件,否则干扰项太多。先检索其他加密的参数看看能不能发现什么。 按照上图断点的位置,发现了类似加密的位置,像此类带关键字的很容易就可以发现目标代码,我们先打个断点测试一下。 成功进入断点,说明判断没错。接下来我们这要把关键加密的代码抠出来补全即可。 理清参数扣代码不仅仅是复制粘贴,需要先理清楚加密思路,像这里的$.Encryption.getEncryption(n, pt.plogin.salt, i.verifycode, pt.plogin.armSafeEdit.isSafe)这种一个加密函数的还是比较清晰,我们先要把参数补齐,再找关键的加密函数。 经过检索可以发现,这里的n就是我们传入的密码。 pt.plogin.salt是传入的用户名加密后的结果。 i.verifycode获取的是验证码的值。 pt.plogin.armSafeEdit.isSafe找了半天,打上断点发现是个空值。 现在所有的参数已经找齐了,我们直接进入关键加密的函数就可以了,打上断点把鼠标放在关键函数的位置在出现的蓝色链接上点击即可跳转。 把上面找的代码和关键加密的方法组装就可以得到加密后的参数了。 总结以上加上前面的两篇就是js基础解密的部分了,基础的方法用三篇概述只能说个大概,之后会继续写基础部分的文章就是没有这三篇这么详细,没有动手自己走一遍流程永远只能停留在基础。 总的来说这三篇文章核心就是是下面这个流程。 基本流程的复述 如果网页有跳转，必须勾选 preservelog 防止丢包 看一下有没有框架 右键查看框架源代码(弹出式登陆界面) 登陆尽量使用错误密码 防止跳转 查看关键登陆包 分析哪些参数是加密的 使用别的浏览器分析哪些参数是固定的值 初步猜测加密方法 搜索 直接搜索参数 pwd= pwd = pwd: pwd : 密码框地方右键 检查 查看 id name type 找到加密的地方(重点) 调试 找出所有的加密代码 从最后一步开始写起，缺啥找啥 如果找的是函数的话 search 要带上 function xxx 如果看到加密的地方有个类，并且之后是用 prototype 把方法加在原生对象上的话，要把所有加在原生对象上的方法都找出来 函数找多了没关系，只要不报错不会影响结果，但是不能找少了 基础的解密其实很简单了,只要自己动手去练习基本不会有太大问题。 流程捋清楚之后就是关于JS的学习,可以去B站上面看看。 https://www.bilibili.com/video/av34087791 最后就是心态问题,耐心在js调试上很关键,一直报错心态很容易崩,一烦躁反而调不出来了。 以上。]]></content>
+      <categories>
+        <category>js逆向</category>
+      </categories>
+      <tags>
+        <tag>js逆向</tag>
+        <tag>RSA</tag>
+        <tag>基础</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[JS逆向-基础-RSA加密与xxtea编码实例]]></title>
+    <url>%2F2019%2F07%2F16%2Fjs%E5%8A%A0%E5%AF%86%E5%AD%A6%E4%B9%A002-rsa%E4%B8%8Exxtea%2F</url>
+    <content type="text"><![CDATA[这次要研究的网站采用的是rsa加密以及xxtea。 这里先复习下上一篇讲过的调试流程基础版: 如果网页有跳转，必须勾选 preservelog 防止丢包 看一下有没有框架 右键查看框架源代码(弹出式登陆界面) 登陆尽量使用错误密码 防止跳转 查看关键登陆包 分析哪些参数是加密的 使用别的浏览器分析哪些参数是固定的值 初步猜测加密方法 搜索 直接搜索参数 pwd= pwd = pwd: pwd : 密码框地方右键 检查 查看 id name type 找到加密的地方(重点) 调试 找出所有的加密代码 从最后一步开始写起，缺啥找啥 如果找的是函数的话 search 要带上 function xxx 如果看到加密的地方有个类，并且之后是用 prototype 把方法加在原生对象上的话，要把所有加在原生对象上的方法都找出来 函数找多了没关系，只要不报错不会影响结果，但是不能找少了 以上就是上篇文章调试的核心流程,接下来我们继续用实战案例练习一下。 RSA先看下要解析的加密参数,记住流程的前几点: 接下来搜索参数,分析可能存在加密代码的js文件: 尝试了上面流程里面列举的可能的参数名,并没有发现有用的信息,所以试了下直接搜索password关键字,找到一个可能和登陆相关的文件,搜索发现疑似的加密代码: 先测试打个断点试试: 成功进入断点接下来,就是缺啥找啥补齐就可以了,强烈建议大家下载一个webstorm,方便调试。 我们先把代码里面的值填写一下,运行看看报错是什么: 根据报错我们找找这里的RSAKey在哪里,不知道如何查找可以将鼠标悬停在对应位置即可根据提示找到对应的代码。 反复操作即可,缺啥找啥直至js文件无报错即可。 小结咸鱼找了一些简单网站,查看了对应的RSA加密的方法,总结了以下套路: 一般的rsa加密通常会先声明一个rsa对象 本地使用公钥加密即public key 通常有Encrypt关键字 加密后字符长度为128位或256位结合以上套路可以帮助我们快速判断加密方式如何,便于我们理清解密思路。 XXTEA “微型加密算法（TEA）及其相关变种（XTEA，Block TEA，XXTEA）都是分组加密算法，它们很容易被描述，实现也很简单（典型的几行代码）。 XXTEA是其最新的变种，于1998年提出。目前还没有人找到对其进行攻击的方法，是对前面一些变种的改进。XXTEA 算法很安全，而且非常快速，非常适合应用于 Web 开发中。 以上引用自https://my.oschina.net/mickelfeng/blog/109388 介绍完 XXTEA 我们先看看加密案例网站是什么样子的: 可以看到传输的参数都是加密后的密文,像这类加密我们可以参考提交表单中的id,class等,查看密码框的id后,全局搜索pass: 找到疑似代码的位置,不确定可以打上断点测试一下,通过断点发确认加密位置: 接下来就是缺啥补啥的过程,经过解密发现这个网站加密过程是一个xxtea.base64的加密。 对比上一篇文章的base64的加密其实区别不大,但是在解密过程中需要思路的转变。 以上就是咸鱼对js解密的案例练习,希望对你有所帮助。]]></content>
+      <categories>
+        <category>js逆向</category>
+      </categories>
+      <tags>
+        <tag>js逆向</tag>
+        <tag>RSA</tag>
+        <tag>基础</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[JS逆向-漫画柜加密分析]]></title>
+    <url>%2F2019%2F07%2F16%2Fjs%E5%8A%A0%E5%AF%86%E5%AD%A6%E4%B9%A005-%E6%BC%AB%E7%94%BB%E6%9F%9C%2F</url>
+    <content type="text"><![CDATA[这次文章是补之前文章提到的eval加密 – 漫画柜 之前文章简单介绍了常见的JS混淆 查看请求打开控制台,随意点击一本漫画,进入到正文页面,查看请求: 可以很容易看到这里有个md5的参数值是加密的。 定位加密位置这里有两种定位方法:第一种面向老手,先翻一遍请求,网页源码可以迅速定位。 第二种就是按照之前的文章提到的分析流程,我们分析一遍,虽然麻烦点会走弯路但是适合新手: 没有看过的朋友可以点击下面的文章链接回顾一下: 先搜索一下关键字,这里加密的参数是md5,所以试试下面这几种搜索关键词:12345md5:md5 :md5=md5 =md5 搜索结果如下: 通过关键字搜索没有得到想要的结果,按照之前文章提到的流程到这里就卡住了。 不过我们看到上面请求里还有另一参数cid,既然都是请求参数,那么md5这个参数可能是和他一起提交的,我们可以试试搜索cid关键词试试。 搜索cid这个参数结果如下: 果然有点东西,我们点进第一个文件,搜索下有多少和cid这个参数相关搜索项,检索之后有18项相关,通过分析代码,很快我们定位到下图的代码,打上断点重新加载看看是否能进入我们的断点位置: 果然成功进入断点了,但是好像并没有我们想要得md5参数,这个时候好像又卡住了。 不过很快我们通过查看左侧堆栈信息找到了md5参数的位置: 这里vm的代码又是通过下面这段代码生成的: 这开头,不就是熟悉的eval加密吗。 到这里就定位到解密的地方了,但是这段eval代码又是在哪呢？ 发现左侧有.html的标识,搜索是搜不到了,我们就看看这个页面的源代码吧,发现右键是进入下一页漫画,所以通过控制台的Doc选项卡看看,通过格式化代码我们找到了上面的eval代码。 1234567891011121314151617181920212223window["\x65\x76\x61\x6c"](function(p, a, c, k, e, d) &#123; e = function(c) &#123; return (c &lt; a ? "" : e(parseInt(c / a))) + ((c = c % a) &gt; 35 ? String.fromCharCode(c + 29) : c.toString(36)) &#125; ; if (!''.replace(/^/, String)) &#123; while (c--) d[e(c)] = k[c] || e(c); k = [function(e) &#123; return d[e] &#125; ]; e = function() &#123; return '\\w+' &#125; ; c = 1; &#125; ;while (c--) if (k[c]) p = p.replace(new RegExp('\\b' + e(c) + '\\b','g'), k[c]); return p; &#125;('I.H(&#123;"G":4,"J":"M","L":"4.2","K":B,"A":"z","C":["F.2.3","E.2.3","D.2.3","N.2.3","X.2.3","W.2.3","V.2.3","Y.2.3","11.2.3","10.2.3","Z.2.3","Q.2.3","P.2.3","O.2.3","R.2.3","U.2.3","T.2.3","S.2.3","d.2.3","c.2.3","b.2.3","e.2.3","h.2.3","g.2.3","f.2.3","a.2.3","5.2.3","6.2.3","8.2.3","7.2.3","9.2.3","i.2.3","u.2.3","t.2.3","s.2.3","v.2.3","y.2.3","x.2.3","w.2.3","r.2.3","m.2.3","k.2.3","j.2.3","n.2.3","q.2.3","p.2.3","o.2.3","12.2.3","1E.2.3","1D.2.3","1C.2.3","1F.2.3","1I.2.3","1H.2.3","1G.2.3","1x.2.3","1w.2.3","1v.2.3","1y.2.3","1B.2.3","1A.2.3","1z.2.3","1V.2.3","1S.2.3","1T.2.3","1R.2.3","1W.2.3","1U.2.3","1L.2.3","1M.2.3","1J.2.3","1K.2.3","1P.2.3","1Q.2.3","1N.2.3","1O.2.3","1c.2.3","1b.2.3","1a.2.3","1d.2.3","1g.2.3","1f.2.3","1e.2.3","15.2.3","14.2.3","13.2.3","16.2.3"],"19":18,"17":1q,"1p":"/1o/l/1r/1u/","1t":1,"1s":"","1j":1i,"1h":0,"1k":&#123;"1n":"1m"&#125;&#125;).1l();', 62, 121, 'D7BWAcHNgdwUwEbmARgJwHYAcwAMAmANgIz3wwJwLVwGZcytq966UyBWAws3A93OgINBTdGRQF8ZACwEOZevhll8BWi0m1puGWpkbdkvSF18ZAg7pW7iM0rq4ye1xyxpyWc2grr1aNtp+LFy0LrRMtGgsFBEsxLSkgDTegoDuysAAxgB2AIYAtnCohBgyCgBmAJYANnAAznjCdA2SBA18gsAIFQAmwBV5kAAiOQAuOcAAygCyABKduQWZPZ3gFRnAgOr+gJGqgATyDaw2KPQoh2pHeCiSKDongr4oFChUKMQPF1wvDcS4DrhcuC4zH8GhRcM8+JcGjRJA0mLhoroKDIqFguFgXFg5Ki8Fh6JiccQsKQallgCMAE4AV0KlSyFVqAAs4L0fkwMAiMBRsHgMMROTyaEwcWpcTjJFgdHCsOxwOS4AA3ACSvReJR4WTgAA8RsrgLUqsBZXBFXSRsAspSAII5S0AYRm3QAYgANDJYABagwmAHkYOSKuTupbgHlugpwLUZaMGcAicAqgyAF6dKoAewyAGsAPoZda1MYjSn1Dp/CgcKgcYgcBwcLiVvDlv4IwiSQg6b4ths0YgNvgcSw0Lh4ZG6BH9v46DhyWsN+hThtqDiGUEYASrn7tpiEZs0Cg8uQYXyHn4uDBqDDL+glPCELiEFyEeiEGzPgG+YoAqhtgGGe8AjBAA=='['\x73\x70\x6c\x69\x63']('\x7c'), 0, &#123;&#125;)) 解密过程我们来捋一捋整个过程,首先网站加载页面,执行了这段eval,解密了参数里的一堆密文,之后根据参数请求具体内容,那我们逆向只要拿到页面的代码,用execjs执行这段代码不就能拿到md5值直接请求了吗。 但是把这段代码直接复制到eval解密里好像并没有用,我感觉应该和末尾的加密参数有关,经过测试这段参数虽然长得和Base64很像但并不是base64加密,我又卡住了,所以我求助了大佬。 经过 @ 悦来客栈的老板 的提点我尝试了下果然是这段是这段代码有问题: 经过解密运行的结果就是我们在vm中看到的结果了: 到这里就简单了,请求网页的代码,使用正则替换代码里的密文,使用execjs执行这段代码就可以得到md5值,再使用这个md5值就可以请求了。 结束总结这次的解密文章写的比较啰嗦,虽然整个加密比较简单,但是自己在这整个过程也踩了不少坑,走了不少弯路。 JS逆向是细致活,需要大胆假设,小心求证,耐心调试,同时在逆向过程中卡住了需要求助的时候也不要不好意思。把自己思考的结果、遇到的问题描述清楚附上小小的红包和大佬聊聊,会有意想不到的惊喜。 共勉~]]></content>
+      <categories>
+        <category>js逆向</category>
+      </categories>
+      <tags>
+        <tag>js逆向</tag>
+        <tag>漫画柜</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[JS逆向-淘大象加密分析]]></title>
+    <url>%2F2019%2F07%2F16%2Fjs%E5%8A%A0%E5%AF%86%E5%AD%A6%E4%B9%A006-%E6%B7%98%E5%A4%A7%E8%B1%A1%2F</url>
+    <content type="text"><![CDATA[今天继续和大家研究JS逆向，不少小伙伴在JS逆向的时候遇到过无限debugger的反爬，今天就拿一个网站练练手感受下无限debugger。 分析请求先打开这次的目标网站–淘大象(https://taodaxiang.com/credit2) 打开「开发者工具」就自动进入debug，我们先格式化看看能不能通过重写函数解决。 显然不是很好解决，所以我们试试通过「条件断点」的方法绕过这个反爬。 我们在 3393 与 3395 行右键添加「Add Conditional breakpoint」并在出现的对话框中输入「false」，这个时候无限debbuger的反爬就被我们绕过了。 虽然这里很快就绕过了反爬但是「条件断点」有一定的局限性,这里推荐一篇文章以供学习，就不再赘述。 https://segmentfault.com/a/1190000012359015 解决完反爬措施，我们刷新页面查看页面请求,很快就定位到请求接口、加密参数等信息。 请求接口: 加密参数 sign : 定位加密位置通过抓包请求我们定位到了接口和加密参数,我们试着通过搜索sign关键字定位一下加密位置。 通过搜索我们找到三个包含关键字的文件,通过检索文件,很快定位到了sign值加密的位置: 分析加密很明显这个js文件经过一定程度的混淆,现在有两种方法解决: 一是直接扣代码，绕过debugger之后扣这个代码不要太简单。 二是通读加密,直接改写成python加密。 这个加密比较简单,整体是md5加密这点通过分析请求可以猜到,多次请求加密都不变,接下来就是分析是哪些字段加密成md5值。 这里比较明显的是js中的两段代码: _0x2c114b[&#39;XDFEp&#39;]这个方法是将字符串拼接 _0x2c114b[&#39;zANjZ&#39;]这个方法是取字符串的MD5值 经过断点调试，发现最后字符串是由「查询的关键字」+ 「固定的key」+ 「查询的关键字」+ 「type参数值」拼接成的。 比对两种方式,通过python方法改写更加方便,主要代码如下: 1234from hashlib import md5def md5value(s): a = md5(s.encode()).hexdigest() return a 到这里这次的分析的网站 – 淘大象 就被我们攻克了，这次的网站加密不是很难主要难点是分析时的无限debugger，其实其他同类型的网站还有很多,这里我推荐大家阅读下面的文章，文章提到了其他解决debugger的方法希望对你有帮助。 https://mp.weixin.qq.com/s/BwH1JxY5jhFomZLwlQIvSA]]></content>
+      <categories>
+        <category>js逆向</category>
+      </categories>
+      <tags>
+        <tag>js逆向</tag>
+        <tag>淘大象</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[JS逆向-历代JS混淆学习]]></title>
+    <url>%2F2019%2F07%2F16%2Fjs%E5%8A%A0%E5%AF%86%E5%AD%A6%E4%B9%A007-%E5%8E%86%E4%BB%A3%E6%B7%B7%E6%B7%86%2F</url>
+    <content type="text"><![CDATA[eval把一段字符串当做js代码去执行 1eval(function()&#123;alert(100);return 200&#125;)() 例子: 漫画柜,空中网 变量名混淆 把变量名、函数名、参数名等，替换成没有语义，看着又很像的名字。 1_0x21dd83、_0x21dd84、_0x21dd85 用十六进制文本去表示一个字符串 1\x56\x49\x12\x23 利用JS能识别的编码来做混淆JS是Unicode编码，本身就能识别这种编码。类似的一些变量名，函数名都可以用这个表示，并且调用。 1234567891011类似:\u6210\u529f表示中文字符(成功)。类似:\u0053\u0074\u0072\u0069\u006e\u0067.\u0066\u0072\u006f\u006d\u0043\u0068\u0061\u0072\u0043\u006f\u0064\u0065就代表String.fromCharCode类似:('')['\x63\x6f\x6e\x73\x74\x72\x75\x63\x74\x6f\x72']['\x66\x72\x6f\x6d\x43\x68\x61\x72\x43\x6f\x64\x65'];效果等同于String.fromCharCode 把一大堆方法名、字符串等存到数组中，这个数组可以是上千个成员。然后调用的时候，取数组成员去用 123var arr = ["Date","getTime"];var time = new window[arr[0]]()[arr[1]]();console.log(time); 字符串加密后发送到前端，然后前端调用对应的函数去解密，得到明文 1234567var arr = ['xxxx']// 定义的解密函数function dec(str)&#123; return 'push'&#125;test[dec(arr[0])](200); 乱序混淆(这名字我自己起的)将顺序执行的代码混淆成乱序执行,并加以混淆 以下两段代码的执行结果是相同的:123456789101112131415161718192021222324252627282930313233343536373839// 正常形态function test(a)&#123; var b = a; b += 1; b += 2; b += 3; b += 4; return a + b&#125;// 乱序形态//（这里比较简单,在很多加密网站上case 后面往往不是数字或字符串,而是类似 YFp[15][45][4]这样的对象，相当恶心）function test1(a)&#123; var arr = [1,2,3,4,5,6] for(var i = 0, i &lt; arr.lenght, i++)&#123; switch (arr[i]) &#123; case 4: b += 3; break; case 2: b += 1; break; case 1: var b = a; break; case 3: b += 2; break; case 6: return a + b case 5: b += 4; break; &#125; &#125;&#125;// 结果都是30 但是test1看着费劲console.log(test1(10));console.log(test(10)); 压缩代码把多行代码压缩成一行 1234567891011121314function test(a)&#123; var b = a; var c = b + 1; var d = b + 2; var e = b + 3; var f = b + 4; return e + f&#125;// 压缩一下function test1(a)&#123; var b,c,d,e,f return f = (e = (d = ( c = (b = a,b + 1),b + 2),b + 3),b + 4),e + f&#125;]]></content>
+      <categories>
+        <category>js逆向</category>
+      </categories>
+      <tags>
+        <tag>js逆向</tag>
+        <tag>混淆</tag>
+        <tag>eval</tag>
+        <tag>变量名混淆</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[JS逆向-贝贝网加密分析]]></title>
+    <url>%2F2019%2F07%2F16%2Fjs%E5%8A%A0%E5%AF%86%E5%AD%A6%E4%B9%A009-%E8%B4%9D%E8%B4%9D%E7%BD%91%E7%99%BB%E9%99%86%E5%8F%82%E6%95%B0%2F</url>
+    <content type="text"><![CDATA[又来练手了，需求在这: 想想有点激动: 分析请求用浏览器抓一波登陆包: 可以看到有 _abr_和 beibeitoken 两个加密参数。 我们再找找发现beibeitoken是上一个请求返回的: 好像难度一下减少了一半。 定位加密位置还是老套路,搜就完事了: 通过关键字就找到一个相关文件,先进去看看。 先打上断点,重新登录一下,成功进入断点说明位置十有八九是找到了,F11进去看看里面的加密逻辑是什么样的。 看上去逻辑还蛮简单的,就是先这样再那样然后拼接在一起返回回来,完事儿~ 分析加密我们一个个跟进去研究下: u,d,a,e,s这几个加密都可以通过上图的方法追踪到对应的加密。 这里我们主要研究f与m的加密逻辑。 先看看f的加密逻辑:1var f = d.length ? (0,l["default"])(d.join("&amp;")) : "" 这里跟进去看看l[&quot;default&quot;]是什么: 这里的e是初始化加密算法,我们再跟进去看看: 看到这里我已经不怎么想扣代码了,这么多乱七八糟的什么东西,要是真抠出来估计头发要掉一半。 而且这个代码看着就不像自写的算法,估计也是套的通用的那几种算法,所以我开始翻之前扣过的代码，果然让我找到了: 上面的代码是不是长得有点像,为了验证这个想法我把js里关于加密的代码扣下来look look 不得不说好的编辑器可以让你事半功倍看到图中划线的地方这个参数的加密方法就一目了然了。 接下来继续分析m的加密方法 1m = (0,c["default"])(g, "ytU7vwqIx2UXQNsi"); 有了上面的铺垫,我们继续追进去分析一波: 接下里就是编辑器表演的时候了 好了，到这里就破案了。]]></content>
+      <categories>
+        <category>js逆向</category>
+      </categories>
+      <tags>
+        <tag>js逆向</tag>
+        <tag>贝贝网</tag>
+        <tag>密码加密</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[JS逆向-犀牛数据加密分析]]></title>
+    <url>%2F2019%2F07%2F16%2Fjs%E5%8A%A0%E5%AF%86%E5%AD%A6%E4%B9%A011-%E7%8A%80%E7%89%9B%E6%95%B0%E6%8D%AE%2F</url>
+    <content type="text"><![CDATA[咸鱼又来练手了,这次来研究下在搜索参数搜不到的情况下怎么办？ 有点经验的朋友肯定知道这次要用的就是 XHR BreakPoint。 关于XHR BreakPoint在很多文档中都有提及，咸鱼就不啰嗦了,还不是很了解的可以看下面的文档。 https://developers.google.com/web/tools/chrome-devtools/ 【大宝贝】 在分析请求之前,咸鱼分享一个调试小技巧。 今天在交流群划水的时候有几个群友比较纠结于如何判断数据是不是由js生成或异步加载的。 我常用的方法有两种: 第一种,右键查看「网页源代码」,之后在打开的网页源码的界面搜索我们想要得数据是否在其中就可以判断了。 第二种,关闭网页的js加载功能,查看网页我们需要的数据是否能够顺利加载或者查看数据是否完整,步骤也非常简单。 第一步: 点击地址栏前端的图示位置,选择网站设置。 第二步: 在权限位置将JavaScript选择为禁止,返回刷新网页,查看数据是否顺利加载。 以上两个小技巧可以大大方便我们的调试,就不用猜来猜去了。 分析请求用上面的方法我们判断,数据是通过js加载的,并且请求的参数和返回的参数都是经过加密的。 到这里就需要 XHR 断点帮助我们定位加密了。 定位加密位置我们先添加一个XHR断点。 重新刷新页面。 可以看到断点的位置上已经有了我们需要的参数加密。 加密分析参数加密我们先找到参数还没有加密的地方。往上找很快就看到参数还没有加密的地方。 可以看到上图1,2两个断点的位置还只是对数据进行序列化等操作,到了第3,4断点的位置参数就被加密了。所以我们可以重新刷新一下看看数据是怎么被加密的。 到这个位置就可以追进去分析了,接下来就比较简单了。 可以看到这里就是参数的主要加密逻辑: 还有就是关于 sig 参数,逻辑也被分析出来了。 接下来就是分析返回的参数解密的位置了。 数据解密数据解密的位置很快也被定位到了,我们看到 l 就是返回的密文. 我现在断点端的位置也就是解密的位置。按照参数加密的方法追进去就可以看到解密的方法了. 把解密和解密的方法扣出来就是我们需要的js代码了。 本文完。]]></content>
+      <categories>
+        <category>js逆向</category>
+      </categories>
+      <tags>
+        <tag>js逆向</tag>
+        <tag>密文解密</tag>
+        <tag>犀牛数据</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[JS逆向-工信系统加速乐]]></title>
+    <url>%2F2019%2F07%2F16%2Fjs%E5%8A%A0%E5%AF%86%E5%AD%A6%E4%B9%A012-gsxt_gg%2F</url>
+    <content type="text"><![CDATA[本周练手加一 上次分享了两个练手喂饭教程，朋友好奇喂饭是啥意思？就是把知识当成饭，喂到嘴里。 【表情】 同时咸鱼整理了一下过往所有关于JS逆向文章的代码，希望附上代码能让你学( 记 )的( 得 )更( star )快： https://github.com/xianyucoder/Crack-JS 【nice】 接下来继续练手，上次的项目二有读者反映讲的不是很明白，这次找了同类型的网站再来一次。 分析请求打开 开发者模式 抓包 很快就可以看到下面这个请求返回的是我们需要的数据： 我们先根据这里的请求，写一份代码测试一下哪些是我们必须的参数： 类似这样： 1234567891011121314151617import requestsurl = "http://www.gsxt.gov.cn/affiche-query-area-info-paperall.html"querystring = &#123;"noticeType":"11","areaid":"100000","noticeTitle":"","regOrg":""&#125;payload = "draw=1&amp;start=0&amp;length=10"headers = &#123; 'Cookie': "__jsluid_h=aa1c7a0fc461a8ea63747a4b02956b38; __jsl_clearance=1565006542.706|0|D0rZ6Fm9vgqQ2QyKbNgIlZRkMsw%3D; SECTOKEN=6968716378603526401; UM_distinctid=16c61a8e0d03f5-01bbcf42e0196a-37647c02-13c680-16c61a8e0d17c1; CNZZDATA1261033118=2135658768-1565002015-http%253A%252F%252Fwww.gsxt.gov.cn%252F%7C1565002015; JSESSIONID=40B833BC895E78C1A2E6C2D74C1DE6F8-n2:2; tlb_cookie=S172.16.12.42", 'Origin': "http://www.gsxt.gov.cn", 'Accept-Encoding': "gzip, deflate", 'Accept-Language': "zh-CN,zh;q=0.9", 'User-Agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36", &#125;response = requests.post(url, data=payload, headers=headers, params=querystring)print(response.text) 通过不断删除 headers 中的参数并观察返回值，来判断哪些是必须携带的参数，哪些是无关紧要的参数。 测试过程比较繁琐就不一一截图演示，同时建议放慢测试请求速度，否则会触发网站的反爬措施。 经过测试可以发现 UA 以及 Cookie 中的 __jsluid_h __jsl_clearance SECTOKEN or JSESSIONID 都是不可缺少的参数。 分析参数的生成现在就需要一一找齐参数是怎样生成的： 这里的 UA 就不需要分析了，直接复制浏览器的即可，这里需要注意的是这里的 UA 与 Cookie 还有 IP 是对应的，所以出现更换 UA 的情况那么 Cookie 就需要重新生成，这样的设置对于批量爬取的兄die是个难度不小的点，我们抱着学习的态度就不用考虑太多了。 【有点厉害】 接下来分析 Cookie 的生成，先看看 __jsluid_h 通过用浏览器抓包 可以看到 __jsluid_h 是通过请求 Set 进来的，我们照着来一遍就行。 接下来看看 SECTOKEN or JSESSIONID 和上面的参数套路一样，区别在于这个请求的 Cookie 中必须带上 __jsl_clearance 接下来需要关注的就只有 Cookie 值 __jsl_clearance 在这几个请求包里反复筛选都没有发现这个值是怎么写入的（怕漏掉的可以用 Fiddler 抓），那么就只可能是 js 生成的了。 通过不带 Cookie 的方式请求一次，可以看到网页返回了和上次文章中加密二类似的 js 代码 ，按照上次文章的套路，我们复制到 Console 中测试一下。 测试流程： 先把 eval 改成 console.log 让结果打印出来。 把测试结果复制出来格式化，可以看到格式化后的代码分为两个部分，主要的是上面的 Cookie 生成代码。 所以单独把上半部分代码复制出来调试即可，需要注意的是通过 Python 调用的 Node 环境不支持 document 这类浏览器属性所以调试的时候需要将它去除或在 Node 下执行不报错即可。 通过调试我们生成了下面这个字符串。 运用至 Python 中，即可请求到需要的数据了。 丢个效果图，溜了。 后台回复「js逆向」获取完整代码。]]></content>
+      <categories>
+        <category>js逆向</category>
+      </categories>
+      <tags>
+        <tag>js逆向</tag>
+        <tag>工信系统</tag>
+        <tag>加速乐</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[JS逆向-66ip加速乐]]></title>
+    <url>%2F2019%2F07%2F16%2Fjs%E5%8A%A0%E5%AF%86%E5%AD%A6%E4%B9%A014-66ip%2F</url>
+    <content type="text"><![CDATA[练手系列来喽~ 这周在读者群顺手搞了个小活动,在群里摸鱼的时候有水友说练手系列能不能来点简单的写详细点,所以我这次准备了两个比较简单的练手加密,简单到我一度怀疑自己在水文。 加密一 分析请求先打开受害网站 -&gt; 打开控制台 -&gt; 切换至 XHR 完美,刷新就看到了。 这里要解决的只有两个: 返回的密文 请求中的token 接下来定位加解密位置 定位加密位置与分析加密按照之前的套路，我们第一步是要搜索加密参数名 token 打开search ,搜索参数名就找到我们要的 token 了。 按照搜索的结果文件名,猜也猜到是第二个结果,点击打开就可以看到token 的生成代码了。 1var token = md5(String(page) + String(num) + String(timestamp)); 这段代码我们可以用 js 实现也可以用 python。 偷懒一点用 python 实现 token加密算法: 按照请求里看到的参数生成 token 试试 现在有了 token 参数之后接下来看看这个解密怎么搞: 右键 查看源代码 发现了这个: 图中ip 列表的位置是没有数据的,只有 id ip_list ,这是个唯一值,所以值得再搜索一下: 追进去之后就可以看到下面的代码了: 打上断点,执行两步可以看到大 decode_str 后就开始出现我们需要的数据了,所以这里的decode_str 就是我们要的解密方法: 我们复制到编辑器里调试运行一下: 可以看到提示Base64 未定义, 我们追进去把 Base64 的算法赋值出来: 再次运行,根据提示缺失 window 对象, 根据之前的方式是缺啥补啥,但我们先接下来分析一下这里调用的方法: 这里调用的是 String.fromCharCode 方法,我们替换下再次运行: 可以看到这里就解出来了。 加密一，完。 加密二 分析请求这次要分析的网站不同上一个的是,这次网站使用的是 cookie 加密, cookie的有效期过了之后就会返回一段 js 。 使用有效的 cookie 请求我们需要的数据就在返回的网页中,所以我们只要解决这段 js 就好了。 分析加密把返回的 js 复制到编辑器里格式化,可以看到代码分为两个部分: 参数定义部分: 函数执行部分: 直接执行没得出结果,为了方便知道这段代码发生了什么,我们复制到 浏览器 console 里看看: 为了方便观察,我们把第二段的 eval 修改为 console.log 可以看到这段代码写入了 cookie: 继续分析,我们把这段cookie 相关的代码复制出来执行一下: 可以看到这里成功生成了一段 cookie 值 和我们在网页上看到的一样！ 到这里加密就分析结束了。 加密二，完。]]></content>
+      <categories>
+        <category>js逆向</category>
+      </categories>
+      <tags>
+        <tag>js逆向</tag>
+        <tag>加速乐</tag>
+        <tag>66ip</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[JS逆向-财联社加密分析]]></title>
+    <url>%2F2019%2F07%2F16%2Fjs%E5%8A%A0%E5%AF%86%E5%AD%A6%E4%B9%A013-%E8%B4%A2%E8%81%94%E7%A4%BE%2F</url>
+    <content type="text"><![CDATA[本周练手加一。 这次写一写这周险些翻车的一次逆向吧,整体加密逻辑并不难,是自己太过想当然,要是没有群友的提醒就栽了。 【群除我佬】 分析请求老规矩先分析一波请求。 这次要分析的是首页的「电报」部分,刷新首页的发现抓不到「电报」这部分的请求。无奈点击加载更多发起请求(其实并没有区别) 选中部分就是要分析的请求了,想要快速定位可以使用上一篇用到的 XHR 断点,没看过的看下面: 除了此之外,还有一个比较坑的地方,这个网站是定时刷新的，所以打在sign逻辑上面的断点不用刷新就自己断上了,再配合上这个网站的叮咚声。 和无限debugger有异曲同工之妙。 【白眼】 定位加密位置打上 XHR 断点很快就看到 sign 的位置了 先打上断点刷新试试。 重新点击加载更多之后果然断上了,现在就要一步一步追进去分析。 分析加密先追进去看到返回了三个参数: 之后把所有的参数传入并拼接: 接下来才是重头戏: 看到这种e.xxx样式的加密我就想到之前逆向遇到的CryptoJS,对比一下果然差不多,果然一对比和CryptoJS.sha1一毛一样。 接下来就是打脸现场了,我以为到这里就结束了,没想到: 本来还想秀一下,结果翻车了。 经过群里大佬的提醒发现其实后面还有一层加密: 也怪我自经验主义作祟,希望大家不要像我这样的翻车。 ==&gt; 群里隐藏的大佬是真的多。 本文完。 我是只会说老哥牛逼的咸鱼。]]></content>
+      <categories>
+        <category>js逆向</category>
+      </categories>
+      <tags>
+        <tag>js逆向</tag>
+        <tag>密文解密</tag>
+        <tag>财联社</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[JS逆向-关于jsfuck的处理]]></title>
+    <url>%2F2019%2F07%2F16%2Fjs%E5%8A%A0%E5%AF%86%E5%AD%A6%E4%B9%A015-jsfuck%2F</url>
+    <content type="text"><![CDATA[文章开始我本想和大家用 JSFuck 打个招呼，结果发现是我天真了，简单的一句 hello world 转换后有近 5 W 字符。 所以大家将就看看下面的图： 【表情】 JSFuck是什么？下面这个网站是 JSFuck 的官网： http://www.jsfuck.com/ 我们可以使用它对我们原有的 JS 代码进行编码风格上的转换。 JSFuck 是使用 [、]、(、)、! 和 + 六种字符来表示原有的字符的，就像下面这样的对应关系： 123456789101112131415false =&gt; ![]true =&gt; !![]undefined =&gt; [][[]]NaN =&gt; +[![]]0 =&gt; +[]1 =&gt; +!+[]2 =&gt; !+[]+!+[]10 =&gt; [+!+[]]+[+[]]Array =&gt; []Number =&gt; +[]String =&gt; []+[]Boolean =&gt; ![]Function =&gt; []["filter"]eval =&gt; []["filter"]["constructor"]( CODE )()window =&gt; []["filter"]["constructor"]("return this")() 当然还有更多的对应关系没有列出来，但是这并不重要，我们只需要知道 JSFuck 是什么就可以了，接下来我们实战走一波。 如何在实战中处理 JSFuck?JSFuck 的处理方法有以下几种： 123document.write(xxx)alert(xxx)console.log(xxx) 这里的 xxx 指的就是 JSFuck 的内容，解决方法很简单，我们拿个例子测试一下。 这里本来想拿某文书网的 JSFuck 实战的，但是自从某文书网下了瑞数之后，整个网站频繁瘫痪。 猝。 所以这里用另一个例子测试一下，因为处理的方法是通用的： 复制 JSFuck ，打开 开发者模式，切换至 Console 选项卡，输入下面的内容并执行： 1console.log(xxx) 执行结果如下： 这里看到提示Cannot read property &#39;attr&#39; of null 我们不管他，我们注意到右手边的vm87:1,点进去看看： 这里就是浏览器为我们还原的代码了，用其他的方法也是同样的效果。 欢迎大家提供更多 JSFuck 的案例，本文测试的 JS 已经上传至 Github , 后台回复「js逆向」即可获取地址。 本文完。]]></content>
+      <categories>
+        <category>js逆向</category>
+      </categories>
+      <tags>
+        <tag>js逆向</tag>
+        <tag>密文解密</tag>
+        <tag>jsfuck</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[JS逆向-基础整理 ( 二 )]]></title>
+    <url>%2F2019%2F06%2F16%2Fjs%E5%8A%A0%E5%AF%86%E5%AD%A6%E4%B9%A001-chrome%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7%E5%B8%B8%E7%94%A8%E5%8A%9F%E8%83%BD%E6%95%B4%E7%90%86%2F</url>
+    <content type="text"><![CDATA[chrome调试工具常用功能整理(待补充)windows: ctrl + shift + imac: cmd + opt + i ElementsDom 选中 元素 切换至 Event… Tab可以查看这个元素绑定的事件 在 Element 选项卡中可以修改html 断点 在 Sources 面板 js 文件行号处设置断点, 这里除了常规断点外, 还有个条件断点(右键 conditional breakpoint), 在设置的条件为 true 时才会断电, 在循环中需要断点时比较有用 在调用堆栈这里可以切换到堆栈中的任何地方重新执行(右键restart frame), 如果想查看断点前的信息时比较有用 断点后的变量保存到全局 选中变量, 右键 Evalute in console 在 console 中选中输出的内容, 右键 store as global variable dom mutation 断点(推荐) dom mutation event 是 DOM3 添加的新的事件, 一般是 dom 结构改变时触发. devtools 可以对 DOMSubtreeModified DOMAttrModified 和 DOMNodeRemoved 时断点. 对上面 元素上事件断点(mouseover) 后不容易找到业务代码, 使用 mutation 断点, 断点后配合 call stack 就可以找到业务代码了 全局事件断点 devtools 还可以对事件发生时断点, 比如 click 发生时断点, 这个跟 元素上事件断点 不同, 不会限定在元素上, 只要是事件发生, 并且有 handler 就断点; 还可以对 resize, ajax, setTimeout/setInterval 断点. xhr 断点 xhr：XMLHttpRequest 使用步骤 打开 chrome 浏览器控制台 选择 source 面板 点击 XHR Breakpoints 右侧的“+”，添加断点规则 实例文章： 条件断点 实例文章 : 【无限debugger】 几个常用的断点快捷键: F8: 继续执行 F10: step over, 单步执行, 不进入函数 F11: step into, 单步执行, 进入函数 shift + F11: step out, 跳出函数 ctrl + o: 打开文件 ctrl + shit + o: 跳到函数定义位置 ctrl + shift + f: 所有脚本中搜索 Console元素选择 $(selector) 即使当前页面没有加载jQuery，你也依然可以使用$和$$函数来选取元素，实际上，这两个函数只是对document.querySelector()和document.querySelectorAll()的简单封装，$用于选取单个元素，$$则用于选取多个 $_ 使用 $_ 来引用最近的一个表达式 使用Reres替换线上文件 待补充 使用Charles 替换线上JS文件 先把电脑上的代理软件关掉，再打开 Charles，在菜单栏选择 Proxy 打开 macos Proxy。 打开 Chrome 上的开发者工具，选择 Network 把禁止缓存勾上(Disable cache)。 刷新页面，在 Charles 上选中需要替换的 JS 代码，右键选择 Map Local…，然后在点击 Choose 按键，选择需要替换的 JS 代码。 使用Fiddler修改线上JS文件 打开 Fiddler ，设置只抓取浏览器流浪 使用 SwitchyOmega 设置 浏览器代理模式 为 Fiddler代理 使用 Fiddler 截断请求，找到需要修改的 JS 文件修改后 点击 RUN 实例网站 : 某文书网首页 JS 未完待续。。。]]></content>
+      <categories>
+        <category>js逆向</category>
+      </categories>
+      <tags>
+        <tag>js逆向</tag>
+        <tag>Chrome调试</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[JS逆向-企名片加密分析]]></title>
+    <url>%2F2019%2F06%2F16%2Fjs%E5%8A%A0%E5%AF%86%E5%AD%A6%E4%B9%A004-%E4%B8%80%E6%AC%A1%E7%BE%A4%E8%81%8A%E5%BC%95%E5%8F%91%E7%9A%84%E7%9A%84js%E7%A0%B4%E8%A7%A3%E6%95%99%E5%AD%A6%2F</url>
+    <content type="text"><![CDATA[事情起因 这是aio老陈的交流群里一位群友的提问,交流群里的大佬巨多,我想这个问题应该很快就会得到解决。 果不其然,很快有老哥给出了破解代码,默默点个赞,说句牛逼。 这里先贴上 Loco大佬的知乎专栏 , 专栏内容主要是爬虫反爬,逆向的文章,更多人关注说不定大佬能奋起更新。 https://zhuanlan.zhihu.com/webspider 还有给出代码的老哥i写的教程,发表在aio老陈的公众号: https://mp.weixin.qq.com/s/UP3EiMIuUV5jSQZIP7FJ8A 经过我看到起因里有老哥给出解答后,也抱着试一试的态度自己去试试,这次破解的主要内容在aio老陈的公众号写的足够详细了,所以本文就说说我遇到的几个卡住的点,对这次的解密做个笔记,便于之后复习回顾。 查看加密请求打开开发者模式,切换到XHR选项卡,发现这里有两个请求: 搜索加密参数快捷键打开全局搜索,搜索encrypt_data发现只找到一个文件,在文件内搜索encrypt_data有六处关联的地方: 这里我遇到第一个坑: 通过检索我很快就找到了关联的地方,但是我用错了方法,没有认真分析代码一直在callback里找解密的地方把问题复杂化了。 其实解密的地方就在下面截图断点的地方: 找到关键解密的地方通过两次F11的调试,我找到了解密的地方: 这里我遇到的第二个坑,这里坑的主要原因是我对调试工具的不熟悉,我一直使用的是F10的调试功能,正好 Loco大佬在群里讲解的时候说到了这一方面的资料: https://developers.google.com/web/tools/chrome-devtools/?hl=zh-cn 补全代码找到加密代码之后就可以按照前面缺啥补啥的套路了。 这里来个代码的开头,抛转引玉。 运行代码这里是第三个坑: 抠出全部的js代码后有一个坑的地方,就是在js运行正常的代码在python中调用的时候出现报错,这个报错的解决方案如下: 正常我们抠出的js代码如下:（关键部分） 实际上在python中调用的时候要这样写:(代码源自开头给出代码的老哥那) 123function my_decrypt(t) &#123; return new Buffer(s("5e5062e82f15fe4ca9d24bc5", my_decode(t), 0, 0, "012345677890123", 1)).toString("base64")&#125; 之所以这么改的原因是: “因为直接返回object给Python会报错，所以这里将JSON.parse移除了，返回parse前的json字符串,同时为了防止这串字符串内有特殊编码的字符，这里将它转成base64再return” – Loco大佬 以上就是这次源自群聊的js破解历程,希望本文中提及的文章、教程对你有所帮助。 EOF]]></content>
+      <categories>
+        <category>js逆向</category>
+      </categories>
+      <tags>
+        <tag>js逆向</tag>
+        <tag>企名片</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[JS逆向-梦幻西游装备阁加密分析]]></title>
+    <url>%2F2019%2F06%2F16%2Fjs%E5%8A%A0%E5%AF%86%E5%AD%A6%E4%B9%A010-%E6%A2%A6%E5%B9%BB%E8%A5%BF%E6%B8%B8%2F</url>
+    <content type="text"><![CDATA[来咯来咯~这次真的来喽! 咸鱼练手第二弹。 最近风声略紧,咸鱼在这声明: 本公众号所有文章仅供技术交流未经许可严禁转载,且本公众号发布的内容不得用于非法用途,如有侵权，请后台联系咸鱼删除文章。 【律师函警告】 分析请求老规矩先抓包,找了半天没发现有异步请求,不过很快在Html页面里找到了下面的东西: 以我多年的经验来看,这个应该是把页面上的属性栏加密,页面展示的时候再按照某种解密的逻辑还原并展示的,就属这种最麻烦。 定位加密说他麻烦,果然定位加密定位了20多分钟还没找到,感觉超出了我的能力范围。 为了能够愉快的摸鱼不再烦恼,所以我决定今天就先到这。 本文完。 不过还好在带薪摸(la)鱼(shi)的过程中,我突然有了想法,想到之前一直忽略的点。 我先捋一捋思路: 这段加密的信息在页面展示一定有一个位置标识解密之后展示的位置,在页面密文上面展示的位置正好有一个id(全局唯一),如果猜的没错的话那事情就简单多了。 【奸笑】 于是,搜就完事儿了,结果发现没找到想象中的js文件。 遂,猝。 【吐血】 不过在这个页面里找两个equip_desc_panel,跟进去看看,发现下面这段代码: 1$("equip_desc_panel").innerHTML = parse_style_info(get_equip_desc("equip_desc_value")); 下意识再搜了一次: 果然我找到了这个看着就很像解密的东西,打上断点,刷新一下,成功进入断点。 这个定位加密的过程虽然曲折且还有点味道,但是事实告诉我们: 带薪摸(la)鱼(shi),有助于灵感迸发。 分析加密既然成功进入断点,先追进去看看: 这段经过混淆的代码就是我们要分析的加密了。 这段混淆初看有点头大,不过混淆的方式之前一篇文章也有提过,感兴趣的朋友可以翻翻看。 了解了混淆的方式之后,先平复下心情,解这种看着很像的东西最怕烦躁。 【淡定】 先从头逐步执行,并观察传入的值,顺带把代码复制一份并把代码里_0x1b3f48[&#39;\x63\x68\x61\x72\x43\x6f\x64\x65\x41\x74&#39;]这样的方法名翻译成正常的js代码便于理解,了解完大概解密流程,找到我们最终需要的值是这样生成的。 之后就是老套路缺啥找啥的阶段,不过扣代码的过程有两个坑点: 在扣代码的时候,明明整体逻辑已经扣好了,但是不返回任何值,通过打印调试发现这段代码里_0x1b3f48返回的是null值,以至于下面的for循环没有结果,所以需要注意。 还有就是在浏览器中base64编码转换使用的是_0x1c0cdf = _0xcbc80b[&#39;atob&#39;](_0x1c0cdf),但是在nodejs调试的时候使用的是Buffer.from(_0x1c0cdf,&quot;base64&quot;).toString() 经过一番不懈的努(tu)力(tou),成功得到结果。]]></content>
+      <categories>
+        <category>js逆向</category>
+      </categories>
+      <tags>
+        <tag>js逆向</tag>
+        <tag>梦幻西游</tag>
+        <tag>密文解密</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[JS逆向-基础-DES加密与Base64编码实例]]></title>
+    <url>%2F2019%2F06%2F16%2Fjs%E5%8A%A0%E5%AF%86%E5%AD%A6%E4%B9%A001-des%E4%B8%8Ebase64%2F</url>
+    <content type="text"><![CDATA[讲在前面本篇旨在简单总结js与Python加密的一些例子,文中演示的案例也是面向新手,如果有大佬很碰巧看到这篇文章,欢迎加我交流,咸鱼愿意付费学习。 常用的加密有哪些？ 对称加密（加密解密密钥相同）：DES、DES3、AES 非对称加密（分公钥私钥）：RSA 信息摘要算法/签名算法：MD5、HMAC、SHA 学习资源推荐冷月大佬的博客:https://lengyue.me/ 突破前端反调试–阻止页面不断debugger:https://segmentfault.com/a/1190000012359015 岚光的JavaScript反调试和混淆:https://0x0d.im/archives/javascript-anti-debug-and-obfuscator.html 常用调试流程以下是可以参考的调试流程(面向新手): 如果网页有跳转，必须勾选 preservelog 防止丢包 看一下有没有框架 右键查看框架源代码(弹出式登陆界面) 登陆尽量使用错误密码 防止跳转 查看关键登陆包 分析哪些参数是加密的 使用别的浏览器分析哪些参数是固定的值 初步猜测加密方法 搜索 直接搜索参数 pwd= pwd = pwd: pwd : 密码框地方右键 检查 查看 id name type 找到加密的地方(重点) 调试 找出所有的加密代码 从最后一步开始写起，缺啥找啥 如果找的是函数的话 search 要带上 function xxx 如果看到加密的地方有个类，并且之后是用 prototype 把方法加在原生对象上的话，要把所有加在原生对象上的方法都找出来 函数找多了没关系，只要不报错不会影响结果，但是不能找少了 DES加密js调试实战案例 为了避免被删文,所以这里就不说是哪个网站了,有需要可私信 我们先参照上面的调试流程抓包,搜索加密参数’password’,经过测试通过’password=’这关键字找到了加密所在的js。 经过测试(步骤7)在文件内搜索’password:’找到加密位置,并通过断点确认了猜测。 通过点击提示的路径,我们找到以下代码: 找到这里就可以把需要的js代码扣出来,然后一步步调试了,通过补齐缺失的代码,得到以下js加密代码并运行: 12 输出运行结果’+g64648uhmWlN9eoU3Tszw==’,与我们抓包的结果相同。 Base64编码js调试实战案例 同样参照上面的调试流程,搜索加密参数’encodePassword’,经过测试通过’encodePassword =’这关键字找到了加密所在的js,并通过断点验证 找到关键加密位置后,查看加密的js文件,直接复制出来即可 base64编码比较简单,直接复制补上我们的密码,输出的就是编码后的字段了 Python实现加密方法合集这里给大家推荐一个大佬写的代码(我就不献丑了),记得给大佬来个starGitHub地址: 123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100101102103104105106107108109110111112113114115116117118119120121122123124125126127128129130131132133134135136137138139140141142143144145146147148149150151152153154155156157158159160161162163164165166167168169170171172173174175176177178179180181182183184185186187188189190191192193194195196197198199200201202203204205206207208209210211212213214215216217218219220221222223224225226227228229230231232233234235236237238239240241242243244245246247248249250251252253254255256257258259260261262263264https://github.com/dhfjcuff/R-A-M-D-D3-S-M-H/blob/master/RSA-AES-MD5-DES-DES3-MD5-SHA-HMAC.py# -*- coding：utf-8 -*-import base64import rsafrom Crypto.Cipher import AESfrom Crypto.PublicKey import RSAfrom pyDes import des, CBC, PAD_PKCS5from Crypto.Cipher import DES3import hashlibimport hmacclass USE_AES: """ AES 除了MODE_SIV模式key长度为：32, 48, or 64, 其余key长度为16, 24 or 32 详细见AES内部文档 CBC模式传入iv参数 本例使用常用的ECB模式 """ def __init__(self, key): if len(key) &gt; 32: key = key[:32] self.key = self.to_16(key) def to_16(self, key): """ 转为16倍数的bytes数据 :param key: :return: """ key = bytes(key, encoding="utf8") while len(key) % 16 != 0: key += b'\0' return key # 返回bytes def aes(self): return AES.new(self.key, AES.MODE_ECB) # 初始化加密器 def encrypt(self, text): aes = self.aes() return str(base64.encodebytes(aes.encrypt(self.to_16(text))), encoding='utf8').replace('\n', '') # 加密 def decodebytes(self, text): aes = self.aes() return str(aes.decrypt(base64.decodebytes(bytes( text, encoding='utf8'))).rstrip(b'\0').decode("utf8")) # 解密class USE_RSA: """ 生成密钥可保存.pem格式文件 1024位的证书，加密时最大支持117个字节，解密时为128； 2048位的证书，加密时最大支持245个字节，解密时为256。 加密大文件时需要先用AES或者DES加密，再用RSA加密密钥，详细见文档 文档:https://stuvel.eu/files/python-rsa-doc/usage.html#generating-keys """ def __init__(self, number=1024): """ :param number: 公钥、私钥 """ self.pubkey, self.privkey = rsa.newkeys(number) def rsaEncrypt(self, text): """ :param test: str :return: bytes """ content = text.encode('utf-8') crypto = rsa.encrypt(content, self.pubkey) return crypto def rsaDecrypt(self, text): """ :param text:bytes :return: str """ content = rsa.decrypt(text, self.privkey) con = content.decode('utf-8') return con def savePem(self, path_name, text): """ :param path_name: 保存路径 :param text: str :return:bytes """ if "PEM" in path_name.upper(): path_name = path_name[:-4] with open('&#123;&#125;.pem'.format(path_name), 'bw') as f: f.write(text.save_pkcs1()) def readPem(self, path_name, key_type): """ :param path_name: 密钥文件 :param key_type:类型 :return: """ if 'pubkey' in key_type: self.pubkey = rsa.PublicKey.load_pkcs1(path_name) else: self.privkey = rsa.PublicKey.load_pkcs1(path_name) return True def sign(self, message, priv_key=None, hash_method='SHA-1'): """ 生成明文的哈希签名以便还原后对照 :param message: str :param priv_key: :param hash_method: 哈希的模式 :return: """ if None == priv_key: priv_key = self.privkey return rsa.sign(message.encode(), priv_key, hash_method) def checkSign(self, mess, result, pubkey=None): """ 验证签名：传入解密后明文、签名、公钥，验证成功返回哈希方法，失败则报错 :param mess: str :param result: bytes :param pubkey: :return: str """ if None == pubkey: pubkey = self.privkey try: result = rsa.verify(mess, result, pubkey) return result except: return Falseclass USE_DES: """ des(key,[mode], [IV], [pad], [pad mode]) key:必须正好8字节 mode（模式）：ECB、CBC iv:CBC模式中必须提供长8字节 pad:填充字符 padmode:加密填充模式PAD_NORMAL or PAD_PKCS5 """ def __init__(self, key, iv): if not isinstance(key, bytes): key = bytes(key, encoding="utf8") if not isinstance(iv, bytes): iv = bytes(iv, encoding="utf8") self.key = key self.iv = iv def encrypt(self, text): """ DES 加密 :param text: 原始字符串 :return: 加密后字符串，bytes """ if not isinstance(text, bytes): text = bytes(text, "utf-8") secret_key = self.key iv = self.iv k = des(secret_key, CBC, iv, pad=None, padmode=PAD_PKCS5) en = k.encrypt(text, padmode=PAD_PKCS5) return en def descrypt(self, text): """ DES 解密 :param text: 加密后的字符串，bytes :return: 解密后的字符串 """ secret_key = self.key iv = self.iv k = des(secret_key, CBC, iv, pad=None, padmode=PAD_PKCS5) de = k.decrypt(text, padmode=PAD_PKCS5) return de.decode()class USE_DES3: """ new(key, mode, *args, **kwargs) key:必须8bytes倍数介于16-24 mode： iv:初始化向量适用于MODE_CBC、MODE_CFB、MODE_OFB、MODE_OPENPGP，4种模式 ``MODE_CBC``, ``MODE_CFB``, and ``MODE_OFB``长度为8bytes ```MODE_OPENPGP```加密时8bytes解密时10bytes 未提供默认随机生成 nonce：仅在 ``MODE_EAX`` and ``MODE_CTR``模式中使用 ``MODE_EAX``建议16bytes ``MODE_CTR``建议[0, 7]长度 未提供则随机生成 segment_size：分段大小，仅在 ``MODE_CFB``模式中使用，长度为8倍数，未指定则默认为8 mac_len： 适用``MODE_EAX``模式，身份验证标记的长度（字节），它不能超过8（默认值） initial_value：适用```MODE_CTR```，计数器的初始值计数器块。默认为**0**。 """ def __init__(self, key): self.key = key self.mode = DES3.MODE_ECB def encrypt(self, text): """ 传入明文 :param text:bytes类型，长度是KEY的倍数 :return: """ if not isinstance(text, bytes): text = bytes(text, 'utf-8') x = len(text) % 8 text = text+b'\0'*x cryptor = DES3.new(self.key, self.mode) ciphertext = cryptor.encrypt(text) return ciphertext def decrypt(self, text): cryptor = DES3.new(self.key, self.mode) plain_text = cryptor.decrypt(text) st = str(plain_text.decode("utf-8")).rstrip('\0') return stdef USE_MD5(test): if not isinstance(test, bytes): test = bytes(test, 'utf-8') m = hashlib.md5() m.update(test) return m.hexdigest()def USE_HMAC(key, text): if not isinstance(key, bytes): key = bytes(key, 'utf-8') if not isinstance(text, bytes): text = bytes(text, 'utf-8') h = hmac.new(key, text, digestmod='MD5') return h.hexdigest()def USE_SHA(text): if not isinstance(text, bytes): text = bytes(text, 'utf-8') sha = hashlib.sha1(text) encrypts = sha.hexdigest() return encryptsif __name__ == '__main__': aes_test = USE_AES("assssssssdfasasasasa") a = aes_test.encrypt("测试") b = aes_test.decodebytes(a) rsa_test = USE_RSA() a = rsa_test.rsaEncrypt("测试加密") b = rsa_test.rsaDecrypt(a) des_test = USE_DES(b"12345678", b"12345678") a = des_test.encrypt("测试加密") b = des_test.descrypt(a) des3_test = USE_DES3(b"123456789qazxswe") a = des3_test.encrypt("测试加密") b = des3_test.decrypt(a) md5_test = USE_MD5("测试签名") hmac_test = USE_HMAC("123456", "测试") sha_test = USE_SHA("测试加密") 小结本文简单介绍了关于js调试加密字段的流程,并且分别调试了关于DES与Base64加密的两个案例。 文中举例的案例属于菜鸟级别,但是千万因为这样就小瞧js逆向这门学问,因为上面写的案例其实连JS逆向入门的门槛都没跨过。]]></content>
+      <categories>
+        <category>js逆向</category>
+      </categories>
+      <tags>
+        <tag>js逆向</tag>
+        <tag>基础</tag>
+        <tag>DES</tag>
+        <tag>BASE64</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[JS逆向-基础流程梳理 ( 一 )]]></title>
+    <url>%2F2019%2F05%2F16%2Fjs%E5%8A%A0%E5%AF%86%E5%AD%A6%E4%B9%A001-%E5%9F%BA%E7%A1%80%2F</url>
+    <content type="text"><![CDATA[基础流程 如果网页有跳转，必须勾选 preservelog 防止丢包 看一下有没有框架 右键查看框架源代码 登陆的话尽量使用错误密码 防止跳转 查看关键登陆包 分析哪些参数是加密的 使用别的浏览器分析哪些参数是固定的值 初步猜测加密方法 搜索(md5,aes,des,tripedes,rsa,encrypt,setpubkey,setpublickey) 直接搜索参数 pwd= pwd = pwd: pwd : 密码框地方右键 检查 查看 id name type 原生js方法获取 doucumnet.getElementById[“”].value doucumnet.getElementByName[“”][0].value jQuery获取 alert($(“#id”).val()); alert($(“input[type=’password’]”).val()); 找到加密的地方 调试10. 从最后一步开始写起，缺啥找啥 如果找的是函数的话 search 要带上 function xxx 如果看到加密的地方有个类，并且之后是用 prototype 把方法加在原生对象上的话，要把所有加在原生对象上的方法都找出来 函数找多了没关系，只要不报错不会影响结果，但是不能找少了 直接保存整页JS浏览器调试 RSA加密RSA中比较熟悉的东西是: public key 本地用公钥加密，服务器上用私钥解密 Encrypt 这个关键字 长度是128位或者256路 MD5加密 长度 32 位]]></content>
+      <categories>
+        <category>js逆向</category>
+      </categories>
+      <tags>
+        <tag>js逆向</tag>
+        <tag>基础流程</tag>
+        <tag>RSA</tag>
+        <tag>MD5</tag>
       </tags>
   </entry>
   <entry>
@@ -665,6 +1003,17 @@
       </tags>
   </entry>
   <entry>
+    <title><![CDATA[requests与json的使用技巧]]></title>
+    <url>%2F2018%2F09%2F01%2Frequests-and-json%2F</url>
+    <content type="text"><![CDATA[requestsrequestse基本使用 关于requests基本使用方法参照中文版参考文档： http://docs.python-requests.org/zh_CN/latest/index.html response.text 和response.content的区别1234567891011response.text类型：str解码类型： 根据HTTP 头部对响应的编码作出有根据的推测，推测的文本编码如何修改编码方式：response.encoding=”gbk”response.content类型：bytes解码类型：没有指定如何修改编码方式：response.content.deocde(“utf8”)更推荐使用response.content.deocde()的方式获取响应的html页面 requests使用代理12345requests.get("http://www.baidu.com", proxies = proxies)proxies = &#123; "http": "http://12.34.56.79:9527", "https": "https://12.34.56.79:9527", &#125; 代理的基本原理 正向代理与反向代理正向代理：浏览器明确知道要访问的是什么服务器，只不过目前无法达到，需要通过代理来帮助完成这个请求操作。 反向代理：浏览器不知道任何关于要请求的服务器的信息，需要通过Nginx请求。 requests模拟登录的几种方法 实例化session，使用session发送post/get请求登录后的页面 12session = requests.session()response = session.get(url,headers) 在headers中添加cookie键，值为cookie字符串 在请求方法中添加cookie参数，接收字典形式的cookie cookie和session区别 cookie数据存放在客户的浏览器上，session数据放在服务器上 cookie不是很安全，别人可以分析存放在本地的cookie并进行cookie欺骗 session会在一定时间内保存在服务器上。当访问增多，会比较占用你服务器的性能 单个cookie保存的数据不能超过4K，很多浏览器都限制一个站点最多保存20个cookie requests的几个小技巧(我认为的)12345678910111213#把cookie对象转化为字典reqeusts.util.dict_from_cookiejar #把字典转化为cookie对象reqeusts.util.cookiejar_from_dict#url解码reqeusts.util.unquote()#url编码reqeusts.util.quote() #忽略SSL证书验证response = requests.get("https://www.12306.cn/mormhweb/ ", verify=False) #请求https的网站忽略SSL证书验证之后还是会出现警告信息，在请求前加上下面这句就可以禁用安全请求警告#InsecureRequestWarning: Unverified HTTPS request is being made. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#ssl-warnings InsecureRequestWarning）requests.packages.urllib3.disable_warnings() 通用的解析链接函数123456789101112131415161718192021222324252627# coding=utf-8import requestsfrom retrying import retryheaders=&#123;"User-Agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36"&#125;@retry(stop_max_attempt_number=3)def _parse_url(url,method,data,proxies): print("*"*20) if method=="POST": response = requests.post(url,data=data,headers=headers,proxies=proxies) else: response = requests.get(url,headers=headers,timeout=3,proxies=proxies) assert response.status_code == 200 return response.content.decode()def parse_url(url,method="GET",data=None,proxies=&#123;&#125;): try: html_str = _parse_url(url,method,data,proxies) except: html_str = None return html_strif __name__ == '__main__': parse_url(url) jsonjson的基本使用1234json.loads() #json字符串转化为python数据类型json.dumps() #python数据类型转化为json字符串json.load() #包含json的类文件对象转化为python数据类型json.dump() #python数据类型转化为包含json的类文件对象 什么是类文件对象？具有read()或者write()方法的对象就是类文件对象，f = open(“a.txt”,”r”) f就是类文件对象 如何优雅的查看json?我们经常在打印json数据的时候会遇到，像下图这样的情况 我们只要在打印的时候使用pprint就可以完美避开这种情况了，效果如下： 我们想要实现上图只需要pip install pprint并在打印时使用pprint即可，而在保存时只需要添加”indent=2”参数，就可以保存为pprint的样式。]]></content>
+      <categories>
+        <category>Python</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[request模拟登陆]]></title>
     <url>%2F2018%2F09%2F01%2Frequets-login%2F</url>
     <content type="text"><![CDATA[requests模拟登录获取本地cookie12345678import resession = requests.session()session.cookies = cookielib.LWPCookieJar(filename="cookies.txt")try: session.cookies.load(ignore_discard=True)except: print ("cookie未能加载") 123allow_redirects=False --禁止重定向session.cookies.save() --调用save方法保存cookie 手动输入验证码(实例)12345678910111213141516171819def get_captcha(): import time t = str(int(time.time()*1000)) captcha_url = "https://www.zhihu.com/captcha.gif?r=&#123;0&#125;&amp;type=login".format(t) t = session.get(captcha_url, headers=header) with open("captcha.jpg","wb") as f: f.write(t.content) f.close() from PIL import Image try: im = Image.open('captcha.jpg') im.show() im.close() except: pass captcha = input("输入验证码\n&gt;") return captcha]]></content>
@@ -673,17 +1022,6 @@
       </categories>
       <tags>
         <tag>爬虫</tag>
-        <tag>Python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[requests与json的使用技巧]]></title>
-    <url>%2F2018%2F09%2F01%2Frequests-and-json%2F</url>
-    <content type="text"><![CDATA[requestsrequestse基本使用 关于requests基本使用方法参照中文版参考文档： http://docs.python-requests.org/zh_CN/latest/index.html response.text 和response.content的区别1234567891011response.text类型：str解码类型： 根据HTTP 头部对响应的编码作出有根据的推测，推测的文本编码如何修改编码方式：response.encoding=”gbk”response.content类型：bytes解码类型：没有指定如何修改编码方式：response.content.deocde(“utf8”)更推荐使用response.content.deocde()的方式获取响应的html页面 requests使用代理12345requests.get("http://www.baidu.com", proxies = proxies)proxies = &#123; "http": "http://12.34.56.79:9527", "https": "https://12.34.56.79:9527", &#125; 代理的基本原理 正向代理与反向代理正向代理：浏览器明确知道要访问的是什么服务器，只不过目前无法达到，需要通过代理来帮助完成这个请求操作。 反向代理：浏览器不知道任何关于要请求的服务器的信息，需要通过Nginx请求。 requests模拟登录的几种方法 实例化session，使用session发送post/get请求登录后的页面 12session = requests.session()response = session.get(url,headers) 在headers中添加cookie键，值为cookie字符串 在请求方法中添加cookie参数，接收字典形式的cookie cookie和session区别 cookie数据存放在客户的浏览器上，session数据放在服务器上 cookie不是很安全，别人可以分析存放在本地的cookie并进行cookie欺骗 session会在一定时间内保存在服务器上。当访问增多，会比较占用你服务器的性能 单个cookie保存的数据不能超过4K，很多浏览器都限制一个站点最多保存20个cookie requests的几个小技巧(我认为的)12345678910111213#把cookie对象转化为字典reqeusts.util.dict_from_cookiejar #把字典转化为cookie对象reqeusts.util.cookiejar_from_dict#url解码reqeusts.util.unquote()#url编码reqeusts.util.quote() #忽略SSL证书验证response = requests.get("https://www.12306.cn/mormhweb/ ", verify=False) #请求https的网站忽略SSL证书验证之后还是会出现警告信息，在请求前加上下面这句就可以禁用安全请求警告#InsecureRequestWarning: Unverified HTTPS request is being made. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#ssl-warnings InsecureRequestWarning）requests.packages.urllib3.disable_warnings() 通用的解析链接函数123456789101112131415161718192021222324252627# coding=utf-8import requestsfrom retrying import retryheaders=&#123;"User-Agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36"&#125;@retry(stop_max_attempt_number=3)def _parse_url(url,method,data,proxies): print("*"*20) if method=="POST": response = requests.post(url,data=data,headers=headers,proxies=proxies) else: response = requests.get(url,headers=headers,timeout=3,proxies=proxies) assert response.status_code == 200 return response.content.decode()def parse_url(url,method="GET",data=None,proxies=&#123;&#125;): try: html_str = _parse_url(url,method,data,proxies) except: html_str = None return html_strif __name__ == '__main__': parse_url(url) jsonjson的基本使用1234json.loads() #json字符串转化为python数据类型json.dumps() #python数据类型转化为json字符串json.load() #包含json的类文件对象转化为python数据类型json.dump() #python数据类型转化为包含json的类文件对象 什么是类文件对象？具有read()或者write()方法的对象就是类文件对象，f = open(“a.txt”,”r”) f就是类文件对象 如何优雅的查看json?我们经常在打印json数据的时候会遇到，像下图这样的情况 我们只要在打印的时候使用pprint就可以完美避开这种情况了，效果如下： 我们想要实现上图只需要pip install pprint并在打印时使用pprint即可，而在保存时只需要添加”indent=2”参数，就可以保存为pprint的样式。]]></content>
-      <categories>
-        <category>Python</category>
-      </categories>
-      <tags>
         <tag>Python</tag>
       </tags>
   </entry>

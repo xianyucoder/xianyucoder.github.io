@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.xianyucoder.cn/"/>
-  <updated>2019-08-26T11:15:01.139Z</updated>
+  <updated>2019-09-30T02:02:04.405Z</updated>
   <id>http://www.xianyucoder.cn/</id>
   
   <author>
@@ -15,6 +15,306 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>JS逆向-裁判文书网加密分析20190902版</title>
+    <link href="http://www.xianyucoder.cn/2019/09/17/%E6%AF%8F%E6%97%A5JS-%E8%A3%81%E5%88%A4%E6%96%87%E4%B9%A6%E7%BD%91-190902%E7%89%88/"/>
+    <id>http://www.xianyucoder.cn/2019/09/17/每日JS-裁判文书网-190902版/</id>
+    <published>2019-09-17T10:39:35.000Z</published>
+    <updated>2019-09-30T02:02:04.405Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="裁判文书网20190902版"><a href="#裁判文书网20190902版" class="headerlink" title="裁判文书网20190902版"></a>裁判文书网20190902版</h4><h5 id="列表页-RequestVerificationToken"><a href="#列表页-RequestVerificationToken" class="headerlink" title="列表页 __RequestVerificationToken"></a>列表页 <code>__RequestVerificationToken</code></h5><p>搜索关键词<code>__RequestVerificationToken</code> 【图1-1】</p><p><img src="http://tc.xianyucoder.cn/blog20190902101008.png" alt="图1-1"></p><p>找到<code>base.random(24)</code>这个方法，这个复制出来就解决了。</p><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">get_random</span>(<span class="params">size</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> str = <span class="string">""</span>,</span><br><span class="line">        arr = [<span class="string">'0'</span>, <span class="string">'1'</span>, <span class="string">'2'</span>, <span class="string">'3'</span>, <span class="string">'4'</span>, <span class="string">'5'</span>, <span class="string">'6'</span>, <span class="string">'7'</span>, <span class="string">'8'</span>, <span class="string">'9'</span>, <span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>, <span class="string">'d'</span>, <span class="string">'e'</span>, <span class="string">'f'</span>, <span class="string">'g'</span>, <span class="string">'h'</span>, <span class="string">'i'</span>, <span class="string">'j'</span>, <span class="string">'k'</span>, <span class="string">'l'</span>, <span class="string">'m'</span>, <span class="string">'n'</span>, <span class="string">'o'</span>, <span class="string">'p'</span>, <span class="string">'q'</span>, <span class="string">'r'</span>, <span class="string">'s'</span>, <span class="string">'t'</span>, <span class="string">'u'</span>, <span class="string">'v'</span>, <span class="string">'w'</span>, <span class="string">'x'</span>, <span class="string">'y'</span>, <span class="string">'z'</span>, <span class="string">'A'</span>, <span class="string">'B'</span>, <span class="string">'C'</span>, <span class="string">'D'</span>, <span class="string">'E'</span>, <span class="string">'F'</span>, <span class="string">'G'</span>, <span class="string">'H'</span>, <span class="string">'I'</span>, <span class="string">'J'</span>, <span class="string">'K'</span>, <span class="string">'L'</span>, <span class="string">'M'</span>, <span class="string">'N'</span>, <span class="string">'O'</span>, <span class="string">'P'</span>, <span class="string">'Q'</span>, <span class="string">'R'</span>, <span class="string">'S'</span>, <span class="string">'T'</span>, <span class="string">'U'</span>, <span class="string">'V'</span>, <span class="string">'W'</span>, <span class="string">'X'</span>, <span class="string">'Y'</span>, <span class="string">'Z'</span>];</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">0</span>; i&lt;size; i++)&#123;</span><br><span class="line">        str += arr[<span class="built_in">Math</span>.round(<span class="built_in">Math</span>.random() * (arr.length<span class="number">-1</span>))];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> str;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h4 id="Ciphertext"><a href="#Ciphertext" class="headerlink" title="Ciphertext"></a>Ciphertext</h4><p>通过XHR断点，查看堆栈信息【图2-1】</p><p><img src="http://tc.xianyucoder.cn/blog20190902105409.png" alt="图2-1"></p><p>加密位置为【图2-2】</p><p><img src="http://tc.xianyucoder.cn/blog20190902105234.png" alt="图2-2"></p><p>直接扣取<code>ciphertext</code>这个方法的代码即可，这里展示部分代码：</p><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">cipher=<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> date = <span class="keyword">new</span>  <span class="built_in">Date</span>();</span><br><span class="line">    <span class="keyword">var</span> timestamp = date.getTime().toString();</span><br><span class="line">    <span class="keyword">var</span> salt =get_random(<span class="number">24</span>);</span><br><span class="line">    <span class="keyword">var</span> year=date.getFullYear().toString();</span><br><span class="line">    <span class="keyword">var</span> month = (date.getMonth()+<span class="number">1</span>&lt;<span class="number">10</span> ? <span class="string">"0"</span>+(date.getMonth()+<span class="number">1</span>) : date.getMonth()).toString();</span><br><span class="line">    <span class="keyword">var</span> day = (date.getDate()&lt;<span class="number">10</span> ? <span class="string">"0"</span>+date.getDate() : date.getDate()).toString();</span><br><span class="line">    <span class="keyword">var</span> iv =year+month+day;</span><br><span class="line">    <span class="keyword">var</span> enc = DES3.encrypt(timestamp,salt,iv).toString();</span><br><span class="line">    <span class="keyword">var</span> str = salt+iv+enc;</span><br><span class="line">    <span class="keyword">var</span> ciphertext = strTobinary(str);</span><br><span class="line">    <span class="keyword">return</span> ciphertext;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h4 id="pageld"><a href="#pageld" class="headerlink" title="pageld"></a>pageld</h4><p>这个参数在首页点击时自动带入，经过测试并不是必须项，可以通过分析首页的源码查看到调用的方法。</p><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">get_uuid</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> guid = <span class="string">""</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">1</span>; i &lt;= <span class="number">32</span>; i++) &#123;</span><br><span class="line">        <span class="keyword">var</span> n = <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * <span class="number">16.0</span>).toString(<span class="number">16</span>);</span><br><span class="line">        guid += n;</span><br><span class="line">        <span class="comment">// if ((i == 8) || (i == 12) || (i == 16) || (i == 20)) guid +=</span></span><br><span class="line">        <span class="comment">// "-";</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> guid;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;裁判文书网20190902版&quot;&gt;&lt;a href=&quot;#裁判文书网20190902版&quot; class=&quot;headerlink&quot; title=&quot;裁判文书网20190902版&quot;&gt;&lt;/a&gt;裁判文书网20190902版&lt;/h4&gt;&lt;h5 id=&quot;列表页-RequestVerifi
+      
+    
+    </summary>
+    
+      <category term="js逆向" scheme="http://www.xianyucoder.cn/categories/js%E9%80%86%E5%90%91/"/>
+    
+    
+      <category term="js逆向" scheme="http://www.xianyucoder.cn/tags/js%E9%80%86%E5%90%91/"/>
+    
+      <category term="裁判文书网" scheme="http://www.xianyucoder.cn/tags/%E8%A3%81%E5%88%A4%E6%96%87%E4%B9%A6%E7%BD%91/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>反反爬-巧破 Cloudflare 5秒盾</title>
+    <link href="http://www.xianyucoder.cn/2019/09/16/%E5%8F%8D%E5%8F%8D%E7%88%AC-%E5%B7%A7%E7%A0%B4%20Cloudflare%205%E7%A7%92%E7%9B%BE/"/>
+    <id>http://www.xianyucoder.cn/2019/09/16/反反爬-巧破 Cloudflare 5秒盾/</id>
+    <published>2019-09-16T10:39:35.000Z</published>
+    <updated>2019-09-30T01:54:45.341Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="巧破-Cloudflare-5秒盾"><a href="#巧破-Cloudflare-5秒盾" class="headerlink" title="巧破 Cloudflare 5秒盾"></a>巧破 Cloudflare 5秒盾</h2><p>相信下面这个界面大家都不会陌生。【图1-1】</p><p><img src="http://tc.xianyucoder.cn/blog20190920192205.png" alt="图1-1"></p><p>当我们第一次访问使用 CloudFlare 加速的网站时，网站就会出现让我们等待 5 秒种的提示，当我们需要的通过爬虫爬取这类网站的时候，应该如何爬取呢？</p><h3 id="分析请求"><a href="#分析请求" class="headerlink" title="分析请求"></a>分析请求</h3><p>首先我们需要分析在这个等待的时间里浏览器做了哪些操作。</p><p>通过抓包，我们可以看到在等待的过程中，浏览器做了下面的三次请求【图1-2】- 【图1-4】：</p><p>【图1-2】请求 1 写入 cookie 字段 <code>__cfduid</code> </p><p><img src="http://tc.xianyucoder.cn/blog20190920193036.png" alt="图1-2"></p><p>【图1-3】请求 2 带有疑似加密的请求参数请求并写入 cookie 字段 <code>cf_clearance</code></p><p><img src="http://tc.xianyucoder.cn/blog20190920193527.png" alt="图1-3"></p><p>【图1-4】请求 3 带上前面写入的<code>cookie</code> 请求网站首页，返回首页内容。</p><p><img src="http://tc.xianyucoder.cn/blog20190920193847.png" alt="图1-4"></p><p>这整个过程需要的请求现在已经分析清楚了，接下来就是使用 Python 实现这个请求流程，不过是这样的话就配不上这个标题了。</p><p>先说说这个按照正常流程是怎么实现抓取绕过的：</p><ul><li>使用浏览器模拟技术请求目标网站，例如：Selenium、 PhantomJS等</li><li>破解请求 2 的加密参数使用请求库模拟整个请求过程</li></ul><p>这两个方法当然是可以抓取的，但是都不符合标题的<code>巧</code>字。</p><p>接下来给大家介绍一个专门为了绕过这个 CloudFlare 开发的 Python 库 <code>cloudflare-scrape</code></p><p>用上它就可以无感爬取使用了 CloudFlare 的网站，使用这个库非常简单。</p><h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><p>使用</p><p><code>pip install cfscrape</code></p><p>安装<code>cloudflare-scrape</code>，同时确认本地是否安装<code>node.js</code>开发环境，如果没有，需要安装配置<code>nodejs</code>开发环境。</p><h4 id="使用实例"><a href="#使用实例" class="headerlink" title="使用实例"></a>使用实例</h4><p>处理 get 请求的 CloudFlare</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cfscrape</span><br><span class="line"><span class="comment"># 实例化一个create_scraper对象</span></span><br><span class="line">scraper = cfscrape.create_scraper()</span><br><span class="line"><span class="comment"># 请求报错，可以加上时延</span></span><br><span class="line"><span class="comment"># scraper = cfscrape.create_scraper(delay = 10)</span></span><br><span class="line"><span class="comment"># 获取网页源代码</span></span><br><span class="line">web_data = scraper.get(<span class="string">"https://wallhere.com/"</span>).content</span><br><span class="line">print(web_data)</span><br></pre></td></tr></table></figure><p>处理 post 请求的 CloudFlare</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># import cfscrape</span></span><br><span class="line"><span class="comment"># 实例化一个create_scraper对象</span></span><br><span class="line">scraper = cfscrape.create_scraper()</span><br><span class="line"><span class="comment"># 获取真实网页源代码</span></span><br><span class="line">web_data = scraper.post(<span class="string">"http://example.com"</span>).content</span><br><span class="line">print(web_data)</span><br></pre></td></tr></table></figure><p>使用<code>cloudflare-scrape</code>后整个请求过程如丝般顺滑。</p><h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>今天的水文到这里就结束了，很高兴又水了一篇文章。</p><p>之后抽个时间讲讲请求 2 中的加密参数如何生成，这样就可以再水一篇，敬请期待~</p><p>EOF</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;巧破-Cloudflare-5秒盾&quot;&gt;&lt;a href=&quot;#巧破-Cloudflare-5秒盾&quot; class=&quot;headerlink&quot; title=&quot;巧破 Cloudflare 5秒盾&quot;&gt;&lt;/a&gt;巧破 Cloudflare 5秒盾&lt;/h2&gt;&lt;p&gt;相信下面这个界面大家
+      
+    
+    </summary>
+    
+      <category term="反反爬" scheme="http://www.xianyucoder.cn/categories/%E5%8F%8D%E5%8F%8D%E7%88%AC/"/>
+    
+    
+      <category term="反反爬" scheme="http://www.xianyucoder.cn/tags/%E5%8F%8D%E5%8F%8D%E7%88%AC/"/>
+    
+      <category term="Cloudflare" scheme="http://www.xianyucoder.cn/tags/Cloudflare/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>JS逆向-58同城密码加密分析</title>
+    <link href="http://www.xianyucoder.cn/2019/09/16/%E6%AF%8F%E6%97%A5JS-58%E5%90%8C%E5%9F%8E%E5%AF%86%E7%A0%81%E5%8A%A0%E5%AF%86%E4%B8%8E%E6%8C%87%E7%BA%B9%E5%88%86%E6%9E%90-RSA/"/>
+    <id>http://www.xianyucoder.cn/2019/09/16/每日JS-58同城密码加密与指纹分析-RSA/</id>
+    <published>2019-09-16T10:39:35.000Z</published>
+    <updated>2019-09-30T01:54:22.421Z</updated>
+    
+    <content type="html"><![CDATA[<p>目标网站：</p><p>aHR0cHM6Ly9wYXNzcG9ydC41OC5jb20vbG9naW4vP3BhdGg9aHR0cHMlM0EvL2Z6LjU4LmNvbS8mUEdUSUQ9MGQxMDAwMDAtMDAxMy0wMjk0LTFjZWItYjU3NTBiZDIwNmU5JkNsaWNrSUQ9Mg==</p><h4 id="抓包分析与加密定位"><a href="#抓包分析与加密定位" class="headerlink" title="抓包分析与加密定位"></a>抓包分析与加密定位</h4><p>老规矩先抓包看看【图1-1】</p><p><img src="http://tc.xianyucoder.cn/blog20190925190359.png" alt="图1-1"></p><p>今天主要分析的是划线的三个参数，先一个一个来研究一下。</p><p>先看看密码的加密，按照之前的思路我们测试了<code>password</code>的相关搜索项，但是搜索出来的结果都不尽如人意。【图1-2】</p><p>同时这个请求也不是<code>XHR</code>请求，所以<code>xhr</code>断点也用不上了。</p><p><img src="http://tc.xianyucoder.cn/blog20190925190753.png" alt="图1-2"></p><p>搜索的结果中比较有相关性的是【图1-2】标注的部分，但是在文件的搜索项里搜索<code>password</code>是找不到加密位置的。</p><p>我简单总结了几种办法，虽然并不一定适用于其他网站的加密，算是提供一种新的思路。</p><p>第一、搜索相关的的提示语，就像在之前的我做的第一个 APP 逆向的项目中，我就是搜索相关的提示语找到了扣费逻辑的代码，这里也可以按照这样的思路。</p><p>在这个网站的加密里点击登陆，点击后按钮变为<code>登录中...</code>，搜索相关提示语再逐步打断点一直追下去是可以找到加密位置的，不过这是个下下策，耗时太长，很容易追丢了，为了这个不值当。（不推荐使用）</p><p>第二、参考开头的搜索关键字的方法，这里搜索的是<code>encrypt</code>，经常遇到加密的变量或方法是<code>encrypt(XX)</code>这样的形式。</p><p>第三、试试从网页中找找答案，之前做过一些简单的例子是将 js 的代码直接写到页面中自执行或者采用隐藏域传递值的方式，比如：像<code>PublicKey</code>这类比较有特色的值，如果能找到对我们的帮助是很大的。</p><p>按照上面总结的几种方法，我们再次搜索【图1-3】</p><p><img src="http://tc.xianyucoder.cn/blog20190925193129.png" alt="图1-3"></p><p>又搜索到这个熟悉的文件，这次我们进去搜索一次，这次找到了好多类似加密的地方，为了省事我把所有相关的值都打上了断点，再次登录。【图1-4】</p><p><img src="http://tc.xianyucoder.cn/blog20190925193706.png" alt="图1-4"></p><p>到这里就定位到加密的地方了。</p><p>继续追进去可以看到进入的是一个<code>VM</code>【图1-5】</p><p><img src="http://tc.xianyucoder.cn/blog20190925193948.png" alt="图1-5"></p><p>到这里就没有什么难度了，密码的加密就是 <code>RSA</code> + <code>eval</code>。</p><p>如果你很幸运先找到了<code>eval</code>加密的地方，但是不知道怎么解决，可以参考之前一篇关于<code>js</code>混淆的文章。</p><p>—-&gt; 点我看文章</p><p>或者直接打开浏览器的<code>开发者工具</code>切换到<code>console</code>选项卡，把相关的<code>eval</code>代码粘贴进去，将代码开头的<code>eval</code>替换为<code>console.log</code>，就可以得到原来的代码了。【图1-6】</p><p><img src="http://tc.xianyucoder.cn/blog20190925194535.png" alt="图1-6"></p><p>接下来看的是两个指纹相关的参数，这里就比较简单了，直接搜索<code>fingerprint</code>就可以找到相关加密文件，直接在里面打断点就可以了。【图1-7】</p><p><img src="http://tc.xianyucoder.cn/blog20190925194830.png" alt></p><p>这里的注意点是想要重新生成指纹，记得要刷新页面才可以。</p><h4 id="尾"><a href="#尾" class="headerlink" title="尾"></a>尾</h4><p>关于指纹的加密生成讲的比较简单，需要学习案例的朋友可以访问下面的网址。</p><p><a href="https://lengyue.me/" target="_blank" rel="noopener">https://lengyue.me/</a></p><p>也可以看看冷月打来之前的关于某个网站指纹加密的视频教程。</p><p>链接 : <a href="https://pan.baidu.com/s/1Y8pcacZbHF1DXW0znzmZKQ" target="_blank" rel="noopener">https://pan.baidu.com/s/1Y8pcacZbHF1DXW0znzmZKQ</a>  密码:vkmf</p><p>失效请留言。</p><p>EOF</p><p><img src="http://tc.xianyucoder.cn/blogWechatIMG1956.jpeg" alt></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;目标网站：&lt;/p&gt;
+&lt;p&gt;aHR0cHM6Ly9wYXNzcG9ydC41OC5jb20vbG9naW4vP3BhdGg9aHR0cHMlM0EvL2Z6LjU4LmNvbS8mUEdUSUQ9MGQxMDAwMDAtMDAxMy0wMjk0LTFjZWItYjU3NTBi
+      
+    
+    </summary>
+    
+      <category term="js逆向" scheme="http://www.xianyucoder.cn/categories/js%E9%80%86%E5%90%91/"/>
+    
+    
+      <category term="js逆向" scheme="http://www.xianyucoder.cn/tags/js%E9%80%86%E5%90%91/"/>
+    
+      <category term="密码加密" scheme="http://www.xianyucoder.cn/tags/%E5%AF%86%E7%A0%81%E5%8A%A0%E5%AF%86/"/>
+    
+      <category term="58同城" scheme="http://www.xianyucoder.cn/tags/58%E5%90%8C%E5%9F%8E/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>JS逆向-叮当快药 sign 加密分析</title>
+    <link href="http://www.xianyucoder.cn/2019/09/16/%E6%AF%8F%E6%97%A5JS-%E5%8F%AE%E5%BD%93%E5%BF%AB%E8%8D%AF-MD5/"/>
+    <id>http://www.xianyucoder.cn/2019/09/16/每日JS-叮当快药-MD5/</id>
+    <published>2019-09-16T10:39:35.000Z</published>
+    <updated>2019-09-30T01:54:15.571Z</updated>
+    
+    <content type="html"><![CDATA[<p>今日份的网站</p><p>aHR0cDovL3d3dy5kZGt5LmNvbS9jb21tb2RpdHkuaHRtbD9kZGt5Y2FjaGU9YTdiMTllODc5ZDJmMmYyNzlkMzU2ZjVhZmE2ZDVjZmY=</p><p>这个网站的加密比较简单，是那种新手做过一遍就对 JS 逆向充满信心的小练手。</p><h4 id="分析请求"><a href="#分析请求" class="headerlink" title="分析请求"></a>分析请求</h4><p>先分析请求，看看需要的参数有没什么搞头【图1-1】</p><p><img src="http://tc.xianyucoder.cn/blog20190923213839.png" alt="图1-1"></p><p>比较明显的是 sign 其他的参数好像没有什么特别的地方。</p><p>先定位 sign 的位置【图1-2】</p><p><img src="http://tc.xianyucoder.cn/blog20190923215026.png" alt="图1-2"></p><p>直接搜索参数就看到结果了，点击搜索的结果文件在文件内再搜索一次，可以看到有 3 个结果。【图1-3】</p><p><img src="http://tc.xianyucoder.cn/blog20190923215244.png" alt="图1-3"></p><p>到这里就看到 sign 的加密了。</p><p>接下来继续分析逻辑，这里的 sign 值是 <code>y</code>，<code>y</code>的值是通过<code>MD5(f)</code>获取的，而<code>f</code>又是<code>t.get(&quot;method&quot;) + p + r</code>的结果，经过一通分析，可以的得到下面的逻辑：</p><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> l = t.keys().sort(), p = <span class="string">""</span>;</span><br><span class="line">            l.length;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> g <span class="keyword">in</span> l) &#123;</span><br><span class="line">  <span class="keyword">var</span> m = l[g];</span><br><span class="line">  p += m + t.get(m)</span><br><span class="line">&#125;</span><br><span class="line">sign = md5(t.get(<span class="string">"method"</span>) + p + r)</span><br></pre></td></tr></table></figure><p>接下来只需要把我们不知道的值通过断点的方式调试出来，这个加密我们就完成解密了。</p><p>所以先给不知道的值打上断点，不清楚就打上断点不要怕麻烦，像【图1-4】这样。</p><p><img src="http://tc.xianyucoder.cn/blog20190923220259.png" alt="图1-4"></p><p>重新请求一下，就进入到我们打的断点里了，我们可以通过在 console 中打印变量的值来理解逻辑。【图1-5】</p><p><img src="http://tc.xianyucoder.cn/blog20190923220652.png" alt="图1-5"></p><p>明白需要的变量的值之后，我们就可以开始扣取 JS 或者用 Python 复写加密的逻辑了。</p><p>因为这次的加密比较简单，我们试试用 Python 复写一遍加密。（主要是 Python 的 md5 用起来蛮舒服的）</p><p>这里的逻辑比较简单没啥好分析的，我就直接上代码了。</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">from</span> hashlib <span class="keyword">import</span> md5</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_sign</span><span class="params">()</span>:</span></span><br><span class="line">    timeStamp = time.time()</span><br><span class="line">    localTime = time.localtime(timeStamp)</span><br><span class="line">    strTime = time.strftime(<span class="string">"%Y-%m-%d %H:%M:%S"</span>, localTime)</span><br><span class="line"></span><br><span class="line">    l = [<span class="string">"method"</span>, <span class="string">"orderTypeId"</span>, <span class="string">"orgcode"</span>, <span class="string">"pageNo"</span>, <span class="string">"pageSize"</span>, <span class="string">"plat"</span>, <span class="string">"platform"</span>, <span class="string">"shopId"</span>, <span class="string">"t"</span>, <span class="string">"v"</span>,</span><br><span class="line">         <span class="string">"versionName"</span>]</span><br><span class="line">    t = &#123;</span><br><span class="line">        <span class="string">'method'</span>: <span class="string">'ddsy.product.query.orgcode.product.list.b2c'</span>,</span><br><span class="line">        <span class="string">'orderTypeId'</span>: <span class="string">'0'</span>,</span><br><span class="line">        <span class="string">'orgcode'</span>: <span class="string">'010502,010503,010504,010505,010506,010507'</span>,</span><br><span class="line">        <span class="string">'pageNo'</span>: <span class="string">'1'</span>,</span><br><span class="line">        <span class="string">'pageSize'</span>: <span class="string">'100'</span>,</span><br><span class="line">        <span class="string">'plat'</span>: <span class="string">'H5'</span>,</span><br><span class="line">        <span class="string">'platform'</span>: <span class="string">'H5'</span>,</span><br><span class="line">        <span class="string">'shopId'</span>: <span class="string">'-1'</span>,</span><br><span class="line">        <span class="comment"># 't': '2019-9-23 22:4:16',</span></span><br><span class="line">        <span class="string">'t'</span>: <span class="string">'&#123;&#125;'</span>.format(strTime),</span><br><span class="line">        <span class="string">'v'</span>: <span class="string">'1.0'</span>,</span><br><span class="line">        <span class="string">'versionName'</span>: <span class="string">'3.2.0'</span></span><br><span class="line">    &#125;</span><br><span class="line">    p = <span class="string">''</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, <span class="number">11</span>):</span><br><span class="line">        m = l[i]</span><br><span class="line">        p += m + t.get(m)</span><br><span class="line">    f = t[<span class="string">'method'</span>] + p + <span class="string">'6C57AB91A1308E26B797F4CD382AC79D'</span></span><br><span class="line">    print(f)</span><br><span class="line">    sign = md5value(f).upper()</span><br><span class="line">    print(sign)</span><br><span class="line">    <span class="keyword">return</span> sign</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">md5value</span><span class="params">(s)</span>:</span></span><br><span class="line">    a = md5(s.encode()).hexdigest()</span><br><span class="line">    <span class="keyword">return</span> a</span><br></pre></td></tr></table></figure><p>到这里其实就没有什么难度了，直接带入 sign 请求就完事了。【图1-6】</p><p><img src="http://tc.xianyucoder.cn/blog20190923232755.png" alt="图1-6"></p><p>EOF</p><p><img src="http://tc.xianyucoder.cn/blogWechatIMG1956.jpeg" alt></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;今日份的网站&lt;/p&gt;
+&lt;p&gt;aHR0cDovL3d3dy5kZGt5LmNvbS9jb21tb2RpdHkuaHRtbD9kZGt5Y2FjaGU9YTdiMTllODc5ZDJmMmYyNzlkMzU2ZjVhZmE2ZDVjZmY=&lt;/p&gt;
+&lt;p&gt;这个网站的加密比较简单
+      
+    
+    </summary>
+    
+      <category term="js逆向" scheme="http://www.xianyucoder.cn/categories/js%E9%80%86%E5%90%91/"/>
+    
+    
+      <category term="js逆向" scheme="http://www.xianyucoder.cn/tags/js%E9%80%86%E5%90%91/"/>
+    
+      <category term="sign" scheme="http://www.xianyucoder.cn/tags/sign/"/>
+    
+      <category term="叮当快药" scheme="http://www.xianyucoder.cn/tags/%E5%8F%AE%E5%BD%93%E5%BF%AB%E8%8D%AF/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>JS逆向-新浪二手房与房天下加密分析</title>
+    <link href="http://www.xianyucoder.cn/2019/09/07/%E6%AF%8F%E6%97%A5JS-%E6%88%BF%E5%A4%A9%E4%B8%8B+%E6%96%B0%E6%B5%AA%E4%BA%8C%E6%89%8B%E6%88%BF-RSA/"/>
+    <id>http://www.xianyucoder.cn/2019/09/07/每日JS-房天下+新浪二手房-RSA/</id>
+    <published>2019-09-07T10:39:35.000Z</published>
+    <updated>2019-09-30T02:03:05.604Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="X天下密码加密分析"><a href="#X天下密码加密分析" class="headerlink" title="X天下密码加密分析"></a>X天下密码加密分析</h4><p>本次的受害者：</p><p>aHR0cHM6Ly9wYXNzcG9ydC5mYW5nLmNvbS8=</p><h5 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h5><p>通过输入错误密码抓包查看加密字段。【图1-1】</p><p><img src="http://tc.xianyucoder.cn/blog20190901141951.png" alt="图1-1"></p><p>直接通过检索<code>pwd:</code>定位加密位置【图1-2】。</p><p><img src="http://tc.xianyucoder.cn/blog20190901142223.png" alt="图1-2"></p><p>根据检索结果给对应的位置打上断点【图1-3】，并把划线的代码复制出来备用。</p><p><img src="http://tc.xianyucoder.cn/blog20190901142323.png" alt="图1-3"></p><p>重新发起请求，发现这些参数大概是下面这样的：</p><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// that.password.val() 输入的密码：11111111111</span></span><br><span class="line"><span class="comment">// encryptedString 是加密方法</span></span><br><span class="line">encryptedString(key_to_encode, that.password.val())</span><br></pre></td></tr></table></figure><p>根据上面分析就少了一个 <code>key_to_encode</code>，直接检索可以找到下面的结果【图1-4】：</p><p><img src="http://tc.xianyucoder.cn/blog20190901143025.png" alt="图1-4"></p><p>很明显的 RSA 加密，同时追进去就看到<code>encryptedString</code>的加密逻辑了，一起扣出来组装一下就得到加密逻辑了【图1-5】：</p><p><img src="http://tc.xianyucoder.cn/blog20190901143250.png" alt="图1-5"></p><h4 id="XX二手房密码加密分析"><a href="#XX二手房密码加密分析" class="headerlink" title="XX二手房密码加密分析"></a>XX二手房密码加密分析</h4><p>本次的受害者：</p><p>aHR0cDovL2ouZXNmLmxlanUuY29tL3VjZW50ZXIvbG9naW4=</p><h5 id="分析-1"><a href="#分析-1" class="headerlink" title="分析"></a>分析</h5><p>同样使用错误密码测试登陆【图2-1】</p><p><img src="http://tc.xianyucoder.cn/blog20190901152811.png" alt="图2-1"></p><p>这里<code>password</code>和<code>ckey</code>两个参数疑似加密，我们先检索一遍。</p><p><code>ckey</code>是在页面适用隐藏域传递的值【图2-2】</p><p><img src="http://tc.xianyucoder.cn/blog20190901152959.png" alt="图2-2"></p><p><code>password</code>的检索结果比较多，不过从文件名看第三个文件关联性比较强。【图2-3】</p><p><img src="http://tc.xianyucoder.cn/blog20190901153038.png" alt="图2-4"></p><p>我们打开第三个文件，并格式化搜索一下【图2-4】。</p><p><img src="http://tc.xianyucoder.cn/blog20190901153443.png" alt="图2-4"></p><p>有没有发现这个加密规律和上面 X天下 的加密非常像，而且还有RSA的加密标志，<code>publickey</code> 连下面的  <code>encryptedString</code> 加密方法都似曾相识【图2-5】？同时参考 X天下例子的【图1-3】</p><p><img src="http://tc.xianyucoder.cn/blog20190901153405.png" alt=" "></p><p>到这里就没有悬念了，直接用上一个例子的代码就可以实现加密，如果你想自己扣出来也是可以的，但是咸鱼感觉没有必要。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;X天下密码加密分析&quot;&gt;&lt;a href=&quot;#X天下密码加密分析&quot; class=&quot;headerlink&quot; title=&quot;X天下密码加密分析&quot;&gt;&lt;/a&gt;X天下密码加密分析&lt;/h4&gt;&lt;p&gt;本次的受害者：&lt;/p&gt;
+&lt;p&gt;aHR0cHM6Ly9wYXNzcG9ydC5mYW5
+      
+    
+    </summary>
+    
+      <category term="js逆向" scheme="http://www.xianyucoder.cn/categories/js%E9%80%86%E5%90%91/"/>
+    
+    
+      <category term="js逆向" scheme="http://www.xianyucoder.cn/tags/js%E9%80%86%E5%90%91/"/>
+    
+      <category term="密码加密" scheme="http://www.xianyucoder.cn/tags/%E5%AF%86%E7%A0%81%E5%8A%A0%E5%AF%86/"/>
+    
+      <category term="新浪二手房" scheme="http://www.xianyucoder.cn/tags/%E6%96%B0%E6%B5%AA%E4%BA%8C%E6%89%8B%E6%88%BF/"/>
+    
+      <category term="房天下" scheme="http://www.xianyucoder.cn/tags/%E6%88%BF%E5%A4%A9%E4%B8%8B/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>JS逆向-粉笔网密码加密</title>
+    <link href="http://www.xianyucoder.cn/2019/09/06/%E6%AF%8F%E6%97%A5JS-%E7%B2%89%E7%AC%94%E7%BD%91-RSA/"/>
+    <id>http://www.xianyucoder.cn/2019/09/06/每日JS-粉笔网-RSA/</id>
+    <published>2019-09-06T10:39:35.000Z</published>
+    <updated>2019-09-30T02:02:48.981Z</updated>
+    
+    <content type="html"><![CDATA[<p>aHR0cHM6Ly9mZW5iaS5jb20vcGFnZS9ob21l</p><h4 id="参数加密的逻辑分析"><a href="#参数加密的逻辑分析" class="headerlink" title="参数加密的逻辑分析"></a>参数加密的逻辑分析</h4><p>先抓包看看这次分析的参数【图1-1】</p><p><img src="http://tc.xianyucoder.cn/blog20190911203157.png" alt></p><p>这个参数的值看着像<code>Base64</code> ，我们不急着下结论，先搜索参数名看看。</p><p>有读者朋友纠结于搜索<code>password = or password：</code>这样需要搜索两遍是不是浪费时间了，不如直接搜索<code>password</code>来的方便快捷。</p><p>咸鱼之所以这样搜索是出于自己的习惯，定位加密位置的方法有很多大家有兴趣可以多尝试不要局限于搜索参数，例如：Js Hook，XHR 断点等等，怎么舒服怎么来就好。</p><p>经过搜索参数名<code>password:</code>在一个文件中定位到 3 处疑似加密的位置。【图1-2】</p><p><img src="http://tc.xianyucoder.cn/blog20190911205323.png" alt="图1-2"></p><p>这里有两种方法判断加密位置：</p><ul><li><p>给所有搜索到的结果打上断点，再次刷新看看进入到哪个断点当中</p></li><li><p>阅读上下文，分析大概的代码逻辑</p></li></ul><p>我们用第一种试试，打上断点重新发起请求，可以看到成功断上了。【图1-3】</p><p>这里的<code>this.password</code>是测试的密码，我们需要分析的就是这个<code>this.encrypt</code>的逻辑是什么样的。</p><p><img src="http://tc.xianyucoder.cn/blog20190911210506.png" alt="图1-3"></p><p>我们进入到<code>this.encrypt</code>这个函数中，发现有熟悉的 RSA 加密标志<code>this.publicKey</code>【图1-4】</p><p><img src="http://tc.xianyucoder.cn/blog20190911214408.png" alt="图1-4"></p><p>在文件中再搜索一次<code>publicKey</code>，能够看到文件中已经声明了这个变量【图1-5】</p><p><img src="http://tc.xianyucoder.cn/blog20190911211206.png" alt="图1-5"></p><p>继续进入到函数内部查看逻辑，发现进入的就是加密逻辑的文件了。【图1-6】</p><p><img src="http://tc.xianyucoder.cn/blog20190911213812.png" alt="图1-6"></p><p>这一整个流程分析下来，可以发现前面的传参部分，在<code>Python</code>调用中我们完全可以跳过，只要给【图1-6】中的Js加密逻辑传入<code>publicKey</code>与<code>明文密码</code>就可以实现这个网站的密码加密逻辑了，既然这么简单，我们就动手试试。</p><h4 id="参数加密的代码实现"><a href="#参数加密的代码实现" class="headerlink" title="参数加密的代码实现"></a>参数加密的代码实现</h4><p>接上面的分析，我们直接复制了【图1-6】截图所示的全部代码。</p><p>接着在编辑器中加上一些我们自己的逻辑类似这样【图2-1】。</p><p><img src="http://tc.xianyucoder.cn/blog20190911212452.png" alt="图2-1"></p><p>注：前939行都是复制的 Js 文件代码</p><p>试着运行一下，看看报错。</p><p>运行的报错提示，<code>window is undefine</code>【图2-2】，遇到这种情况我们可以试试在代码上加上<code>window</code>的声明。</p><p><img src="http://tc.xianyucoder.cn/blog20190911212622.png" alt="图2-2"></p><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> <span class="built_in">window</span> = &#123;&#125;</span><br></pre></td></tr></table></figure><p>再次运行看看，这里再次提示<code>{} is not a function</code>，【图2-3】到这里新手朋友有点慌了，不知道怎么处理。</p><p><img src="http://tc.xianyucoder.cn/blog20190911213102.png" alt="图2-3"></p><p> 比较方便的处理方式是直接在<code>(function(av) {</code>前加上<code>!</code>，就是这么简单。</p><p>具体用法，这里套用一下百度：</p><blockquote><p>使用括号包裹定义函数体，解析器将会以函数表达式的方式去调用定义函数。也就是说，任何能将函数变成一个函数表达式的作法，都可以使解析器正确的调用定义函数。而 ! 就是其中一个，而 + - || 都有这样的功能。</p></blockquote><p>继续调试，这次提示变成了<code>navigator is not defined</code>【图2-4】</p><p><img src="http://tc.xianyucoder.cn/blog20190911213651.png" alt="图2-4"></p><p>有了上次的经验，我们在代码里加入声明<code>navigator</code>。</p><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> navigator = &#123;&#125;</span><br></pre></td></tr></table></figure><p>再次运行就得到加密后的结果咯~【图2-5】</p><p><img src="http://tc.xianyucoder.cn/blog20190911214134.png" alt="图2-5"></p><h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>这次的加密是比较简单的 RSA 加密，使用文件中包含的公钥对密码的值进行加密，且Js代码没有进过混淆，适合新手练手增加手感。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;aHR0cHM6Ly9mZW5iaS5jb20vcGFnZS9ob21l&lt;/p&gt;
+&lt;h4 id=&quot;参数加密的逻辑分析&quot;&gt;&lt;a href=&quot;#参数加密的逻辑分析&quot; class=&quot;headerlink&quot; title=&quot;参数加密的逻辑分析&quot;&gt;&lt;/a&gt;参数加密的逻辑分析&lt;/h4&gt;&lt;
+      
+    
+    </summary>
+    
+      <category term="js逆向" scheme="http://www.xianyucoder.cn/categories/js%E9%80%86%E5%90%91/"/>
+    
+    
+      <category term="js逆向" scheme="http://www.xianyucoder.cn/tags/js%E9%80%86%E5%90%91/"/>
+    
+      <category term="RSA" scheme="http://www.xianyucoder.cn/tags/RSA/"/>
+    
+      <category term="密码加密" scheme="http://www.xianyucoder.cn/tags/%E5%AF%86%E7%A0%81%E5%8A%A0%E5%AF%86/"/>
+    
+      <category term="粉笔网" scheme="http://www.xianyucoder.cn/tags/%E7%B2%89%E7%AC%94%E7%BD%91/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>JS逆向-极贷助手密码加密</title>
+    <link href="http://www.xianyucoder.cn/2019/09/05/%E6%AF%8F%E6%97%A5JS-%E6%9E%81%E8%B4%B7%E5%8A%A9%E6%89%8B-aes/"/>
+    <id>http://www.xianyucoder.cn/2019/09/05/每日JS-极贷助手-aes/</id>
+    <published>2019-09-05T10:39:35.000Z</published>
+    <updated>2019-09-30T02:02:43.271Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="极X助手"><a href="#极X助手" class="headerlink" title="极X助手"></a>极X助手</h4><p>aHR0cHM6Ly93d3cuamlkYWlob21lLmNvbS9vZmZpY2VyLyMvbG9naW4=</p><p>先抓包看看这次要分析的参数。【图1-1】</p><p><img src="http://tc.xianyucoder.cn/blog20190904212818.png" alt="图1-1"></p><p>看到【图1-1】里是没有加密参数名的。所以为了快速定位到加密的位置，我们试试 XHR 断点。</p><p>切换到 控制台 -  Source 选项卡 ，如【图1-2】位置填入下面的内容。</p><p><img src="http://tc.xianyucoder.cn/blog20190904214659.png" alt="图1-2"></p><p>接着我们再发起一次请求，可以看到断点打上了。【图1-3】</p><p><img src="http://tc.xianyucoder.cn/blog20190904215011.png" alt="图1-3"></p><p>我们点击左下角的<code>{}</code>格式化 JS 看看断点断上的位置有没有我们需要的内容。【图1-4】</p><p><img src="http://tc.xianyucoder.cn/blog20190904215207.png" alt="图1-4"></p><p>我们可以看到这里函数 <code>y</code>传入一个参数<code>t</code>，<code>t</code>中包含我们需要的提交数据【图1-5】。但是在这个断点位置并不能找到参数加密的地方，所以我们需要点击右侧的堆栈往上看看。</p><p><img src="http://tc.xianyucoder.cn/blog20190904215613.png" alt="图1-5"></p><p>我们通过查看堆栈信息，找到了这里【图1-6】。发现在这里出现了 <code>params</code>相关的的操作，所以这里的可能包含的就是我们需要的加密位置，我们根据提示进去看看这里的加密逻辑是什么样的。</p><p><img src="http://tc.xianyucoder.cn/blog20190904220154.png" alt="图1-6"></p><p>可以看到这里把经过处理的密码和用户名传入后，再次做了另一次加密处理后得到了变量<code>i</code>。</p><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> r = t.randomKey(<span class="number">16</span>), i = t.aesEncrypt(<span class="built_in">JSON</span>.stringify(e), r);</span><br></pre></td></tr></table></figure><p><img src="http://tc.xianyucoder.cn/blog20190904220330.png" alt="图1-7"></p><p>我们分别把变量<code>i</code>需要的参数分别跟进去看看生成规则。【图1-8】是变量<code>r</code>的生成规则是一串随机的字符串。</p><p><img src="http://tc.xianyucoder.cn/blog20190904220756.png" alt="图1-8"></p><p>接下来是加密变量<code>i</code>的加密方法【图1-9】。</p><p><img src="http://tc.xianyucoder.cn/blog20190904220853.png" alt="图1-9"></p><p>接下来只需要把这些参数的方法复制到编辑器中进一步的补全就可以了。</p><p>Tip: 这里的参数<code>e</code>是我们传入的用户名和密码，在【图1-6】的 54-55 行中传入，且密码经过了一层MD5的加密。</p><p>这里很多朋友纠结于类似 <code>i.enc.Utf8.parse</code> 这里的<code>i</code>如何补全，其实这里的<code>i</code> 就是我们常用的<code>CryptoJS</code>，只要引入后，直接替换就可以了，不用扣取整个JS。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;极X助手&quot;&gt;&lt;a href=&quot;#极X助手&quot; class=&quot;headerlink&quot; title=&quot;极X助手&quot;&gt;&lt;/a&gt;极X助手&lt;/h4&gt;&lt;p&gt;aHR0cHM6Ly93d3cuamlkYWlob21lLmNvbS9vZmZpY2VyLyMvbG9naW4=&lt;/p&gt;
+&lt;
+      
+    
+    </summary>
+    
+      <category term="js逆向" scheme="http://www.xianyucoder.cn/categories/js%E9%80%86%E5%90%91/"/>
+    
+    
+      <category term="js逆向" scheme="http://www.xianyucoder.cn/tags/js%E9%80%86%E5%90%91/"/>
+    
+      <category term="密码加密" scheme="http://www.xianyucoder.cn/tags/%E5%AF%86%E7%A0%81%E5%8A%A0%E5%AF%86/"/>
+    
+      <category term="极贷助手" scheme="http://www.xianyucoder.cn/tags/%E6%9E%81%E8%B4%B7%E5%8A%A9%E6%89%8B/"/>
+    
+      <category term="AES" scheme="http://www.xianyucoder.cn/tags/AES/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>JS逆向-空中网密码加密</title>
+    <link href="http://www.xianyucoder.cn/2019/09/04/%E6%AF%8F%E6%97%A5JS-%E7%A9%BA%E4%B8%AD%E7%BD%91/"/>
+    <id>http://www.xianyucoder.cn/2019/09/04/每日JS-空中网/</id>
+    <published>2019-09-04T10:39:35.000Z</published>
+    <updated>2019-09-30T02:02:39.628Z</updated>
+    
+    <content type="html"><![CDATA[<p>aHR0cHM6Ly9wYXNzcG9ydC5rb25nemhvbmcuY29tL2xvZ2lu</p><h4 id="参数位置分析"><a href="#参数位置分析" class="headerlink" title="参数位置分析"></a>参数位置分析</h4><p>先来看看加密的请求【图1-1】，之前在一篇加密总结的文章中提到过关于这个网站的加密，感兴趣的朋友可以回顾一下。</p><p><img src="http://tc.xianyucoder.cn/blog20190914151352.png" alt="图1-1"></p><p>之前介绍过很多关于加密参数如何搜索的文章，就不啰嗦咯。</p><blockquote><p>除了搜索加密参数之外，同样还要注意<code>id</code> 和 <code>calssname</code>等标志性的属性，能够帮助我们进一步定位加密位置。</p></blockquote><p>通过密码框的<code>id = password_txt</code> 快速定位至网站的加密入口。【图1-2】</p><p><img src="http://tc.xianyucoder.cn/blog20190914153646.png" alt="图1-2"></p><p>通过逐步调试进入虚拟引擎中加密码的位置打上断点。【图1-3】</p><p><img src="http://tc.xianyucoder.cn/blog20190914154057.png" alt="图1-4"></p><p>上图中的<code>encrypt</code>这个方法才是我们需要的加密方法，所以继续最近去看看逻辑。</p><p>这里通过悬停在对应方法上没有提示加密的位置的，小伙伴表示无法进入下一步，我们可以选中方法后点击提示即可跳转【图1-4】</p><p><img src="http://tc.xianyucoder.cn/blog20190914154308.png" alt="图1-4"></p><p>顺利跳转进加密方法的位置后，就可以直接抠出来补全了。【图1-5】</p><p><img src="http://tc.xianyucoder.cn/blog20190914154752.png" alt="图1-5"></p><p>tip: 这里的第二个参数是在【图1-1】中上一条请求中返回的哦</p><h4 id="补全加密JS"><a href="#补全加密JS" class="headerlink" title="补全加密JS"></a>补全加密JS</h4><p>先扣取【图1-5】中框选的方法到编辑器中，根据断点把需要的参数传入【图2-1】</p><p><img src="http://tc.xianyucoder.cn/blog20190914165416.png" alt="图2-1"></p><p>这样在编辑器中的结果就像现在这样了【图2-2】</p><p><img src="http://tc.xianyucoder.cn/blog20190914165549.png" alt="图2-2"></p><p>运行之后就是得到的加密参数喽。</p><h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>这个网站的加密比较适合有一点点的新手作为练手项目，涉及多次的浏览器调试可以很好的帮助新手进一步的了解浏览器的调试技巧。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;aHR0cHM6Ly9wYXNzcG9ydC5rb25nemhvbmcuY29tL2xvZ2lu&lt;/p&gt;
+&lt;h4 id=&quot;参数位置分析&quot;&gt;&lt;a href=&quot;#参数位置分析&quot; class=&quot;headerlink&quot; title=&quot;参数位置分析&quot;&gt;&lt;/a&gt;参数位置分析&lt;/h4&gt;&lt;
+      
+    
+    </summary>
+    
+      <category term="js逆向" scheme="http://www.xianyucoder.cn/categories/js%E9%80%86%E5%90%91/"/>
+    
+    
+      <category term="js逆向" scheme="http://www.xianyucoder.cn/tags/js%E9%80%86%E5%90%91/"/>
+    
+      <category term="密码加密" scheme="http://www.xianyucoder.cn/tags/%E5%AF%86%E7%A0%81%E5%8A%A0%E5%AF%86/"/>
+    
+      <category term="空中网" scheme="http://www.xianyucoder.cn/tags/%E7%A9%BA%E4%B8%AD%E7%BD%91/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>JS逆向-咪咕视频密码加密与指纹分析</title>
+    <link href="http://www.xianyucoder.cn/2019/09/03/%E6%AF%8F%E6%97%A5JS-%E5%92%AA%E5%92%95%E8%A7%86%E9%A2%91-RSA/"/>
+    <id>http://www.xianyucoder.cn/2019/09/03/每日JS-咪咕视频-RSA/</id>
+    <published>2019-09-03T10:39:35.000Z</published>
+    <updated>2019-09-30T02:02:34.808Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h4><p>先来看看今天的受害者：</p><p>aHR0cDovL3d3dy5taWd1dmlkZW8uY29tL21ncy93ZWJzaXRlL3ByZC9pbmRleC5odG1s</p><h4 id="一、分析密码加密"><a href="#一、分析密码加密" class="headerlink" title="一、分析密码加密"></a>一、分析密码加密</h4><p>这次分析的是他登陆的三个参数，先分析登陆逻辑，抓个包看看。</p><p>可以看到这里用的是弹出的窗口登陆【图1-1】，为了避免主页其他元素的干扰抓包，我们可以通过右键 查看框架源代码 的方式打开登陆框分析抓包【图1-2】。</p><p><img src="http://tc.xianyucoder.cn/blog20190831193910.png" alt="图1-1"></p><p><img src="http://tc.xianyucoder.cn/blog20190831194312.png" alt="图1-2"></p><p>把打开的源代码页面地址栏中的 <code>view-source:</code>删除即可打开以下页面【图1-3】：</p><p><img src="http://tc.xianyucoder.cn/blog20190831195150.png" alt="图1-3"></p><p>接下来用错误的账号密码登陆一波，可以看到如下的包【图1-4】，不过通过上面的 publickey 隐隐猜到这里的加密参数可能和 RSA 有关，先来找找密码加密的位置：</p><p><img src="http://tc.xianyucoder.cn/blog20190831201401.png" alt="图1-4"></p><p>照常搜索一下 <code>enpassword</code> ，预料之中是没有搜索到有用的结果【图1-5】，不过定位元素可以通过 name 定位 也可以通过 class 定位，所以同样试试 <code>J_RsaPsd</code>，果然找到像样的文件了【图1-6】。</p><p><img src="http://tc.xianyucoder.cn/blog20190831202616.png" alt="图1-5"></p><p><img src="http://tc.xianyucoder.cn/blog20190831202207.png" alt="图1-6"></p><p>在打开的文件里检索<code>J_RsaPsd</code>，可以看到有3个相关的结果(熟悉加密的已经可以看出这里是 RSA 加密)，我们通过把所有相关的结果都打上断点【图1-6】，并通过重新发起一次登录请求，来判断哪个<code>J_RsaPsd</code>是密码的加密逻辑。</p><p><img src="http://tc.xianyucoder.cn/blog20190831203150.png" alt="图1-7"></p><p>通过重新发起请求，断点断在 333 行【图1-8】。</p><p><img src="http://tc.xianyucoder.cn/blog20190831204014.png" alt="图1-8"></p><p>我们先复制整段代码：</p><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">c.setPublic(a.result.modulus, a.result.publicExponent);</span><br><span class="line"><span class="keyword">var</span> d = c.encrypt(b.val());</span><br><span class="line">b.siblings(<span class="string">".J_RsaPsd"</span>).val(d)</span><br></pre></td></tr></table></figure><p>我们通过控制台看看这些参数分别是什么【图1-9】。</p><p><img src="http://tc.xianyucoder.cn/blog20190831204159.png" alt="图1-9"></p><p>通过前文抓包和JS页面的代码，我们判断密码的加密是RSA加密，所以我们就需要找齐RSA加密的需要的几个要素，比如他的公钥 ，因为RSA是非对称加密本地使用公钥加密，服务器上使用私钥解密。再看看【图1-8】上的几个参数不知道你们有没想起开头【图1-4】我提及的那条抓包。我们切换到 控制台-Network 看看【图1-10】。</p><p><img src="http://tc.xianyucoder.cn/blog20190831210520.png" alt="图1-10"></p><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="attr">"status"</span>:<span class="number">2000</span>,<span class="attr">"message"</span>:<span class="string">""</span>,<span class="attr">"header"</span>:&#123;&#125;,<span class="attr">"result"</span>:&#123;<span class="attr">"publicExponent"</span>:<span class="string">"010001"</span>,<span class="attr">"modulus"</span>:<span class="string">"00833c4af965ff7a8409f8b5d5a83d87f2f19d7c1eb40dc59a98d2346cbb145046b2c6facc25b5cc363443f0f7ebd9524b7c1e1917bf7d849212339f6c1d3711b115ecb20f0c89fc2182a985ea28cbb4adf6a321ff7e715ba9b8d7261d1c140485df3b705247a70c28c9068caabbedbf9510dada6d13d99e57642b853a73406817"</span>&#125;&#125;</span><br></pre></td></tr></table></figure><p>是不是和我们在【图1-9】中打印出来的数值完全相同</p><p>tip : 这里的<code>b.val()</code>是我输入的错误密码。</p><p>这里我们找齐了加密需要的参数，其实我觉得没必要扣JS，但是我知道。。</p><p>不要我觉得，你要你觉得</p><p>所以偷懒用之前扣的代码测试一下：</p><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">-----------此处省略<span class="number">500</span>行-----------</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">bodyRSA</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//setMaxDigits(130);</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> key = RSAUtils.getKeyPair(<span class="string">"010001"</span>,<span class="string">""</span>,<span class="string">"00833c4af965ff7a8409f8b5d5a83d87f2f19d7c1eb40dc59a98d2346cbb145046b2c6facc25b5cc363443f0f7ebd9524b7c1e1917bf7d849212339f6c1d3711b115ecb20f0c89fc2182a985ea28cbb4adf6a321ff7e715ba9b8d7261d1c140485df3b705247a70c28c9068caabbedbf9510dada6d13d99e57642b853a73406817"</span>);</span><br><span class="line">    <span class="keyword">return</span> key</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">get_encrypt</span>(<span class="params">password</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">    key = bodyRSA();</span><br><span class="line">    <span class="keyword">var</span> a = RSAUtils.encryptedString(key,password)</span><br><span class="line"></span><br><span class="line">    <span class="comment">//var b = RSAUtils.encryptedString(key,username)</span></span><br><span class="line">    <span class="built_in">console</span>.log(a)</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'----------------------------------'</span>)</span><br><span class="line">    <span class="comment">//console.log(b)</span></span><br><span class="line">    <span class="keyword">return</span> a</span><br><span class="line">&#125;</span><br><span class="line">get_encrypt(<span class="string">'11111111111'</span>)</span><br></pre></td></tr></table></figure><h4 id="二、分析FingerPrintDetail与fingerPrint"><a href="#二、分析FingerPrintDetail与fingerPrint" class="headerlink" title="二、分析FingerPrintDetail与fingerPrint"></a>二、分析FingerPrintDetail与fingerPrint</h4><p>根据第一部分的【图1-5】和图【1-6】可以很快定位加密的位置，这里就不说了【图2-1】。</p><p><img src="http://tc.xianyucoder.cn/blog20190831231000.png" alt="图2-1"></p><p>追进去分析一下<code>rsaFingerprint</code>的逻辑，可以看到其实和密码加密用的是一样的RSA加密【图2-2】只是部分参数不同。</p><p><img src="http://tc.xianyucoder.cn/blog20190831231157.png" alt="图2-2"></p><p>这里比较疑惑的是<code>$.fingerprint.result</code>和<code>$.fingerprint.details</code>是怎么来的。</p><p>通过检索<code>$.fingerprint</code>根据查找的结果找到他的位置【图2-3】</p><p><img src="http://tc.xianyucoder.cn/blog20190831231614.png" alt="图2-3"></p><p>继续向上查找，最终找到这里，发现是根据浏览器的请求头等信息生成的一串哈希值【图2-4】。</p><p><img src="http://tc.xianyucoder.cn/blog20190831232044.png" alt="图2-4"></p><p>这个值如果不修改请求头信息，那么这个值就是固定不变的，如果修改请求头信息，那么就需要重新生成这段hash，这就是这个的浏览器指纹信息。</p><p>因为我们这里只是抱着学习的态度学习，所以就不瞎搞，不过这个整段的代码也比较简单没事可以扣一扣。</p><p>tip: 如果想要分析这个指纹的算法，记得要刷新一下页面才可以进入断点。</p><h4 id="三、总结"><a href="#三、总结" class="headerlink" title="三、总结"></a>三、总结</h4><p>结合之前的建议，文章的配图都标注了序号，希望能够起到一定梳理思路的作用。</p><p>这个网站的加密总体还是只用RSA的加密算法就可以搞定了，整体加密算法比较简单有经验的老哥直接通过加密库就可以实现，如果想练练手的也可以抠出来试试，只要头发多，肝就完事了。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;正文&quot;&gt;&lt;a href=&quot;#正文&quot; class=&quot;headerlink&quot; title=&quot;正文&quot;&gt;&lt;/a&gt;正文&lt;/h4&gt;&lt;p&gt;先来看看今天的受害者：&lt;/p&gt;
+&lt;p&gt;aHR0cDovL3d3dy5taWd1dmlkZW8uY29tL21ncy93ZWJzaXRlL3B
+      
+    
+    </summary>
+    
+      <category term="js逆向" scheme="http://www.xianyucoder.cn/categories/js%E9%80%86%E5%90%91/"/>
+    
+    
+      <category term="js逆向" scheme="http://www.xianyucoder.cn/tags/js%E9%80%86%E5%90%91/"/>
+    
+      <category term="密码加密" scheme="http://www.xianyucoder.cn/tags/%E5%AF%86%E7%A0%81%E5%8A%A0%E5%AF%86/"/>
+    
+      <category term="咪咕视频" scheme="http://www.xianyucoder.cn/tags/%E5%92%AA%E5%92%95%E8%A7%86%E9%A2%91/"/>
+    
+      <category term="指纹加密" scheme="http://www.xianyucoder.cn/tags/%E6%8C%87%E7%BA%B9%E5%8A%A0%E5%AF%86/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>JS逆向-楚楚街密码加密</title>
+    <link href="http://www.xianyucoder.cn/2019/09/02/%E6%AF%8F%E6%97%A5JS-xx%E8%A1%97%E7%99%BB%E9%99%86%E5%AF%86%E7%A0%81%E5%8A%A0%E5%AF%86-md5+rsa/"/>
+    <id>http://www.xianyucoder.cn/2019/09/02/每日JS-xx街登陆密码加密-md5+rsa/</id>
+    <published>2019-09-02T10:39:35.000Z</published>
+    <updated>2019-09-30T02:02:31.440Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="XX-街登陆密码加密"><a href="#XX-街登陆密码加密" class="headerlink" title="XX 街登陆密码加密"></a>XX 街登陆密码加密</h4><p>aHR0cDovL3NlbGxlci5jaHVjaHVqaWUuY29tL3NxZS5waHA/cz0vVXNlci9pbmRleA==</p><p>这个加密太简单了，五秒定位真的不是吹，所以直接来。</p><p>输入错误的账号密码，发起登陆请求，可以看到登录包里有个<code>password</code>的加密字段。所以我们依次搜索<code>password:</code>+<code>password :</code>+<code>password=</code>+<code>password =</code></p><p>很快得到下面的结果【图1-1】，直接用python实现就完事了~</p><p><img src="http://tc.xianyucoder.cn/blog20190903214813.png" alt="图1-1"></p><h4 id="X博登陆密码与相关加密参数解析"><a href="#X博登陆密码与相关加密参数解析" class="headerlink" title="X博登陆密码与相关加密参数解析"></a>X博登陆密码与相关加密参数解析</h4><p>aHR0cHM6Ly93d3cud2VpYm8uY29tL2xvZ2luLnBocA==</p><p>用 Chrome 浏览器抓包相信大家都会，前面抓包我们跳过，直接到加密参数分析的地方。</p><p>Tip: 这次的加密不是异步的  不要在 XHR 选项卡傻乎乎的等了。</p><p>微博登陆框是嵌在页面中的加上微博的登陆页面图片以及要加载的东西很多，所以我们需要注意的包主要有两个：</p><ul><li>登陆前返回相关加密秘钥的包【图2-1】</li><li>发起登陆请求的包【图2-2】</li></ul><p><img src="http://tc.xianyucoder.cn/blog20190903220641.png" alt="图2-1"></p><p><img src="http://tc.xianyucoder.cn/blog20190903220923.png" alt="图2-2"></p><p>到这里就很清晰了，我们搞定 su 和 sp 就完事了。</p><p>先来看看 su 这个其实不要搜索，看着是不是很像我们开头的编码结果，由 a-zA-Z[0-9]+/= 这几种字符组成的编码 熟悉的就只有 Base64 , 我们直接找一个在线工具验证一下我们的猜想。【图2-3】</p><p><img src="http://tc.xianyucoder.cn/blog20190903221245.png" alt="图2-3"></p><p>当然我们也可以试试搜索 参数名 su 【图2-4】，很明显搜索结果也验证了我们的猜想。</p><p><img src="http://tc.xianyucoder.cn/blog20190903221529.png" alt="图2-4"></p><p>接下来看看 sp</p><p>在我们上面搜索 su 的地方我们找到了密码加密的地方，已经用红框框出主要的逻辑【图2-5】，接下来我们打上断点找找缺失的参数都是什么。</p><p><img src="http://tc.xianyucoder.cn/blog20190903222315.png" alt="图2-5"></p><p>这里的参数都是比较简单的首先是 me.servertime 、me.rsaPubkey 和  me.nonce【图2-6】 这三个参数在上一个请求包都有同名的参数返回可以参考【图2-1】。</p><p><img src="http://tc.xianyucoder.cn/blog20190903222841.png" alt="图2-6"></p><p>我们现在已经找齐了全部的参数，接下来需要切换到 webstorm 中调试出我们整体的加密算法。</p><p>直接粘贴 789 - 791 行的代码到编辑框中补全成下面这样。</p><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">get_sp</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> f = <span class="keyword">new</span> sinaSSOEncoder.RSAKey;</span><br><span class="line">    f.setPublic(me.rsaPubkey, <span class="string">"10001"</span>);</span><br><span class="line">    b = f.encrypt([me.servertime, me.nonce].join(<span class="string">"\t"</span>) + <span class="string">"\n"</span> + b)</span><br><span class="line">    <span class="keyword">return</span> b</span><br><span class="line">&#125;</span><br><span class="line">get_sp()</span><br></pre></td></tr></table></figure><p>虽然知道运行肯定报错，但是我们需要的就是报错的信息。【图2-7】</p><p><img src="http://tc.xianyucoder.cn/blog20190903223631.png" alt="2-7"></p><p>提示  <code>sinaSSOEncoder is not defined</code> ，我们回到浏览器调试窗口找 <code>sinaSSOEncoder</code>在哪儿定义的。可以直接在页面中搜索 <code>var sinaSSOEncoder</code></p><p>结果就只有一个【图2-8】</p><p><img src="http://tc.xianyucoder.cn/blog20190903223944.png" alt="图2-8"></p><p>接下来复制 <code>sinaSSOEncoder</code>的全部内容到编辑器中，第1048-1981行。继续运行并提示<code>navigator is not defined</code>，我们定义它为<code>{}</code>。接下来会提示 <code>me</code> 未定义【图2-9】。</p><p><img src="http://tc.xianyucoder.cn/blog20190903224444.png" alt="图2-9"></p><p>但是我们调试过都知道这个 me.rsaPubkey 是在【图2-1】中返回的，所以我们把它替换掉。同理替换到我们已知的的其他参数。现在就只剩下 <code>b</code> 参数是未知的了。</p><p>我们向下运行，可以看到<code>b</code>参数就是我们输入的密码【图2-10】，我们继续替换再次运行，发现没有东西输出，也没有报错，我们在函数中加上一句 打印语句，看看返回的 <code>b</code>是什么结果，可以看到已经得到了加密后的结果了。【图2-11】</p><p><img src="http://tc.xianyucoder.cn/blog20190903225123.png" alt="图2-10"></p><p><img src="http://tc.xianyucoder.cn/blog20190903225307.png" alt="图2-11"></p><h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>这次主要把如何扣一个简单的加密算法做了详解，这里包含了基础的JS知识，或许看不明白为什么是复制这些代码而不是其他的，这里我建议可以适当补充一些JS基础语法的知识。等到下次有类似的加密算法时，你可以自己做出判断复制扣取哪些，这样学的更快。</p><p>JS逆向学习的文章每一篇都是很简单的案例，希望看完可以自己动手扣一遍。</p><p>每天一题，头发掉的更快。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;XX-街登陆密码加密&quot;&gt;&lt;a href=&quot;#XX-街登陆密码加密&quot; class=&quot;headerlink&quot; title=&quot;XX 街登陆密码加密&quot;&gt;&lt;/a&gt;XX 街登陆密码加密&lt;/h4&gt;&lt;p&gt;aHR0cDovL3NlbGxlci5jaHVjaHVqaWUuY29tL3
+      
+    
+    </summary>
+    
+      <category term="js逆向" scheme="http://www.xianyucoder.cn/categories/js%E9%80%86%E5%90%91/"/>
+    
+    
+      <category term="js逆向" scheme="http://www.xianyucoder.cn/tags/js%E9%80%86%E5%90%91/"/>
+    
+      <category term="密码加密" scheme="http://www.xianyucoder.cn/tags/%E5%AF%86%E7%A0%81%E5%8A%A0%E5%AF%86/"/>
+    
+  </entry>
   
   <entry>
     <title>Apk打包流程梳理和加载流程学习</title>
@@ -67,9 +367,9 @@
       <category term="App逆向" scheme="http://www.xianyucoder.cn/categories/App%E9%80%86%E5%90%91/"/>
     
     
-      <category term="app逆向" scheme="http://www.xianyucoder.cn/tags/app%E9%80%86%E5%90%91/"/>
-    
       <category term="基础" scheme="http://www.xianyucoder.cn/tags/%E5%9F%BA%E7%A1%80/"/>
+    
+      <category term="app逆向" scheme="http://www.xianyucoder.cn/tags/app%E9%80%86%E5%90%91/"/>
     
       <category term="编码" scheme="http://www.xianyucoder.cn/tags/%E7%BC%96%E7%A0%81/"/>
     
@@ -316,302 +616,6 @@
     
     
       <category term="数据收集" scheme="http://www.xianyucoder.cn/tags/%E6%95%B0%E6%8D%AE%E6%94%B6%E9%9B%86/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>聪明工作-邮件礼仪</title>
-    <link href="http://www.xianyucoder.cn/2019/08/26/%E8%81%AA%E6%98%8E%E5%B7%A5%E4%BD%9C-%E9%82%AE%E4%BB%B6%E7%A4%BC%E4%BB%AA/"/>
-    <id>http://www.xianyucoder.cn/2019/08/26/聪明工作-邮件礼仪/</id>
-    <published>2019-08-26T10:39:35.000Z</published>
-    <updated>2019-08-26T10:50:52.319Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="邮件礼仪"><a href="#邮件礼仪" class="headerlink" title="邮件礼仪"></a>邮件礼仪</h4><ul><li>邮箱的名称<ul><li>邮箱的注册名，如「<a href="mailto:wuyanzu@163.com" target="_blank" rel="noopener">wuyanzu@163.com</a>」<ul><li>不太正式的邮箱注册名<ul><li>纯数字，qq邮箱</li><li>包含其他数字，如生日：<a href="mailto:wyz19931023@163.com" target="_blank" rel="noopener">wyz19931023@163.com</a></li></ul></li><li>较为稳妥的邮箱注册名<ul><li>姓名拼音</li><li>拼音（姓）+英文名，<a href="mailto:Jack.Wu@163.com" target="_blank" rel="noopener">Jack.Wu@163.com</a></li></ul></li></ul></li><li>对外展示的名字<ul><li>邮箱收件时上方发件人的名字<ul><li>拒绝使用QQ有一大原因是因为之前QQ邮箱之前默认使用QQ昵称当做发件人名称，有些过于非主流了</li><li>推荐使用<ul><li>中文姓名</li><li>英文名+姓</li><li>如果经常频繁沟通，建议使用，公司名+职位+姓名</li></ul></li></ul></li></ul></li></ul></li><li>收件人、CC和BCC的区别<ul><li>收件人：直接相关的人，大多数时候，你希望他们做出回应（听众）</li><li>CC（抄送）：让对方了解下，不需要对方回应（旁听）</li><li>BCC（密送）：被填入BCC一栏的收件人，将对其他收件人隐藏。（类似网易邮箱的群发单显）</li><li>谁要抄送，谁不需要抄送，请先搞清楚公司架构及事务的相关人员（问你的直接上级）</li></ul></li><li>如何写好邮件？<ul><li>邮件正文<ul><li>忌长篇大论，提倡ABC法则<ul><li>A - Action（行动）：一句话总结希望收件人做的事情</li><li>B - Background（背景）：解释事件背景和细节</li><li>C - Close（结束语）：一两句结束邮件的礼貌用语<ul><li>可以放上一些相关联系人，比如有哪件事情需要了解详情的时候应该联系谁+联系方式</li></ul></li><li>间接等于 5W 法则<ul><li>A = who，when，what，where</li><li>B = why</li></ul></li></ul></li></ul></li><li>邮件标题<ul><li>内容：精简 Action 的内容</li><li>格式：在标题前面加上邮件类型 -  通知，请求</li></ul></li><li>写邮件的顺序<ul><li>附件：很容易在最后被忘记</li><li>正文：方便在正文中提及附件</li><li>标题：方便总结正文内容来起标题</li><li>收件人：写好内容，更容易判断收件人，CC等关系</li></ul></li><li>关于附件的好习惯<ul><li>千万别发一份邮件，正文只有几个字</li><li>建议在正文简要说明附件中的关键信息以及注意文件的格式</li><li>养成好的附件命名习惯<ul><li>文件修改的日期</li><li>版本号</li><li>序列号等</li></ul></li></ul></li><li>自动回复如何设置<ul><li>自动回复的错误用法<ul><li>你的来信我已经收到。。。</li></ul></li><li>自动回复的正确用法<ul><li>休假或外出的时候才会用</li><li>阐述你正在休假</li><li>如果很急的话，可以联系谁（姓名 + 联系方式）</li><li>如果不是很急的话，你大概什么时间可以回复</li></ul></li></ul></li></ul></li></ul><h4 id="邮件管理"><a href="#邮件管理" class="headerlink" title="邮件管理"></a>邮件管理</h4><ul><li><p>遵循FAST法则管理</p><ul><li>Filter 过滤<ul><li>把符合规则的邮件自动归类到某个分类的文件夹下（如过滤器，过滤规则，来信分类等功能）</li></ul></li><li>Archive 归档<ul><li>将已经阅读或已经处理的邮件转移到「归档」的文件夹下</li></ul></li><li>Snooze 延后<ul><li>不能马上处理或马上回复的邮件</li><li>适用于简单，稍后才需要完成的任务</li></ul></li><li>Transfer 流转<ul><li>大型任务清单，任务比较复杂，可能需要进一步细化和重新分配</li><li>这里的流转存在两种意思<ul><li>一是在你的任务处理层面上的流转，比如流转细分到你的 todolist 或其他任务管理软件上</li><li>二是这个任务需要多人合作，比如会议结束后把邮件中汇总的任务细化分配给各个负责人</li></ul></li></ul></li></ul></li><li><p>如何进一步整理邮件？</p><ul><li>文件夹</li><li><p>标签（标签的三个维度）- 以过滤器自动打标签</p><ul><li>来源标签：以发件人所在的公司部门，或是外部合作方、客户的名字命名</li><li>类型标签：以邮件属性命名，如任务、通知、用户反馈、新闻订阅等</li><li>项目标签：以邮件所属项目名字命名</li></ul></li><li><p>高级的邮件检索功能</p><ul><li>*：匹配</li><li>AND：包含</li><li>-：排除</li><li>has:document  - 找出带word文档的邮件</li><li>has:spreadsheet - 找出带有exceld的邮件</li><li><p>has:presentation - 找出带有ppt的邮件</p></li><li><p>参考 <a href="https://support.google.com/mail/answer/7190" target="_blank" rel="noopener">https://support.google.com/mail/answer/7190</a></p></li></ul></li></ul></li></ul>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h4 id=&quot;邮件礼仪&quot;&gt;&lt;a href=&quot;#邮件礼仪&quot; class=&quot;headerlink&quot; title=&quot;邮件礼仪&quot;&gt;&lt;/a&gt;邮件礼仪&lt;/h4&gt;&lt;ul&gt;
-&lt;li&gt;邮箱的名称&lt;ul&gt;
-&lt;li&gt;邮箱的注册名，如「&lt;a href=&quot;mailto:wuyanzu@163.com&quot; 
-      
-    
-    </summary>
-    
-      <category term="聪明工作" scheme="http://www.xianyucoder.cn/categories/%E8%81%AA%E6%98%8E%E5%B7%A5%E4%BD%9C/"/>
-    
-    
-      <category term="邮件礼仪" scheme="http://www.xianyucoder.cn/tags/%E9%82%AE%E4%BB%B6%E7%A4%BC%E4%BB%AA/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>聪明工作-遭遇裁员怎么办？</title>
-    <link href="http://www.xianyucoder.cn/2019/08/26/%E8%81%AA%E6%98%8E%E5%B7%A5%E4%BD%9C-%E8%A2%AB%E7%A6%BB%E8%81%8C%E4%B9%8B%E5%90%8E%E5%BA%94%E8%AF%A5%E5%81%9A%E4%BB%80%E4%B9%88?/"/>
-    <id>http://www.xianyucoder.cn/2019/08/26/聪明工作-被离职之后应该做什么?/</id>
-    <published>2019-08-26T10:39:35.000Z</published>
-    <updated>2019-08-26T10:56:00.287Z</updated>
-    
-    <content type="html"><![CDATA[<p>现在市场上被离职的方式形形色色,并不都是法律条款规定里的模式,所以有必要了解基本的法律规定,这里咸鱼分享一下在极客时间「白话法律42讲」里学习到的一些知识要点,希望在维权路上帮到你。</p><p>先引用周老师在专栏里的两个例子:</p><h4 id="口头裁员有效吗？"><a href="#口头裁员有效吗？" class="headerlink" title="口头裁员有效吗？"></a>口头裁员有效吗？</h4><p>我国《劳动合同法》明确规定，劳动合同的签订、变更、解除都需要用书面的形式，公司应用书面通知 小蔡，而不能口头裁员。结合小蔡的描述，公司只是口头提出，但实际上双方没有解除劳动关系，劳动 合同也继续生效。</p><h4 id="劳动关系存续期间，能否找新的工作，签新的劳动合同？"><a href="#劳动关系存续期间，能否找新的工作，签新的劳动合同？" class="headerlink" title="劳动关系存续期间，能否找新的工作，签新的劳动合同？"></a>劳动关系存续期间，能否找新的工作，签新的劳动合同？</h4><p>虽然劳动关系继续，但是既然公司有裁员的意向，作为员工，提前找好新工作是无可厚非的，法律也不 禁止。但在上一份劳动合同解除之前，尽量不要签新的劳动合同，否则会让自已陷入被动。 比如说，原公司可能倒打一耙，以你“在劳动关系存续期间，签署新的劳动合同，严重影响工作”为由， 提出解除劳动合同，你反而成了过错方，得不到补偿。再或者，公司变卦，不放你走了，对下家公司你 就成了违约方。</p><ul><li>如果公司不提出解除劳动合同，则需要继续工作；</li><li>如果公司依然是口头解除，不给书面文件，则可以取证（证据包括比较多，比如说工作证、工资 条、劳动合同、辞退相关证据、工资发放情况、录音录像、证人证言、社保等），依法提出解除劳 动合同，并要求经济补偿。</li></ul><p>接下来再详细聊聊技术人应该知道的具体的事项。</p><h4 id="什么是劳动合同解除"><a href="#什么是劳动合同解除" class="headerlink" title="什么是劳动合同解除?"></a>什么是劳动合同解除?</h4><p>简单来说就是劳动合同规定的时间还没到,双方任意一方提出解除合同。<br>所以这里就要分情况分析了:</p><ul><li>协商解除</li><li>员工单方面解除</li><li>公司单方面解除</li></ul><p>前两种情况这里就不细讲,一般不会有太多的坑,甚至在公司过错的前提下，员工还享有法定的解释权。(通常指公司未按时发放工资,未按时缴纳社保等)</p><p>这里需要注意的是第三点:</p><p>公司单方面解除劳动合同,在法律上只有三种情况下公司才可以单方面解除合同:</p><ul><li>员工存在过错(违反公司制度、违法犯罪、简历弄虚作假等)</li><li>员工没有过错,但是在因为一些因素不能正常工作(患病、受伤(非工伤)、无法胜任工作、外部条件发生变化)</li><li>特殊情况下的经济性裁员</li></ul><p>而这里的第三点才是我们关注的重点。</p><h4 id="经济性裁员"><a href="#经济性裁员" class="headerlink" title="经济性裁员"></a>经济性裁员</h4><p>经济性裁员这里是指员工没有过错,公司单方面解除劳动合同。那么特殊情况下的经济性裁员又是什么东西呢？</p><ul><li>公司破产</li><li>公司经营困难</li><li>企业转产，技术革新</li><li>劳动合同订立时客观情况发生重大变化，导致合同不能继续履行的</li></ul><h4 id="裁员补偿"><a href="#裁员补偿" class="headerlink" title="裁员补偿"></a>裁员补偿</h4><p>了解完上面比较枯燥的概念问题,就到了关键的地方了,被离职什么情况下有补偿?被离职的补偿怎么算?</p><h5 id="什么情况下有补偿"><a href="#什么情况下有补偿" class="headerlink" title="什么情况下有补偿?"></a>什么情况下有补偿?</h5><ul><li>由公司提出和员工协商一致解除劳动合同</li><li>由员工提出,理由是公司存在过错(通常指公司未按时发放工资,未按时缴纳社保等)</li><li>公司提前三十天解除合同,员工无过错</li></ul><h5 id="被离职的补偿怎么算"><a href="#被离职的补偿怎么算" class="headerlink" title="被离职的补偿怎么算?"></a>被离职的补偿怎么算?</h5><ul><li>每满一年支付一个月的工资</li><li>六个月以上没满一年，按一年计算,补偿一个月工资</li><li>不满半年，支付半个月工资</li></ul><h5 id="经济赔偿金怎么算"><a href="#经济赔偿金怎么算" class="headerlink" title="经济赔偿金怎么算?"></a>经济赔偿金怎么算?</h5><p>公司违反法律规定(公司是不能毫无理由的解除与劳动者的劳动合同的，否则就会要求给经济赔偿金)解除劳动合同。<br>如:</p><ul><li>员工在孕期，哺乳期,产期,在规定医疗期等特殊情况</li><li>公司没有合法理由,页面有按照法定的流程解除合同</li></ul><p>公司要向员工支付经济赔偿金,经济赔偿金是上面计算出来金额乘二</p><p>其余情况的赔偿参考:</p><p><a href="https://www.66law.cn/laws/146137.aspx" target="_blank" rel="noopener">https://www.66law.cn/laws/146137.aspx</a></p><h5 id="n-1-是什么"><a href="#n-1-是什么" class="headerlink" title="n + 1 是什么?"></a>n + 1 是什么?</h5><p>经常在脉脉上看到有 n + 1之类的说法,这里的n就是上面的经济补偿金,1这里指的是公司没有提前三十天通知你就需要支付额外的1个月工资。</p><p>n一般按照前12个月的平均工资算,1是按照上个月工资算,且n最高为12,1最高不高于公司所在地年度职工平均工资的三倍,若高于则按三倍计算。</p><h4 id="总结一下"><a href="#总结一下" class="headerlink" title="总结一下"></a>总结一下</h4><p>其实还有很多关于技术人应该懂得法律知识,建议大家不妨订阅学习一下,可以避开不少雷区。</p><p>之前咸鱼也写过一篇关于爬虫是否违规的一篇普法文,感兴趣的朋友可以看看:</p><p>看到这希望对于被离职,能有自己的一套应对策略,不会成为无头苍蝇,再之,没有遇到被离职的技术人也更应该注意提升自己。</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;现在市场上被离职的方式形形色色,并不都是法律条款规定里的模式,所以有必要了解基本的法律规定,这里咸鱼分享一下在极客时间「白话法律42讲」里学习到的一些知识要点,希望在维权路上帮到你。&lt;/p&gt;
-&lt;p&gt;先引用周老师在专栏里的两个例子:&lt;/p&gt;
-&lt;h4 id=&quot;口头裁员有效吗？&quot;
-      
-    
-    </summary>
-    
-      <category term="聪明工作" scheme="http://www.xianyucoder.cn/categories/%E8%81%AA%E6%98%8E%E5%B7%A5%E4%BD%9C/"/>
-    
-    
-      <category term="裁员" scheme="http://www.xianyucoder.cn/tags/%E8%A3%81%E5%91%98/"/>
-    
-      <category term="维权" scheme="http://www.xianyucoder.cn/tags/%E7%BB%B4%E6%9D%83/"/>
-    
-      <category term="离职" scheme="http://www.xianyucoder.cn/tags/%E7%A6%BB%E8%81%8C/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>App逆向实战和AndroidKiller简单使用</title>
-    <link href="http://www.xianyucoder.cn/2019/08/26/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%AD%A6%E4%B9%A05-AndroidKiller%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8%E5%92%8C%E5%AE%9E%E6%88%98/"/>
-    <id>http://www.xianyucoder.cn/2019/08/26/安卓逆向学习5-AndroidKiller简单使用和实战/</id>
-    <published>2019-08-26T10:39:35.000Z</published>
-    <updated>2019-08-26T11:16:54.486Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="先聊聊为什么学习安卓逆向"><a href="#先聊聊为什么学习安卓逆向" class="headerlink" title="先聊聊为什么学习安卓逆向"></a>先聊聊为什么学习安卓逆向</h4><p>大数据的普及，好像没有一手数据收集能力就要落伍了似得，不少无关开发的岗位都加上需要初级数据采集的能力要求，越来越多的 title 加上 数据 的字眼提升逼格。</p><p>渐渐初级爬虫工程师的饭越来越不好吃，中高级的爬虫的招聘需求也添加上 JS 逆向+ APP 逆向的要求，所以有一手破签逆向的技术也越来越吃香。</p><p>APP逆向其实已经属于安全方面的内容，而我们爬虫工程师要做的其实远没有逆向工程师那么多和精，只要拿到请求中加密参数的加密方法，再用 Python 模拟加密即可。</p><p>为了面包，学习吧。</p><h4 id="学习资源推荐"><a href="#学习资源推荐" class="headerlink" title="学习资源推荐"></a>学习资源推荐</h4><p>关于逆向的前置知识，可以参考之前发过的几篇基础文章，同时咸鱼也推荐下面这些学习资源，希望能帮助你快速入门（伸手党福利？？？）：</p><ul><li>吾爱破解入门教程集合贴：<a href="http://t.cn/Ai8hXHzs" target="_blank" rel="noopener">http://t.cn/Ai8hXHzs</a></li><li>推荐关注的博客：<ul><li>尼古拉斯·赵四：<a href="https://blog.csdn.net/jiangwei0910410003" target="_blank" rel="noopener">https://blog.csdn.net/jiangwei0910410003</a></li><li>鬼哥：<a href="https://blog.csdn.net/guiguzi1110?viewmode=contents" target="_blank" rel="noopener">https://blog.csdn.net/guiguzi1110?viewmode=contents</a></li><li>天天记小本子上的lilac：<a href="https://blog.csdn.net/qq_38851536" target="_blank" rel="noopener">https://blog.csdn.net/qq_38851536</a></li></ul></li><li>推荐逆向书籍：<ul><li>《Android软件安全与逆向分析》</li><li>《Android应用安全防护和逆向分析》</li><li>《JAVA加密与解密的艺术》第二版</li></ul></li><li>推荐关注的公众号：<ul><li>小周码字</li><li>编程美丽</li><li>妄为写代码</li></ul></li></ul><p>其实还有好多好多的资源，请善用搜索。</p><p>以上仅为我的个人推荐，大佬请无视~</p><p>接下来是咸鱼动手跟着做的第一个项目，某个小游戏的付费破解，了解AndriodKiller逆向工具的使用。</p><h4 id="AndriodKiller的简单使用和实战"><a href="#AndriodKiller的简单使用和实战" class="headerlink" title="AndriodKiller的简单使用和实战"></a>AndriodKiller的简单使用和实战</h4><p>在使用这个逆向工具，需要先检查本地的 JAVA 开发环境是否安装。</p><p>命令行下输入：</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -version -- 输出JAVA jdk 版本</span><br></pre></td></tr></table></figure><p>如果出现无版本信息输出或其他报错请参照相关博客或后台回复 【逆向环境搭建】获取相关搭建视频。</p><p>接下来是 AndriodKiller 的安装了，在吾爱的网站上提供了相关的 绿色免安装版本，找到软件可以直接点击使用。</p><p>【良心】</p><p>打开界面后是下面这样的：</p><p><img src="http://tc.xianyucoder.cn/blog20190824214643.png" alt></p><p>打开后第一件事是在 AndriodKiller 的配置中配置 jdk 的安装路径之后既可以通过拖入需要反编译的受害者，即可打开进行分析：</p><p>我们这次要完成一款小游戏的付费破解，我们先安装未破解的APP看看能不能通过未破解的APP找到思路。</p><p>通过一番把玩，发现进入支付流程后取消支付会弹出相应提示语，顺着这个思路我们在反编译后的文件中检索一下看能不能找到对应的代码：</p><p><img src="http://tc.xianyucoder.cn/blog20190824224659.png" alt></p><p>我们点击进去看看，发现了我们搜索的字符串：</p><p><img src="http://tc.xianyucoder.cn/blog20190824225026.png" alt></p><p>反编译的代码不太方便查看，我们可以通过查看还原为java代码理解相关的逻辑：</p><p><img src="http://tc.xianyucoder.cn/blog20190824225333.png" alt></p><p>可以看到，还原后的代码中支付失败，支付取消在同一个方法中，支付成功的逻辑为单独一个方法。</p><p>所以我们可以试试通过直接把支付成功的代码逻辑直接替换到支付失败的那个方法中来破解支付</p><p>替换过后查看字符串，发现整个类文件中就只剩下支付成功的方法了。</p><p><img src="http://tc.xianyucoder.cn/blog20190824225922.png" alt></p><p>保存文件之后我们编译一下试试是否成功吧。</p><p><img src="http://tc.xianyucoder.cn/blog20190824230135.png" alt></p><p>编译后，控制台输入如下代表编译成功。</p><p><img src="http://tc.xianyucoder.cn/blog20190824230340.png" alt></p><p>打开 <strong>APP - 商店 </strong>随便购买一个道具，但是不完成支付，点击取消支付，可以看到左上角的道具数量增加了。说明我们的操作是成功的。（为避免破解不成功或误操作导致的扣费，请使用未插卡的机器测试）</p><p><img src="http://tc.xianyucoder.cn/blog20190824231037.png" alt></p><p>OK，到这里我们就完成了第一个安卓APP的逆向破解，当然这个是非常简单的逆向项目。</p><h4 id="Tip"><a href="#Tip" class="headerlink" title="Tip"></a>Tip</h4><ol><li><p>AndriodKiller 并不是万能的，有些项目是没办法反编译成功的，所以需要搭配其他的逆向工具使用</p></li><li><p>AndriodKiller 在第一次导入项目时，会一直卡在<code>反编译成功，xxxx</code>但是没有打开项目，需要收到重启AndriodKiller ，在<code>工程</code>中打开刚刚的项目。</p></li><li><p>AndriodKiller 转化为 java 代码时在 java 代码中是无法编辑的，需要返回到 smali 中修改，所以 smali语法相当关键，需要好好研究不要对 软件自带的 转换功能过多依赖，且在 smali 中修改后要记得 ctrl + s保存，之后再编译。</p></li><li><p>在编译过程中出现报错，报错日志大致如下：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">当前 Apktool 使用版本：apktool_2.3.0</span><br><span class="line">正在编译 APK，请稍等...</span><br><span class="line">&gt;I: Using Apktool <span class="number">2.3</span>.0</span><br><span class="line">&gt;I: Smaling smali folder into classes.dex...</span><br><span class="line">&gt;I: Building resources...</span><br><span class="line">&gt;S: WARNING: <span class="function">Could not write <span class="title">to</span> <span class="params">(C:\Users\i\AppData\Local\apktool\framework)</span>, using C:\Users\i\AppData\Local\Temp\ instead...</span></span><br><span class="line"><span class="function">&gt;S: Please be aware <span class="keyword">this</span> is a <span class="keyword">volatile</span> directory and frameworks could go missing, please utilize --frame-path <span class="keyword">if</span> the <span class="keyword">default</span> storage directory is unavailable</span></span><br><span class="line"><span class="function">&gt;W: E:\AndroidKiller_v1.3.1\projects\idm下载\Project\res\values-v23\styles.xml:8: error: Error retrieving parent <span class="keyword">for</span> item: No resource found that matches the given name '@android:style/WindowTitle'.</span></span><br><span class="line"><span class="function">&gt;W: </span></span><br><span class="line"><span class="function">&gt;W: E:\AndroidKiller_v1.3.1\projects\idm下载\Project\res\values-v23\styles.xml:9: error: Error retrieving parent <span class="keyword">for</span> item: No resource found that matches the given name '@android:style/WindowTitleBackground'.</span></span><br><span class="line"><span class="function">&gt;W: </span></span><br><span class="line"><span class="function">&gt;W: E:\AndroidKiller_v1.3.1\projects\idm下载\Project\res\values-v24\styles.xml:7: error: Error retrieving parent <span class="keyword">for</span> item: No resource found that matches the given name '@android:style/Animation.DropDownUp'.</span></span><br><span class="line"><span class="function">&gt;W: </span></span><br><span class="line"><span class="function">&gt;W: E:\AndroidKiller_v1.3.1\projects\idm下载\Project\res\values-v24\styles.xml:8: error: Error retrieving parent <span class="keyword">for</span> item: No resource found that matches the given name '@android:style/Animation.DropDownDown'.</span></span><br><span class="line"><span class="function">&gt;W: </span></span><br><span class="line"><span class="function">&gt;Exception in thread "main" brut.androlib.AndrolibException: brut.androlib.AndrolibException: brut.common.BrutException: could not <span class="title">exec</span> <span class="params">(exit code = <span class="number">1</span>)</span>: [C:\Users\i\AppData\Local\Temp\brut_util_Jar_6839346043621878032.tmp, p, --min-sdk-version, 16, --target-sdk-version, 26, --version-code, 1, --version-name, 1.0, --no-version-vectors, -F, C:\Users\i\AppData\Local\Temp\APKTOOL8354570300607898895.tmp, -0, resources.arsc, -0, arsc, -I, C:\Users\i\AppData\Local\Temp\1.apk, -S, E:\AndroidKiller_v1.3.1\projects\idm下载\Project\res, -M, E:\AndroidKiller_v1.3.1\projects\idm下载\Project\AndroidManifest.xml]</span></span><br><span class="line"><span class="function">&gt;        at brut.androlib.Androlib.<span class="title">buildResourcesFull</span><span class="params">(Androlib.java:<span class="number">485</span>)</span></span></span><br><span class="line"><span class="function">&gt;        at brut.androlib.Androlib.<span class="title">buildResources</span><span class="params">(Androlib.java:<span class="number">419</span>)</span></span></span><br><span class="line"><span class="function">&gt;        at brut.androlib.Androlib.<span class="title">build</span><span class="params">(Androlib.java:<span class="number">318</span>)</span></span></span><br><span class="line"><span class="function">&gt;        at brut.androlib.Androlib.<span class="title">build</span><span class="params">(Androlib.java:<span class="number">270</span>)</span></span></span><br><span class="line"><span class="function">&gt;        at brut.apktool.Main.<span class="title">cmdBuild</span><span class="params">(Main.java:<span class="number">224</span>)</span></span></span><br><span class="line"><span class="function">&gt;        at brut.apktool.Main.<span class="title">main</span><span class="params">(Main.java:<span class="number">75</span>)</span></span></span><br><span class="line"><span class="function">&gt;Caused by: brut.androlib.AndrolibException: brut.common.BrutException: could not <span class="title">exec</span> <span class="params">(exit code = <span class="number">1</span>)</span>: [C:\Users\i\AppData\Local\Temp\brut_util_Jar_6839346043621878032.tmp, p, --min-sdk-version, 16, --target-sdk-version, 26, --version-code, 1, --version-name, 1.0, --no-version-vectors, -F, C:\Users\i\AppData\Local\Temp\APKTOOL8354570300607898895.tmp, -0, resources.arsc, -0, arsc, -I, C:\Users\i\AppData\Local\Temp\1.apk, -S, E:\AndroidKiller_v1.3.1\projects\idm下载\Project\res, -M, E:\AndroidKiller_v1.3.1\projects\idm下载\Project\AndroidManifest.xml]</span></span><br><span class="line"><span class="function">&gt;        at brut.androlib.res.AndrolibResources.<span class="title">aaptPackage</span><span class="params">(AndrolibResources.java:<span class="number">454</span>)</span></span></span><br><span class="line"><span class="function">&gt;        at brut.androlib.Androlib.<span class="title">buildResourcesFull</span><span class="params">(Androlib.java:<span class="number">471</span>)</span></span></span><br><span class="line"><span class="function">&gt;        ... 5 more</span></span><br><span class="line"><span class="function">&gt;Caused by: brut.common.BrutException: could not <span class="title">exec</span> <span class="params">(exit code = <span class="number">1</span>)</span>: [C:\Users\i\AppData\Local\Temp\brut_util_Jar_6839346043621878032.tmp, p, --min-sdk-version, 16, --target-sdk-version, 26, --version-code, 1, --version-name, 1.0, --no-version-vectors, -F, C:\Users\i\AppData\Local\Temp\APKTOOL8354570300607898895.tmp, -0, resources.arsc, -0, arsc, -I, C:\Users\i\AppData\Local\Temp\1.apk, -S, E:\AndroidKiller_v1.3.1\projects\idm下载\Project\res, -M, E:\AndroidKiller_v1.3.1\projects\idm下载\Project\AndroidManifest.xml]</span></span><br><span class="line"><span class="function">&gt;        at brut.util.OS.<span class="title">exec</span><span class="params">(OS.java:<span class="number">95</span>)</span></span></span><br><span class="line"><span class="function">&gt;        at brut.androlib.res.AndrolibResources.<span class="title">aaptPackage</span><span class="params">(AndrolibResources.java:<span class="number">448</span>)</span></span></span><br><span class="line"><span class="function">&gt;        ... 6 more</span></span><br><span class="line"><span class="function">APK 编译失败，无法继续下一步签名!</span></span><br></pre></td></tr></table></figure><p>我的解决方案是：替换 AndriodKiller 目录下 bin\apktool\apktool 中的 ShakaApktool.jar 为更新的版本即可成功编译，签名。</p></li></ol>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h4 id=&quot;先聊聊为什么学习安卓逆向&quot;&gt;&lt;a href=&quot;#先聊聊为什么学习安卓逆向&quot; class=&quot;headerlink&quot; title=&quot;先聊聊为什么学习安卓逆向&quot;&gt;&lt;/a&gt;先聊聊为什么学习安卓逆向&lt;/h4&gt;&lt;p&gt;大数据的普及，好像没有一手数据收集能力就要落伍了似得，不少无
-      
-    
-    </summary>
-    
-      <category term="App逆向" scheme="http://www.xianyucoder.cn/categories/App%E9%80%86%E5%90%91/"/>
-    
-    
-      <category term="app逆向实战" scheme="http://www.xianyucoder.cn/tags/app%E9%80%86%E5%90%91%E5%AE%9E%E6%88%98/"/>
-    
-      <category term="逆向资源" scheme="http://www.xianyucoder.cn/tags/%E9%80%86%E5%90%91%E8%B5%84%E6%BA%90/"/>
-    
-      <category term="AndroidKiller" scheme="http://www.xianyucoder.cn/tags/AndroidKiller/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>App爬虫环境搭建</title>
-    <link href="http://www.xianyucoder.cn/2019/04/07/app_spider/"/>
-    <id>http://www.xianyucoder.cn/2019/04/07/app_spider/</id>
-    <published>2019-04-07T00:39:35.000Z</published>
-    <updated>2019-08-22T08:37:33.580Z</updated>
-    
-    <content type="html"><![CDATA[<p>本文来讲讲APP抓包环境搭建。<br>App抓包应该是每个爬虫工程师都避不开的话题,在之前我也写过关于自动参与「抽奖助手」<br>抽奖的文章,当时使用的抓包工具是Charles,有需要的朋友可以翻下之前的文章。</p><h4 id="App抓包原理"><a href="#App抓包原理" class="headerlink" title="App抓包原理"></a>App抓包原理</h4><ol><li>客户端向服务器发起HTTPS请求</li><li>抓包工具拦截客户端的请求，伪装成客户端向服务器进行请求</li><li>服务器向客户端（实际上是抓包工具）返回服务器的CA证书</li><li>抓包工具拦截服务器的响应，获取服务器证书公钥，然后自己制作一张证书，<br>将服务器证书替换后发送给客户端。（这一步，抓包工具拿到了服务器证书的公钥）</li><li>客户端接收到服务器（实际上是抓包工具）的证书后，生成一个对称密钥，<br>用抓包工具的公钥加密，发送给“服务器”（抓包工具）</li><li>抓包工具拦截客户端的响应，用自己的私钥解密对称密钥，然后用服务器证书公钥加密，<br>发送给服务器。（这一步，抓包工具拿到了对称密钥）</li><li>服务器用自己的私钥解密对称密钥，向客户端（抓包工具）发送响应</li><li>抓包工具拦截服务器的响应，替换成自己的证书后发送给客户端</li></ol><p>爬虫的本质就是「骗」过服务器,各种反反爬手段就是增强信任的过程,不停的让服务器相信你是自己人<br>如果你被反爬了,就是你骗术不精,被发现了。<br><a id="more"></a></p><h4 id="App数据好抓吗？"><a href="#App数据好抓吗？" class="headerlink" title="App数据好抓吗？"></a>App数据好抓吗？</h4><p>App数据有易有难,目前我还是停留在简单的部分,这里简单说下我理解的(如果说错求放过):</p><p>简单:</p><p>app的数据比web端数据更容易抓取，基本都是http、https协议，返回的数据格式也相对规整,<br>大多是json格式</p><p>困难:</p><p>1.需要反编译的知识,需要分析加密算法</p><p>2.需要脱壳+反编译</p><p>3.需要破解各式各类的签名,证书。。</p><p>所以一个爬虫工程师慢慢就需要掌握以下技能:</p><p>java编程基础</p><p>android编程基础</p><p>app逆向</p><p>app脱壳</p><p>破解加密</p><p>…</p><p>从入门到全栈</p><h4 id="常用抓包工具"><a href="#常用抓包工具" class="headerlink" title="常用抓包工具"></a>常用抓包工具</h4><p>fiddler</p><p>mitmproxy</p><p>Charles</p><h4 id="fiddler安装和使用"><a href="#fiddler安装和使用" class="headerlink" title="fiddler安装和使用"></a>fiddler安装和使用</h4><p>下载:<a href="https://telerik-fiddler.s3.amazonaws.com/fiddler/FiddlerSetup.exe" target="_blank" rel="noopener">https://telerik-fiddler.s3.amazonaws.com/fiddler/FiddlerSetup.exe</a></p><p>安装:一路Next</p><h5 id="主要界面介绍"><a href="#主要界面介绍" class="headerlink" title="主要界面介绍:"></a>主要界面介绍:</h5><p><img src="http://tc.xianyucoder.cn/blog20190821225210.png" alt></p><p>会话列表界面:</p><p><img src="http://tc.xianyucoder.cn/blog20190821225219.png" alt></p><p>监控面板在点击会话列表界面的某个请求后会出现下面两个界面:</p><p>请求面板:</p><p><img src="http://tc.xianyucoder.cn/blog20190821225233.png" alt></p><p>响应面板:</p><p><img src="http://tc.xianyucoder.cn/blog20190821225314.png" alt></p><h5 id="本地CA证书安装"><a href="#本地CA证书安装" class="headerlink" title="本地CA证书安装"></a>本地CA证书安装</h5><ul><li>点击 Tools - Options - HTTPS - 勾选勾选 Capture HTTPS CONNECTs，勾选 Decrypt HTTPS trafic，会弹出安装证书的提示。一路点是或确定安装即可。</li><li>重启fiddler，点击右侧Actions，能看一个下拉菜单，点击 Export Root Certificate to Desktop，此时证书会生成到桌面上，名为 FiddlerRoot.cer，点OK保存</li><li>点击安装</li></ul><h5 id="连接手机抓包需要的配置"><a href="#连接手机抓包需要的配置" class="headerlink" title="连接手机抓包需要的配置"></a>连接手机抓包需要的配置</h5><p>先设置PC端fiddler:</p><p><img src="http://tc.xianyucoder.cn/blog20190821225331.png" alt></p><p>之后手机需要访问 本地主机IP + 设置的端口，安装证书，证书安装成功后即可抓包。</p><p>以上就是关于Fiddler的安装和简单使用,进阶使用还有很多骚操作,</p><h4 id="mitmproxy安装和使用"><a href="#mitmproxy安装和使用" class="headerlink" title="mitmproxy安装和使用"></a>mitmproxy安装和使用</h4><p>mitmproxy在linux版本下和windows版本下略有不同。</p><p>linux下借助pip,可以一键安装:pip install mitmproxy</p><p>windows 下需要安装Microsoft Visual C++ V14.0以上,之后再使用pip install mitmproxy安装</p><p>mitmproxy有三大组件:</p><p>mitmproxy - linux下的抓包组件</p><p>mitmdump - python交互</p><p>mitmweb - windows下的可视化界面工具</p><p>在windows下仅支持后两种组件的使用。</p><h5 id="证书配置"><a href="#证书配置" class="headerlink" title="证书配置"></a>证书配置</h5><p>在安装目录下可以看到以下这些文件:</p><p><img src="http://tc.xianyucoder.cn/blog20190821225340.png" alt></p><table><thead><tr><th>文件名</th><th>文件简介</th></tr></thead><tbody><tr><td>mitmproxy-ca.pem</td><td>PEM格式的证书私钥</td></tr><tr><td>mitmproxy-ca-cert.pem</td><td>PEM格式证书，适用于大多数非Windows平台</td></tr><tr><td>mitmproxy-ca-cert.p12</td><td>PKCS12格式的证书，适用于Windows平台</td></tr><tr><td>mitmproxy-ca-cert.cer</td><td>与mitmproxy-ca-cert.pem相同，只是改变了后缀，适用于部分Android平台</td></tr><tr><td>mitmproxy-dhparam.pem</td><td>PEM格式的秘钥文件，用于增强SSL安全性</td></tr></tbody></table><h5 id="window安装证书"><a href="#window安装证书" class="headerlink" title="window安装证书"></a>window安装证书</h5><p>双击mitmproxy-ca.p12,一路确定直至结束。期间会弹出警告点击“确认”即可。</p><h5 id="Mac安装证书"><a href="#Mac安装证书" class="headerlink" title="Mac安装证书"></a>Mac安装证书</h5><p>Mac下双击mitmproxy-ca-cert.pem即可弹出钥匙串管理页面，然后找到mitmproxy证书，打开其设置选项，选择“始终信任”即可</p><h5 id="Android-iPhone安装证书"><a href="#Android-iPhone安装证书" class="headerlink" title="Android/iPhone安装证书"></a>Android/iPhone安装证书</h5><p>方法一: 将mitmproxy-ca-cert.pem发送到手机上点击安装就可以了,苹果手机点击安装描述文件即可。</p><p>方法二: 在linux下启动 mitmproxy,命令为<code>mitmproxy -p 8889</code>,同时将手机代理设置为linux的IP地址与端口后访问<code>mitm.it</code>安装证书。</p><h5 id="简单使用"><a href="#简单使用" class="headerlink" title="简单使用"></a>简单使用</h5><p>mitmproxy过滤功能的使用举例:</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">输入z,清除屏幕上全部的包</span><br><span class="line">输入f,进入编辑模式,可在最下面编辑条件,ESC或Enter退出编辑</span><br><span class="line">!(~c <span class="number">200</span>) <span class="comment">#显示所有返回不是200的请求</span></span><br><span class="line">!(~c <span class="number">200</span>) &amp; ~d baidu.com <span class="comment">#显示域名包含baidu.com,返回不是200的请求</span></span><br><span class="line">~m post &amp; ~u baidu <span class="comment">#显示请求的链接里面包含baidu的post请求</span></span><br><span class="line">~d baidu.com (http://baidu.com) 过滤所有域名包含baidu.com (http://baidu.com)的包</span><br></pre></td></tr></table></figure><p>mitmproxy断点功能的使用举例:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">输入i,进入编辑模式,可在最下面编辑条件,ESC或Enter退出编辑</span><br><span class="line">断点的条件和过滤是一样的,符合条件的链接会被拦截</span><br><span class="line">~d baidu.com &amp; ~m get</span><br><span class="line">域名包含baidu.com的get 请求会被拦截</span><br><span class="line">按Enter进入详情页,在详情页输入e进入模式,可以修改各项数据</span><br><span class="line">完成后,回到请求显示列表,输入a,将请求放行.</span><br><span class="line"><span class="number">1.</span>请求重放</span><br><span class="line"><span class="number">2.</span>选中需要重放的请求,输入r可以重放请求,也可以先编辑后再重放</span><br><span class="line"><span class="number">3.</span>输入Q可退出程序</span><br></pre></td></tr></table></figure></p><p>mitmproxy经常配合appium使用:</p><p>首先我们需要写一个抓包的脚本,类似下面这个:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">response</span><span class="params">(flow)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="string">'aweme/v1/user/follower/list/'</span> <span class="keyword">in</span> flow.request.url:</span><br><span class="line">        <span class="keyword">for</span> user <span class="keyword">in</span> json.loads(flow.response.text)[<span class="string">'followers'</span>]:</span><br><span class="line">            info = &#123;&#125;</span><br><span class="line">            nfo[<span class="string">'share_id'</span>] = user[<span class="string">'uid'</span>]</span><br><span class="line">            info[<span class="string">'_id'</span>] = user[<span class="string">'short_id'</span>]</span><br><span class="line">            save_task(info)</span><br></pre></td></tr></table></figure></p><p>注意:这里的方法名必须使用response</p><p>编写完抓包的脚本后,使用 <code>mitmdump -p [port] -s [脚本文件]</code> 启动,配合appium自动化脚本即可实现app自动化抓包。</p><h5 id="Charles的使用"><a href="#Charles的使用" class="headerlink" title="Charles的使用"></a>Charles的使用</h5><p>之前写过了相关的实战,可以直接看下面的文章。</p><p>以上是我面试后的一点总结,希望对你有所帮助~</p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;本文来讲讲APP抓包环境搭建。&lt;br&gt;App抓包应该是每个爬虫工程师都避不开的话题,在之前我也写过关于自动参与「抽奖助手」&lt;br&gt;抽奖的文章,当时使用的抓包工具是Charles,有需要的朋友可以翻下之前的文章。&lt;/p&gt;
-&lt;h4 id=&quot;App抓包原理&quot;&gt;&lt;a href=&quot;#App抓包原理&quot; class=&quot;headerlink&quot; title=&quot;App抓包原理&quot;&gt;&lt;/a&gt;App抓包原理&lt;/h4&gt;&lt;ol&gt;
-&lt;li&gt;客户端向服务器发起HTTPS请求&lt;/li&gt;
-&lt;li&gt;抓包工具拦截客户端的请求，伪装成客户端向服务器进行请求&lt;/li&gt;
-&lt;li&gt;服务器向客户端（实际上是抓包工具）返回服务器的CA证书&lt;/li&gt;
-&lt;li&gt;抓包工具拦截服务器的响应，获取服务器证书公钥，然后自己制作一张证书，&lt;br&gt;将服务器证书替换后发送给客户端。（这一步，抓包工具拿到了服务器证书的公钥）&lt;/li&gt;
-&lt;li&gt;客户端接收到服务器（实际上是抓包工具）的证书后，生成一个对称密钥，&lt;br&gt;用抓包工具的公钥加密，发送给“服务器”（抓包工具）&lt;/li&gt;
-&lt;li&gt;抓包工具拦截客户端的响应，用自己的私钥解密对称密钥，然后用服务器证书公钥加密，&lt;br&gt;发送给服务器。（这一步，抓包工具拿到了对称密钥）&lt;/li&gt;
-&lt;li&gt;服务器用自己的私钥解密对称密钥，向客户端（抓包工具）发送响应&lt;/li&gt;
-&lt;li&gt;抓包工具拦截服务器的响应，替换成自己的证书后发送给客户端&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;爬虫的本质就是「骗」过服务器,各种反反爬手段就是增强信任的过程,不停的让服务器相信你是自己人&lt;br&gt;如果你被反爬了,就是你骗术不精,被发现了。&lt;br&gt;
-    
-    </summary>
-    
-      <category term="爬虫" scheme="http://www.xianyucoder.cn/categories/%E7%88%AC%E8%99%AB/"/>
-    
-    
-      <category term="爬虫" scheme="http://www.xianyucoder.cn/tags/%E7%88%AC%E8%99%AB/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>scrapy要点复习与常用框架复习</title>
-    <link href="http://www.xianyucoder.cn/2019/04/06/scrapy-intrduct/"/>
-    <id>http://www.xianyucoder.cn/2019/04/06/scrapy-intrduct/</id>
-    <published>2019-04-06T00:39:35.000Z</published>
-    <updated>2019-08-22T08:45:11.062Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="Scrapy工作流程与注意点"><a href="#Scrapy工作流程与注意点" class="headerlink" title="Scrapy工作流程与注意点"></a>Scrapy工作流程与注意点</h4><ol><li>从spiders抓取请求requests经过爬虫中间件发送给引擎</li><li>引擎将请求发送给调度器，调度器对请求进行调度</li><li>调度器将调度排序好的请求发送给引擎(调度器维护的是一个LIFO的队列，广度优先)</li><li>引擎将请求经过下载中间件发送给下载器</li><li>下载器将请求返回的response经过下载中间件发送给引擎</li><li>引擎将下载器返回的response返回给爬虫中间件</li><li>爬虫中间件将解析的字段与request返回给引擎</li><li>引擎将解析的字段发送给项目管道，将新的request发送给调度器</li></ol><ul><li>注意点</li><li>第四点是我们能应对反爬的最后一步，换代理，加cookie，换ua等等</li><li>第五点最好是能在这里校验数据，不是正确的数据不传给spider</li></ul><p><img src="http://tc.xianyucoder.cn/blog005MnFO1gy1g0zs8zdqd1j30sr0ckdkb.png" alt><br><a id="more"></a></p><h4 id="Scrapy的基本方法"><a href="#Scrapy的基本方法" class="headerlink" title="Scrapy的基本方法"></a>Scrapy的基本方法</h4><p>基本流程:</p><ul><li>命令行<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">scrapy startproject projectname</span><br><span class="line">scrapy genspider spidername hostname</span><br><span class="line">scrapy crawl spidername</span><br></pre></td></tr></table></figure></li></ul><p>这里注意爬虫名称不要和项目名称相同</p><ul><li>最简化的scrapy爬虫的执行流程</li></ul><ol><li>scrapy的name是用来标识是哪个爬虫的</li><li>不重写start_requests(),默认scrapy调用的是start_requests()获取start_url中的url</li><li>在执行第二步就默认回调parse()默认解析器</li></ol><h4 id="item主要函数"><a href="#item主要函数" class="headerlink" title="item主要函数"></a>item主要函数</h4><ol><li>process_item(self,item,spider)必须实现的函数，用来处理item,常用的就是处理items,需要这个item就返回，不需要就Dropitem</li><li>open_spider(self,spider)不是必须实现的函数,当爬虫运行的时候调用</li><li>close_spider(self,spider)不是必须实现的函数，当爬虫结束的时候调用</li><li>from_crawler(cls,crawler)不是必须实现的函数，当爬虫运行时调用，比open_spider()还早，常用于初始化爬虫的一些属性。</li></ol><ul><li>注意</li><li>yield管道里的时候就是yield item</li><li>yield调度器里就是yield requests</li></ul><h4 id="中间件"><a href="#中间件" class="headerlink" title="中间件"></a>中间件</h4><p>中间件最重要的作用就是拦截</p><h5 id="下载中间件三大函数"><a href="#下载中间件三大函数" class="headerlink" title="下载中间件三大函数"></a>下载中间件三大函数</h5><ol><li>process_request(request,spider)处理拦截</li><li>process_response(request,response,spider)处理拦截</li><li>process_exception(request,exception,spider)常用来处理process_request的异常</li></ol><h6 id="process-request"><a href="#process-request" class="headerlink" title="process_request"></a>process_request</h6><ul><li>返回None,默认返回这个值,表示当前这层的下载中间件过了,去往下一层的下载中间件</li><li>返回request,返回这个值就是把当前请求重新丢回调度器队列，相当于重试</li><li>返回response,直接伪造一个返回值,把这个值丢到爬虫中解析</li><li>raises IgnoreRequest,抛弃当前的请求</li></ul><h6 id="process-response"><a href="#process-response" class="headerlink" title="process_response"></a>process_response</h6><ul><li>返回response,默认返回到了下载中间件当中。</li><li>返回request,返回到队列当中，重新请求</li><li>返回raises IgnoreRequest,忽略了之前的请求也要忽略它对应的response</li></ul><h6 id="process-exception"><a href="#process-exception" class="headerlink" title="process_exception"></a>process_exception</h6><ul><li>返回None,就是不处理传给下一个中间件</li><li>返回response,错误被纠正了,进入正常的流程</li><li>返回request，返回给队列重新请求</li></ul><h6 id="CookieMiddleware"><a href="#CookieMiddleware" class="headerlink" title="CookieMiddleware"></a>CookieMiddleware</h6><ul><li><p>单spider多cookie session</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i,url <span class="keyword">in</span> enumerate(url):</span><br><span class="line">  <span class="keyword">yield</span> scrapy.Request(<span class="string">"xxxx.com"</span>,meta=&#123;<span class="string">'cookiejar'</span>:i&#125;,callback=self.parse_page)</span><br></pre></td></tr></table></figure></li><li><p>注意<br>需要注意的是 cookiejar meta key 不是“黏性的”，需要再之后的request请求中接着传递</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">parse_page</span><span class="params">(self,response)</span>:</span></span><br><span class="line">  <span class="comment"># do some processing</span></span><br><span class="line">  <span class="keyword">return</span> scrapy.Request(<span class="string">"xxxx.com"</span>,meta=&#123;<span class="string">'cookiejar'</span>:response.meta[<span class="string">'cookiejar'</span>]&#125;,callback=self.parse_other_page)</span><br></pre></td></tr></table></figure></li></ul><h6 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h6><ul><li>中间件后面的数字越小越远离下载器，数字越大越靠近下载器</li><li>数字越小的request越先通过，数字越大的response越先通过</li><li>这里比较重要的是retry模块还有CookieMiddleware模块</li></ul><h5 id="爬虫中间件"><a href="#爬虫中间件" class="headerlink" title="爬虫中间件"></a>爬虫中间件</h5><h6 id="爬虫中间件的函数"><a href="#爬虫中间件的函数" class="headerlink" title="爬虫中间件的函数"></a>爬虫中间件的函数</h6><ol><li>from_crawler</li><li>process_spider_input</li><li>process_spider_output</li><li>process_spider_exception</li><li>process_start_request</li></ol><h6 id="from-crawler-必须的"><a href="#from-crawler-必须的" class="headerlink" title="from_crawler(必须的)"></a>from_crawler(必须的)</h6><p>会被manager调用</p><h6 id="process-start-request"><a href="#process-start-request" class="headerlink" title="process_start_request"></a>process_start_request</h6><p>和process_spider_output很像，只能返回request</p><h6 id="scrapy-middleware的实例DepthMiddleware"><a href="#scrapy-middleware的实例DepthMiddleware" class="headerlink" title="scrapy middleware的实例DepthMiddleware"></a>scrapy middleware的实例DepthMiddleware</h6><h4 id="scrapy的数据收集"><a href="#scrapy的数据收集" class="headerlink" title="scrapy的数据收集"></a>scrapy的数据收集</h4><h5 id="收集404的页面demo"><a href="#收集404的页面demo" class="headerlink" title="收集404的页面demo"></a>收集404的页面demo</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">handle_httpstatus_list = [<span class="number">404</span>]</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">  self.fail_urls = []</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">parse</span><span class="params">(self, response)</span>:</span></span><br><span class="line">  <span class="keyword">if</span> response.status == <span class="number">404</span>:</span><br><span class="line">    self.fail_urls.append(response.url)</span><br><span class="line">    self.crawler.stats.inc_value(<span class="string">"failed_url"</span>)</span><br></pre></td></tr></table></figure><h4 id="Request和Response"><a href="#Request和Response" class="headerlink" title="Request和Response"></a>Request和Response</h4><h5 id="Reuqests对象"><a href="#Reuqests对象" class="headerlink" title="Reuqests对象"></a>Reuqests对象</h5><p>基础参数:</p><ul><li>url 请求的网址</li><li>meta 用来在页面之间传递的参数</li><li>callback 请求回来的response处理函数</li><li>header 设置页面的请求头</li><li>cookie 请求页面cookie</li></ul><p>高级参数:</p><ul><li>encoding 请求的转换编码</li><li>priority 链接优先级</li><li>dont_filter 强制不过滤</li><li>errback 和callback一对，当请求成功时调用callback，请求失败调用errback</li></ul><p>方法:</p><ul><li>copy() 复制一个一模一样的对象，常用是deepcopy()</li><li>replace() 对对象参数进行替换</li></ul><p>meta中常用的key:</p><p><img src="http://tc.xianyucoder.cn/blog005MnFO1gy1g0zs9gbh7vj30pr09v434.png" alt></p><h5 id="Response对象"><a href="#Response对象" class="headerlink" title="Response对象"></a>Response对象</h5><p>基础参数:</p><ul><li>url 请求的url</li><li>body 请求回来的html</li><li>meta 用来在页面之间传递数据</li><li>headers 页面的headers数据</li><li>cookies 设置页面的cookie</li><li>Request 发出这个response对应的request对象</li></ul><p>方法:</p><ul><li>copy() 与request相同</li><li>replace() 与request相同</li><li>urljoin() 将页面的相对路劲传入，返回绝对路径</li><li>follow() 传入一个相对路径直接返回一个request对象</li></ul><h4 id="scrapy的暂停和重启"><a href="#scrapy的暂停和重启" class="headerlink" title="scrapy的暂停和重启"></a>scrapy的暂停和重启</h4><ul><li>暂停实例<br>scrapy crawl spider lagou -s JOBDIR=job_info/001</li></ul><p>spidername = lagou<br>workfilename = job_info<br>且每次请求都要求不一样的</p><ul><li>启动实例<br>再次运行暂停的命令</li></ul><h4 id="自定义扩展"><a href="#自定义扩展" class="headerlink" title="自定义扩展"></a>自定义扩展</h4><p>参考scrapy源码中的extensions这个包，可以查看corestats这个文件的源码</p><h4 id="去重与入库"><a href="#去重与入库" class="headerlink" title="去重与入库"></a>去重与入库</h4><h5 id="url去重"><a href="#url去重" class="headerlink" title="url去重"></a>url去重</h5><ul><li>用造好的轮子</li><li>scrapy-deltafetch(前两个原理相同)</li><li>scrapy-crawl-once</li><li>scrapy-redis</li><li><p>scrapy-redis-bloomfilters</p></li><li><p>自己造轮子</p></li><li>自己写的init_add_request方法实现轻量级的去重</li></ul><h5 id="scrapy-redis"><a href="#scrapy-redis" class="headerlink" title="scrapy_redis"></a>scrapy_redis</h5><ol><li>运行爬虫:scrapy crawl 爬虫</li><li>redis-cli lpush myspider:start_urls xxx.com<br>redis-cli sadd myspider:start_urls xxx.com</li></ol><h5 id="scrapy-rabbitmq-link"><a href="#scrapy-rabbitmq-link" class="headerlink" title="scrapy-rabbitmq-link"></a>scrapy-rabbitmq-link</h5><p>SCHEDULR = “scrapy_rabbitmq_link.scheduler.SaaS”<br>RABBITMQ_CONNECTION_PARAMETERS=’amqp://guest:guest@localhost:5672/‘<br>SCHEDULR_REQUEUE_ON_STATUS=[500]<br>DOWNLOADER_MIDDLEWARES = {<br>  ‘scrapy_rabbitmq_link.middleware.RabbitMQMiddleware’:999<br>}</p><h5 id="celery"><a href="#celery" class="headerlink" title="celery"></a>celery</h5><p>from celery import Celery<br>app = Celery(‘hello’,broker=’amqp://guest@localhost//‘)<br>@app.task<br>def hello():<br>  return ‘hello worlds’</p><h4 id="编写代码中的小tip"><a href="#编写代码中的小tip" class="headerlink" title="编写代码中的小tip"></a>编写代码中的小tip</h4><ul><li>错误回调函数</li></ul><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> traceback <span class="keyword">import</span> format_exc</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">error_back</span><span class="params">(self,e)</span>:</span></span><br><span class="line">  _ = e</span><br><span class="line">  self.logger.error(format_exc())</span><br></pre></td></tr></table></figure><h4 id="通用爬虫-CrawlSpider"><a href="#通用爬虫-CrawlSpider" class="headerlink" title="通用爬虫-CrawlSpider"></a>通用爬虫-CrawlSpider</h4><h5 id="class-scrapy-spiders-CrawlSpider"><a href="#class-scrapy-spiders-CrawlSpider" class="headerlink" title="class scrapy.spiders.CrawlSpider"></a>class scrapy.spiders.CrawlSpider</h5><ul><li>爬取一般网站常用的spider</li><li>定义一些规则来提供跟进link的方便机制</li></ul><h5 id="链接提取器-link-extractors"><a href="#链接提取器-link-extractors" class="headerlink" title="链接提取器(link extractors)"></a>链接提取器(link extractors)</h5><ul><li>导入scrapy.linkextractors import LinkExtractor</li><li>每个link extractor 有唯一的公共方法是extract_links,他接收一个Response对象，返回scrapy.link.Link对象</li></ul><h5 id="常用参数"><a href="#常用参数" class="headerlink" title="常用参数"></a>常用参数</h5><p>class scrapy.linkextractors.lxmlhtml.LxmlLinkExtractor()</p><ul><li>allow() -正则</li><li>deny() - 正则</li><li>allow_domains() - 域名</li><li>deny_domains() - 域名</li></ul>]]></content>
-    
-    <summary type="html">
-    
-      &lt;h4 id=&quot;Scrapy工作流程与注意点&quot;&gt;&lt;a href=&quot;#Scrapy工作流程与注意点&quot; class=&quot;headerlink&quot; title=&quot;Scrapy工作流程与注意点&quot;&gt;&lt;/a&gt;Scrapy工作流程与注意点&lt;/h4&gt;&lt;ol&gt;
-&lt;li&gt;从spiders抓取请求requests经过爬虫中间件发送给引擎&lt;/li&gt;
-&lt;li&gt;引擎将请求发送给调度器，调度器对请求进行调度&lt;/li&gt;
-&lt;li&gt;调度器将调度排序好的请求发送给引擎(调度器维护的是一个LIFO的队列，广度优先)&lt;/li&gt;
-&lt;li&gt;引擎将请求经过下载中间件发送给下载器&lt;/li&gt;
-&lt;li&gt;下载器将请求返回的response经过下载中间件发送给引擎&lt;/li&gt;
-&lt;li&gt;引擎将下载器返回的response返回给爬虫中间件&lt;/li&gt;
-&lt;li&gt;爬虫中间件将解析的字段与request返回给引擎&lt;/li&gt;
-&lt;li&gt;引擎将解析的字段发送给项目管道，将新的request发送给调度器&lt;/li&gt;
-&lt;/ol&gt;
-&lt;ul&gt;
-&lt;li&gt;注意点&lt;/li&gt;
-&lt;li&gt;第四点是我们能应对反爬的最后一步，换代理，加cookie，换ua等等&lt;/li&gt;
-&lt;li&gt;第五点最好是能在这里校验数据，不是正确的数据不传给spider&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src=&quot;http://tc.xianyucoder.cn/blog005MnFO1gy1g0zs8zdqd1j30sr0ckdkb.png&quot; alt&gt;&lt;br&gt;
-    
-    </summary>
-    
-      <category term="Python" scheme="http://www.xianyucoder.cn/categories/Python/"/>
-    
-    
-      <category term="Python" scheme="http://www.xianyucoder.cn/tags/Python/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>scrapy-splash与splash</title>
-    <link href="http://www.xianyucoder.cn/2019/04/06/scrapy-splash_and_splash/"/>
-    <id>http://www.xianyucoder.cn/2019/04/06/scrapy-splash_and_splash/</id>
-    <published>2019-04-06T00:39:35.000Z</published>
-    <updated>2019-08-22T08:46:16.941Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="splash介绍"><a href="#splash介绍" class="headerlink" title="splash介绍"></a>splash介绍</h4><p>splash是一个针对js的渲染服务，它内置了一个浏览器和http接口，基于python3和twisted引擎，所以是可以异步处理任务。</p><h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><p><a href="https://splash.readthedocs.io/en/stable/install.html" target="_blank" rel="noopener">https://splash.readthedocs.io/en/stable/install.html</a></p><p>只有mac和linux支持，也可以通过docker安装。</p><p>使用<code>docker pull scrapinghub/splash</code></p><p>使用<code>docker run -p 8050:8050 -p 5023 scrapinghub/splash</code>运行镜像</p><a id="more"></a><h4 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h4><h5 id="基础使用"><a href="#基础使用" class="headerlink" title="基础使用"></a>基础使用</h5><p>使用浏览器访问<code>http://localhost:8050</code></p><h4 id="scrapy-splash"><a href="#scrapy-splash" class="headerlink" title="scrapy-splash"></a>scrapy-splash</h4><h4 id="scrapy集成selenium"><a href="#scrapy集成selenium" class="headerlink" title="scrapy集成selenium"></a>scrapy集成selenium</h4><h4 id="selenium在scrapy中无界面的解决方案-linux"><a href="#selenium在scrapy中无界面的解决方案-linux" class="headerlink" title="selenium在scrapy中无界面的解决方案(linux)"></a>selenium在scrapy中无界面的解决方案(linux)</h4><ul><li>安装环境</li></ul><p><code>pip install pyvirtualdisplay</code></p><ul><li>安装报错解决</li></ul><p><code>apt-get install xvfb</code><br><code>pip install xvfbwrapper</code></p><ul><li>使用实例<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyvirtualdisplay <span class="keyword">import</span> Display</span><br><span class="line">display = Display(visible=<span class="number">0</span>, size=(<span class="number">800</span>,<span class="number">600</span>))</span><br><span class="line">display.start()</span><br><span class="line">browser = webdiver.Chrome()</span><br><span class="line">browser.get()</span><br></pre></td></tr></table></figure></li></ul><h4 id="selenium-grid"><a href="#selenium-grid" class="headerlink" title="selenium grid"></a>selenium grid</h4><h4 id="slinter"><a href="#slinter" class="headerlink" title="slinter"></a>slinter</h4>]]></content>
-    
-    <summary type="html">
-    
-      &lt;h4 id=&quot;splash介绍&quot;&gt;&lt;a href=&quot;#splash介绍&quot; class=&quot;headerlink&quot; title=&quot;splash介绍&quot;&gt;&lt;/a&gt;splash介绍&lt;/h4&gt;&lt;p&gt;splash是一个针对js的渲染服务，它内置了一个浏览器和http接口，基于python3和twisted引擎，所以是可以异步处理任务。&lt;/p&gt;
-&lt;h4 id=&quot;安装&quot;&gt;&lt;a href=&quot;#安装&quot; class=&quot;headerlink&quot; title=&quot;安装&quot;&gt;&lt;/a&gt;安装&lt;/h4&gt;&lt;p&gt;&lt;a href=&quot;https://splash.readthedocs.io/en/stable/install.html&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;https://splash.readthedocs.io/en/stable/install.html&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;只有mac和linux支持，也可以通过docker安装。&lt;/p&gt;
-&lt;p&gt;使用&lt;code&gt;docker pull scrapinghub/splash&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;使用&lt;code&gt;docker run -p 8050:8050 -p 5023 scrapinghub/splash&lt;/code&gt;运行镜像&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="爬虫" scheme="http://www.xianyucoder.cn/categories/%E7%88%AC%E8%99%AB/"/>
-    
-    
-      <category term="爬虫" scheme="http://www.xianyucoder.cn/tags/%E7%88%AC%E8%99%AB/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Docker容器</title>
-    <link href="http://www.xianyucoder.cn/2019/04/05/python-and-docker/"/>
-    <id>http://www.xianyucoder.cn/2019/04/05/python-and-docker/</id>
-    <published>2019-04-05T00:39:35.000Z</published>
-    <updated>2019-08-21T15:00:08.913Z</updated>
-    
-    <content type="html"><![CDATA[<p><img src="http://tc.xianyucoder.cn/blog20190821223443.png" alt></p><p>有不少的朋友读了之前的一系列的Docker文章一脸懵逼，这和Python有什么关系？</p><p>Docker可以用来减轻我们搭建环境的繁琐步骤，我们完全可以把类似selenium等环境用Docker容器部署好，在代码里直接使用远端的selenium,简单方便。</p><h4 id="使用Docker容器中的Python环境进行开发"><a href="#使用Docker容器中的Python环境进行开发" class="headerlink" title="使用Docker容器中的Python环境进行开发"></a>使用Docker容器中的Python环境进行开发</h4><p>环境准备:腾讯云CentOS 7 + Docker</p><h5 id="修改Docker配置"><a href="#修改Docker配置" class="headerlink" title="修改Docker配置"></a>修改Docker配置</h5><p>简易版本:</p><p>编辑Docker相关配置文件:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/docker/daemon.json</span><br></pre></td></tr></table></figure></p><p>插入下面的配置:</p><p>注意这里是标准的json格式,格式出错Docker重启不了<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">"hosts"</span>: [<span class="string">"tcp://0.0.0.0:2375"</span>,<span class="string">"unix:///var/run/docker.sock"</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p><p>重载Docker配置:<code>systemctl daemon-reload</code></p><a id="more"></a><p>重启Docker:<code>systemctl restart docker</code></p><p>复杂版本:<br>这版本用于使用上面的配置修改之后依旧无法连接的情况,咸鱼第一次配置就出现了这个情况，咸鱼在某课网的手记板块找到了答案。</p><p>这里贴一下原文地址:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">参考链接：https://www.imooc.com/article/details/id/<span class="number">28426</span></span><br></pre></td></tr></table></figure></p><p>具体操作如下:<br>编辑下面的文件:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /lib/systemd/system/docker.service</span><br></pre></td></tr></table></figure></p><p>将文件对应配置项修改后保存:</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">将</span><br><span class="line">ExecStart=/usr/bin/dockerd</span><br><span class="line">改为</span><br><span class="line">ExecStart=/usr/bin/dockerd -H unix:///var/run/docker.sock -H tcp://<span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span>:<span class="number">2375</span></span><br></pre></td></tr></table></figure><h5 id="配置Pycharm"><a href="#配置Pycharm" class="headerlink" title="配置Pycharm"></a>配置Pycharm</h5><p>首先打开Pycharm中Docker的显示项:</p><p><img src="http://tc.xianyucoder.cn/blog20190821225749.png" alt></p><p>修改Docker配置:<br><img src="http://tc.xianyucoder.cn/blog20190821225804.png" alt></p><p>在下图对应的地方填入你之前编辑的Docker配置:<br><img src="http://tc.xianyucoder.cn/blog20190821225817.png" alt></p><p>这里注意格式: tcp://host:ports</p><p>配置好后提示连接成功即可。</p><h5 id="配置远程Docker的镜像作为Pycharm的解释器"><a href="#配置远程Docker的镜像作为Pycharm的解释器" class="headerlink" title="配置远程Docker的镜像作为Pycharm的解释器"></a>配置远程Docker的镜像作为Pycharm的解释器</h5><p>点开配置,点击新增配置:</p><p><img src="http://tc.xianyucoder.cn/blog20190821225830.png" alt></p><p>在新增项中选择Docker，这里会自动加载你连接的Docker服务中包含Python的全部镜像:</p><p><img src="http://tc.xianyucoder.cn/blog20190821225841.png" alt></p><h5 id="配置代码的自动上传"><a href="#配置代码的自动上传" class="headerlink" title="配置代码的自动上传"></a>配置代码的自动上传</h5><p>你以为到上面就结束了吗？解释器是配置好了，但是你的代码还在本地，所以需要配置代码自动上传到云服务器。</p><p>首先找到对应的选项,之前没有配置过的话这里选项是灰色的，需要先配置, 点击 configuration :<br><img src="http://tc.xianyucoder.cn/blog20190821225851.png" alt></p><p>点击加号，填入对应的配置，填完可以测试一下是否可用:</p><p><img src="http://tc.xianyucoder.cn/blog20190821225900.png" alt></p><p>如果不能使用，建议登录控制台，配置相关的安全组配置。</p><p>切换到隔壁的mapping选项卡,按照下图配置相关的路径和要上传到服务器上的路径:</p><p><img src="http://tc.xianyucoder.cn/blog20190821225912.png" alt></p><p>以上都做完之后，返回本小节的第一张图，有自动上传选项将它勾起，之后当你的文件有更改就会自动上传至服务器指定的路径下。</p><p>到这里，你以为结束了那就太天真了。</p><h5 id="解决代码自动上传后运行报错"><a href="#解决代码自动上传后运行报错" class="headerlink" title="解决代码自动上传后运行报错"></a>解决代码自动上传后运行报错</h5><p>当你上传代码后，运行后报错“无法找到对应的文件夹/文件”,这是因为这个时候我们的代码仅仅上传到了服务器上，但是我们的Python解释器是运行在容器中，而我们容器查找代码是查找的数据卷，所以这个时候就需要我们在配置中做一个简单的地址映射。</p><p>先看下上面一大段所涉及的原理图:</p><p><img src="http://tc.xianyucoder.cn/blog20190821225931.png" alt></p><p>接下来我们开始配置,全局的地址映射:</p><p><img src="http://tc.xianyucoder.cn/blog20190821225945.png" alt></p><p>在Docke组件中编辑配置，添加path mapping<br>效果：当我们配置云服务路径时会自动将我们本地路径映射过去</p><p>设置Python默认的mapping为对应的路径:</p><p>这里注意一点:这里的container path 指的是容器中路径,结合上面的原理图，全部的映射过程是 本地路径 -&gt; 云服务器路径 -&gt; 容器路径</p><p><img src="http://tc.xianyucoder.cn/blog20190821225954.png" alt></p><p>以上就是本次文章的全部内容了，如果对这其中的原理有不明白的咸鱼建议可以重新温习下之前关于数据卷的部分，如果还是不明白可以直接无视原理，按图索骥直接配好了事，当然欢迎大家留言交流~ ~</p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;&lt;img src=&quot;http://tc.xianyucoder.cn/blog20190821223443.png&quot; alt&gt;&lt;/p&gt;
-&lt;p&gt;有不少的朋友读了之前的一系列的Docker文章一脸懵逼，这和Python有什么关系？&lt;/p&gt;
-&lt;p&gt;Docker可以用来减轻我们搭建环境的繁琐步骤，我们完全可以把类似selenium等环境用Docker容器部署好，在代码里直接使用远端的selenium,简单方便。&lt;/p&gt;
-&lt;h4 id=&quot;使用Docker容器中的Python环境进行开发&quot;&gt;&lt;a href=&quot;#使用Docker容器中的Python环境进行开发&quot; class=&quot;headerlink&quot; title=&quot;使用Docker容器中的Python环境进行开发&quot;&gt;&lt;/a&gt;使用Docker容器中的Python环境进行开发&lt;/h4&gt;&lt;p&gt;环境准备:腾讯云CentOS 7 + Docker&lt;/p&gt;
-&lt;h5 id=&quot;修改Docker配置&quot;&gt;&lt;a href=&quot;#修改Docker配置&quot; class=&quot;headerlink&quot; title=&quot;修改Docker配置&quot;&gt;&lt;/a&gt;修改Docker配置&lt;/h5&gt;&lt;p&gt;简易版本:&lt;/p&gt;
-&lt;p&gt;编辑Docker相关配置文件:&lt;br&gt;&lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;vi /etc/docker/daemon.json&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;插入下面的配置:&lt;/p&gt;
-&lt;p&gt;注意这里是标准的json格式,格式出错Docker重启不了&lt;br&gt;&lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;string&quot;&gt;&quot;hosts&quot;&lt;/span&gt;: [&lt;span class=&quot;string&quot;&gt;&quot;tcp://0.0.0.0:2375&quot;&lt;/span&gt;,&lt;span class=&quot;string&quot;&gt;&quot;unix:///var/run/docker.sock&quot;&lt;/span&gt;]&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;重载Docker配置:&lt;code&gt;systemctl daemon-reload&lt;/code&gt;&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="Docker" scheme="http://www.xianyucoder.cn/categories/Docker/"/>
-    
-    
-      <category term="Docker" scheme="http://www.xianyucoder.cn/tags/Docker/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Dockerfile总结</title>
-    <link href="http://www.xianyucoder.cn/2019/04/04/Dockerfile/"/>
-    <id>http://www.xianyucoder.cn/2019/04/04/Dockerfile/</id>
-    <published>2019-04-04T00:39:35.000Z</published>
-    <updated>2019-08-22T08:46:43.180Z</updated>
-    
-    <content type="html"><![CDATA[<p><img src="http://tc.xianyucoder.cn/blog20190821223443.png" alt></p><h4 id="什么是Dockerfile"><a href="#什么是Dockerfile" class="headerlink" title="什么是Dockerfile?"></a>什么是Dockerfile?</h4><p>Dockerfile其实就是根据特定的语法格式撰写出来的一个普通的文本文件，可以使用docker build命令依次执行在Dockerfile中定义的一系列命令，最终生成一个新的镜像</p><p>如果你想要定制属于自己的镜像Dockerfile是你必不可少的工具。</p><h4 id="docker-build的使用"><a href="#docker-build的使用" class="headerlink" title="docker build的使用"></a>docker build的使用</h4><p>想要构建定制化的镜像，可以使用docker build运行Dockerfile构建镜像</p><p>命令格式: <code>docker build [参数] PATH | URL</code><br><a id="more"></a><br>其中:</p><p>PATH 是Dockerfile所在路径</p><p>URL 是Dockerfile所在的URL</p><p>常用参数:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-t 为镜像设置名称和tag(不适用-t参数，创建出来的镜像名称以及版本为none)</span><br><span class="line">-f 指定Dockerfile的路径(这是可以使用其他名称命名Dockerfile)</span><br></pre></td></tr></table></figure></p><h4 id="关于Dockerfile构建过程的浅析"><a href="#关于Dockerfile构建过程的浅析" class="headerlink" title="关于Dockerfile构建过程的浅析"></a>关于Dockerfile构建过程的浅析</h4><p>在之前关于Docker镜像与容器的文章中，咸鱼对镜像的文件系统做了一个简单的解释，不熟悉的朋友可以再温习一下。</p><p>我们先看下可以直接使用的Dockerfile结构是什么样的:</p><p><img src="http://tc.xianyucoder.cn/blog005MnFO1gy1g0hi3cyriej31i60mwjvh.png" alt></p><p>现在简单讲讲咸鱼对Dockerfile构建过程的理解：</p><p>Dockerfile的执行顺序是自上而下进行的，当第一次使用Dockerfile构建镜像时Dockerfile中的全部命令都会执行一边最后构建为一个完整的镜像。</p><p>在构建的过程中，每执行一条命令Docker都会执行一次commit命令，接下来的每一条命令都是在前面所有命令集成的镜像基础上再次执行的。</p><p>这样的执行有什么好处呢，假设当你执行过一次的镜像构建后想要在Dockerfile中间部分添加一行Dockerfile的命令，那么在执行新的Dockerfile命令时，Docker只会执行新增命令(包括新增命令)之后的构建命令，大大减少了性能的损耗。</p><h4 id="Dockerfile常用命令解析"><a href="#Dockerfile常用命令解析" class="headerlink" title="Dockerfile常用命令解析"></a>Dockerfile常用命令解析</h4><p>接下来就是关于Dockerfile命令的介绍更多实例可以参考官方的Dockerfile实例:<a href="https://github.com/docker-library/docs" target="_blank" rel="noopener">https://github.com/docker-library/docs</a></p><p>关于Dockerfile命令的介绍也可以参考:<a href="https://docs.docker.com/engine/reference/builder/#usage" target="_blank" rel="noopener">https://docs.docker.com/engine/reference/builder/#usage</a></p><h5 id="RUN"><a href="#RUN" class="headerlink" title="RUN"></a>RUN</h5><p>构建镜像过程中需要执行的命令，可以执行多条</p><p>同时RUN命令后可以使用两种形式输入要执行的命令 exec与shell</p><p>当使用exec方式输入执行的命令时，命令格式是json格式的，命令在当前进程执行</p><p>当使用shell方式输入执行的命令时，命令在子进程中执行(推荐使用shell方式)</p><h5 id="CMD与ENTRYPOINT"><a href="#CMD与ENTRYPOINT" class="headerlink" title="CMD与ENTRYPOINT"></a>CMD与ENTRYPOINT</h5><p>CMD是添加启动容器是需要执行的命令，多条命令只有最后一条生效，可以在启动容器事被覆盖和修改。<br>CMD命令格式有三种，exec、shell、默认提供给ENTRYPOINT的命令</p><ul><li>命令格式为shell形式，命令是以子进程的形式执行</li><li>命令格式为json形式，命令在当前进程执行(推荐使用)</li><li>命令格式为json形式，且所有json内容为参数形式，则默认提供给ENTRYPOINT</li></ul><p>ENTRYPOINT的使用CMD与相同，但这个一定会被执行，且不会被覆盖和修改</p><h5 id="LABEL与MAINTAINER"><a href="#LABEL与MAINTAINER" class="headerlink" title="LABEL与MAINTAINER"></a>LABEL与MAINTAINER</h5><p>LABEL用于为镜像添加对应的数据</p><p>添加的数据格式为:LABEL key=value …. Key=value</p><p>MAINTAINER:用于表示镜像的作者(即将被遗弃使用)</p><h5 id="ENV与ARG"><a href="#ENV与ARG" class="headerlink" title="ENV与ARG"></a>ENV与ARG</h5><p>ENV用于设置执行命令时的环境变量，并且在构建完成后，仍然生效</p><p>ARG用于设置只在构建过程中使用的环境变量，构建完成后消失</p><h5 id="ADD与COPY"><a href="#ADD与COPY" class="headerlink" title="ADD与COPY"></a>ADD与COPY</h5><p>ADD用于将本地文件或目录拷贝到镜像的文件系统中，且能解压特定格式文件，且能将URL作为要拷贝的文件(会先将URL的文件先下载下来再拷贝)</p><p>COPY将本地文件或目录拷贝到镜像的文件系统中(推荐使用COPY+RUN)，因为ADD命令对于需要解压的文件支持的不是非常智能</p><h5 id="VOLUME"><a href="#VOLUME" class="headerlink" title="VOLUME"></a>VOLUME</h5><p>添加数据卷</p><p>命令格式可以为数组格式,也可以直接接上路径，路径为容器或镜像中的路径<br>常用命令行格式为:</p><p>VOLUME [“/XXX”]</p><p>VOLUME /XXX</p><h5 id="USER与WORKDIR"><a href="#USER与WORKDIR" class="headerlink" title="USER与WORKDIR"></a>USER与WORKDIR</h5><p>USER指定以哪个用户的名义执行RUN，CMD和ENTRPOINT等命令</p><p>WORKDIR设置工作目录</p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;&lt;img src=&quot;http://tc.xianyucoder.cn/blog20190821223443.png&quot; alt&gt;&lt;/p&gt;
-&lt;h4 id=&quot;什么是Dockerfile&quot;&gt;&lt;a href=&quot;#什么是Dockerfile&quot; class=&quot;headerlink&quot; title=&quot;什么是Dockerfile?&quot;&gt;&lt;/a&gt;什么是Dockerfile?&lt;/h4&gt;&lt;p&gt;Dockerfile其实就是根据特定的语法格式撰写出来的一个普通的文本文件，可以使用docker build命令依次执行在Dockerfile中定义的一系列命令，最终生成一个新的镜像&lt;/p&gt;
-&lt;p&gt;如果你想要定制属于自己的镜像Dockerfile是你必不可少的工具。&lt;/p&gt;
-&lt;h4 id=&quot;docker-build的使用&quot;&gt;&lt;a href=&quot;#docker-build的使用&quot; class=&quot;headerlink&quot; title=&quot;docker build的使用&quot;&gt;&lt;/a&gt;docker build的使用&lt;/h4&gt;&lt;p&gt;想要构建定制化的镜像，可以使用docker build运行Dockerfile构建镜像&lt;/p&gt;
-&lt;p&gt;命令格式: &lt;code&gt;docker build [参数] PATH | URL&lt;/code&gt;&lt;br&gt;
-    
-    </summary>
-    
-      <category term="Docker" scheme="http://www.xianyucoder.cn/categories/Docker/"/>
-    
-    
-      <category term="Docker" scheme="http://www.xianyucoder.cn/tags/Docker/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Docker总结</title>
-    <link href="http://www.xianyucoder.cn/2019/04/01/Docker-end/"/>
-    <id>http://www.xianyucoder.cn/2019/04/01/Docker-end/</id>
-    <published>2019-04-01T00:39:35.000Z</published>
-    <updated>2019-08-21T14:49:01.328Z</updated>
-    
-    <content type="html"><![CDATA[<p><img src="http://tc.xianyucoder.cn/blog20190821223443.png" alt></p><h4 id="Docker总结篇"><a href="#Docker总结篇" class="headerlink" title="Docker总结篇"></a>Docker总结篇</h4><p>转眼关于Docker基础的相关文章就已经写完了，看完这一系列文章，希望你能有所收获。<br>以下为本系列的全部文章:</p><p>Docker系列文章除了文章的输出外，咸鱼在学习的过程中做了一份Docker的思维导图，如果有需要的朋友可以回复「Docker导图」获取PDF版。</p><p>以下为思维导图的图片版，以上相关资料，如有谬误，烦请指正~</p><p><img src="http://tc.xianyucoder.cn/blog005MnFO1gy1g0py758kmij35vkbpa4qy.png" alt></p><p>关于Docker的相关应用，之后咸鱼会继续输出相关文章。</p><p>除此之外，咸鱼接下来的文章不会仅仅局限在爬虫方向，例如web、数据可视化等方向都会有相关的文章输出，如果读到这里，你有更好的建议不妨在底部留言区说出你对咸鱼的建议，咸鱼不胜感激。</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;&lt;img src=&quot;http://tc.xianyucoder.cn/blog20190821223443.png&quot; alt&gt;&lt;/p&gt;
-&lt;h4 id=&quot;Docker总结篇&quot;&gt;&lt;a href=&quot;#Docker总结篇&quot; class=&quot;headerlink&quot; title=&quot;Doc
-      
-    
-    </summary>
-    
-      <category term="Docker" scheme="http://www.xianyucoder.cn/categories/Docker/"/>
-    
-    
-      <category term="Docker" scheme="http://www.xianyucoder.cn/tags/Docker/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Docker Compose浅析</title>
-    <link href="http://www.xianyucoder.cn/2019/03/29/Docker-Compose/"/>
-    <id>http://www.xianyucoder.cn/2019/03/29/Docker-Compose/</id>
-    <published>2019-03-29T00:39:35.000Z</published>
-    <updated>2019-08-21T14:51:12.941Z</updated>
-    
-    <content type="html"><![CDATA[<p><img src="http://tc.xianyucoder.cn/blog20190821223443.png" alt></p><h4 id="什么是Docker-Compose"><a href="#什么是Docker-Compose" class="headerlink" title="什么是Docker Compose"></a>什么是Docker Compose</h4><ul><li>Docker Compose是一个能一次性定义和管理多个Docker容器的工具。</li><li>Compose中定义和启动的每一个容器都相当于一个服务(service)</li><li>Compose中能定义和启动多个服务，且它们之间通常具有协同关系</li><li>我们通常使用YAML文件来配置我们应用程序的服务，并且使用单个命令（docker-compose up），就可以创建并启动配置文件中配置的所有服务</li></ul><h4 id="如何安装Docker-Compose"><a href="#如何安装Docker-Compose" class="headerlink" title="如何安装Docker Compose"></a>如何安装Docker Compose</h4><p>Windows与Mac:<br>Docker for Mac与Docker for Windows自带docker-compose</p><p>Linux系统:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sudo curl -L https://github.com/docker/compose/releases/download/[版本号]/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose</span><br><span class="line"></span><br><span class="line">sudo chmod +x /usr/local/bin/docker-compose</span><br><span class="line"></span><br><span class="line">安装完成后使用 docker-compose version 查看版本</span><br><span class="line"></span><br><span class="line">可以访问 https://github.com/docker/compose/releases 查看历史版本</span><br></pre></td></tr></table></figure></p><p><img src="https://ws1.sinaimg.cn/mw690/005MnFO1gy1g0izxw3u0ej30vq05e0vf.jpg" alt="安装后截图"></p><a id="more"></a><h4 id="Docker-Compose文件配置与注意事项"><a href="#Docker-Compose文件配置与注意事项" class="headerlink" title="Docker Compose文件配置与注意事项"></a>Docker Compose文件配置与注意事项</h4><p>Docker Compose file的配置项有非常多需要注意的点，如果一一赘述就相当于搬运官方文档了，这里标识几个经常使用的配置项，以供大家参考:</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">version：指定Docker Compose File版本号</span><br><span class="line">services：定义多个服务并配置启动参数</span><br><span class="line">volumes：声明或创建在多个服务中共同使用的数据卷对象</span><br><span class="line">networks：定义在多个服务中共同使用的网络对象</span><br><span class="line">configs：声明将在本服务中要使用的一些配置文件</span><br><span class="line">secrets：声明将在本服务中要使用的一些秘钥、密码文件</span><br><span class="line">x-***：自定义配置。主要用于复用相同的配置。</span><br></pre></td></tr></table></figure><p>官方文档直通车：<a href="https://docs.docker.com/compose/compose-file/#service-configuration-reference" target="_blank" rel="noopener">https://docs.docker.com/compose/compose-file/#service-configuration-reference</a></p><h5 id="Docker-Compose-File-注意事项"><a href="#Docker-Compose-File-注意事项" class="headerlink" title="Docker Compose File 注意事项"></a>Docker Compose File 注意事项</h5><p>Docker Compose File 的格式要求非常严格，一定需要注意的有:</p><ul><li>配置项的缩进使用空格</li><li>注意配置项冒号后要添加空格</li><li>编写完Docker Compose File后可以使用docker-compose config 检查文件是否出错</li></ul><h4 id="Docker-Compose-项目实例演示"><a href="#Docker-Compose-项目实例演示" class="headerlink" title="Docker Compose 项目实例演示"></a>Docker Compose 项目实例演示</h4><h5 id="Kafka运行环境搭建"><a href="#Kafka运行环境搭建" class="headerlink" title="Kafka运行环境搭建"></a>Kafka运行环境搭建</h5><p>这个项目的Docker File在昨天的文章中已经给大家展示过了，这里重新贴一次，让大家先有个大概印象。</p><p><img src="https://ws1.sinaimg.cn/mw690/005MnFO1gy1g0hi3cyriej31i60mwjvh.jpg" alt></p><h5 id="使用Docker-Compose-部署小型flask-web-项目"><a href="#使用Docker-Compose-部署小型flask-web-项目" class="headerlink" title="使用Docker Compose 部署小型flask web 项目"></a>使用Docker Compose 部署小型flask web 项目</h5><ol><li><p>首先准备好你的flask项目源码，并上传至云服务器上</p></li><li><p>将项目需要使用的类库导出 requirements.txt 备用</p></li><li><p>编写运行对应项目的Dockerfile,并构建出一个新的项目镜像(这步也可以不做，但是这里为了方便理清思路建议按步骤一步一步来)</p></li></ol><p><img src="https://ws1.sinaimg.cn/mw690/005MnFO1gy1g0j0x05rhvj30p00a6q4n.jpg" alt></p><ol start="4"><li>按照项目需要将要启动的容器写成对应的服务</li></ol><p><img src="https://ws1.sinaimg.cn/mw690/005MnFO1gy1g0j0yb42v9j30fy0b6wgz.jpg" alt></p><ol start="5"><li>使用 docker-compose up -d运行服务</li></ol><h4 id="Docker-Compose-与-Dockerfile-总结"><a href="#Docker-Compose-与-Dockerfile-总结" class="headerlink" title="Docker Compose 与 Dockerfile 总结"></a>Docker Compose 与 Dockerfile 总结</h4><p>关于Dockerfile与Docker Compose的两篇文章关于理论的描述比较少，大多都是实操的内容，如果你看到这里希望你能结合之前的文章动手实践一下，加深印象才能了解到关于Dockerfile和Dcoker compose 相关的难点。</p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;&lt;img src=&quot;http://tc.xianyucoder.cn/blog20190821223443.png&quot; alt&gt;&lt;/p&gt;
-&lt;h4 id=&quot;什么是Docker-Compose&quot;&gt;&lt;a href=&quot;#什么是Docker-Compose&quot; class=&quot;headerlink&quot; title=&quot;什么是Docker Compose&quot;&gt;&lt;/a&gt;什么是Docker Compose&lt;/h4&gt;&lt;ul&gt;
-&lt;li&gt;Docker Compose是一个能一次性定义和管理多个Docker容器的工具。&lt;/li&gt;
-&lt;li&gt;Compose中定义和启动的每一个容器都相当于一个服务(service)&lt;/li&gt;
-&lt;li&gt;Compose中能定义和启动多个服务，且它们之间通常具有协同关系&lt;/li&gt;
-&lt;li&gt;我们通常使用YAML文件来配置我们应用程序的服务，并且使用单个命令（docker-compose up），就可以创建并启动配置文件中配置的所有服务&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h4 id=&quot;如何安装Docker-Compose&quot;&gt;&lt;a href=&quot;#如何安装Docker-Compose&quot; class=&quot;headerlink&quot; title=&quot;如何安装Docker Compose&quot;&gt;&lt;/a&gt;如何安装Docker Compose&lt;/h4&gt;&lt;p&gt;Windows与Mac:&lt;br&gt;Docker for Mac与Docker for Windows自带docker-compose&lt;/p&gt;
-&lt;p&gt;Linux系统:&lt;br&gt;&lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;sudo curl -L https://github.com/docker/compose/releases/download/[版本号]/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;sudo chmod +x /usr/local/bin/docker-compose&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;安装完成后使用 docker-compose version 查看版本&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;可以访问 https://github.com/docker/compose/releases 查看历史版本&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;https://ws1.sinaimg.cn/mw690/005MnFO1gy1g0izxw3u0ej30vq05e0vf.jpg&quot; alt=&quot;安装后截图&quot;&gt;&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="Docker" scheme="http://www.xianyucoder.cn/categories/Docker/"/>
-    
-    
-      <category term="Docker" scheme="http://www.xianyucoder.cn/tags/Docker/"/>
     
   </entry>
   
