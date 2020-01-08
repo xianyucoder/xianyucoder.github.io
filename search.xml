@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[怼就完事了，总结几种验证码的解决方案]]></title>
+    <url>%2F2020%2F01%2F08%2F%E6%80%BB%E7%BB%93%E5%87%A0%E7%A7%8D%E9%AA%8C%E8%AF%81%E7%A0%81%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%2F</url>
+    <content type="text"><![CDATA[截止到今天咸鱼以及写了很多期关于 Js 逆向的文章了，不过这么多的文章都有一个共通点，都是关于加密参数或者密码加密的解析，很多读者在后台私信希望能够出一些关于滑动验证或者人机验证的分析教程。 于是咸鱼总结了目前遇到过的的验证码类型以及总结出来的相关处理方式和大家聊一聊。 现在市面上的验证码的类型大致有下面几种类型。 图形验证码比较常见的英文数字组合成的图形验证码，常常辅以各类干扰线和扭曲图片中的内容达到提高混淆难度的目的，并且通过加长图片中的文字长度提升识别成本。 像这类验证码的处理方案有很多种，简单给大家概括一下。 难度中低的两类验证码，安装 tesserocr，通过 OCR 技术结合 Python 的 tesserocr 库可以就可以完成识别。如果验证码中带有简单干扰线同样可以使用灰度和二值化的方法提高代码的识别率。 常用示例代码： 1234567891011121314import tesserocrfrom PIL import Imageimage = Image.open('code2.jpg')image = image.convert('L')threshold = 127table = []for i in range(256): if i &lt; threshold: table.append(0) else: table.append(1)image = image.point(table, '1')result = tesserocr.image_to_text(image)print(result) 难度较高的多位英数+扭曲图形验证码包括上面总结的中低难度的图形验证码，可以通过 Tensorflow 训练的方式达到识别验证码的目的。 之前我有一个系列文章介绍了整个训练流程，大家可以点击参考。 https://mp.weixin.qq.com/s/-BfjGC6KZNe2PJ47H85LIQ https://mp.weixin.qq.com/s/qVZtKveH8h2BQn2OjsXZYQ https://mp.weixin.qq.com/s/AfefH4b5HqNtxTVOjZ-XvA 使用这个方式的朋友记得要先准备好足够用的验证码的样本，只要你的模型不是太差，通过足量的样本，不断调优是可以达到一个较为可观的是识别率的。 目前体验过最好的程序是冷月的四位英数识别成功率高达 99.99% ，不过据知情人透露整个训练的样本达到了 6000 W ，耗费的时间精力可想而知。 还有一类解决方法是使用打码服务，这个之后再说。 旋转验证码这类验证码是将验证码的图片旋转并且需要用户拖动下方滑块完成将图片摆正的操作才可以完成验证。 目前国内市面的服务商还没有一个好的解决方案，不过某家的验证码有一些小小的 bug，依靠劳苦大众的智慧在 GitHub 上我发现了一个很 Nice 的项目。 项目地址：https://github.com/scupte/xuanzhaunyanz 因为图库的容量问题，没有超大的图库作为后盾，将全部的原图抓取下来对比完全可以得到旋转的角度了。 部分对比代码： 1234567891011121314151617181920212223242526272829303132333435363738# -*- coding: utf-8 -*-import cv2import numpy as npimagepath = '9_1.png'img = cv2.imread(imagepath)gray = cv2.cvtColor ( img , cv2.COLOR_BGR2GRAY )ret, binary = cv2.threshold(gray,127,255,cv2.THRESH_BINARY) contours, hierarchy = cv2.findContours(binary,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE) #cv2.drawContours(img,contours,-1,(0,0,255),1) for cnt in contours: # 最小外界矩形的宽度和高度 width, height = cv2.minAreaRect(cnt)[1] if width* height &gt; 100: # 最小的外接矩形 rect = cv2.minAreaRect(cnt) box = cv2.boxPoints(rect) # 获取最小外接矩形的4个顶点 box = np.int0(box) print box if 0 not in box.ravel(): #绘制最小外界矩形 for i in range(4): cv2.line(img, tuple(box[i]), tuple(box[(i+1)%4]), 0) # 5 theta = cv2.minAreaRect(cnt)[2] if abs(theta) &lt;= 45: print('图片的旋转角度为%s.'%theta) # angle = thetaprint theta cv2.imshow("img", img) cv2.waitKey(0) 滑动验证码说到滑动验证码，一定一定要提某验，虽然说市面上关于滑动验证码的产品有很多，但是某验的地位就像10年前脑白金在保健品市场的地位一样，业界标杆啊。 不过它越牛逼，市场上用它做防护的网站也越多，像国家企业信用信息公示系统、B 站、狗东等等。 像某验的解决方案也有很多，不过大同小异。 selenium 模拟滑动使用 selenium 这个大家都听过，步骤大致是将缺口图和原图进行对比获取缺口的横坐标，并使用一定的计算完成轨迹模拟，之后再使用 selenium 滑动完成缺口的拼接。 这一类方法的优点是门槛低，原理简单，缺点是完成滑动耗时较长，成功率无法估计（同一轨迹计算使用多次后成功率迅速下降） 常见的轨迹生成代码： 12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061import numpy as npimport mathdef ease_out_expo(x): """ 曲线函数 :param x: :return: """ if x == 1: return 1 else: return 1 - pow(2, -10 * x)def get_tracks(distance, seconds): """ 轨迹生成函数 :param distance: 滑动总距离 :param seconds: 滑动总时间 :return: """ tracks = [0] # 存放轨迹的数组 offsets = [0] # 存放滑动总距离的记录数组 for t in np.arange(0.0, seconds, 0.1): # 产生一个数列如[0.0, 0.1, 0.2, 0.3] offset = round(ease_out_expo(t/seconds) * distance) # 根据时间t计算在曲线上的滑动距离 tracks.append(offset - offsets[-1]) # 本次计算的距离减去上一次移动的距离，得到本次的轨迹 offsets.append(offset) # 至本次滑动了的总距离 return offsets, tracksa, b = get_tracks(138, 3)print(a, b)def get_tracksb(distance): """ 根据物理的先加速再减速规律计算 :param distance: :return: """ distance += 20 # 加上20是为了滑动超过缺口再回滑 v = 0 # 初速度 t = 0.2 # 以0.2秒为一个计算周期 forward_tracks = [] # 轨迹记录数组 current = 0 # 初始移动距离 mid = distance * 3 / 5 # 减速阀值即五分之三的距离加速剩下距离减速 while current &lt; distance: # 总移动距离等于输入距离时结束 if current &lt; mid: # 加速状态 a = 2 # 加速度为+2 else: # 减速状态 a = -3 # 加速度-3 s = v * t + 0.5 * a * (t ** 2) # 计算0.2秒周期内的位移 v = v + a * t # 计算本次周期后的速度 current += s # 将之前移动的总距离，加上本次0.2秒周期内移动的距离 forward_tracks.append(round(s)) # 记录本次0.2秒周期内的移动距离为轨迹 back_tracks = [-3, -3, -2, -2, -2, -2, -2, -1, -1, -1] # 手动将开头加上的20，生成减去轨迹，即回滑轨迹 return &#123;'forward_tracks': forward_tracks, 'back_tracks': back_tracks&#125; Js 破解关键的参数这类方法的门槛就比较高了，通过断点调试 Js，逆向分析滑动后提交的参数的生成逻辑完成参数的生成，之后构造请求完成提交，当然这中间也是需要分析图片的缺口位置与模拟轨迹，不过没有使用到模拟所以速度快成功率高。 缺点是风险高，代码维护成本高，更新一个新版本就要重新分析而且逆向相关产品的代码是有一定的法律风险的，免费包吃住也不是开玩笑的，所以很多能够商业化的大佬们都闷声发大财不会到处张扬。 使用现有的服务上面两种方法各有各的优缺，很多人就想把这一块的工作量与风险分出去，这就要使用到第三方的服务商了。 不过目前国内市场上的服务商并没有这类服务，目前咸鱼在使用的是一家俄罗斯的服务商 - 2Captcha 这个服务商提供的验证码服务有很多种，其中包含了我们比较关心的 GeeTest 。 下面咸鱼给大家简单介绍下如何使用服务。（不要问为啥收费，人家服务商也要吃饭，况且这个价格实在很便宜了） 首先，注册一个账号，官网是 http://2captcha.com/zh 完成注册之后会跳转到控制台界面，这里最重要的是获取到属于你的 API Key 。 好，拿到这个 API Key 之后就可以上手使用服务完成滑动的破解了。 通过参考官方的 API 文档，我们只需要构建 Get 请求就可以了。 第一个 Get 请求的组成是这样的： 1234567https://2captcha.com/in.php?key= 上面获取的API KEY &amp;method=geetest&amp;gt= 极验参数&amp;challenge= 极验参数&amp;api_server=api-na.geetest.com(可选)&amp;pageurl= 滑动验证码所在的网页地址 参数列表： 参数名 参数介绍 key API KEY method 表示验证码类型 gt 极验参数1 challenge 极验参数2 api_server api-na.geetest.com(选填) pageurl 滑动验证码所在的网页地址 这里解释下关于 gt 与 challenge 这两个参数的获取。 第一个请求中这两个参数其中 gt这个参数是固定的，找一个使用某验的网站就可以获取。例如： challenge这个参数是有一个 Get 请求返回，你找到这个请求之后按照请求重新获取一次，如果是 XHR 的话也可以直接 reply XHR 。 提交完第一个请求之后，会返回类似下面的结果。 1OK|2122988149 or as JSON &#123;"status":1,"request":"2122988149"&#125; 这里面的一串数字就是会话 ID。 有了这个会话 ID 之后我们就可以构建下一个请求了，这中间需要等待一些时间。 1234https://2captcha.com/res.php?key=API KEY&amp;action=get&amp;id=2122988149 参数列表： 参数名 参数介绍 key API KEY action Get id 上一个请求返回的会话ID 这个请求返回的结果就是我们需要的加密参数了。 12345&#123; "challenge":"1a2b3456cd67890e12345fab678901c2de", "validate":"09fe8d7c6ba54f32e1dcb0a9fedc8765", "seccode":"12fe3d4c56789ba01f2e345d6789c012|jordan"&#125; 常见的几类验证码，已经全部介绍完了。 肯定有有人问像 google 家的 ReCaptcha 以及和他相似的 hCaptcha 的解决方案没有提到啊？ 像以上两类验证码，刚刚提到的服务商也同样有提供接口打码，至于其他的解决方案，目前咸鱼还没有接触过，毕竟这两类验证码，咸鱼手动点击都没办法做到一次通过，目前也只能依赖服务商了。]]></content>
+      <categories>
+        <category>验证码</category>
+      </categories>
+      <tags>
+        <tag>验证码</tag>
+        <tag>TensorFlow</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[JS逆向-裁判文书网加密分析20190902版]]></title>
     <url>%2F2019%2F09%2F17%2F%E6%AF%8F%E6%97%A5JS-%E8%A3%81%E5%88%A4%E6%96%87%E4%B9%A6%E7%BD%91-190902%E7%89%88%2F</url>
     <content type="text"><![CDATA[裁判文书网20190902版列表页 __RequestVerificationToken搜索关键词__RequestVerificationToken 【图1-1】 找到base.random(24)这个方法，这个复制出来就解决了。 12345678function get_random(size)&#123; var str = "", arr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']; for(var i=0; i&lt;size; i++)&#123; str += arr[Math.round(Math.random() * (arr.length-1))]; &#125; return str;&#125; Ciphertext通过XHR断点，查看堆栈信息【图2-1】 加密位置为【图2-2】 直接扣取ciphertext这个方法的代码即可，这里展示部分代码： 12345678910111213cipher=function()&#123; var date = new Date(); var timestamp = date.getTime().toString(); var salt =get_random(24); var year=date.getFullYear().toString(); var month = (date.getMonth()+1&lt;10 ? "0"+(date.getMonth()+1) : date.getMonth()).toString(); var day = (date.getDate()&lt;10 ? "0"+date.getDate() : date.getDate()).toString(); var iv =year+month+day; var enc = DES3.encrypt(timestamp,salt,iv).toString(); var str = salt+iv+enc; var ciphertext = strTobinary(str); return ciphertext;&#125; pageld这个参数在首页点击时自动带入，经过测试并不是必须项，可以通过分析首页的源码查看到调用的方法。 12345678910function get_uuid()&#123; var guid = ""; for (var i = 1; i &lt;= 32; i++) &#123; var n = Math.floor(Math.random() * 16.0).toString(16); guid += n; // if ((i == 8) || (i == 12) || (i == 16) || (i == 20)) guid += // "-"; &#125; return guid;&#125;]]></content>
@@ -184,6 +196,18 @@
       </tags>
   </entry>
   <entry>
+    <title><![CDATA[聪明工作-如何从互联网中高效摄取信息？]]></title>
+    <url>%2F2019%2F08%2F26%2F%E8%81%AA%E6%95%8F%E5%B7%A5%E4%BD%9C-%E5%A6%82%E4%BD%95%E4%BB%8E%E4%BA%92%E8%81%94%E7%BD%91%E4%B8%AD%E6%9C%89%E9%AB%98%E6%95%88%E6%91%84%E5%8F%96%E4%BF%A1%E6%81%AF%EF%BC%9F%2F</url>
+    <content type="text"><![CDATA[如何从互联网中有高效摄取信息？信息源检查清单 信息源的目的（想学什么？） 信息源的质量 信息源的半衰期 = 信息的有效时间 信息源的稀缺程度 = 价值高低 信息的半衰期越久，稀缺程度越高，价值越大 对于信息源掌握主动权 （区分 push 和 pull ) = 人人喜闻乐见的，终会趋于庸俗。 警惕回声效应，应该从多角度获取信息 处理信息的能力 速读 通过关键词快速判读信息的价值 溯源 知道自己读过什么 = 稍后读 保留信息来源，随时进行回顾 吸纳 记录下来后应该对信息进行自我归纳，才能吸收成为自己的东西]]></content>
+      <categories>
+        <category>聪明工作</category>
+      </categories>
+      <tags>
+        <tag>信息摄取</tag>
+        <tag>互联网</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[聪明工作-如何做好任务管理？]]></title>
     <url>%2F2019%2F08%2F26%2F%E8%81%AA%E6%98%8E%E5%B7%A5%E4%BD%9C-%E5%A6%82%E4%BD%95%E5%81%9A%E5%A5%BD%E4%BB%BB%E5%8A%A1%E7%AE%A1%E7%90%86%EF%BC%9F%2F</url>
     <content type="text"><![CDATA[任务管理就是人生规划 长期任务（人生规划） 健康 教育 理财 中期任务（职业规划） 实现自我价值 短期任务（周计划，日计划） 双任务系统 今天必须做完的事（短期或中期任务） 对自己很重要的事情（长期任务） 理解任务管理的体系（LTF体系） list tag filter 高级任务管理注重的点在与 filter 的使用 OmniFocus &amp; Todoist 团队协作：Teambition 大量数据的任务管理：在线表格工具]]></content>
@@ -194,18 +218,6 @@
         <tag>任务管理</tag>
         <tag>任务管理体系</tag>
         <tag>LTF体系</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[聪明工作-如何从互联网中高效摄取信息？]]></title>
-    <url>%2F2019%2F08%2F26%2F%E8%81%AA%E6%95%8F%E5%B7%A5%E4%BD%9C-%E5%A6%82%E4%BD%95%E4%BB%8E%E4%BA%92%E8%81%94%E7%BD%91%E4%B8%AD%E6%9C%89%E9%AB%98%E6%95%88%E6%91%84%E5%8F%96%E4%BF%A1%E6%81%AF%EF%BC%9F%2F</url>
-    <content type="text"><![CDATA[如何从互联网中有高效摄取信息？信息源检查清单 信息源的目的（想学什么？） 信息源的质量 信息源的半衰期 = 信息的有效时间 信息源的稀缺程度 = 价值高低 信息的半衰期越久，稀缺程度越高，价值越大 对于信息源掌握主动权 （区分 push 和 pull ) = 人人喜闻乐见的，终会趋于庸俗。 警惕回声效应，应该从多角度获取信息 处理信息的能力 速读 通过关键词快速判读信息的价值 溯源 知道自己读过什么 = 稍后读 保留信息来源，随时进行回顾 吸纳 记录下来后应该对信息进行自我归纳，才能吸收成为自己的东西]]></content>
-      <categories>
-        <category>聪明工作</category>
-      </categories>
-      <tags>
-        <tag>信息摄取</tag>
-        <tag>互联网</tag>
       </tags>
   </entry>
   <entry>
@@ -308,8 +320,8 @@
       </categories>
       <tags>
         <tag>js逆向</tag>
-        <tag>RSA</tag>
         <tag>基础</tag>
+        <tag>RSA</tag>
       </tags>
   </entry>
   <entry>
@@ -321,20 +333,8 @@
       </categories>
       <tags>
         <tag>js逆向</tag>
-        <tag>RSA</tag>
         <tag>基础</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[JS逆向-漫画柜加密分析]]></title>
-    <url>%2F2019%2F07%2F16%2Fjs%E5%8A%A0%E5%AF%86%E5%AD%A6%E4%B9%A005-%E6%BC%AB%E7%94%BB%E6%9F%9C%2F</url>
-    <content type="text"><![CDATA[这次文章是补之前文章提到的eval加密 – 漫画柜 之前文章简单介绍了常见的JS混淆 查看请求打开控制台,随意点击一本漫画,进入到正文页面,查看请求: 可以很容易看到这里有个md5的参数值是加密的。 定位加密位置这里有两种定位方法:第一种面向老手,先翻一遍请求,网页源码可以迅速定位。 第二种就是按照之前的文章提到的分析流程,我们分析一遍,虽然麻烦点会走弯路但是适合新手: 没有看过的朋友可以点击下面的文章链接回顾一下: 先搜索一下关键字,这里加密的参数是md5,所以试试下面这几种搜索关键词:12345md5:md5 :md5=md5 =md5 搜索结果如下: 通过关键字搜索没有得到想要的结果,按照之前文章提到的流程到这里就卡住了。 不过我们看到上面请求里还有另一参数cid,既然都是请求参数,那么md5这个参数可能是和他一起提交的,我们可以试试搜索cid关键词试试。 搜索cid这个参数结果如下: 果然有点东西,我们点进第一个文件,搜索下有多少和cid这个参数相关搜索项,检索之后有18项相关,通过分析代码,很快我们定位到下图的代码,打上断点重新加载看看是否能进入我们的断点位置: 果然成功进入断点了,但是好像并没有我们想要得md5参数,这个时候好像又卡住了。 不过很快我们通过查看左侧堆栈信息找到了md5参数的位置: 这里vm的代码又是通过下面这段代码生成的: 这开头,不就是熟悉的eval加密吗。 到这里就定位到解密的地方了,但是这段eval代码又是在哪呢？ 发现左侧有.html的标识,搜索是搜不到了,我们就看看这个页面的源代码吧,发现右键是进入下一页漫画,所以通过控制台的Doc选项卡看看,通过格式化代码我们找到了上面的eval代码。 1234567891011121314151617181920212223window["\x65\x76\x61\x6c"](function(p, a, c, k, e, d) &#123; e = function(c) &#123; return (c &lt; a ? "" : e(parseInt(c / a))) + ((c = c % a) &gt; 35 ? String.fromCharCode(c + 29) : c.toString(36)) &#125; ; if (!''.replace(/^/, String)) &#123; while (c--) d[e(c)] = k[c] || e(c); k = [function(e) &#123; return d[e] &#125; ]; e = function() &#123; return '\\w+' &#125; ; c = 1; &#125; ;while (c--) if (k[c]) p = p.replace(new RegExp('\\b' + e(c) + '\\b','g'), k[c]); return p; &#125;('I.H(&#123;"G":4,"J":"M","L":"4.2","K":B,"A":"z","C":["F.2.3","E.2.3","D.2.3","N.2.3","X.2.3","W.2.3","V.2.3","Y.2.3","11.2.3","10.2.3","Z.2.3","Q.2.3","P.2.3","O.2.3","R.2.3","U.2.3","T.2.3","S.2.3","d.2.3","c.2.3","b.2.3","e.2.3","h.2.3","g.2.3","f.2.3","a.2.3","5.2.3","6.2.3","8.2.3","7.2.3","9.2.3","i.2.3","u.2.3","t.2.3","s.2.3","v.2.3","y.2.3","x.2.3","w.2.3","r.2.3","m.2.3","k.2.3","j.2.3","n.2.3","q.2.3","p.2.3","o.2.3","12.2.3","1E.2.3","1D.2.3","1C.2.3","1F.2.3","1I.2.3","1H.2.3","1G.2.3","1x.2.3","1w.2.3","1v.2.3","1y.2.3","1B.2.3","1A.2.3","1z.2.3","1V.2.3","1S.2.3","1T.2.3","1R.2.3","1W.2.3","1U.2.3","1L.2.3","1M.2.3","1J.2.3","1K.2.3","1P.2.3","1Q.2.3","1N.2.3","1O.2.3","1c.2.3","1b.2.3","1a.2.3","1d.2.3","1g.2.3","1f.2.3","1e.2.3","15.2.3","14.2.3","13.2.3","16.2.3"],"19":18,"17":1q,"1p":"/1o/l/1r/1u/","1t":1,"1s":"","1j":1i,"1h":0,"1k":&#123;"1n":"1m"&#125;&#125;).1l();', 62, 121, 'D7BWAcHNgdwUwEbmARgJwHYAcwAMAmANgIz3wwJwLVwGZcytq966UyBWAws3A93OgINBTdGRQF8ZACwEOZevhll8BWi0m1puGWpkbdkvSF18ZAg7pW7iM0rq4ye1xyxpyWc2grr1aNtp+LFy0LrRMtGgsFBEsxLSkgDTegoDuysAAxgB2AIYAtnCohBgyCgBmAJYANnAAznjCdA2SBA18gsAIFQAmwBV5kAAiOQAuOcAAygCyABKduQWZPZ3gFRnAgOr+gJGqgATyDaw2KPQoh2pHeCiSKDongr4oFChUKMQPF1wvDcS4DrhcuC4zH8GhRcM8+JcGjRJA0mLhoroKDIqFguFgXFg5Ki8Fh6JiccQsKQallgCMAE4AV0KlSyFVqAAs4L0fkwMAiMBRsHgMMROTyaEwcWpcTjJFgdHCsOxwOS4AA3ACSvReJR4WTgAA8RsrgLUqsBZXBFXSRsAspSAII5S0AYRm3QAYgANDJYABagwmAHkYOSKuTupbgHlugpwLUZaMGcAicAqgyAF6dKoAewyAGsAPoZda1MYjSn1Dp/CgcKgcYgcBwcLiVvDlv4IwiSQg6b4ths0YgNvgcSw0Lh4ZG6BH9v46DhyWsN+hThtqDiGUEYASrn7tpiEZs0Cg8uQYXyHn4uDBqDDL+glPCELiEFyEeiEGzPgG+YoAqhtgGGe8AjBAA=='['\x73\x70\x6c\x69\x63']('\x7c'), 0, &#123;&#125;)) 解密过程我们来捋一捋整个过程,首先网站加载页面,执行了这段eval,解密了参数里的一堆密文,之后根据参数请求具体内容,那我们逆向只要拿到页面的代码,用execjs执行这段代码不就能拿到md5值直接请求了吗。 但是把这段代码直接复制到eval解密里好像并没有用,我感觉应该和末尾的加密参数有关,经过测试这段参数虽然长得和Base64很像但并不是base64加密,我又卡住了,所以我求助了大佬。 经过 @ 悦来客栈的老板 的提点我尝试了下果然是这段是这段代码有问题: 经过解密运行的结果就是我们在vm中看到的结果了: 到这里就简单了,请求网页的代码,使用正则替换代码里的密文,使用execjs执行这段代码就可以得到md5值,再使用这个md5值就可以请求了。 结束总结这次的解密文章写的比较啰嗦,虽然整个加密比较简单,但是自己在这整个过程也踩了不少坑,走了不少弯路。 JS逆向是细致活,需要大胆假设,小心求证,耐心调试,同时在逆向过程中卡住了需要求助的时候也不要不好意思。把自己思考的结果、遇到的问题描述清楚附上小小的红包和大佬聊聊,会有意想不到的惊喜。 共勉~]]></content>
-      <categories>
-        <category>js逆向</category>
-      </categories>
-      <tags>
-        <tag>js逆向</tag>
-        <tag>漫画柜</tag>
+        <tag>RSA</tag>
       </tags>
   </entry>
   <entry>
@@ -347,6 +347,18 @@
       <tags>
         <tag>js逆向</tag>
         <tag>淘大象</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[JS逆向-漫画柜加密分析]]></title>
+    <url>%2F2019%2F07%2F16%2Fjs%E5%8A%A0%E5%AF%86%E5%AD%A6%E4%B9%A005-%E6%BC%AB%E7%94%BB%E6%9F%9C%2F</url>
+    <content type="text"><![CDATA[这次文章是补之前文章提到的eval加密 – 漫画柜 之前文章简单介绍了常见的JS混淆 查看请求打开控制台,随意点击一本漫画,进入到正文页面,查看请求: 可以很容易看到这里有个md5的参数值是加密的。 定位加密位置这里有两种定位方法:第一种面向老手,先翻一遍请求,网页源码可以迅速定位。 第二种就是按照之前的文章提到的分析流程,我们分析一遍,虽然麻烦点会走弯路但是适合新手: 没有看过的朋友可以点击下面的文章链接回顾一下: 先搜索一下关键字,这里加密的参数是md5,所以试试下面这几种搜索关键词:12345md5:md5 :md5=md5 =md5 搜索结果如下: 通过关键字搜索没有得到想要的结果,按照之前文章提到的流程到这里就卡住了。 不过我们看到上面请求里还有另一参数cid,既然都是请求参数,那么md5这个参数可能是和他一起提交的,我们可以试试搜索cid关键词试试。 搜索cid这个参数结果如下: 果然有点东西,我们点进第一个文件,搜索下有多少和cid这个参数相关搜索项,检索之后有18项相关,通过分析代码,很快我们定位到下图的代码,打上断点重新加载看看是否能进入我们的断点位置: 果然成功进入断点了,但是好像并没有我们想要得md5参数,这个时候好像又卡住了。 不过很快我们通过查看左侧堆栈信息找到了md5参数的位置: 这里vm的代码又是通过下面这段代码生成的: 这开头,不就是熟悉的eval加密吗。 到这里就定位到解密的地方了,但是这段eval代码又是在哪呢？ 发现左侧有.html的标识,搜索是搜不到了,我们就看看这个页面的源代码吧,发现右键是进入下一页漫画,所以通过控制台的Doc选项卡看看,通过格式化代码我们找到了上面的eval代码。 1234567891011121314151617181920212223window["\x65\x76\x61\x6c"](function(p, a, c, k, e, d) &#123; e = function(c) &#123; return (c &lt; a ? "" : e(parseInt(c / a))) + ((c = c % a) &gt; 35 ? String.fromCharCode(c + 29) : c.toString(36)) &#125; ; if (!''.replace(/^/, String)) &#123; while (c--) d[e(c)] = k[c] || e(c); k = [function(e) &#123; return d[e] &#125; ]; e = function() &#123; return '\\w+' &#125; ; c = 1; &#125; ;while (c--) if (k[c]) p = p.replace(new RegExp('\\b' + e(c) + '\\b','g'), k[c]); return p; &#125;('I.H(&#123;"G":4,"J":"M","L":"4.2","K":B,"A":"z","C":["F.2.3","E.2.3","D.2.3","N.2.3","X.2.3","W.2.3","V.2.3","Y.2.3","11.2.3","10.2.3","Z.2.3","Q.2.3","P.2.3","O.2.3","R.2.3","U.2.3","T.2.3","S.2.3","d.2.3","c.2.3","b.2.3","e.2.3","h.2.3","g.2.3","f.2.3","a.2.3","5.2.3","6.2.3","8.2.3","7.2.3","9.2.3","i.2.3","u.2.3","t.2.3","s.2.3","v.2.3","y.2.3","x.2.3","w.2.3","r.2.3","m.2.3","k.2.3","j.2.3","n.2.3","q.2.3","p.2.3","o.2.3","12.2.3","1E.2.3","1D.2.3","1C.2.3","1F.2.3","1I.2.3","1H.2.3","1G.2.3","1x.2.3","1w.2.3","1v.2.3","1y.2.3","1B.2.3","1A.2.3","1z.2.3","1V.2.3","1S.2.3","1T.2.3","1R.2.3","1W.2.3","1U.2.3","1L.2.3","1M.2.3","1J.2.3","1K.2.3","1P.2.3","1Q.2.3","1N.2.3","1O.2.3","1c.2.3","1b.2.3","1a.2.3","1d.2.3","1g.2.3","1f.2.3","1e.2.3","15.2.3","14.2.3","13.2.3","16.2.3"],"19":18,"17":1q,"1p":"/1o/l/1r/1u/","1t":1,"1s":"","1j":1i,"1h":0,"1k":&#123;"1n":"1m"&#125;&#125;).1l();', 62, 121, 'D7BWAcHNgdwUwEbmARgJwHYAcwAMAmANgIz3wwJwLVwGZcytq966UyBWAws3A93OgINBTdGRQF8ZACwEOZevhll8BWi0m1puGWpkbdkvSF18ZAg7pW7iM0rq4ye1xyxpyWc2grr1aNtp+LFy0LrRMtGgsFBEsxLSkgDTegoDuysAAxgB2AIYAtnCohBgyCgBmAJYANnAAznjCdA2SBA18gsAIFQAmwBV5kAAiOQAuOcAAygCyABKduQWZPZ3gFRnAgOr+gJGqgATyDaw2KPQoh2pHeCiSKDongr4oFChUKMQPF1wvDcS4DrhcuC4zH8GhRcM8+JcGjRJA0mLhoroKDIqFguFgXFg5Ki8Fh6JiccQsKQallgCMAE4AV0KlSyFVqAAs4L0fkwMAiMBRsHgMMROTyaEwcWpcTjJFgdHCsOxwOS4AA3ACSvReJR4WTgAA8RsrgLUqsBZXBFXSRsAspSAII5S0AYRm3QAYgANDJYABagwmAHkYOSKuTupbgHlugpwLUZaMGcAicAqgyAF6dKoAewyAGsAPoZda1MYjSn1Dp/CgcKgcYgcBwcLiVvDlv4IwiSQg6b4ths0YgNvgcSw0Lh4ZG6BH9v46DhyWsN+hThtqDiGUEYASrn7tpiEZs0Cg8uQYXyHn4uDBqDDL+glPCELiEFyEeiEGzPgG+YoAqhtgGGe8AjBAA=='['\x73\x70\x6c\x69\x63']('\x7c'), 0, &#123;&#125;)) 解密过程我们来捋一捋整个过程,首先网站加载页面,执行了这段eval,解密了参数里的一堆密文,之后根据参数请求具体内容,那我们逆向只要拿到页面的代码,用execjs执行这段代码不就能拿到md5值直接请求了吗。 但是把这段代码直接复制到eval解密里好像并没有用,我感觉应该和末尾的加密参数有关,经过测试这段参数虽然长得和Base64很像但并不是base64加密,我又卡住了,所以我求助了大佬。 经过 @ 悦来客栈的老板 的提点我尝试了下果然是这段是这段代码有问题: 经过解密运行的结果就是我们在vm中看到的结果了: 到这里就简单了,请求网页的代码,使用正则替换代码里的密文,使用execjs执行这段代码就可以得到md5值,再使用这个md5值就可以请求了。 结束总结这次的解密文章写的比较啰嗦,虽然整个加密比较简单,但是自己在这整个过程也踩了不少坑,走了不少弯路。 JS逆向是细致活,需要大胆假设,小心求证,耐心调试,同时在逆向过程中卡住了需要求助的时候也不要不好意思。把自己思考的结果、遇到的问题描述清楚附上小小的红包和大佬聊聊,会有意想不到的惊喜。 共勉~]]></content>
+      <categories>
+        <category>js逆向</category>
+      </categories>
+      <tags>
+        <tag>js逆向</tag>
+        <tag>漫画柜</tag>
       </tags>
   </entry>
   <entry>
@@ -403,19 +415,6 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[JS逆向-财联社加密分析]]></title>
-    <url>%2F2019%2F07%2F16%2Fjs%E5%8A%A0%E5%AF%86%E5%AD%A6%E4%B9%A013-%E8%B4%A2%E8%81%94%E7%A4%BE%2F</url>
-    <content type="text"><![CDATA[本周练手加一。 这次写一写这周险些翻车的一次逆向吧,整体加密逻辑并不难,是自己太过想当然,要是没有群友的提醒就栽了。 【群除我佬】 分析请求老规矩先分析一波请求。 这次要分析的是首页的「电报」部分,刷新首页的发现抓不到「电报」这部分的请求。无奈点击加载更多发起请求(其实并没有区别) 选中部分就是要分析的请求了,想要快速定位可以使用上一篇用到的 XHR 断点,没看过的看下面: 除了此之外,还有一个比较坑的地方,这个网站是定时刷新的，所以打在sign逻辑上面的断点不用刷新就自己断上了,再配合上这个网站的叮咚声。 和无限debugger有异曲同工之妙。 【白眼】 定位加密位置打上 XHR 断点很快就看到 sign 的位置了 先打上断点刷新试试。 重新点击加载更多之后果然断上了,现在就要一步一步追进去分析。 分析加密先追进去看到返回了三个参数: 之后把所有的参数传入并拼接: 接下来才是重头戏: 看到这种e.xxx样式的加密我就想到之前逆向遇到的CryptoJS,对比一下果然差不多,果然一对比和CryptoJS.sha1一毛一样。 接下来就是打脸现场了,我以为到这里就结束了,没想到: 本来还想秀一下,结果翻车了。 经过群里大佬的提醒发现其实后面还有一层加密: 也怪我自经验主义作祟,希望大家不要像我这样的翻车。 ==&gt; 群里隐藏的大佬是真的多。 本文完。 我是只会说老哥牛逼的咸鱼。]]></content>
-      <categories>
-        <category>js逆向</category>
-      </categories>
-      <tags>
-        <tag>js逆向</tag>
-        <tag>密文解密</tag>
-        <tag>财联社</tag>
-      </tags>
-  </entry>
-  <entry>
     <title><![CDATA[JS逆向-66ip加速乐]]></title>
     <url>%2F2019%2F07%2F16%2Fjs%E5%8A%A0%E5%AF%86%E5%AD%A6%E4%B9%A014-66ip%2F</url>
     <content type="text"><![CDATA[练手系列来喽~ 这周在读者群顺手搞了个小活动,在群里摸鱼的时候有水友说练手系列能不能来点简单的写详细点,所以我这次准备了两个比较简单的练手加密,简单到我一度怀疑自己在水文。 加密一 分析请求先打开受害网站 -&gt; 打开控制台 -&gt; 切换至 XHR 完美,刷新就看到了。 这里要解决的只有两个: 返回的密文 请求中的token 接下来定位加解密位置 定位加密位置与分析加密按照之前的套路，我们第一步是要搜索加密参数名 token 打开search ,搜索参数名就找到我们要的 token 了。 按照搜索的结果文件名,猜也猜到是第二个结果,点击打开就可以看到token 的生成代码了。 1var token = md5(String(page) + String(num) + String(timestamp)); 这段代码我们可以用 js 实现也可以用 python。 偷懒一点用 python 实现 token加密算法: 按照请求里看到的参数生成 token 试试 现在有了 token 参数之后接下来看看这个解密怎么搞: 右键 查看源代码 发现了这个: 图中ip 列表的位置是没有数据的,只有 id ip_list ,这是个唯一值,所以值得再搜索一下: 追进去之后就可以看到下面的代码了: 打上断点,执行两步可以看到大 decode_str 后就开始出现我们需要的数据了,所以这里的decode_str 就是我们要的解密方法: 我们复制到编辑器里调试运行一下: 可以看到提示Base64 未定义, 我们追进去把 Base64 的算法赋值出来: 再次运行,根据提示缺失 window 对象, 根据之前的方式是缺啥补啥,但我们先接下来分析一下这里调用的方法: 这里调用的是 String.fromCharCode 方法,我们替换下再次运行: 可以看到这里就解出来了。 加密一，完。 加密二 分析请求这次要分析的网站不同上一个的是,这次网站使用的是 cookie 加密, cookie的有效期过了之后就会返回一段 js 。 使用有效的 cookie 请求我们需要的数据就在返回的网页中,所以我们只要解决这段 js 就好了。 分析加密把返回的 js 复制到编辑器里格式化,可以看到代码分为两个部分: 参数定义部分: 函数执行部分: 直接执行没得出结果,为了方便知道这段代码发生了什么,我们复制到 浏览器 console 里看看: 为了方便观察,我们把第二段的 eval 修改为 console.log 可以看到这段代码写入了 cookie: 继续分析,我们把这段cookie 相关的代码复制出来执行一下: 可以看到这里成功生成了一段 cookie 值 和我们在网页上看到的一样！ 到这里加密就分析结束了。 加密二，完。]]></content>
@@ -426,6 +425,19 @@
         <tag>js逆向</tag>
         <tag>加速乐</tag>
         <tag>66ip</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[JS逆向-财联社加密分析]]></title>
+    <url>%2F2019%2F07%2F16%2Fjs%E5%8A%A0%E5%AF%86%E5%AD%A6%E4%B9%A013-%E8%B4%A2%E8%81%94%E7%A4%BE%2F</url>
+    <content type="text"><![CDATA[本周练手加一。 这次写一写这周险些翻车的一次逆向吧,整体加密逻辑并不难,是自己太过想当然,要是没有群友的提醒就栽了。 【群除我佬】 分析请求老规矩先分析一波请求。 这次要分析的是首页的「电报」部分,刷新首页的发现抓不到「电报」这部分的请求。无奈点击加载更多发起请求(其实并没有区别) 选中部分就是要分析的请求了,想要快速定位可以使用上一篇用到的 XHR 断点,没看过的看下面: 除了此之外,还有一个比较坑的地方,这个网站是定时刷新的，所以打在sign逻辑上面的断点不用刷新就自己断上了,再配合上这个网站的叮咚声。 和无限debugger有异曲同工之妙。 【白眼】 定位加密位置打上 XHR 断点很快就看到 sign 的位置了 先打上断点刷新试试。 重新点击加载更多之后果然断上了,现在就要一步一步追进去分析。 分析加密先追进去看到返回了三个参数: 之后把所有的参数传入并拼接: 接下来才是重头戏: 看到这种e.xxx样式的加密我就想到之前逆向遇到的CryptoJS,对比一下果然差不多,果然一对比和CryptoJS.sha1一毛一样。 接下来就是打脸现场了,我以为到这里就结束了,没想到: 本来还想秀一下,结果翻车了。 经过群里大佬的提醒发现其实后面还有一层加密: 也怪我自经验主义作祟,希望大家不要像我这样的翻车。 ==&gt; 群里隐藏的大佬是真的多。 本文完。 我是只会说老哥牛逼的咸鱼。]]></content>
+      <categories>
+        <category>js逆向</category>
+      </categories>
+      <tags>
+        <tag>js逆向</tag>
+        <tag>密文解密</tag>
+        <tag>财联社</tag>
       </tags>
   </entry>
   <entry>
@@ -501,8 +513,8 @@
       </categories>
       <tags>
         <tag>js逆向</tag>
-        <tag>基础流程</tag>
         <tag>RSA</tag>
+        <tag>基础流程</tag>
         <tag>MD5</tag>
       </tags>
   </entry>
@@ -958,17 +970,6 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[Numpy基础(二)]]></title>
-    <url>%2F2018%2F10%2F09%2Fnumpy2%2F</url>
-    <content type="text"><![CDATA[Anaconda的基本用法按照上篇文章，相信大家都安装好了Anaconda，有朋友在留言区留言希望出一篇关于Anaconda的使用教程，其实Anaconda的基本使用非常简单，基本无需教程。 在windows下安装好Anaconda后，在所有程序中可以看到Anaconda下有以下几个组件： Anaconda Navigator：用于管理工具包和环境的图形界面。 Anaconda Prompt：用于管理包和环境的命令行界面。 Jupyter Noterbook：基于Web的交互式计算环境，用于展示数据分析的过程，并且生成容易阅读的文档。 Spyder：Python集成开发环境，布局类似于Matlab。 我们学习主要使用的是第三个Jupyter Noterbook。 这里简单普及一下常用的Anaconda命令(虽然我也不经常用)。 查看软件版本号 12python --version #查看Python版本conda --version #查看conda的版 添加镜像 1conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/ 更新conda 1conda upgrade --all 查看已经安装的packages 12conda listconda install [package name] #安装package，安装在默认的Python环境中 新手入门建议只安装Anaconda，可以省去很多不必要的麻烦，以上就是Anaconda的基本使用，欢迎大家在留言区补充。 Numpy索引及切片纠正下上一篇的错误：12# 正确的导入方式import numpy as np numpy的索引方式和Python中的列表索引相似,这里主要介绍普通数组索引/切片和布尔型数组的索引/切片。 一维数组的索引/切片一维数组的索引和切片和Python中的列表相同，索引都是从0开始，切片都是左闭右开。123456789import numpy as npar = np.arange(20)# 输出ar的第4个值print(ar[3])# 输出ar的前四个值print(ar[:4])&gt;&gt;&gt;4[0 1 2 3] 多维数组的索引/切片二维数组可以理解为两个一维数组横向堆叠在一起，所只要分别取对应索引即可。1234567891011121314151617181920212223import numpy as npar = np.arange(16).reshape(4,4)# 二维数组索引遵照先行后列(有以下两种写法)# 选取第二行第二列的值print(ar[2][2])print(ar[2,2])# 二维数组切片# 取出前两行的值print(ar[:2])# 取出前两行后两列的值print(ar[:2,2:])&gt;&gt;&gt;[[ 0 1 2 3] [ 4 5 6 7] [ 8 9 10 11] [12 13 14 15]]1010[[0 1 2 3] [4 5 6 7]][[2 3] [6 7]] 三位数组的索引、切片的取值方式相当与二维数组的进化版。123456789101112131415161718192021import numpy as npar = np.arange(12).reshape(3,2,2)print(ar)# 三维数组索引遵照先维度后行再列print(ar[2][0][1])print(ar[2,0,1])# 切片# 获取第一个数组的第一行的第一列的数print(ar[:1,:1,:1])&gt;&gt;&gt;[[[ 0 1] [ 2 3]] [[ 4 5] [ 6 7]] [[ 8 9] [10 11]]][[[0]]]99 布尔型的索引及切片布尔型数组的使用是本片文章的重点。12345678# 简单展示一下布尔型的一维数组长啥样i = np.array([True,False,True])j = np.array([True,True,False,False])print(i)print(j)&gt;&gt;&gt;[ True False True][ True True False False] 而我们经常见到的是这样的：12345678910ar = np.arange(12).reshape(3,4)print(ar)print(ar&gt;5)&gt;&gt;&gt;[[ 0 1 2 3] [ 4 5 6 7] [ 8 9 10 11]] [[False False False False] [False False True True] [ True True True True]] 当我们需要筛选出ar中大于3的值，就可以使用布尔值进行筛选，如下：1234ar = np.arange(12).reshape(3,4)print(ar[ar&gt;3])&gt;&gt;&gt;[ 4 5 6 7 8 9 10 11] Numpy随机数均匀分布和正态分布以均匀分布和正态分布的方式生成随机数1234567891011# numpy.random.rand() 生成一个0-1的随机浮点数或N维浮点数 --均匀分布a = np.random.rand()b = np.random.rand(4,4)print(a)print(b)&gt;&gt;&gt;0.5544023939180306[[0.46387648 0.97345876 0.12059175 0.7565951 ] [0.30192996 0.76633208 0.20107761 0.09315875] [0.79347118 0.26714404 0.08628158 0.72510313] [0.06606087 0.93260038 0.90268201 0.90941348]] 以正太分布的方式生成随机数1234567891011# numpy.random.randn() 生成一个0-1的随机浮点数或N维浮点数 --正态分布a = np.random.randn()b = np.random.randn(4,4)print(a)print(b)&gt;&gt;&gt;0.26901442604096687[[ 0.40261375 -0.23541184 0.96607489 -1.11253043] [-0.31670703 0.05841136 -0.01862511 1.72597729] [ 0.17052799 1.03537825 -0.94375417 1.32484928] [ 0.132761 0.44950533 0.44131534 -0.11319535]] 按照上面的写法相信大家对与.randn()和.rand()的认识还不够清晰，这里用可视化的方式展示一下：123456789101112#平均分布# numpy.random.rand() 生成一个0-1的随机浮点数或N维浮点数 --均匀分布data1 = np.random.rand(500)data2 = np.random.rand(500)#正态分布# numpy.random.randn() 生成一个浮点数或N维浮点数 --正态分布data3 = np.random.randn(500)data4 = np.random.randn(500)import matplotlib.pyplot as plt% matplotlib inlineplt.scatter(data1,data2)plt.scatter(data3,data4) 这是随机分布的图样： 这是正态分布的图样： 可以看到正态分布和随机分布的成像还是有较大不同的，当然这里只是加深大家对.randn()和.rand()的认识，可视化再之后会进一步学习。 Numpy随机数的其他用法12345678910#随机整数print(np.random.randint(2))#在2-10之间生成随机整数print((np.random.randint(2,10)))# 在0-10之间生成10个整数print((np.random.randint(10,size=10)))# 在0-10之间生成包含10个元素的二维数组print(np.random.randint(10,size=(2,5)))# 在10-50之间生成包含10个元素的二维数组print(np.random.randint(10,50,size=(2,5))) 巩固练习 创建2个包含10个元素的正太分布一维数组 请按照要求创建数组ar，再将ar[:2,:2]的值改为[0,1)的随机数 按照要求创建数组，通过索引，其ar[4]、ar[:2,3:]、ar[3][2]分别是多少 按照要求创建数组，筛选出元素值大于5的值并生成新的数组]]></content>
-      <categories>
-        <category>数据科学</category>
-      </categories>
-      <tags>
-        <tag>数据科学</tag>
-      </tags>
-  </entry>
-  <entry>
     <title><![CDATA[Scrapy pipline 实战实例]]></title>
     <url>%2F2018%2F10%2F09%2Fscrapy-pipline%2F</url>
     <content type="text"><![CDATA[pipline中的使用实例pipline存储json(自定义json存储)1234567891011import codecsclass JsonWithEncodingPipeline(object): #自定义json文件的导出 def __init__(self): self.file = codecs.open('article.json', 'w', encoding="utf-8") def process_item(self, item, spider): lines = json.dumps(dict(item), ensure_ascii=False) + "\n" self.file.write(lines) return item def spider_closed(self, spider): self.file.close() pipline存储json(使用scrapy自带的组件)123456789101112131415from scrapy.exporters import JsonItemExporterclass JsonExporterPipleline(object): #调用scrapy提供的json export导出json文件 def __init__(self): self.file = open('articleexport.json', 'wb') self.exporter = JsonItemExporter(self.file, encoding="utf-8", ensure_ascii=False) self.exporter.start_exporting() def close_spider(self, spider): self.exporter.finish_exporting() self.file.close() def process_item(self, item, spider): self.exporter.export_item(item) return item pipline中的存储mysql(阻塞)123456789101112131415import MySQLdbimport MySQLdb.cursorsclass MysqlPipeline(object): #采用同步的机制写入mysql def __init__(self): self.conn = MySQLdb.connect('192.168.0.106', 'root', 'root', 'article_spider', charset="utf8", use_unicode=True) self.cursor = self.conn.cursor() def process_item(self, item, spider): insert_sql = """ insert into jobbole_article(title, url, create_date, fav_nums) VALUES (%s, %s, %s, %s) """ self.cursor.execute(insert_sql, (item["title"], item["url"], item["create_date"], item["fav_nums"])) self.conn.commit() pipline中存储mysql(异步)1234567891011121314151617181920212223242526272829303132333435363738394041class MysqlTwistedPipline(object): def __init__(self, dbpool): self.dbpool = dbpool @classmethod def from_settings(cls, settings): dbparms = dict( host = settings["MYSQL_HOST"], db = settings["MYSQL_DBNAME"], user = settings["MYSQL_USER"], passwd = settings["MYSQL_PASSWORD"], charset='utf8', cursorclass=MySQLdb.cursors.DictCursor, use_unicode=True, ) dbpool = adbapi.ConnectionPool("MySQLdb", **dbparms) return cls(dbpool) def process_item(self, item, spider): #使用twisted将mysql插入变成异步执行 query = self.dbpool.runInteraction(self.do_insert, item) query.addErrback(self.handle_error, item, spider) #处理异常 def handle_error(self, failure, item, spider): # 处理异步插入的异常 print (failure) def do_insert(self, cursor, item): insert_sql = """ insert into jobbole_article(title, url, create_date, fav_nums) VALUES (%s, %s, %s, %s) """ cursor.execute(insert_sql, (item["title"], item["url"], item["create_date"], item["fav_nums"])) # def do_insert(self, cursor, item): # #执行具体的插入 # #根据不同的item 构建不同的sql语句并插入到mysql中 # insert_sql, params = item.get_insert_sql() # print (insert_sql, params) # cursor.execute(insert_sql, params)]]></content>
@@ -977,6 +978,17 @@
       </categories>
       <tags>
         <tag>爬虫</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Numpy基础(二)]]></title>
+    <url>%2F2018%2F10%2F09%2Fnumpy2%2F</url>
+    <content type="text"><![CDATA[Anaconda的基本用法按照上篇文章，相信大家都安装好了Anaconda，有朋友在留言区留言希望出一篇关于Anaconda的使用教程，其实Anaconda的基本使用非常简单，基本无需教程。 在windows下安装好Anaconda后，在所有程序中可以看到Anaconda下有以下几个组件： Anaconda Navigator：用于管理工具包和环境的图形界面。 Anaconda Prompt：用于管理包和环境的命令行界面。 Jupyter Noterbook：基于Web的交互式计算环境，用于展示数据分析的过程，并且生成容易阅读的文档。 Spyder：Python集成开发环境，布局类似于Matlab。 我们学习主要使用的是第三个Jupyter Noterbook。 这里简单普及一下常用的Anaconda命令(虽然我也不经常用)。 查看软件版本号 12python --version #查看Python版本conda --version #查看conda的版 添加镜像 1conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/ 更新conda 1conda upgrade --all 查看已经安装的packages 12conda listconda install [package name] #安装package，安装在默认的Python环境中 新手入门建议只安装Anaconda，可以省去很多不必要的麻烦，以上就是Anaconda的基本使用，欢迎大家在留言区补充。 Numpy索引及切片纠正下上一篇的错误：12# 正确的导入方式import numpy as np numpy的索引方式和Python中的列表索引相似,这里主要介绍普通数组索引/切片和布尔型数组的索引/切片。 一维数组的索引/切片一维数组的索引和切片和Python中的列表相同，索引都是从0开始，切片都是左闭右开。123456789import numpy as npar = np.arange(20)# 输出ar的第4个值print(ar[3])# 输出ar的前四个值print(ar[:4])&gt;&gt;&gt;4[0 1 2 3] 多维数组的索引/切片二维数组可以理解为两个一维数组横向堆叠在一起，所只要分别取对应索引即可。1234567891011121314151617181920212223import numpy as npar = np.arange(16).reshape(4,4)# 二维数组索引遵照先行后列(有以下两种写法)# 选取第二行第二列的值print(ar[2][2])print(ar[2,2])# 二维数组切片# 取出前两行的值print(ar[:2])# 取出前两行后两列的值print(ar[:2,2:])&gt;&gt;&gt;[[ 0 1 2 3] [ 4 5 6 7] [ 8 9 10 11] [12 13 14 15]]1010[[0 1 2 3] [4 5 6 7]][[2 3] [6 7]] 三位数组的索引、切片的取值方式相当与二维数组的进化版。123456789101112131415161718192021import numpy as npar = np.arange(12).reshape(3,2,2)print(ar)# 三维数组索引遵照先维度后行再列print(ar[2][0][1])print(ar[2,0,1])# 切片# 获取第一个数组的第一行的第一列的数print(ar[:1,:1,:1])&gt;&gt;&gt;[[[ 0 1] [ 2 3]] [[ 4 5] [ 6 7]] [[ 8 9] [10 11]]][[[0]]]99 布尔型的索引及切片布尔型数组的使用是本片文章的重点。12345678# 简单展示一下布尔型的一维数组长啥样i = np.array([True,False,True])j = np.array([True,True,False,False])print(i)print(j)&gt;&gt;&gt;[ True False True][ True True False False] 而我们经常见到的是这样的：12345678910ar = np.arange(12).reshape(3,4)print(ar)print(ar&gt;5)&gt;&gt;&gt;[[ 0 1 2 3] [ 4 5 6 7] [ 8 9 10 11]] [[False False False False] [False False True True] [ True True True True]] 当我们需要筛选出ar中大于3的值，就可以使用布尔值进行筛选，如下：1234ar = np.arange(12).reshape(3,4)print(ar[ar&gt;3])&gt;&gt;&gt;[ 4 5 6 7 8 9 10 11] Numpy随机数均匀分布和正态分布以均匀分布和正态分布的方式生成随机数1234567891011# numpy.random.rand() 生成一个0-1的随机浮点数或N维浮点数 --均匀分布a = np.random.rand()b = np.random.rand(4,4)print(a)print(b)&gt;&gt;&gt;0.5544023939180306[[0.46387648 0.97345876 0.12059175 0.7565951 ] [0.30192996 0.76633208 0.20107761 0.09315875] [0.79347118 0.26714404 0.08628158 0.72510313] [0.06606087 0.93260038 0.90268201 0.90941348]] 以正太分布的方式生成随机数1234567891011# numpy.random.randn() 生成一个0-1的随机浮点数或N维浮点数 --正态分布a = np.random.randn()b = np.random.randn(4,4)print(a)print(b)&gt;&gt;&gt;0.26901442604096687[[ 0.40261375 -0.23541184 0.96607489 -1.11253043] [-0.31670703 0.05841136 -0.01862511 1.72597729] [ 0.17052799 1.03537825 -0.94375417 1.32484928] [ 0.132761 0.44950533 0.44131534 -0.11319535]] 按照上面的写法相信大家对与.randn()和.rand()的认识还不够清晰，这里用可视化的方式展示一下：123456789101112#平均分布# numpy.random.rand() 生成一个0-1的随机浮点数或N维浮点数 --均匀分布data1 = np.random.rand(500)data2 = np.random.rand(500)#正态分布# numpy.random.randn() 生成一个浮点数或N维浮点数 --正态分布data3 = np.random.randn(500)data4 = np.random.randn(500)import matplotlib.pyplot as plt% matplotlib inlineplt.scatter(data1,data2)plt.scatter(data3,data4) 这是随机分布的图样： 这是正态分布的图样： 可以看到正态分布和随机分布的成像还是有较大不同的，当然这里只是加深大家对.randn()和.rand()的认识，可视化再之后会进一步学习。 Numpy随机数的其他用法12345678910#随机整数print(np.random.randint(2))#在2-10之间生成随机整数print((np.random.randint(2,10)))# 在0-10之间生成10个整数print((np.random.randint(10,size=10)))# 在0-10之间生成包含10个元素的二维数组print(np.random.randint(10,size=(2,5)))# 在10-50之间生成包含10个元素的二维数组print(np.random.randint(10,50,size=(2,5))) 巩固练习 创建2个包含10个元素的正太分布一维数组 请按照要求创建数组ar，再将ar[:2,:2]的值改为[0,1)的随机数 按照要求创建数组，通过索引，其ar[4]、ar[:2,3:]、ar[3][2]分别是多少 按照要求创建数组，筛选出元素值大于5的值并生成新的数组]]></content>
+      <categories>
+        <category>数据科学</category>
+      </categories>
+      <tags>
+        <tag>数据科学</tag>
       </tags>
   </entry>
   <entry>
@@ -1003,17 +1015,6 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[requests与json的使用技巧]]></title>
-    <url>%2F2018%2F09%2F01%2Frequests-and-json%2F</url>
-    <content type="text"><![CDATA[requestsrequestse基本使用 关于requests基本使用方法参照中文版参考文档： http://docs.python-requests.org/zh_CN/latest/index.html response.text 和response.content的区别1234567891011response.text类型：str解码类型： 根据HTTP 头部对响应的编码作出有根据的推测，推测的文本编码如何修改编码方式：response.encoding=”gbk”response.content类型：bytes解码类型：没有指定如何修改编码方式：response.content.deocde(“utf8”)更推荐使用response.content.deocde()的方式获取响应的html页面 requests使用代理12345requests.get("http://www.baidu.com", proxies = proxies)proxies = &#123; "http": "http://12.34.56.79:9527", "https": "https://12.34.56.79:9527", &#125; 代理的基本原理 正向代理与反向代理正向代理：浏览器明确知道要访问的是什么服务器，只不过目前无法达到，需要通过代理来帮助完成这个请求操作。 反向代理：浏览器不知道任何关于要请求的服务器的信息，需要通过Nginx请求。 requests模拟登录的几种方法 实例化session，使用session发送post/get请求登录后的页面 12session = requests.session()response = session.get(url,headers) 在headers中添加cookie键，值为cookie字符串 在请求方法中添加cookie参数，接收字典形式的cookie cookie和session区别 cookie数据存放在客户的浏览器上，session数据放在服务器上 cookie不是很安全，别人可以分析存放在本地的cookie并进行cookie欺骗 session会在一定时间内保存在服务器上。当访问增多，会比较占用你服务器的性能 单个cookie保存的数据不能超过4K，很多浏览器都限制一个站点最多保存20个cookie requests的几个小技巧(我认为的)12345678910111213#把cookie对象转化为字典reqeusts.util.dict_from_cookiejar #把字典转化为cookie对象reqeusts.util.cookiejar_from_dict#url解码reqeusts.util.unquote()#url编码reqeusts.util.quote() #忽略SSL证书验证response = requests.get("https://www.12306.cn/mormhweb/ ", verify=False) #请求https的网站忽略SSL证书验证之后还是会出现警告信息，在请求前加上下面这句就可以禁用安全请求警告#InsecureRequestWarning: Unverified HTTPS request is being made. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#ssl-warnings InsecureRequestWarning）requests.packages.urllib3.disable_warnings() 通用的解析链接函数123456789101112131415161718192021222324252627# coding=utf-8import requestsfrom retrying import retryheaders=&#123;"User-Agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36"&#125;@retry(stop_max_attempt_number=3)def _parse_url(url,method,data,proxies): print("*"*20) if method=="POST": response = requests.post(url,data=data,headers=headers,proxies=proxies) else: response = requests.get(url,headers=headers,timeout=3,proxies=proxies) assert response.status_code == 200 return response.content.decode()def parse_url(url,method="GET",data=None,proxies=&#123;&#125;): try: html_str = _parse_url(url,method,data,proxies) except: html_str = None return html_strif __name__ == '__main__': parse_url(url) jsonjson的基本使用1234json.loads() #json字符串转化为python数据类型json.dumps() #python数据类型转化为json字符串json.load() #包含json的类文件对象转化为python数据类型json.dump() #python数据类型转化为包含json的类文件对象 什么是类文件对象？具有read()或者write()方法的对象就是类文件对象，f = open(“a.txt”,”r”) f就是类文件对象 如何优雅的查看json?我们经常在打印json数据的时候会遇到，像下图这样的情况 我们只要在打印的时候使用pprint就可以完美避开这种情况了，效果如下： 我们想要实现上图只需要pip install pprint并在打印时使用pprint即可，而在保存时只需要添加”indent=2”参数，就可以保存为pprint的样式。]]></content>
-      <categories>
-        <category>Python</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
-      </tags>
-  </entry>
-  <entry>
     <title><![CDATA[request模拟登陆]]></title>
     <url>%2F2018%2F09%2F01%2Frequets-login%2F</url>
     <content type="text"><![CDATA[requests模拟登录获取本地cookie12345678import resession = requests.session()session.cookies = cookielib.LWPCookieJar(filename="cookies.txt")try: session.cookies.load(ignore_discard=True)except: print ("cookie未能加载") 123allow_redirects=False --禁止重定向session.cookies.save() --调用save方法保存cookie 手动输入验证码(实例)12345678910111213141516171819def get_captcha(): import time t = str(int(time.time()*1000)) captcha_url = "https://www.zhihu.com/captcha.gif?r=&#123;0&#125;&amp;type=login".format(t) t = session.get(captcha_url, headers=header) with open("captcha.jpg","wb") as f: f.write(t.content) f.close() from PIL import Image try: im = Image.open('captcha.jpg') im.show() im.close() except: pass captcha = input("输入验证码\n&gt;") return captcha]]></content>
@@ -1022,6 +1023,17 @@
       </categories>
       <tags>
         <tag>爬虫</tag>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[requests与json的使用技巧]]></title>
+    <url>%2F2018%2F09%2F01%2Frequests-and-json%2F</url>
+    <content type="text"><![CDATA[requestsrequestse基本使用 关于requests基本使用方法参照中文版参考文档： http://docs.python-requests.org/zh_CN/latest/index.html response.text 和response.content的区别1234567891011response.text类型：str解码类型： 根据HTTP 头部对响应的编码作出有根据的推测，推测的文本编码如何修改编码方式：response.encoding=”gbk”response.content类型：bytes解码类型：没有指定如何修改编码方式：response.content.deocde(“utf8”)更推荐使用response.content.deocde()的方式获取响应的html页面 requests使用代理12345requests.get("http://www.baidu.com", proxies = proxies)proxies = &#123; "http": "http://12.34.56.79:9527", "https": "https://12.34.56.79:9527", &#125; 代理的基本原理 正向代理与反向代理正向代理：浏览器明确知道要访问的是什么服务器，只不过目前无法达到，需要通过代理来帮助完成这个请求操作。 反向代理：浏览器不知道任何关于要请求的服务器的信息，需要通过Nginx请求。 requests模拟登录的几种方法 实例化session，使用session发送post/get请求登录后的页面 12session = requests.session()response = session.get(url,headers) 在headers中添加cookie键，值为cookie字符串 在请求方法中添加cookie参数，接收字典形式的cookie cookie和session区别 cookie数据存放在客户的浏览器上，session数据放在服务器上 cookie不是很安全，别人可以分析存放在本地的cookie并进行cookie欺骗 session会在一定时间内保存在服务器上。当访问增多，会比较占用你服务器的性能 单个cookie保存的数据不能超过4K，很多浏览器都限制一个站点最多保存20个cookie requests的几个小技巧(我认为的)12345678910111213#把cookie对象转化为字典reqeusts.util.dict_from_cookiejar #把字典转化为cookie对象reqeusts.util.cookiejar_from_dict#url解码reqeusts.util.unquote()#url编码reqeusts.util.quote() #忽略SSL证书验证response = requests.get("https://www.12306.cn/mormhweb/ ", verify=False) #请求https的网站忽略SSL证书验证之后还是会出现警告信息，在请求前加上下面这句就可以禁用安全请求警告#InsecureRequestWarning: Unverified HTTPS request is being made. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#ssl-warnings InsecureRequestWarning）requests.packages.urllib3.disable_warnings() 通用的解析链接函数123456789101112131415161718192021222324252627# coding=utf-8import requestsfrom retrying import retryheaders=&#123;"User-Agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36"&#125;@retry(stop_max_attempt_number=3)def _parse_url(url,method,data,proxies): print("*"*20) if method=="POST": response = requests.post(url,data=data,headers=headers,proxies=proxies) else: response = requests.get(url,headers=headers,timeout=3,proxies=proxies) assert response.status_code == 200 return response.content.decode()def parse_url(url,method="GET",data=None,proxies=&#123;&#125;): try: html_str = _parse_url(url,method,data,proxies) except: html_str = None return html_strif __name__ == '__main__': parse_url(url) jsonjson的基本使用1234json.loads() #json字符串转化为python数据类型json.dumps() #python数据类型转化为json字符串json.load() #包含json的类文件对象转化为python数据类型json.dump() #python数据类型转化为包含json的类文件对象 什么是类文件对象？具有read()或者write()方法的对象就是类文件对象，f = open(“a.txt”,”r”) f就是类文件对象 如何优雅的查看json?我们经常在打印json数据的时候会遇到，像下图这样的情况 我们只要在打印的时候使用pprint就可以完美避开这种情况了，效果如下： 我们想要实现上图只需要pip install pprint并在打印时使用pprint即可，而在保存时只需要添加”indent=2”参数，就可以保存为pprint的样式。]]></content>
+      <categories>
+        <category>Python</category>
+      </categories>
+      <tags>
         <tag>Python</tag>
       </tags>
   </entry>
