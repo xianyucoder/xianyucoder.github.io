@@ -362,6 +362,228 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2018/11/09/scrapy-redis/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="煌金">
+      <meta itemprop="description" content="Stay Hungry, Stay Foolish.">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="咸鱼自我满足的日常">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/11/09/scrapy-redis/" itemprop="url">
+                  Scrapy-redis 详解
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-11-09 08:39:35" itemprop="dateCreated datePublished" datetime="2018-11-09T08:39:35+08:00">2018-11-09</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-08-22 15:37:57" itemprop="dateModified" datetime="2019-08-22T15:37:57+08:00">2019-08-22</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/爬虫/" itemprop="url" rel="index"><span itemprop="name">爬虫</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/11/09/scrapy-redis/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2018/11/09/scrapy-redis/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+		  
+		  
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">23k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">39 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h4 id="什么是scrapy-redis"><a href="#什么是scrapy-redis" class="headerlink" title="什么是scrapy-redis"></a>什么是scrapy-redis</h4><p>redis-based components for scrapy</p>
+<p>###为什么要学习scrapy-redis？<br>scrapy redis能够实现requests去重，爬虫持久化，能够轻松实现分布式。</p>
+<h4 id="scrapy-redis-详解"><a href="#scrapy-redis-详解" class="headerlink" title="scrapy-redis 详解"></a>scrapy-redis 详解</h4><h4 id="流程图"><a href="#流程图" class="headerlink" title="流程图"></a>流程图</h4><p><img src="https://mmbiz.qpic.cn/mmbiz_png/jqCHqBaKLl3qFicg5cmrLXpbUehXwF4dnLURHIGxng4gxIkEe1qc3z92y8TiaU9j82b2Wiaia7SCfIKJG3lRzE0mjw/0?wx_fmt=png" alt></p>
+<h4 id="scrapy-redis-example-project"><a href="#scrapy-redis-example-project" class="headerlink" title="scrapy-redis example-project"></a>scrapy-redis example-project</h4><p>scrapy-redis的源码中提供了scrapy-redis的示例项目,我们下载下来学习一下。</p>
+<blockquote>
+<p><a href="https://github.com/rmax/scrapy-redis/tree/master/example-project" target="_blank" rel="noopener">https://github.com/rmax/scrapy-redis/tree/master/example-project</a></p>
+</blockquote>
+<p>在<code>example-project</code>中有三个demo,分别是<code>dmoz</code>,<code>myspider_redis</code>,以及<code>mycrawler_redis</code>。</p>
+<p>本次主要是对<code>dmoz</code>这个demo进行学习和实战练习。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/11/09/scrapy-redis/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2018/10/29/password_proxy_use/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1202,220 +1424,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2018/10/12/flask-xiangmu/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="煌金">
-      <meta itemprop="description" content="Stay Hungry, Stay Foolish.">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="咸鱼自我满足的日常">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/10/12/flask-xiangmu/" itemprop="url">
-                  Flask基础(2)-项目设置
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-10-12 18:39:35" itemprop="dateCreated datePublished" datetime="2018-10-12T18:39:35+08:00">2018-10-12</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-08-21 22:07:01" itemprop="dateModified" datetime="2019-08-21T22:07:01+08:00">2019-08-21</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Flask/" itemprop="url" rel="index"><span itemprop="name">Flask</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/10/12/flask-xiangmu/#comments" itemprop="discussionUrl">
-                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2018/10/12/flask-xiangmu/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-		  
-		  
-
-          
-            <div class="post-symbolscount">
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">本文字数：</span>
-                
-                <span title="本文字数">7.5k</span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">13 分钟</span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h4 id="为什么学习Flask"><a href="#为什么学习Flask" class="headerlink" title="为什么学习Flask"></a>为什么学习Flask</h4><p>Flask的灵活度非常之高，他不会帮你做太多的决策，即使做已经帮你做出选择，你也能非常容易的更换成你需要的，比如：<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/10/12/flask-xiangmu/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </p></div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1465,7 +1473,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">96</span>
+                    <span class="site-state-item-count">97</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -1500,7 +1508,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">11</span>
+                      
+                    
+                    <span class="site-state-item-count">12</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -1677,7 +1687,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">82</span>
+                      
+                    
+                    <span class="site-state-item-count">83</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -1757,7 +1769,7 @@
       <i class="fa fa-area-chart"></i>
     </span>
     
-    <span title="站点总字数">244k</span>
+    <span title="站点总字数">245k</span>
   
 
   
@@ -1766,7 +1778,7 @@
       <i class="fa fa-coffee"></i>
     </span>
     
-    <span title="站点阅读时长">6:46</span>
+    <span title="站点阅读时长">6:48</span>
   
 </div>
 

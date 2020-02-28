@@ -362,7 +362,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2018/09/01/requets-login/">
+    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2018/09/01/Scrapy-CrawlSpider-learn/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="煌金">
@@ -381,8 +381,8 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/09/01/requets-login/" itemprop="url">
-                  request模拟登陆
+                <a class="post-title-link" href="/2018/09/01/Scrapy-CrawlSpider-learn/" itemprop="url">
+                  scrapy crawl 实战腾讯招聘
                 </a>
               
             
@@ -425,7 +425,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-04-07 17:21:15" itemprop="dateModified" datetime="2019-04-07T17:21:15+08:00">2019-04-07</time>
+                <time title="修改时间：2019-08-21 22:04:35" itemprop="dateModified" datetime="2019-08-21T22:04:35+08:00">2019-08-21</time>
               
             
           </span>
@@ -457,8 +457,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/09/01/requets-login/#comments" itemprop="discussionUrl">
-                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2018/09/01/requets-login/" itemprop="commentCount"></span>
+                <a href="/2018/09/01/Scrapy-CrawlSpider-learn/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2018/09/01/Scrapy-CrawlSpider-learn/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -482,7 +482,7 @@
                 
                   <span class="post-meta-item-text">本文字数：</span>
                 
-                <span title="本文字数">4.1k</span>
+                <span title="本文字数">12k</span>
               
 
               
@@ -496,7 +496,7 @@
                 
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
-                <span title="阅读时长">7 分钟</span>
+                <span title="阅读时长">20 分钟</span>
               
             </div>
           
@@ -517,17 +517,20 @@
 
       
         
-          <h4 id="requests模拟登录"><a href="#requests模拟登录" class="headerlink" title="requests模拟登录"></a>requests模拟登录</h4><h4 id="获取本地cookie"><a href="#获取本地cookie" class="headerlink" title="获取本地cookie"></a>获取本地cookie</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line">session = requests.session()</span><br><span class="line">session.cookies = cookielib.LWPCookieJar(filename=<span class="string">"cookies.txt"</span>)</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    session.cookies.load(ignore_discard=<span class="literal">True</span>)</span><br><span class="line"><span class="keyword">except</span>:</span><br><span class="line">    <span class="keyword">print</span> (<span class="string">"cookie未能加载"</span>)</span><br></pre></td></tr></table></figure>
+          <h4 id="为什么使用CrawlSpider类？"><a href="#为什么使用CrawlSpider类？" class="headerlink" title="为什么使用CrawlSpider类？"></a>为什么使用CrawlSpider类？</h4><p>回顾上一篇文章，我们大多时间都是在寻找下一页的url地址或者是内容的url地址上面，我们的大体思路是这样的：</p>
+<ol>
+<li>从response中提取所有的a标签对应的url地址</li>
+<li>自动的构造自己requests请求，发送给引擎
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/09/01/requets-login/#more" rel="contents">
+            <a class="btn" href="/2018/09/01/Scrapy-CrawlSpider-learn/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
           <!--/noindex-->
         
       
-    </div>
+    </li></ol></div>
 
     
 
@@ -744,6 +747,220 @@
         
       
     </p></blockquote></div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2018/09/01/requets-login/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="煌金">
+      <meta itemprop="description" content="Stay Hungry, Stay Foolish.">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="咸鱼自我满足的日常">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/01/requets-login/" itemprop="url">
+                  request模拟登陆
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-09-01 18:39:35" itemprop="dateCreated datePublished" datetime="2018-09-01T18:39:35+08:00">2018-09-01</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-04-07 17:21:15" itemprop="dateModified" datetime="2019-04-07T17:21:15+08:00">2019-04-07</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/爬虫/" itemprop="url" rel="index"><span itemprop="name">爬虫</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/09/01/requets-login/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2018/09/01/requets-login/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+		  
+		  
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">4.1k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">7 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h4 id="requests模拟登录"><a href="#requests模拟登录" class="headerlink" title="requests模拟登录"></a>requests模拟登录</h4><h4 id="获取本地cookie"><a href="#获取本地cookie" class="headerlink" title="获取本地cookie"></a>获取本地cookie</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line">session = requests.session()</span><br><span class="line">session.cookies = cookielib.LWPCookieJar(filename=<span class="string">"cookies.txt"</span>)</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    session.cookies.load(ignore_discard=<span class="literal">True</span>)</span><br><span class="line"><span class="keyword">except</span>:</span><br><span class="line">    <span class="keyword">print</span> (<span class="string">"cookie未能加载"</span>)</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/09/01/requets-login/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
 
     
 
@@ -1205,220 +1422,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2018/09/01/virtualenv-setting/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="煌金">
-      <meta itemprop="description" content="Stay Hungry, Stay Foolish.">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="咸鱼自我满足的日常">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/01/virtualenv-setting/" itemprop="url">
-                  配置虚拟环境
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-09-01 18:39:35" itemprop="dateCreated datePublished" datetime="2018-09-01T18:39:35+08:00">2018-09-01</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-08-21 22:56:40" itemprop="dateModified" datetime="2019-08-21T22:56:40+08:00">2019-08-21</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/09/01/virtualenv-setting/#comments" itemprop="discussionUrl">
-                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2018/09/01/virtualenv-setting/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-		  
-		  
-
-          
-            <div class="post-symbolscount">
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">本文字数：</span>
-                
-                <span title="本文字数">15k</span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">24 分钟</span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h4 id="配置虚拟环境的必要性？"><a href="#配置虚拟环境的必要性？" class="headerlink" title="配置虚拟环境的必要性？"></a>配置虚拟环境的必要性？</h4><p>虚拟环境是一个将不同项目所需求的依赖分别放在独立的地方的一个工具，它给这些工程创建虚拟的Python环境。它解决了“项目X依赖于版本1.x，而项目Y需要项目4.x”的两难问题，而且使你的全局site-packages目录保持干净和可管理。 virtualenv 是一个创建隔绝的Python环境的工具，virtualenv创建一个包含所有必要的可执行文件的文件夹，用来使用Python工程所需的包。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/09/01/virtualenv-setting/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1468,7 +1471,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">96</span>
+                    <span class="site-state-item-count">97</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -1503,7 +1506,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">11</span>
+                      
+                    
+                    <span class="site-state-item-count">12</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -1680,7 +1685,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">82</span>
+                      
+                    
+                    <span class="site-state-item-count">83</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -1760,7 +1767,7 @@
       <i class="fa fa-area-chart"></i>
     </span>
     
-    <span title="站点总字数">244k</span>
+    <span title="站点总字数">245k</span>
   
 
   
@@ -1769,7 +1776,7 @@
       <i class="fa fa-coffee"></i>
     </span>
     
-    <span title="站点阅读时长">6:46</span>
+    <span title="站点阅读时长">6:48</span>
   
 </div>
 

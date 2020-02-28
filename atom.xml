@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.xianyucoder.cn/"/>
-  <updated>2020-01-08T07:20:31.339Z</updated>
+  <updated>2020-02-28T03:16:09.489Z</updated>
   <id>http://www.xianyucoder.cn/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>解锁服务器新姿势</title>
+    <link href="http://www.xianyucoder.cn/2020/02/28/%E8%A7%A3%E9%94%81%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84%E6%96%B0%E5%A7%BF%E5%8A%BF/"/>
+    <id>http://www.xianyucoder.cn/2020/02/28/解锁服务器的新姿势/</id>
+    <published>2020-02-28T00:39:35.000Z</published>
+    <updated>2020-02-28T03:16:09.489Z</updated>
+    
+    <content type="html"><![CDATA[<p>记得之前给大家介绍过 如何搭建一个属于自己的 Telegram Bot</p><p>不少朋友都自己上手操作了一番，但是孤零零的一个应用，服务器好像又要落灰了。所以，如何解锁服务器的各种新姿势呢？</p><p>我们先从上次的 Telegram Bot 来讲，上次教大家搭建了这个机器人，除了用来管理自己的频道外，其实还可以用它来监控我们想要购买的商品。【比如口罩】</p><p>这里只要搭配一个特殊的 Python 库就可以实现了。</p><p>目前搭建好的项目提供 X 宝及 X 猫的商品监控功能，使用上，用户可以便捷地发送 App 的分享链接给 Bot 直接进行添加，当商品上架时，用户会连续三次收到来自 Bot 的消息。</p><p>安装 Python 包：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip install requests</span><br><span class="line">pip install python_telegram_bot</span><br></pre></td></tr></table></figure><p>接着参考之前文章中的搭建的 TG Bot ，获取 Token 代入之后的代码即可。</p><p>参考下面现成的项目代码就就可以完成配置了。</p><p><strong>Github : <a href="https://github.com/xiejiangzhao/Ding-Bot" target="_blank" rel="noopener">https://github.com/xiejiangzhao/Ding-Bot</a></strong></p><p>搭建好的项目效果参考下图。</p><p><img src="http://tc.xianyucoder.cn/blog20200226235616.png" alt="效果图"></p><p>除了上面的 TG Bot 监控商品的项目外，只要拥有一台服务器 + 想动手的心，你就可以不停解锁新的姿势。这里简单给大家列举几个：</p><p><strong>搭建一人独享的 TG Bot，从此管理频道不费心。</strong></p><p>【链接】</p><p>搭建一个可以解锁 VIP 音乐的服务，从此听歌不发愁。**</p><p>【链接】</p><p><strong>搭建一个可以同步上传下载的 BT 服务，独享高速下载。</strong></p><p>【链接】</p><p>服务器玩腻了？可以试试大佬们都在玩的 <strong>ModelArts</strong> ，只要鼠标点点点，就可以轻松实现爬虫工程师常用到的拼图验证码缺口识别 API。</p><p><img src="http://tc.xianyucoder.cn/blog20200227093501.png" alt></p><p>再玩玩一站式的 AI 图像识别平台，轻松完成图像深度学习中的图片标注、图片分类预测和模型部署+生成 API。</p><p><img src="http://tc.xianyucoder.cn/blog20200227093613.png" alt></p><p>一站式集成服务，方便快捷，最主要的是这些<strong>黑科技</strong>现在很便宜！！！</p><p>现在<strong>华为开年采购季活动</strong>，购买一台服务器的成本最低 <strong>79元/年</strong>，除此之外，华为云还有数据库专场活动、域名建站专场活动、云安全专场活动。个人用户的各种打折不说，还可以领 <strong>8888</strong> 开年大礼包。</p><p><strong>新用户 2H4G 的云服务器 1.3折</strong>，<strong>老用户</strong>最高可送<strong>2020元优惠券</strong>，云服务器79元用3年。</p><p>我酸了。</p><p>目前我手里的服务器，续费 6 年的有一台，趁着这次活动又搞了一台 3 年期的。</p><p>至少短时间内，写了很久的小玩意儿都可以愉快的跑起来了。</p><p><img src="http://tc.xianyucoder.cn/blog20200227095330.png" alt></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;记得之前给大家介绍过 如何搭建一个属于自己的 Telegram Bot&lt;/p&gt;
+&lt;p&gt;不少朋友都自己上手操作了一番，但是孤零零的一个应用，服务器好像又要落灰了。所以，如何解锁服务器的各种新姿势呢？&lt;/p&gt;
+&lt;p&gt;我们先从上次的 Telegram Bot 来讲，上次教大家搭建
+      
+    
+    </summary>
+    
+      <category term="服务器应用" scheme="http://www.xianyucoder.cn/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%BA%94%E7%94%A8/"/>
+    
+    
+      <category term="服务器应用" scheme="http://www.xianyucoder.cn/tags/%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%BA%94%E7%94%A8/"/>
+    
+  </entry>
   
   <entry>
     <title>怼就完事了，总结几种验证码的解决方案</title>
@@ -370,6 +397,33 @@
   </entry>
   
   <entry>
+    <title>App签名</title>
+    <link href="http://www.xianyucoder.cn/2019/08/26/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%AD%A6%E4%B9%A01.2-apk%E7%AD%BE%E5%90%8D/"/>
+    <id>http://www.xianyucoder.cn/2019/08/26/安卓逆向学习1.2-apk签名/</id>
+    <published>2019-08-26T10:39:35.000Z</published>
+    <updated>2019-08-26T11:18:25.082Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="什么是签名？"><a href="#什么是签名？" class="headerlink" title="什么是签名？"></a>什么是签名？</h4><p>如果这个问题不是放在Android开发中来问，如果是放在一个普通的版块，我想大家都知道签名的含义。可往往就是将一些生活中常用的术语放在计算机这种专业领域，大家就开始迷惑了。计算机所做的事情，或者说编程语言所做的事情，不正是在尽可能地模拟现实吗？所以，计算机中所说的签名和生活中所说的签名在本质上是一样的，它所起到的作用也是一致的！</p><h4 id="为什么要给Android应用程序签名？"><a href="#为什么要给Android应用程序签名？" class="headerlink" title="为什么要给Android应用程序签名？"></a>为什么要给Android应用程序签名？</h4><p>如果只能用一句简单的话语来回答这个问题的话，我会说：“这是Android系统所要求的”。<br>Android系统要求每一个Android应用程序必须要经过数字签名才能够安装到系统中，也就是说如果一个Android应用程序没有经过数字签名，是没有办法安装到系统中的！Android通过数字签名来标识应用程序的作者和在应用程序之间建立信任关系，不是用来决定最终用户可以安装哪些应用程序。这个数字签名由应用程序的作者完成，并不需要权威的数字证书签名机构认证，它只是用来让应用程序包自我认证的。</p><h4 id="为什么我开发的Android应用程序没有做什么签名也能在模拟器和手机上运行？"><a href="#为什么我开发的Android应用程序没有做什么签名也能在模拟器和手机上运行？" class="headerlink" title="为什么我开发的Android应用程序没有做什么签名也能在模拟器和手机上运行？"></a>为什么我开发的Android应用程序没有做什么签名也能在模拟器和手机上运行？</h4><p>你没有给Android应用程序签名并不代表Android应用程序没有被签名。为了方便我们开发调试程序，ADT会自动的使用debug密钥为应用程序签名。debug密钥？它在哪？debug密钥是一个名为debug.keystore的文件，它的位置：<br>系统盘符:/Documents and Settings/liufeng/.android/debug.keystore</p><p>liufeng对应于你自己的windows操作系统用户名，怎么样，是不是已经找到它了。这也就意味着，如果我们想拥有自己的签名，而不是让ADT帮我们签名的话，我们也要有一个属于自己的密钥文件（*.keystore）。</p><p>如果你以前的程序是采用默认签名的方式（即debug签名），一旦换了新的签名应用将不能覆盖安装，必须将原先的程序卸载掉，才能安装上。因为程序覆盖安装主要检查两点：<br>1）两个程序的入口Activity是否相同。两个程序如果包名不一样，即使其它所有代码完全一样，也不会被视为同一个程序的不同版本；<br>2）两个程序所采用的签名是否相同。如果两个程序所采用的签名不同，即使包名相同，也不会被视为同一个程序的不同版本，不能覆盖安装。<br>另外，可能有人可能会认为反正debug签名的应用程序也能安装使用，那也没有必要自己签名了嘛。千万不要这样想，debug签名的应用程序有这样两个限制，或者说风险：<br>1）debug签名的应用程序不能在Android Market上架销售，它会强制你使用自己的签名；</p><p>2）debug.keystore在不同的机器上所生成的可能都不一样，就意味着如果你换了机器进行apk版本升级，那么将会出现上面那种程序不能覆盖安装的问题。不要小视这个问题，如果你开发的程序只有你自己使用，当然无所谓，卸载再安装就可以了。但要是你的软件有很多使用客户，这就是大问题了，就相当于软件不具备升级功能！</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;什么是签名？&quot;&gt;&lt;a href=&quot;#什么是签名？&quot; class=&quot;headerlink&quot; title=&quot;什么是签名？&quot;&gt;&lt;/a&gt;什么是签名？&lt;/h4&gt;&lt;p&gt;如果这个问题不是放在Android开发中来问，如果是放在一个普通的版块，我想大家都知道签名的含义。可往往就是
+      
+    
+    </summary>
+    
+      <category term="App逆向" scheme="http://www.xianyucoder.cn/categories/App%E9%80%86%E5%90%91/"/>
+    
+    
+      <category term="app逆向" scheme="http://www.xianyucoder.cn/tags/app%E9%80%86%E5%90%91/"/>
+    
+      <category term="签名" scheme="http://www.xianyucoder.cn/tags/%E7%AD%BE%E5%90%8D/"/>
+    
+  </entry>
+  
+  <entry>
     <title>App逆向实基础学习</title>
     <link href="http://www.xianyucoder.cn/2019/08/26/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%AD%A6%E4%B9%A01-%E9%80%86%E5%90%91%E5%9F%BA%E7%A1%80/"/>
     <id>http://www.xianyucoder.cn/2019/08/26/安卓逆向学习1-逆向基础/</id>
@@ -399,33 +453,6 @@
       <category term="加密" scheme="http://www.xianyucoder.cn/tags/%E5%8A%A0%E5%AF%86/"/>
     
       <category term="apk基本结构" scheme="http://www.xianyucoder.cn/tags/apk%E5%9F%BA%E6%9C%AC%E7%BB%93%E6%9E%84/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>App签名</title>
-    <link href="http://www.xianyucoder.cn/2019/08/26/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%AD%A6%E4%B9%A01.2-apk%E7%AD%BE%E5%90%8D/"/>
-    <id>http://www.xianyucoder.cn/2019/08/26/安卓逆向学习1.2-apk签名/</id>
-    <published>2019-08-26T10:39:35.000Z</published>
-    <updated>2019-08-26T11:18:25.082Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="什么是签名？"><a href="#什么是签名？" class="headerlink" title="什么是签名？"></a>什么是签名？</h4><p>如果这个问题不是放在Android开发中来问，如果是放在一个普通的版块，我想大家都知道签名的含义。可往往就是将一些生活中常用的术语放在计算机这种专业领域，大家就开始迷惑了。计算机所做的事情，或者说编程语言所做的事情，不正是在尽可能地模拟现实吗？所以，计算机中所说的签名和生活中所说的签名在本质上是一样的，它所起到的作用也是一致的！</p><h4 id="为什么要给Android应用程序签名？"><a href="#为什么要给Android应用程序签名？" class="headerlink" title="为什么要给Android应用程序签名？"></a>为什么要给Android应用程序签名？</h4><p>如果只能用一句简单的话语来回答这个问题的话，我会说：“这是Android系统所要求的”。<br>Android系统要求每一个Android应用程序必须要经过数字签名才能够安装到系统中，也就是说如果一个Android应用程序没有经过数字签名，是没有办法安装到系统中的！Android通过数字签名来标识应用程序的作者和在应用程序之间建立信任关系，不是用来决定最终用户可以安装哪些应用程序。这个数字签名由应用程序的作者完成，并不需要权威的数字证书签名机构认证，它只是用来让应用程序包自我认证的。</p><h4 id="为什么我开发的Android应用程序没有做什么签名也能在模拟器和手机上运行？"><a href="#为什么我开发的Android应用程序没有做什么签名也能在模拟器和手机上运行？" class="headerlink" title="为什么我开发的Android应用程序没有做什么签名也能在模拟器和手机上运行？"></a>为什么我开发的Android应用程序没有做什么签名也能在模拟器和手机上运行？</h4><p>你没有给Android应用程序签名并不代表Android应用程序没有被签名。为了方便我们开发调试程序，ADT会自动的使用debug密钥为应用程序签名。debug密钥？它在哪？debug密钥是一个名为debug.keystore的文件，它的位置：<br>系统盘符:/Documents and Settings/liufeng/.android/debug.keystore</p><p>liufeng对应于你自己的windows操作系统用户名，怎么样，是不是已经找到它了。这也就意味着，如果我们想拥有自己的签名，而不是让ADT帮我们签名的话，我们也要有一个属于自己的密钥文件（*.keystore）。</p><p>如果你以前的程序是采用默认签名的方式（即debug签名），一旦换了新的签名应用将不能覆盖安装，必须将原先的程序卸载掉，才能安装上。因为程序覆盖安装主要检查两点：<br>1）两个程序的入口Activity是否相同。两个程序如果包名不一样，即使其它所有代码完全一样，也不会被视为同一个程序的不同版本；<br>2）两个程序所采用的签名是否相同。如果两个程序所采用的签名不同，即使包名相同，也不会被视为同一个程序的不同版本，不能覆盖安装。<br>另外，可能有人可能会认为反正debug签名的应用程序也能安装使用，那也没有必要自己签名了嘛。千万不要这样想，debug签名的应用程序有这样两个限制，或者说风险：<br>1）debug签名的应用程序不能在Android Market上架销售，它会强制你使用自己的签名；</p><p>2）debug.keystore在不同的机器上所生成的可能都不一样，就意味着如果你换了机器进行apk版本升级，那么将会出现上面那种程序不能覆盖安装的问题。不要小视这个问题，如果你开发的程序只有你自己使用，当然无所谓，卸载再安装就可以了。但要是你的软件有很多使用客户，这就是大问题了，就相当于软件不具备升级功能！</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h4 id=&quot;什么是签名？&quot;&gt;&lt;a href=&quot;#什么是签名？&quot; class=&quot;headerlink&quot; title=&quot;什么是签名？&quot;&gt;&lt;/a&gt;什么是签名？&lt;/h4&gt;&lt;p&gt;如果这个问题不是放在Android开发中来问，如果是放在一个普通的版块，我想大家都知道签名的含义。可往往就是
-      
-    
-    </summary>
-    
-      <category term="App逆向" scheme="http://www.xianyucoder.cn/categories/App%E9%80%86%E5%90%91/"/>
-    
-    
-      <category term="app逆向" scheme="http://www.xianyucoder.cn/tags/app%E9%80%86%E5%90%91/"/>
-    
-      <category term="签名" scheme="http://www.xianyucoder.cn/tags/%E7%AD%BE%E5%90%8D/"/>
     
   </entry>
   
@@ -569,35 +596,6 @@
       <category term="思维导图" scheme="http://www.xianyucoder.cn/tags/%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE/"/>
     
       <category term="通用技巧" scheme="http://www.xianyucoder.cn/tags/%E9%80%9A%E7%94%A8%E6%8A%80%E5%B7%A7/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>聪明工作-如何做好信息收集？</title>
-    <link href="http://www.xianyucoder.cn/2019/08/26/%E8%81%AA%E6%98%8E%E5%B7%A5%E4%BD%9C-%E5%A6%82%E4%BD%95%E9%AB%98%E6%95%88%E6%95%B0%E6%8D%AE%E6%94%B6%E9%9B%86%EF%BC%9F/"/>
-    <id>http://www.xianyucoder.cn/2019/08/26/聪明工作-如何高效数据收集？/</id>
-    <published>2019-08-26T10:39:35.000Z</published>
-    <updated>2019-08-26T10:57:38.166Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="高效数据收集"><a href="#高效数据收集" class="headerlink" title="高效数据收集"></a>高效数据收集</h4><ul><li><p>数据收集 = 表单数据</p><ul><li>问卷星</li><li>金数据</li><li>麦客</li><li>腾讯问卷</li><li>Airtable</li></ul></li><li><p>数据处理</p><ul><li>Excel 比较适合这个环节</li></ul></li></ul><p>数据应用</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h4 id=&quot;高效数据收集&quot;&gt;&lt;a href=&quot;#高效数据收集&quot; class=&quot;headerlink&quot; title=&quot;高效数据收集&quot;&gt;&lt;/a&gt;高效数据收集&lt;/h4&gt;&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;数据收集 = 表单数据&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;问卷星&lt;/li&gt;
-&lt;li&gt;金数据&lt;/li
-      
-    
-    </summary>
-    
-      <category term="聪明工作" scheme="http://www.xianyucoder.cn/categories/%E8%81%AA%E6%98%8E%E5%B7%A5%E4%BD%9C/"/>
-    
-    
-      <category term="数据收集" scheme="http://www.xianyucoder.cn/tags/%E6%95%B0%E6%8D%AE%E6%94%B6%E9%9B%86/"/>
     
   </entry>
   
