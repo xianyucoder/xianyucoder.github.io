@@ -362,7 +362,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2019/07/16/js加密学习02-rsa与xxtea/">
+    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2019/09/06/每日JS-粉笔网-RSA/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="煌金">
@@ -381,8 +381,8 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/07/16/js加密学习02-rsa与xxtea/" itemprop="url">
-                  JS逆向-基础-RSA加密与xxtea编码实例
+                <a class="post-title-link" href="/2019/09/06/每日JS-粉笔网-RSA/" itemprop="url">
+                  JS逆向-粉笔网密码加密
                 </a>
               
             
@@ -408,7 +408,7 @@
                 
               
 
-              <time title="创建时间：2019-07-16 18:39:35" itemprop="dateCreated datePublished" datetime="2019-07-16T18:39:35+08:00">2019-07-16</time>
+              <time title="创建时间：2019-09-06 18:39:35" itemprop="dateCreated datePublished" datetime="2019-09-06T18:39:35+08:00">2019-09-06</time>
             
 
             
@@ -425,7 +425,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-09-30 10:12:16" itemprop="dateModified" datetime="2019-09-30T10:12:16+08:00">2019-09-30</time>
+                <time title="修改时间：2019-09-30 10:42:27" itemprop="dateModified" datetime="2019-09-30T10:42:27+08:00">2019-09-30</time>
               
             
           </span>
@@ -457,8 +457,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/07/16/js加密学习02-rsa与xxtea/#comments" itemprop="discussionUrl">
-                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2019/07/16/js加密学习02-rsa与xxtea/" itemprop="commentCount"></span>
+                <a href="/2019/09/06/每日JS-粉笔网-RSA/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2019/09/06/每日JS-粉笔网-RSA/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -482,7 +482,7 @@
                 
                   <span class="post-meta-item-text">本文字数：</span>
                 
-                <span title="本文字数">3.1k</span>
+                <span title="本文字数">3.5k</span>
               
 
               
@@ -496,7 +496,7 @@
                 
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
-                <span title="阅读时长">5 分钟</span>
+                <span title="阅读时长">6 分钟</span>
               
             </div>
           
@@ -518,18 +518,15 @@
       
         
           
-          这次要研究的网站采用的是rsa加密以及xxtea。
-这里先复习下上一篇讲过的调试流程基础版:
+          1aHR0cHM6Ly9mZW5iaS5jb20vcGFnZS9ob21l
+参数加密的逻辑分析先抓包看看这次分析的参数【图1-1】
 
-如果网页有跳转，必须勾选 preservelog 防止丢包
-看一下有没有框架 右键查看框架源代码(弹出式登陆界面)
-登陆尽量使用错误密码 防止跳转
-查看关键登陆包 分析哪些参数是加密的
-使用别的浏览器分析
+这个参数的值看着像Base64 ，我们不急着下结论，先搜索参数名看看。
+有读者朋友纠结于搜索password = or password：这样需要搜索两遍是不是浪费时
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/07/16/js加密学习02-rsa与xxtea/#more" rel="contents">
+            <a class="btn" href="/2019/09/06/每日JS-粉笔网-RSA/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -585,7 +582,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2019/07/16/js加密学习11-犀牛数据/">
+    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2019/09/05/每日JS-极贷助手-aes/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="煌金">
@@ -604,8 +601,8 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/07/16/js加密学习11-犀牛数据/" itemprop="url">
-                  JS逆向-犀牛数据加密分析
+                <a class="post-title-link" href="/2019/09/05/每日JS-极贷助手-aes/" itemprop="url">
+                  JS逆向-极贷助手密码加密
                 </a>
               
             
@@ -631,7 +628,7 @@
                 
               
 
-              <time title="创建时间：2019-07-16 18:39:35" itemprop="dateCreated datePublished" datetime="2019-07-16T18:39:35+08:00">2019-07-16</time>
+              <time title="创建时间：2019-09-05 18:39:35" itemprop="dateCreated datePublished" datetime="2019-09-05T18:39:35+08:00">2019-09-05</time>
             
 
             
@@ -648,7 +645,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-09-30 10:16:42" itemprop="dateModified" datetime="2019-09-30T10:16:42+08:00">2019-09-30</time>
+                <time title="修改时间：2019-09-30 10:42:44" itemprop="dateModified" datetime="2019-09-30T10:42:44+08:00">2019-09-30</time>
               
             
           </span>
@@ -680,8 +677,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/07/16/js加密学习11-犀牛数据/#comments" itemprop="discussionUrl">
-                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2019/07/16/js加密学习11-犀牛数据/" itemprop="commentCount"></span>
+                <a href="/2019/09/05/每日JS-极贷助手-aes/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2019/09/05/每日JS-极贷助手-aes/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -705,7 +702,7 @@
                 
                   <span class="post-meta-item-text">本文字数：</span>
                 
-                <span title="本文字数">2.8k</span>
+                <span title="本文字数">2.3k</span>
               
 
               
@@ -719,7 +716,7 @@
                 
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
-                <span title="阅读时长">5 分钟</span>
+                <span title="阅读时长">4 分钟</span>
               
             </div>
           
@@ -741,15 +738,15 @@
       
         
           
-          咸鱼又来练手了,这次来研究下在搜索参数搜不到的情况下怎么办？
+          极X助手1aHR0cHM6Ly93d3cuamlkYWlob21lLmNvbS9vZmZpY2VyLyMvbG9naW4=
+先抓包看看这次要分析的参数。【图1-1】
 
-有点经验的朋友肯定知道这次要用的就是 XHR BreakPoint。
-关于XHR BreakPoint在很多文档中都有提及，咸鱼就不啰嗦了,还不是很了解的可以看下面的文档。
-https://developers.google.com/w
+看到【图1-1】里是没有加密参数名的。所以为了快速定位到加密的位置，我们试试 XHR 断点。
+切换到 控制台 -  Source 选
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/07/16/js加密学习11-犀牛数据/#more" rel="contents">
+            <a class="btn" href="/2019/09/05/每日JS-极贷助手-aes/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -805,7 +802,7 @@ https://developers.google.com/w
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2019/07/16/js加密学习12-gsxt_gg/">
+    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2019/09/04/每日JS-空中网/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="煌金">
@@ -824,8 +821,8 @@ https://developers.google.com/w
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/07/16/js加密学习12-gsxt_gg/" itemprop="url">
-                  JS逆向-工信系统加速乐
+                <a class="post-title-link" href="/2019/09/04/每日JS-空中网/" itemprop="url">
+                  JS逆向-空中网密码加密
                 </a>
               
             
@@ -851,7 +848,7 @@ https://developers.google.com/w
                 
               
 
-              <time title="创建时间：2019-07-16 18:39:35" itemprop="dateCreated datePublished" datetime="2019-07-16T18:39:35+08:00">2019-07-16</time>
+              <time title="创建时间：2019-09-04 18:39:35" itemprop="dateCreated datePublished" datetime="2019-09-04T18:39:35+08:00">2019-09-04</time>
             
 
             
@@ -868,7 +865,7 @@ https://developers.google.com/w
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-09-30 10:18:49" itemprop="dateModified" datetime="2019-09-30T10:18:49+08:00">2019-09-30</time>
+                <time title="修改时间：2019-09-30 10:43:01" itemprop="dateModified" datetime="2019-09-30T10:43:01+08:00">2019-09-30</time>
               
             
           </span>
@@ -900,8 +897,8 @@ https://developers.google.com/w
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/07/16/js加密学习12-gsxt_gg/#comments" itemprop="discussionUrl">
-                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2019/07/16/js加密学习12-gsxt_gg/" itemprop="commentCount"></span>
+                <a href="/2019/09/04/每日JS-空中网/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2019/09/04/每日JS-空中网/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -925,228 +922,7 @@ https://developers.google.com/w
                 
                   <span class="post-meta-item-text">本文字数：</span>
                 
-                <span title="本文字数">5.7k</span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">9 分钟</span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          本周练手加一
-
-上次分享了两个练手喂饭教程，朋友好奇喂饭是啥意思？就是把知识当成饭，喂到嘴里。
-【表情】
-同时咸鱼整理了一下过往所有关于JS逆向文章的代码，希望附上代码能让你学( 记 )的( 得 )更( star )快：
-https://github.com/xianyucoder/Crack-JS
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/07/16/js加密学习12-gsxt_gg/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2019/07/16/js加密学习13-财联社/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="煌金">
-      <meta itemprop="description" content="Stay Hungry, Stay Foolish.">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="咸鱼自我满足的日常">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/07/16/js加密学习13-财联社/" itemprop="url">
-                  JS逆向-财联社加密分析
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-07-16 18:39:35" itemprop="dateCreated datePublished" datetime="2019-07-16T18:39:35+08:00">2019-07-16</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-09-30 10:19:42" itemprop="dateModified" datetime="2019-09-30T10:19:42+08:00">2019-09-30</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/js逆向/" itemprop="url" rel="index"><span itemprop="name">js逆向</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2019/07/16/js加密学习13-财联社/#comments" itemprop="discussionUrl">
-                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2019/07/16/js加密学习13-财联社/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-		  
-		  
-
-          
-            <div class="post-symbolscount">
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">本文字数：</span>
-                
-                <span title="本文字数">1.9k</span>
+                <span title="本文字数">1.7k</span>
               
 
               
@@ -1182,18 +958,16 @@ https://github.com/xianyucoder/Crack-JS
       
         
           
-          本周练手加一。
+          1aHR0cHM6Ly9wYXNzcG9ydC5rb25nemhvbmcuY29tL2xvZ2lu
+参数位置分析先来看看加密的请求【图1-1】，之前在一篇加密总结的文章中提到过关于这个网站的加密，感兴趣的朋友可以回顾一下。
 
-这次写一写这周险些翻车的一次逆向吧,整体加密逻辑并不难,是自己太过想当然,要是没有群友的提醒就栽了。
-【群除我佬】
-分析请求老规矩先分析一波请求。
-这次要分析的是首页的「电报」部分,刷新首页的发现抓不到「电报」这部分的请求。无奈点击加载更多发起请求(其实并没有区别)
+之前介绍过很多关于加密参数如何搜索的文章，就不啰嗦咯。
 
-选中部分就是
+除了搜索加密参数
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/07/16/js加密学习13-财联社/#more" rel="contents">
+            <a class="btn" href="/2019/09/04/每日JS-空中网/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1249,7 +1023,7 @@ https://github.com/xianyucoder/Crack-JS
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2019/07/16/js加密学习14-66ip/">
+    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2019/09/03/每日JS-咪咕视频-RSA/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="煌金">
@@ -1268,8 +1042,8 @@ https://github.com/xianyucoder/Crack-JS
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/07/16/js加密学习14-66ip/" itemprop="url">
-                  JS逆向-66ip加速乐
+                <a class="post-title-link" href="/2019/09/03/每日JS-咪咕视频-RSA/" itemprop="url">
+                  JS逆向-咪咕视频密码加密与指纹分析
                 </a>
               
             
@@ -1295,7 +1069,7 @@ https://github.com/xianyucoder/Crack-JS
                 
               
 
-              <time title="创建时间：2019-07-16 18:39:35" itemprop="dateCreated datePublished" datetime="2019-07-16T18:39:35+08:00">2019-07-16</time>
+              <time title="创建时间：2019-09-03 18:39:35" itemprop="dateCreated datePublished" datetime="2019-09-03T18:39:35+08:00">2019-09-03</time>
             
 
             
@@ -1312,7 +1086,7 @@ https://github.com/xianyucoder/Crack-JS
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-09-30 10:22:49" itemprop="dateModified" datetime="2019-09-30T10:22:49+08:00">2019-09-30</time>
+                <time title="修改时间：2019-09-30 10:43:18" itemprop="dateModified" datetime="2019-09-30T10:43:18+08:00">2019-09-30</time>
               
             
           </span>
@@ -1344,8 +1118,8 @@ https://github.com/xianyucoder/Crack-JS
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/07/16/js加密学习14-66ip/#comments" itemprop="discussionUrl">
-                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2019/07/16/js加密学习14-66ip/" itemprop="commentCount"></span>
+                <a href="/2019/09/03/每日JS-咪咕视频-RSA/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2019/09/03/每日JS-咪咕视频-RSA/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -1369,7 +1143,226 @@ https://github.com/xianyucoder/Crack-JS
                 
                   <span class="post-meta-item-text">本文字数：</span>
                 
-                <span title="本文字数">4.4k</span>
+                <span title="本文字数">7.5k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">13 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          正文先来看看今天的受害者：
+1aHR0cDovL3d3dy5taWd1dmlkZW8uY29tL21ncy93ZWJzaXRlL3ByZC9pbmRleC5odG1s
+一、分析密码加密这次分析的是他登陆的三个参数，先分析登陆逻辑，抓个包看看。
+可以看到这里用的是弹出的窗口登陆【图1-1】，为了避免主
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/09/03/每日JS-咪咕视频-RSA/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2019/09/02/每日JS-xx街登陆密码加密-md5+rsa/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="煌金">
+      <meta itemprop="description" content="Stay Hungry, Stay Foolish.">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="咸鱼自我满足的日常">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/09/02/每日JS-xx街登陆密码加密-md5+rsa/" itemprop="url">
+                  JS逆向-楚楚街密码加密
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-02 18:39:35" itemprop="dateCreated datePublished" datetime="2019-09-02T18:39:35+08:00">2019-09-02</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-09-30 10:43:36" itemprop="dateModified" datetime="2019-09-30T10:43:36+08:00">2019-09-30</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/js逆向/" itemprop="url" rel="index"><span itemprop="name">js逆向</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/09/02/每日JS-xx街登陆密码加密-md5+rsa/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2019/09/02/每日JS-xx街登陆密码加密-md5+rsa/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+		  
+		  
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">4.3k</span>
               
 
               
@@ -1405,17 +1398,13 @@ https://github.com/xianyucoder/Crack-JS
       
         
           
-          练手系列来喽~
-这周在读者群顺手搞了个小活动,在群里摸鱼的时候有水友说练手系列能不能来点简单的写详细点,所以我这次准备了两个比较简单的练手加密,简单到我一度怀疑自己在水文。
-加密一
-分析请求先打开受害网站 -&gt; 打开控制台 -&gt; 切换至 XHR
-完美,刷新就看到了。
-
-这里要解决的只有两
+          XX 街登陆密码加密1aHR0cDovL3NlbGxlci5jaHVjaHVqaWUuY29tL3NxZS5waHA/cz0vVXNlci9pbmRleA==
+这个加密太简单了，五秒定位真的不是吹，所以直接来。
+输入错误的账号密码，发起登陆请求，可以看到登录包里有个password的加密字段。所以我
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/07/16/js加密学习14-66ip/#more" rel="contents">
+            <a class="btn" href="/2019/09/02/每日JS-xx街登陆密码加密-md5+rsa/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1460,7 +1449,7 @@ https://github.com/xianyucoder/Crack-JS
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/6/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/20/">20</a><a class="extend next" rel="next" href="/page/8/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/6/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/24/">24</a><a class="extend next" rel="next" href="/page/8/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1505,7 +1494,7 @@ https://github.com/xianyucoder/Crack-JS
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">97</span>
+                    <span class="site-state-item-count">120</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -1542,7 +1531,9 @@ https://github.com/xianyucoder/Crack-JS
                     
                       
                     
-                    <span class="site-state-item-count">12</span>
+                      
+                    
+                    <span class="site-state-item-count">13</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -1801,7 +1792,7 @@ https://github.com/xianyucoder/Crack-JS
       <i class="fa fa-area-chart"></i>
     </span>
     
-    <span title="站点总字数">245k</span>
+    <span title="站点总字数">278k</span>
   
 
   
@@ -1810,7 +1801,7 @@ https://github.com/xianyucoder/Crack-JS
       <i class="fa fa-coffee"></i>
     </span>
     
-    <span title="站点阅读时长">6:48</span>
+    <span title="站点阅读时长">7:43</span>
   
 </div>
 

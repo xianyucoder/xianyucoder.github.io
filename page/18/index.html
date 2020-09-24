@@ -362,7 +362,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2018/09/01/Scrapy-CrawlSpider-learn/">
+    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2019/01/19/pandas2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="煌金">
@@ -381,8 +381,8 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/09/01/Scrapy-CrawlSpider-learn/" itemprop="url">
-                  scrapy crawl 实战腾讯招聘
+                <a class="post-title-link" href="/2019/01/19/pandas2/" itemprop="url">
+                  Pandas基础(二)
                 </a>
               
             
@@ -408,7 +408,7 @@
                 
               
 
-              <time title="创建时间：2018-09-01 18:39:35" itemprop="dateCreated datePublished" datetime="2018-09-01T18:39:35+08:00">2018-09-01</time>
+              <time title="创建时间：2019-01-19 08:39:35" itemprop="dateCreated datePublished" datetime="2019-01-19T08:39:35+08:00">2019-01-19</time>
             
 
             
@@ -425,7 +425,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-08-21 22:04:35" itemprop="dateModified" datetime="2019-08-21T22:04:35+08:00">2019-08-21</time>
+                <time title="修改时间：2019-04-06 19:43:30" itemprop="dateModified" datetime="2019-04-06T19:43:30+08:00">2019-04-06</time>
               
             
           </span>
@@ -442,7 +442,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/爬虫/" itemprop="url" rel="index"><span itemprop="name">爬虫</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据科学/" itemprop="url" rel="index"><span itemprop="name">数据科学</span></a></span>
 
                 
                 
@@ -457,8 +457,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/09/01/Scrapy-CrawlSpider-learn/#comments" itemprop="discussionUrl">
-                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2018/09/01/Scrapy-CrawlSpider-learn/" itemprop="commentCount"></span>
+                <a href="/2019/01/19/pandas2/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2019/01/19/pandas2/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -482,7 +482,7 @@
                 
                   <span class="post-meta-item-text">本文字数：</span>
                 
-                <span title="本文字数">12k</span>
+                <span title="本文字数">18k</span>
               
 
               
@@ -496,7 +496,7 @@
                 
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
-                <span title="阅读时长">20 分钟</span>
+                <span title="阅读时长">30 分钟</span>
               
             </div>
           
@@ -517,443 +517,12 @@
 
       
         
-          <h4 id="为什么使用CrawlSpider类？"><a href="#为什么使用CrawlSpider类？" class="headerlink" title="为什么使用CrawlSpider类？"></a>为什么使用CrawlSpider类？</h4><p>回顾上一篇文章，我们大多时间都是在寻找下一页的url地址或者是内容的url地址上面，我们的大体思路是这样的：</p>
-<ol>
-<li>从response中提取所有的a标签对应的url地址</li>
-<li>自动的构造自己requests请求，发送给引擎
+          <h4 id="Pandas数据结构Series-基本技巧"><a href="#Pandas数据结构Series-基本技巧" class="headerlink" title="Pandas数据结构Series-基本技巧"></a>Pandas数据结构Series-基本技巧</h4><h5 id="数据查看"><a href="#数据查看" class="headerlink" title="数据查看"></a>数据查看</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#查看前五的数据</span></span><br><span class="line">s = pd.Series(np.random.rand(<span class="number">15</span>))</span><br><span class="line">print(s.head())   <span class="comment">#默认查看数据前五条</span></span><br><span class="line"><span class="comment"># 查看后5条数据</span></span><br><span class="line">print(s.tail())   <span class="comment">#默认查看数据的后五条</span></span><br><span class="line"><span class="comment"># 查看前10条数据</span></span><br><span class="line">print(s.head(<span class="number">10</span>))</span><br></pre></td></tr></table></figure>
+<h5 id="重新索引"><a href="#重新索引" class="headerlink" title="重新索引"></a>重新索引</h5><p>重新索引的作用是根据新的索引重新排序，若新的索引不存在则引入缺失值。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># .reindex将会根据索引重新排序，如果当前索引不存在，则引入缺失值</span></span><br><span class="line">s = pd.Series(np.random.rand(<span class="number">5</span>),index=[<span class="string">'a'</span>,<span class="string">'b'</span>,<span class="string">'c'</span>,<span class="string">'d'</span>,<span class="string">'e'</span>])</span><br><span class="line">print(s)</span><br><span class="line"><span class="comment"># 将索引值修改为['c','d','a','f']</span></span><br><span class="line">s1 =  s.reindex([<span class="string">'c'</span>,<span class="string">'d'</span>,<span class="string">'a'</span>,<span class="string">'f'</span>])</span><br><span class="line">print(s1)</span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line">a    <span class="number">0.972218</span></span><br><span class="line">b    <span class="number">0.820531</span></span><br><span class="line">c    <span class="number">0.940448</span></span><br><span class="line">d    <span class="number">0.009572</span></span><br><span class="line">e    <span class="number">0.462811</span></span><br><span class="line">dtype: float64</span><br><span class="line">c    <span class="number">0.940448</span></span><br><span class="line">d    <span class="number">0.009572</span></span><br><span class="line">a    <span class="number">0.972218</span></span><br><span class="line">f         NaN</span><br><span class="line">dtype: float64</span><br></pre></td></tr></table></figure></p>
+<p>如果不想引入缺失值可以使用<code>fill_value</code>指定不存在的索引值为0或其他值<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">s2 = s.reindex([<span class="string">'c'</span>,<span class="string">'d'</span>,<span class="string">'a'</span>,<span class="string">'f'</span>,<span class="string">'aaaaa'</span>], fill_value=<span class="number">0</span>)</span><br><span class="line">print(s2)</span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line">c        <span class="number">0.940448</span></span><br><span class="line">d        <span class="number">0.009572</span></span><br><span class="line">a        <span class="number">0.972218</span></span><br><span class="line">f        <span class="number">0.000000</span></span><br><span class="line">aaaaa    <span class="number">0.000000</span></span><br><span class="line">dtype: float64</span><br></pre></td></tr></table></figure></p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/09/01/Scrapy-CrawlSpider-learn/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </li></ol></div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2018/09/01/requests-and-json/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="煌金">
-      <meta itemprop="description" content="Stay Hungry, Stay Foolish.">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="咸鱼自我满足的日常">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/01/requests-and-json/" itemprop="url">
-                  requests与json的使用技巧
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-09-01 18:39:35" itemprop="dateCreated datePublished" datetime="2018-09-01T18:39:35+08:00">2018-09-01</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-08-21 23:02:12" itemprop="dateModified" datetime="2019-08-21T23:02:12+08:00">2019-08-21</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/09/01/requests-and-json/#comments" itemprop="discussionUrl">
-                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2018/09/01/requests-and-json/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-		  
-		  
-
-          
-            <div class="post-symbolscount">
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">本文字数：</span>
-                
-                <span title="本文字数">11k</span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">18 分钟</span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h4 id="requests"><a href="#requests" class="headerlink" title="requests"></a>requests</h4><h4 id="requestse基本使用"><a href="#requestse基本使用" class="headerlink" title="requestse基本使用"></a>requestse基本使用</h4><blockquote>
-<p>关于requests基本使用方法参照中文版参考文档：</p>
-<p><a href="http://docs.python-requests.org/zh_CN/latest/index.html" target="_blank" rel="noopener">http://docs.python-requests.org/zh_CN/latest/index.html</a><br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/09/01/requests-and-json/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </p></blockquote></div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2018/09/01/requets-login/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="煌金">
-      <meta itemprop="description" content="Stay Hungry, Stay Foolish.">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="咸鱼自我满足的日常">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/01/requets-login/" itemprop="url">
-                  request模拟登陆
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-09-01 18:39:35" itemprop="dateCreated datePublished" datetime="2018-09-01T18:39:35+08:00">2018-09-01</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-04-07 17:21:15" itemprop="dateModified" datetime="2019-04-07T17:21:15+08:00">2019-04-07</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/爬虫/" itemprop="url" rel="index"><span itemprop="name">爬虫</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/09/01/requets-login/#comments" itemprop="discussionUrl">
-                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2018/09/01/requets-login/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-		  
-		  
-
-          
-            <div class="post-symbolscount">
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">本文字数：</span>
-                
-                <span title="本文字数">4.1k</span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">7 分钟</span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h4 id="requests模拟登录"><a href="#requests模拟登录" class="headerlink" title="requests模拟登录"></a>requests模拟登录</h4><h4 id="获取本地cookie"><a href="#获取本地cookie" class="headerlink" title="获取本地cookie"></a>获取本地cookie</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line">session = requests.session()</span><br><span class="line">session.cookies = cookielib.LWPCookieJar(filename=<span class="string">"cookies.txt"</span>)</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    session.cookies.load(ignore_discard=<span class="literal">True</span>)</span><br><span class="line"><span class="keyword">except</span>:</span><br><span class="line">    <span class="keyword">print</span> (<span class="string">"cookie未能加载"</span>)</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/09/01/requets-login/#more" rel="contents">
+            <a class="btn" href="/2019/01/19/pandas2/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1009,7 +578,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2018/09/01/scrapy1/">
+    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2019/01/09/pandas1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="煌金">
@@ -1028,8 +597,8 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/09/01/scrapy1/" itemprop="url">
-                  初识Scrapy
+                <a class="post-title-link" href="/2019/01/09/pandas1/" itemprop="url">
+                  Pandas基础(一)
                 </a>
               
             
@@ -1055,7 +624,7 @@
                 
               
 
-              <time title="创建时间：2018-09-01 18:39:35" itemprop="dateCreated datePublished" datetime="2018-09-01T18:39:35+08:00">2018-09-01</time>
+              <time title="创建时间：2019-01-09 08:39:35" itemprop="dateCreated datePublished" datetime="2019-01-09T08:39:35+08:00">2019-01-09</time>
             
 
             
@@ -1072,7 +641,226 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-08-21 23:03:48" itemprop="dateModified" datetime="2019-08-21T23:03:48+08:00">2019-08-21</time>
+                <time title="修改时间：2019-04-06 19:43:22" itemprop="dateModified" datetime="2019-04-06T19:43:22+08:00">2019-04-06</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据科学/" itemprop="url" rel="index"><span itemprop="name">数据科学</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/01/09/pandas1/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2019/01/09/pandas1/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+		  
+		  
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">21k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">34 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h4 id="Pandas是什么？"><a href="#Pandas是什么？" class="headerlink" title="Pandas是什么？"></a>Pandas是什么？</h4><p>Pandas是数据分析的核心工具包，基于Numpy创建，为数据分析而存在。</p>
+<ul>
+<li>一维数组Series + 二维数组Dataframe</li>
+<li>可直接读取数据并做处理(高效简单)</li>
+<li>兼容各种数据库</li>
+<li>支持各种分析方法
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/01/09/pandas1/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </li></ul></div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2018/12/29/learn-selenium/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="煌金">
+      <meta itemprop="description" content="Stay Hungry, Stay Foolish.">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="咸鱼自我满足的日常">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/12/29/learn-selenium/" itemprop="url">
+                  Selenium实例学习
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-12-29 08:39:35" itemprop="dateCreated datePublished" datetime="2018-12-29T08:39:35+08:00">2018-12-29</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-08-22 15:37:34" itemprop="dateModified" datetime="2019-08-22T15:37:34+08:00">2019-08-22</time>
               
             
           </span>
@@ -1104,8 +892,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/09/01/scrapy1/#comments" itemprop="discussionUrl">
-                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2018/09/01/scrapy1/" itemprop="commentCount"></span>
+                <a href="/2018/12/29/learn-selenium/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2018/12/29/learn-selenium/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -1129,7 +917,7 @@
                 
                   <span class="post-meta-item-text">本文字数：</span>
                 
-                <span title="本文字数">12k</span>
+                <span title="本文字数">21k</span>
               
 
               
@@ -1143,7 +931,7 @@
                 
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
-                <span title="阅读时长">21 分钟</span>
+                <span title="阅读时长">34 分钟</span>
               
             </div>
           
@@ -1164,10 +952,236 @@
 
       
         
-          <h4 id="初识Scrapy"><a href="#初识Scrapy" class="headerlink" title="初识Scrapy"></a>初识Scrapy</h4><h4 id="什么是Scrapy？"><a href="#什么是Scrapy？" class="headerlink" title="什么是Scrapy？"></a>什么是Scrapy？</h4><p><code>Scrapy</code>使用 <code>Python</code> 实现的一个开源爬虫框架，<code>Scrapy</code>基于 <code>twisted</code>这个高性能的事件驱动网络引擎框架，<code>Scrapy</code>爬虫拥有很高的性能。<br>
+          <h4 id="安装selenium"><a href="#安装selenium" class="headerlink" title="安装selenium"></a>安装selenium</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install selenium</span><br></pre></td></tr></table></figure>
+<h4 id="下载驱动-chromedriver"><a href="#下载驱动-chromedriver" class="headerlink" title="下载驱动(chromedriver)"></a>下载驱动(chromedriver)</h4><p>下载前需要确认适配自己的浏览器版本<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://chromedriver.storage.googleapis.com/index.html</span><br></pre></td></tr></table></figure></p>
+<h4 id="selenium的基本用法"><a href="#selenium的基本用法" class="headerlink" title="selenium的基本用法"></a>selenium的基本用法</h4><p>基本用法看官方文档，讲述的很清楚了，推荐<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://selenium-python.readthedocs.io/installation.html</span><br></pre></td></tr></table></figure></p>
+<h4 id="常用的实例"><a href="#常用的实例" class="headerlink" title="常用的实例"></a>常用的实例</h4>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/09/01/scrapy1/#more" rel="contents">
+            <a class="btn" href="/2018/12/29/learn-selenium/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2018/12/19/numpy-shizhan3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="煌金">
+      <meta itemprop="description" content="Stay Hungry, Stay Foolish.">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="咸鱼自我满足的日常">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/12/19/numpy-shizhan3/" itemprop="url">
+                  Numpy实战 - 分析单车数据中用户类别的占比
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-12-19 08:39:35" itemprop="dateCreated datePublished" datetime="2018-12-19T08:39:35+08:00">2018-12-19</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-08-21 22:42:18" itemprop="dateModified" datetime="2019-08-21T22:42:18+08:00">2019-08-21</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据科学/" itemprop="url" rel="index"><span itemprop="name">数据科学</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/12/19/numpy-shizhan3/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2018/12/19/numpy-shizhan3/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+		  
+		  
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">5.1k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">8 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p><img src="http://tc.xianyucoder.cn/blog20190821224143.png" alt></p>
+<p>本次复习的知识点如下：</p>
+<ul>
+<li>numpy的reshape以及shape在实战中的运用</li>
+<li>matplotlib饼图绘制</li>
+</ul>
+<h4 id="分析目标"><a href="#分析目标" class="headerlink" title="分析目标"></a>分析目标</h4><p>观察上次的数据，数据中有的数据有会员与非会员两种用户类别。<br>这次我们主要分析一下两种类别用户在数据中占比。</p>
+<h4 id="数据读取与数据清洗"><a href="#数据读取与数据清洗" class="headerlink" title="数据读取与数据清洗"></a>数据读取与数据清洗</h4><p>根据流程示意图我们主要遵循下面几个步骤：</p>
+<p><img src="http://tc.xianyucoder.cn/blog20190821224153.png" alt></p>
+<p>在过去两次的文章中已经有关于数据读取和数据分析操作的详细代码讲解，所以不再赘述。<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/12/19/numpy-shizhan3/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1223,7 +1237,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2018/09/01/tongyong-spider/">
+    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2018/12/19/database-mongo/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="煌金">
@@ -1242,8 +1256,8 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/09/01/tongyong-spider/" itemprop="url">
-                  通用爬虫套路
+                <a class="post-title-link" href="/2018/12/19/database-mongo/" itemprop="url">
+                  Python与MongoDB交互
                 </a>
               
             
@@ -1269,7 +1283,7 @@
                 
               
 
-              <time title="创建时间：2018-09-01 18:39:35" itemprop="dateCreated datePublished" datetime="2018-09-01T18:39:35+08:00">2018-09-01</time>
+              <time title="创建时间：2018-12-19 08:39:35" itemprop="dateCreated datePublished" datetime="2018-12-19T08:39:35+08:00">2018-12-19</time>
             
 
             
@@ -1286,7 +1300,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-04-07 17:19:24" itemprop="dateModified" datetime="2019-04-07T17:19:24+08:00">2019-04-07</time>
+                <time title="修改时间：2019-08-22 15:38:01" itemprop="dateModified" datetime="2019-08-22T15:38:01+08:00">2019-08-22</time>
               
             
           </span>
@@ -1303,7 +1317,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/爬虫/" itemprop="url" rel="index"><span itemprop="name">爬虫</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a></span>
 
                 
                 
@@ -1318,8 +1332,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/09/01/tongyong-spider/#comments" itemprop="discussionUrl">
-                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2018/09/01/tongyong-spider/" itemprop="commentCount"></span>
+                <a href="/2018/12/19/database-mongo/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2018/12/19/database-mongo/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -1343,7 +1357,7 @@
                 
                   <span class="post-meta-item-text">本文字数：</span>
                 
-                <span title="本文字数">1.4k</span>
+                <span title="本文字数">40k</span>
               
 
               
@@ -1357,7 +1371,7 @@
                 
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
-                <span title="阅读时长">2 分钟</span>
+                <span title="阅读时长">1:07</span>
               
             </div>
           
@@ -1378,17 +1392,30 @@
 
       
         
-          <h4 id="通用爬虫套路"><a href="#通用爬虫套路" class="headerlink" title="通用爬虫套路"></a>通用爬虫套路</h4>
+          <h4 id="mongoDB的优势"><a href="#mongoDB的优势" class="headerlink" title="mongoDB的优势"></a>mongoDB的优势</h4><ul>
+<li>易扩展</li>
+<li>大数据量,高性能</li>
+<li>灵活的数据模型<br>###安装与启动<br>安装mongodb：<code>sudo apt-get install -y mongodb-org</code></li>
+</ul>
+<p>安装可视化管理界面：<code>https://robomongo.org/download</code></p>
+<p>查看帮助：<code>mongod –help</code></p>
+<p>启动服务：<code>sudo service mongod start</code></p>
+<p>停止服务：<code>sudo service mongod stop</code></p>
+<p>重启服务：<code>sudo service mongod restart</code></p>
+<p>查看进程：<code>ps ajx|grep mongod</code></p>
+<p>配置文件的位置：<code>/etc/mongod.conf</code></p>
+<p>默认端口：27017</p>
+<p>日志的位置：<code>/var/log/mongodb/mongod.log</code><br>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/09/01/tongyong-spider/#more" rel="contents">
+            <a class="btn" href="/2018/12/19/database-mongo/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
           <!--/noindex-->
         
       
-    </div>
+    </p></div>
 
     
 
@@ -1426,7 +1453,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/17/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><span class="page-number current">18</span><a class="page-number" href="/page/19/">19</a><a class="page-number" href="/page/20/">20</a><a class="extend next" rel="next" href="/page/19/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/17/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><span class="page-number current">18</span><a class="page-number" href="/page/19/">19</a><span class="space">&hellip;</span><a class="page-number" href="/page/24/">24</a><a class="extend next" rel="next" href="/page/19/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1471,7 +1498,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">97</span>
+                    <span class="site-state-item-count">120</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -1508,7 +1535,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">12</span>
+                      
+                    
+                    <span class="site-state-item-count">13</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -1767,7 +1796,7 @@
       <i class="fa fa-area-chart"></i>
     </span>
     
-    <span title="站点总字数">245k</span>
+    <span title="站点总字数">278k</span>
   
 
   
@@ -1776,7 +1805,7 @@
       <i class="fa fa-coffee"></i>
     </span>
     
-    <span title="站点阅读时长">6:48</span>
+    <span title="站点阅读时长">7:43</span>
   
 </div>
 

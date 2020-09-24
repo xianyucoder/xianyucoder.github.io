@@ -362,7 +362,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2018/11/09/scrapy-redis/">
+    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2019/03/19/Docker-network/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="煌金">
@@ -381,8 +381,8 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/11/09/scrapy-redis/" itemprop="url">
-                  Scrapy-redis 详解
+                <a class="post-title-link" href="/2019/03/19/Docker-network/" itemprop="url">
+                  Docker网络
                 </a>
               
             
@@ -408,7 +408,7 @@
                 
               
 
-              <time title="创建时间：2018-11-09 08:39:35" itemprop="dateCreated datePublished" datetime="2018-11-09T08:39:35+08:00">2018-11-09</time>
+              <time title="创建时间：2019-03-19 08:39:35" itemprop="dateCreated datePublished" datetime="2019-03-19T08:39:35+08:00">2019-03-19</time>
             
 
             
@@ -425,7 +425,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-08-22 15:37:57" itemprop="dateModified" datetime="2019-08-22T15:37:57+08:00">2019-08-22</time>
+                <time title="修改时间：2019-08-21 22:49:07" itemprop="dateModified" datetime="2019-08-21T22:49:07+08:00">2019-08-21</time>
               
             
           </span>
@@ -442,7 +442,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/爬虫/" itemprop="url" rel="index"><span itemprop="name">爬虫</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a></span>
 
                 
                 
@@ -457,8 +457,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/11/09/scrapy-redis/#comments" itemprop="discussionUrl">
-                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2018/11/09/scrapy-redis/" itemprop="commentCount"></span>
+                <a href="/2019/03/19/Docker-network/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2019/03/19/Docker-network/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -482,7 +482,7 @@
                 
                   <span class="post-meta-item-text">本文字数：</span>
                 
-                <span title="本文字数">23k</span>
+                <span title="本文字数">6.9k</span>
               
 
               
@@ -496,7 +496,7 @@
                 
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
-                <span title="阅读时长">39 分钟</span>
+                <span title="阅读时长">11 分钟</span>
               
             </div>
           
@@ -517,25 +517,24 @@
 
       
         
-          <h4 id="什么是scrapy-redis"><a href="#什么是scrapy-redis" class="headerlink" title="什么是scrapy-redis"></a>什么是scrapy-redis</h4><p>redis-based components for scrapy</p>
-<p>###为什么要学习scrapy-redis？<br>scrapy redis能够实现requests去重，爬虫持久化，能够轻松实现分布式。</p>
-<h4 id="scrapy-redis-详解"><a href="#scrapy-redis-详解" class="headerlink" title="scrapy-redis 详解"></a>scrapy-redis 详解</h4><h4 id="流程图"><a href="#流程图" class="headerlink" title="流程图"></a>流程图</h4><p><img src="https://mmbiz.qpic.cn/mmbiz_png/jqCHqBaKLl3qFicg5cmrLXpbUehXwF4dnLURHIGxng4gxIkEe1qc3z92y8TiaU9j82b2Wiaia7SCfIKJG3lRzE0mjw/0?wx_fmt=png" alt></p>
-<h4 id="scrapy-redis-example-project"><a href="#scrapy-redis-example-project" class="headerlink" title="scrapy-redis example-project"></a>scrapy-redis example-project</h4><p>scrapy-redis的源码中提供了scrapy-redis的示例项目,我们下载下来学习一下。</p>
-<blockquote>
-<p><a href="https://github.com/rmax/scrapy-redis/tree/master/example-project" target="_blank" rel="noopener">https://github.com/rmax/scrapy-redis/tree/master/example-project</a></p>
-</blockquote>
-<p>在<code>example-project</code>中有三个demo,分别是<code>dmoz</code>,<code>myspider_redis</code>,以及<code>mycrawler_redis</code>。</p>
-<p>本次主要是对<code>dmoz</code>这个demo进行学习和实战练习。</p>
+          <p><img src="http://tc.xianyucoder.cn/blog20190821223443.png" alt></p>
+<h4 id="为什么需要容器的网络管理？"><a href="#为什么需要容器的网络管理？" class="headerlink" title="为什么需要容器的网络管理？"></a>为什么需要容器的网络管理？</h4><p>容器的网络默认与宿主机、与其他容器相互隔离，且容器中可以运行一些网络应用，比如nginx、web应用、数据库等，如果需要让外部也可以访问这些容器中运行的网络应用，那么就需要配置网络来实现。</p>
+<p>同样的，不同需求下，容器与宿主机的通信有不同的业务状态这时候就需要容器网络管理以达成管理不同业务下相关的网络配置。</p>
+<h4 id="Docker中的网络驱动模式有那些？"><a href="#Docker中的网络驱动模式有那些？" class="headerlink" title="Docker中的网络驱动模式有那些？"></a>Docker中的网络驱动模式有那些？</h4><p>bridge network(网桥)模式:默认的网络模式，类似虚拟机的nat模式</p>
+<p>host network(主机)模式:容器与宿主机之间的网络无隔离，即容器直接使用宿主机网络</p>
+<p>none network模式:容器禁用所有网络</p>
+<p>overlay network(覆盖)模式:利用vxlan实现的bridge模式</p>
+<p>macvlan network模式:容器具备MAC地址，使其在外部看来是一台真实的网络设备<br>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/11/09/scrapy-redis/#more" rel="contents">
+            <a class="btn" href="/2019/03/19/Docker-network/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
           <!--/noindex-->
         
       
-    </div>
+    </p></div>
 
     
 
@@ -584,7 +583,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2018/10/29/password_proxy_use/">
+    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2019/03/19/Docker-rong-qi/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="煌金">
@@ -603,8 +602,8 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/10/29/password_proxy_use/" itemprop="url">
-                  带密码的代理怎么使用
+                <a class="post-title-link" href="/2019/03/19/Docker-rong-qi/" itemprop="url">
+                  Docker容器
                 </a>
               
             
@@ -630,7 +629,7 @@
                 
               
 
-              <time title="创建时间：2018-10-29 08:39:35" itemprop="dateCreated datePublished" datetime="2018-10-29T08:39:35+08:00">2018-10-29</time>
+              <time title="创建时间：2019-03-19 08:39:35" itemprop="dateCreated datePublished" datetime="2019-03-19T08:39:35+08:00">2019-03-19</time>
             
 
             
@@ -647,7 +646,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-04-07 17:20:25" itemprop="dateModified" datetime="2019-04-07T17:20:25+08:00">2019-04-07</time>
+                <time title="修改时间：2019-08-22 16:48:02" itemprop="dateModified" datetime="2019-08-22T16:48:02+08:00">2019-08-22</time>
               
             
           </span>
@@ -664,7 +663,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/爬虫/" itemprop="url" rel="index"><span itemprop="name">爬虫</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a></span>
 
                 
                 
@@ -679,8 +678,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/10/29/password_proxy_use/#comments" itemprop="discussionUrl">
-                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2018/10/29/password_proxy_use/" itemprop="commentCount"></span>
+                <a href="/2019/03/19/Docker-rong-qi/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2019/03/19/Docker-rong-qi/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -704,7 +703,7 @@
                 
                   <span class="post-meta-item-text">本文字数：</span>
                 
-                <span title="本文字数">6.2k</span>
+                <span title="本文字数">6.9k</span>
               
 
               
@@ -718,7 +717,7 @@
                 
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
-                <span title="阅读时长">10 分钟</span>
+                <span title="阅读时长">11 分钟</span>
               
             </div>
           
@@ -739,437 +738,22 @@
 
       
         
-          
-          使用代理处理器1234567891011import urllib.requestdef money_proxy_use():    #第一种方式付费代理发送请求    #1.代理ip    money_proxy =&#123;"http":"username:pwd@192.168.12.11:
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/10/29/password_proxy_use/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2018/10/29/scrapy_an_zhuang_and_setting_file/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="煌金">
-      <meta itemprop="description" content="Stay Hungry, Stay Foolish.">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="咸鱼自我满足的日常">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/10/29/scrapy_an_zhuang_and_setting_file/" itemprop="url">
-                  scrapy安装报错与setting文件解读
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-10-29 08:39:35" itemprop="dateCreated datePublished" datetime="2018-10-29T08:39:35+08:00">2018-10-29</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-04-07 17:20:18" itemprop="dateModified" datetime="2019-04-07T17:20:18+08:00">2019-04-07</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/爬虫/" itemprop="url" rel="index"><span itemprop="name">爬虫</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/10/29/scrapy_an_zhuang_and_setting_file/#comments" itemprop="discussionUrl">
-                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2018/10/29/scrapy_an_zhuang_and_setting_file/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-		  
-		  
-
-          
-            <div class="post-symbolscount">
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">本文字数：</span>
-                
-                <span title="本文字数">13k</span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">22 分钟</span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h4 id="安装scrapy报错"><a href="#安装scrapy报错" class="headerlink" title="安装scrapy报错"></a>安装scrapy报错</h4><p>报错<code>ModuleNotFoundError: No module named &#39;win32api&#39;错误</code></p>
-<p>解决方案：<code>pip install pypiwin32</code>或者<code>pip install -i https://pypi.douban.com/simple pypiwin32</code></p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/10/29/scrapy_an_zhuang_and_setting_file/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2018/10/14/flask-xiangying/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="煌金">
-      <meta itemprop="description" content="Stay Hungry, Stay Foolish.">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="咸鱼自我满足的日常">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/10/14/flask-xiangying/" itemprop="url">
-                  Flask基础(4)-响应Response
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-10-14 18:39:35 / 修改时间：01:02:23" itemprop="dateCreated datePublished" datetime="2018-10-14T18:39:35+08:00">2018-10-14</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Flask/" itemprop="url" rel="index"><span itemprop="name">Flask</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/10/14/flask-xiangying/#comments" itemprop="discussionUrl">
-                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2018/10/14/flask-xiangying/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-		  
-		  
-
-          
-            <div class="post-symbolscount">
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">本文字数：</span>
-                
-                <span title="本文字数">7.2k</span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">12 分钟</span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h4 id="关于响应（Response）"><a href="#关于响应（Response）" class="headerlink" title="关于响应（Response）"></a>关于响应（Response）</h4><p>视图函数的返回值会被自动转换为一个响应对象，Flask的转换逻辑如下：</p>
+          <p><img src="http://tc.xianyucoder.cn/blog20190821223443.png" alt></p>
+<h4 id="什么是容器？"><a href="#什么是容器？" class="headerlink" title="什么是容器？"></a>什么是容器？</h4><p>容器（Container）：容器是一种轻量级、可移植、并将应用程序进行的打包的技术，使应用程序可以在几乎任何地方以相同的方式运行，Docker将镜像文件运行起来后，产生的对象就是容器。容器相当于是镜像运行起来的一个实例且容器具备一定的生命周期。</p>
+<h4 id="Docker容器和虚拟机的区别"><a href="#Docker容器和虚拟机的区别" class="headerlink" title="Docker容器和虚拟机的区别"></a>Docker容器和虚拟机的区别</h4><p>相同点：</p>
 <ul>
-<li><p>如果返回的是一个合法的响应对象，则直接返回。</p>
-</li>
-<li><p>如果返回的是一个字符串，那么Flask会重新创建一个werkzeug.wrappers.Response对象，Response将该字符串作为主体，状态码为200，MIME类型为text/html，然后返回该Response对象。</p>
-</li>
-<li><p>如果返回的是一个元组，元祖中的数据类型是(response,status,headers)。status值会覆盖默认的200状态码，headers可以是一个列表或者字典，作为额外的消息头。</p>
-</li>
-<li><p>如果以上条件都不满足，Flask会假设返回值是一个合法的WSGIt应用程序，并通过Response.force_type(rv,request.environ)转换为一个请求对象。</p>
+<li>容器和虚拟机一样，都会对物理硬件资源进行共享使用。</li>
+<li>容器和虚拟机的生命周期比较相似（创建、运行、暂停、关闭等等）。</li>
+<li>容器中或虚拟机中都可以安装各种应用，如redis、mysql、nginx等。也就是说，在容器中的操作，如同在一个虚拟机(操作系统)中操作一样。</li>
+<li>同虚拟机一样，容器创建后，会存储在宿主机上：linux上位于/var/lib/docker/containers下</li>
+</ul>
+<p>不同点：</p>
+<ul>
+<li>虚拟机的创建、启动和关闭都是基于一个完整的操作系统。一个虚拟机就是一个完整的操作系统。而容器直接运行在宿主机的内核上，其本质上以一系列进程的结合。</li>
+<li>容器是轻量级的，虚拟机是重量级的。首先容器不需要额外的资源来管理(不需要Hypervisor、Guest OS)，虚拟机额外更多的性能消耗；其次创建、启动或关闭容器，如同创建、启动或者关闭进程那么轻松，而创建、启动、关闭一个操作系统就没那么方便了。<br>也因此，意味着在给定的硬件上能运行更多数量的容器，甚至可以直接把Docker运行在虚拟机上。
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/10/14/flask-xiangying/#more" rel="contents">
+            <a class="btn" href="/2019/03/19/Docker-rong-qi/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1225,7 +809,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2018/10/13/Flask-url-and-view/">
+    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2019/03/18/Docker-rongqi-and-image/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="煌金">
@@ -1244,8 +828,8 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/10/13/Flask-url-and-view/" itemprop="url">
-                  Flask基础(3)-URL与视图
+                <a class="post-title-link" href="/2019/03/18/Docker-rongqi-and-image/" itemprop="url">
+                  Docker容器与镜像的关系
                 </a>
               
             
@@ -1271,7 +855,7 @@
                 
               
 
-              <time title="创建时间：2018-10-13 18:39:35" itemprop="dateCreated datePublished" datetime="2018-10-13T18:39:35+08:00">2018-10-13</time>
+              <time title="创建时间：2019-03-18 08:39:35" itemprop="dateCreated datePublished" datetime="2019-03-18T08:39:35+08:00">2019-03-18</time>
             
 
             
@@ -1288,7 +872,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-10-14 00:59:23" itemprop="dateModified" datetime="2018-10-14T00:59:23+08:00">2018-10-14</time>
+                <time title="修改时间：2019-08-22 16:48:11" itemprop="dateModified" datetime="2019-08-22T16:48:11+08:00">2019-08-22</time>
               
             
           </span>
@@ -1305,7 +889,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Flask/" itemprop="url" rel="index"><span itemprop="name">Flask</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a></span>
 
                 
                 
@@ -1320,8 +904,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/10/13/Flask-url-and-view/#comments" itemprop="discussionUrl">
-                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2018/10/13/Flask-url-and-view/" itemprop="commentCount"></span>
+                <a href="/2019/03/18/Docker-rongqi-and-image/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2019/03/18/Docker-rongqi-and-image/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -1345,7 +929,7 @@
                 
                   <span class="post-meta-item-text">本文字数：</span>
                 
-                <span title="本文字数">8.5k</span>
+                <span title="本文字数">3.6k</span>
               
 
               
@@ -1359,7 +943,7 @@
                 
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
-                <span title="阅读时长">14 分钟</span>
+                <span title="阅读时长">6 分钟</span>
               
             </div>
           
@@ -1380,10 +964,235 @@
 
       
         
-          <h4 id="URL与函数的映射"><a href="#URL与函数的映射" class="headerlink" title="URL与函数的映射"></a>URL与函数的映射</h4><p>从新建的文件，我们已经看到，一个URL要与执行函数进行映射，使用的是<a href="mailto:`@app.route" target="_blank" rel="noopener">`@app.route</a><code>装饰器。</code>@app.route<code>装饰器中，可以指定URL的规则来进行更加详细的映射，比如现在要映射一个文章详情的URL，文章详情的URL是</code>/article/id/`，id有可能为1、2、3…,那么可以通过以下方式：<br>
+          <p><img src="http://tc.xianyucoder.cn/blog20190821223443.png" alt></p>
+<h4 id="容器与镜像的关系"><a href="#容器与镜像的关系" class="headerlink" title="容器与镜像的关系"></a>容器与镜像的关系</h4><p>在实际操作中，我们配置好需要的容器之后可以将它转化为镜像提交到仓库，以便之后使用。</p>
+<p>先看一下容器与镜像的转换关系图:</p>
+<p><img src="http://tc.xianyucoder.cn/blog005MnFO1gy1fzmmoi277uj31ic16igpl.png" alt></p>
+<h5 id="容器提交-docker-commit"><a href="#容器提交-docker-commit" class="headerlink" title="容器提交(docker commit)"></a>容器提交(docker commit)</h5><p>根据容器生成一个新的镜像</p>
+<p>命令格式:<code>docker commit [参数] 容器[版本]</code></p>
+<p>常用参数:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-a 添加作者</span><br><span class="line">-c 为创建的镜像加入Dockerfile命令</span><br><span class="line">-m 类似git commit -m</span><br><span class="line">-p 提交时暂停容器</span><br></pre></td></tr></table></figure></p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/10/13/Flask-url-and-view/#more" rel="contents">
+            <a class="btn" href="/2019/03/18/Docker-rongqi-and-image/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2019/02/09/exam1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="煌金">
+      <meta itemprop="description" content="Stay Hungry, Stay Foolish.">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="咸鱼自我满足的日常">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/09/exam1/" itemprop="url">
+                  Python笔试题(二)
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-02-09 08:39:35" itemprop="dateCreated datePublished" datetime="2019-02-09T08:39:35+08:00">2019-02-09</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-08-21 23:07:42" itemprop="dateModified" datetime="2019-08-21T23:07:42+08:00">2019-08-21</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Python笔试题/" itemprop="url" rel="index"><span itemprop="name">Python笔试题</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/02/09/exam1/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2019/02/09/exam1/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+		  
+		  
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">3.5k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">6 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p><img src="http://tc.xianyucoder.cn/blog20190821230635.png" alt></p>
+<p>本系列文章素材，题目来源于真实企业笔试题,具体哪来的？平时多水群就好</p>
+<h5 id="第一题"><a href="#第一题" class="headerlink" title="第一题"></a>第一题</h5><p>下图中的打印结果分别是什么？</p>
+<p><img src="http://tc.xianyucoder.cn/blog20190821230651.png" alt></p>
+<h5 id="第二题"><a href="#第二题" class="headerlink" title="第二题"></a>第二题</h5><p>Python中静态方法、类方法、成员函数作用是什么？</p>
+<h5 id="第三题"><a href="#第三题" class="headerlink" title="第三题"></a>第三题</h5><p>说说对缺省参数的理解？* args是什么？** kwargs是什么？<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/02/09/exam1/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1424,11 +1233,235 @@
 
 
     
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2019/02/09/exma2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="煌金">
+      <meta itemprop="description" content="Stay Hungry, Stay Foolish.">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="咸鱼自我满足的日常">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/09/exma2/" itemprop="url">
+                  Python笔试题(一)
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-02-09 08:39:35" itemprop="dateCreated datePublished" datetime="2019-02-09T08:39:35+08:00">2019-02-09</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-08-21 23:05:55" itemprop="dateModified" datetime="2019-08-21T23:05:55+08:00">2019-08-21</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Python笔试题/" itemprop="url" rel="index"><span itemprop="name">Python笔试题</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/02/09/exma2/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2019/02/09/exma2/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+		  
+		  
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">2.9k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">5 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h4 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h4><ol>
+<li>以下两段代码，运行结束后的结果是什么？是否相同？原因是什么？</li>
+</ol>
+<p><img src="http://tc.xianyucoder.cn/blog20190821230520.png" alt></p>
+<p><img src="http://tc.xianyucoder.cn/blog20190821230536.png" alt></p>
+<ol start="2">
+<li><p>4G内存怎么读取一个5G的数据？</p>
+</li>
+<li><p>浅述深浅拷贝</p>
+</li>
+</ol>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/02/09/exma2/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/15/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><span class="page-number current">16</span><a class="page-number" href="/page/17/">17</a><span class="space">&hellip;</span><a class="page-number" href="/page/20/">20</a><a class="extend next" rel="next" href="/page/17/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/15/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><span class="page-number current">16</span><a class="page-number" href="/page/17/">17</a><span class="space">&hellip;</span><a class="page-number" href="/page/24/">24</a><a class="extend next" rel="next" href="/page/17/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1473,7 +1506,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">97</span>
+                    <span class="site-state-item-count">120</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -1510,7 +1543,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">12</span>
+                      
+                    
+                    <span class="site-state-item-count">13</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -1769,7 +1804,7 @@
       <i class="fa fa-area-chart"></i>
     </span>
     
-    <span title="站点总字数">245k</span>
+    <span title="站点总字数">278k</span>
   
 
   
@@ -1778,7 +1813,7 @@
       <i class="fa fa-coffee"></i>
     </span>
     
-    <span title="站点阅读时长">6:48</span>
+    <span title="站点阅读时长">7:43</span>
   
 </div>
 

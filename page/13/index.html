@@ -362,7 +362,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2019/01/22/pandas4/">
+    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2019/06/16/js加密学习04-一次群聊引发的的js破解教学/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="煌金">
@@ -381,8 +381,8 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/01/22/pandas4/" itemprop="url">
-                  Pandas基础(四)
+                <a class="post-title-link" href="/2019/06/16/js加密学习04-一次群聊引发的的js破解教学/" itemprop="url">
+                  JS逆向-企名片加密分析
                 </a>
               
             
@@ -408,7 +408,7 @@
                 
               
 
-              <time title="创建时间：2019-01-22 08:39:35" itemprop="dateCreated datePublished" datetime="2019-01-22T08:39:35+08:00">2019-01-22</time>
+              <time title="创建时间：2019-06-16 18:39:35" itemprop="dateCreated datePublished" datetime="2019-06-16T18:39:35+08:00">2019-06-16</time>
             
 
             
@@ -425,7 +425,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-04-06 19:43:40" itemprop="dateModified" datetime="2019-04-06T19:43:40+08:00">2019-04-06</time>
+                <time title="修改时间：2019-09-30 10:12:06" itemprop="dateModified" datetime="2019-09-30T10:12:06+08:00">2019-09-30</time>
               
             
           </span>
@@ -442,7 +442,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据科学/" itemprop="url" rel="index"><span itemprop="name">数据科学</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/js逆向/" itemprop="url" rel="index"><span itemprop="name">js逆向</span></a></span>
 
                 
                 
@@ -457,8 +457,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/01/22/pandas4/#comments" itemprop="discussionUrl">
-                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2019/01/22/pandas4/" itemprop="commentCount"></span>
+                <a href="/2019/06/16/js加密学习04-一次群聊引发的的js破解教学/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2019/06/16/js加密学习04-一次群聊引发的的js破解教学/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -482,7 +482,7 @@
                 
                   <span class="post-meta-item-text">本文字数：</span>
                 
-                <span title="本文字数">26k</span>
+                <span title="本文字数">3.7k</span>
               
 
               
@@ -496,7 +496,7 @@
                 
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
-                <span title="阅读时长">44 分钟</span>
+                <span title="阅读时长">6 分钟</span>
               
             </div>
           
@@ -517,11 +517,18 @@
 
       
         
-          <h4 id="Pandas时间戳索引-DatetimeIndex"><a href="#Pandas时间戳索引-DatetimeIndex" class="headerlink" title="Pandas时间戳索引-DatetimeIndex"></a>Pandas时间戳索引-DatetimeIndex</h4><h4 id="pd-DatetimeIndex-与TimeSeries时间序列"><a href="#pd-DatetimeIndex-与TimeSeries时间序列" class="headerlink" title="pd.DatetimeIndex()与TimeSeries时间序列"></a>pd.DatetimeIndex()与TimeSeries时间序列</h4><p><code>pd.DatetimeIndex()</code>可以直接生成时间戳索引，支持使用str、datetime.datetime。<br>单个时间戳的类型为<code>Timestamp</code>，多个时间戳的类型为<code>DatetimeIndex</code>，示例如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">rng = pd.DatetimeIndex([<span class="string">'12/1/2017'</span>,<span class="string">'12/2/2017'</span>,<span class="string">'12/3/2017'</span>,<span class="string">'12/4/2017'</span>,<span class="string">'12/5/2017'</span>])</span><br><span class="line">print(rng,type(rng))</span><br><span class="line">print(rng[<span class="number">0</span>],type(rng[<span class="number">0</span>]))</span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line">DatetimeIndex([<span class="string">'2017-12-01'</span>, <span class="string">'2017-12-02'</span>, <span class="string">'2017-12-03'</span>, <span class="string">'2017-12-04'</span>,</span><br><span class="line">               <span class="string">'2017-12-05'</span>],</span><br><span class="line">              dtype=<span class="string">'datetime64[ns]'</span>, freq=<span class="literal">None</span>) &lt;<span class="class"><span class="keyword">class</span> '<span class="title">pandas</span>.<span class="title">core</span>.<span class="title">indexes</span>.<span class="title">datetimes</span>.<span class="title">DatetimeIndex</span>'&gt;</span></span><br><span class="line"><span class="class">2017-12-01 00:</span><span class="number">00</span>:<span class="number">00</span> &lt;<span class="class"><span class="keyword">class</span> '<span class="title">pandas</span>.<span class="title">_libs</span>.<span class="title">tslibs</span>.<span class="title">timestamps</span>.<span class="title">Timestamp</span>'&gt;</span></span><br></pre></td></tr></table></figure></p>
-<h5 id="什么是TimeSeries时间序列？"><a href="#什么是TimeSeries时间序列？" class="headerlink" title="什么是TimeSeries时间序列？"></a>什么是TimeSeries时间序列？</h5><p>以<code>DatetimeIndex</code>为index的Series，为TimeSries时间序列<br>举个栗子：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">st = pd.Series(np.random.rand(len(rng)), index = rng)</span><br><span class="line">print(st,type(st))</span><br><span class="line">print(st.index)</span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line"><span class="number">2017</span><span class="number">-12</span><span class="number">-01</span>    <span class="number">0.081920</span></span><br><span class="line"><span class="number">2017</span><span class="number">-12</span><span class="number">-02</span>    <span class="number">0.921781</span></span><br><span class="line"><span class="number">2017</span><span class="number">-12</span><span class="number">-03</span>    <span class="number">0.489779</span></span><br><span class="line"><span class="number">2017</span><span class="number">-12</span><span class="number">-04</span>    <span class="number">0.257632</span></span><br><span class="line"><span class="number">2017</span><span class="number">-12</span><span class="number">-05</span>    <span class="number">0.805373</span></span><br><span class="line">dtype: float64 &lt;<span class="class"><span class="keyword">class</span> '<span class="title">pandas</span>.<span class="title">core</span>.<span class="title">series</span>.<span class="title">Series</span>'&gt;</span></span><br><span class="line"><span class="class"><span class="title">DatetimeIndex</span><span class="params">([<span class="string">'2017-12-01'</span>, <span class="string">'2017-12-02'</span>, <span class="string">'2017-12-03'</span>, <span class="string">'2017-12-04'</span>,</span></span></span><br><span class="line"><span class="class"><span class="params">               <span class="string">'2017-12-05'</span>],</span></span></span><br><span class="line"><span class="class"><span class="params">              dtype=<span class="string">'datetime64[ns]'</span>, freq=None)</span></span></span><br></pre></td></tr></table></figure></p>
+          
+          事情起因
+这是aio老陈的交流群里一位群友的提问,交流群里的大佬巨多,我想这个问题应该很快就会得到解决。
+果不其然,很快有老哥给出了破解代码,默默点个赞,说句牛逼。
+
+这里先贴上 Loco大佬的知乎专栏 , 专栏内容主要是爬虫反爬,逆向的文章,更多人关注说不定大佬能奋起更新。
+
+https://zh
+          ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/01/22/pandas4/#more" rel="contents">
+            <a class="btn" href="/2019/06/16/js加密学习04-一次群聊引发的的js破解教学/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -577,7 +584,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2019/01/20/pandas3/">
+    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2019/06/16/js加密学习10-梦幻西游/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="煌金">
@@ -596,8 +603,8 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/01/20/pandas3/" itemprop="url">
-                  Pandas基础(三)
+                <a class="post-title-link" href="/2019/06/16/js加密学习10-梦幻西游/" itemprop="url">
+                  JS逆向-梦幻西游装备阁加密分析
                 </a>
               
             
@@ -623,7 +630,7 @@
                 
               
 
-              <time title="创建时间：2019-01-20 08:39:35" itemprop="dateCreated datePublished" datetime="2019-01-20T08:39:35+08:00">2019-01-20</time>
+              <time title="创建时间：2019-06-16 18:39:35" itemprop="dateCreated datePublished" datetime="2019-06-16T18:39:35+08:00">2019-06-16</time>
             
 
             
@@ -640,7 +647,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-04-06 19:43:36" itemprop="dateModified" datetime="2019-04-06T19:43:36+08:00">2019-04-06</time>
+                <time title="修改时间：2019-09-30 10:17:53" itemprop="dateModified" datetime="2019-09-30T10:17:53+08:00">2019-09-30</time>
               
             
           </span>
@@ -657,7 +664,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据科学/" itemprop="url" rel="index"><span itemprop="name">数据科学</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/js逆向/" itemprop="url" rel="index"><span itemprop="name">js逆向</span></a></span>
 
                 
                 
@@ -672,8 +679,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/01/20/pandas3/#comments" itemprop="discussionUrl">
-                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2019/01/20/pandas3/" itemprop="commentCount"></span>
+                <a href="/2019/06/16/js加密学习10-梦幻西游/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2019/06/16/js加密学习10-梦幻西游/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -697,7 +704,7 @@
                 
                   <span class="post-meta-item-text">本文字数：</span>
                 
-                <span title="本文字数">19k</span>
+                <span title="本文字数">2.7k</span>
               
 
               
@@ -711,7 +718,7 @@
                 
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
-                <span title="阅读时长">32 分钟</span>
+                <span title="阅读时长">4 分钟</span>
               
             </div>
           
@@ -732,13 +739,18 @@
 
       
         
-          <h4 id="时间模块datetime"><a href="#时间模块datetime" class="headerlink" title="时间模块datetime"></a>时间模块datetime</h4><p>在学习时间序列之前我们需要先了解一下datetime模块的基本使用，datetime模块不是pandas库中所包含的。</p>
-<p>但为了能更好的学习pandas中的时间序列，我们可以先学习datetime的基本使用以打好基础，datetime我们主要掌握一下几种方法：<code>datetime.date(), datetime.datetime(), datetime.timedelta()</code></p>
-<h5 id="datetime-date"><a href="#datetime-date" class="headerlink" title="datetime.date"></a>datetime.date</h5><p>我们可以使用<code>datetime.date.today</code>方法返回当前时间，其数据类型为<code>datetime.date</code><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime  </span><br><span class="line">today = datetime.date.today()</span><br><span class="line">print(today,type(today))</span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line"><span class="number">2018</span><span class="number">-10</span><span class="number">-28</span> &lt;<span class="class"><span class="keyword">class</span> '<span class="title">datetime</span>.<span class="title">date</span>'&gt;</span></span><br></pre></td></tr></table></figure></p>
-<p>同时我们可以使用<code>datetime.date(年，月，日)</code>的方式输出我们想要的日期的datetime类型。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line">t = datetime.date(<span class="number">2016</span>,<span class="number">6</span>,<span class="number">1</span>)</span><br><span class="line">print(t)</span><br><span class="line"><span class="comment"># (年，月，日) → 直接得到当时日期</span></span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line"><span class="number">2016</span><span class="number">-06</span><span class="number">-01</span></span><br></pre></td></tr></table></figure></p>
+          
+          来咯来咯~这次真的来喽!
+咸鱼练手第二弹。
+
+最近风声略紧,咸鱼在这声明:
+本公众号所有文章仅供技术交流未经许可严禁转载,且本公众号发布的内容不得用于非法用途,如有侵权，请后台联系咸鱼删除文章。
+【律师函警告】
+分析请求老规矩先抓包,找了半天没发现有异步请求,不过很快在Html页面里找到了下面的东西
+          ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/01/20/pandas3/#more" rel="contents">
+            <a class="btn" href="/2019/06/16/js加密学习10-梦幻西游/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -794,7 +806,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2019/01/19/pandas2/">
+    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2019/06/16/js加密学习01-des与base64/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="煌金">
@@ -813,8 +825,8 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/01/19/pandas2/" itemprop="url">
-                  Pandas基础(二)
+                <a class="post-title-link" href="/2019/06/16/js加密学习01-des与base64/" itemprop="url">
+                  JS逆向-基础-DES加密与Base64编码实例
                 </a>
               
             
@@ -840,7 +852,7 @@
                 
               
 
-              <time title="创建时间：2019-01-19 08:39:35" itemprop="dateCreated datePublished" datetime="2019-01-19T08:39:35+08:00">2019-01-19</time>
+              <time title="创建时间：2019-06-16 18:39:35" itemprop="dateCreated datePublished" datetime="2019-06-16T18:39:35+08:00">2019-06-16</time>
             
 
             
@@ -857,7 +869,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-04-06 19:43:30" itemprop="dateModified" datetime="2019-04-06T19:43:30+08:00">2019-04-06</time>
+                <time title="修改时间：2019-09-30 10:12:25" itemprop="dateModified" datetime="2019-09-30T10:12:25+08:00">2019-09-30</time>
               
             
           </span>
@@ -874,7 +886,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据科学/" itemprop="url" rel="index"><span itemprop="name">数据科学</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/js逆向/" itemprop="url" rel="index"><span itemprop="name">js逆向</span></a></span>
 
                 
                 
@@ -889,8 +901,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/01/19/pandas2/#comments" itemprop="discussionUrl">
-                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2019/01/19/pandas2/" itemprop="commentCount"></span>
+                <a href="/2019/06/16/js加密学习01-des与base64/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2019/06/16/js加密学习01-des与base64/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -914,7 +926,7 @@
                 
                   <span class="post-meta-item-text">本文字数：</span>
                 
-                <span title="本文字数">18k</span>
+                <span title="本文字数">36k</span>
               
 
               
@@ -928,7 +940,7 @@
                 
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
-                <span title="阅读时长">30 分钟</span>
+                <span title="阅读时长">1:01</span>
               
             </div>
           
@@ -949,12 +961,16 @@
 
       
         
-          <h4 id="Pandas数据结构Series-基本技巧"><a href="#Pandas数据结构Series-基本技巧" class="headerlink" title="Pandas数据结构Series-基本技巧"></a>Pandas数据结构Series-基本技巧</h4><h5 id="数据查看"><a href="#数据查看" class="headerlink" title="数据查看"></a>数据查看</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#查看前五的数据</span></span><br><span class="line">s = pd.Series(np.random.rand(<span class="number">15</span>))</span><br><span class="line">print(s.head())   <span class="comment">#默认查看数据前五条</span></span><br><span class="line"><span class="comment"># 查看后5条数据</span></span><br><span class="line">print(s.tail())   <span class="comment">#默认查看数据的后五条</span></span><br><span class="line"><span class="comment"># 查看前10条数据</span></span><br><span class="line">print(s.head(<span class="number">10</span>))</span><br></pre></td></tr></table></figure>
-<h5 id="重新索引"><a href="#重新索引" class="headerlink" title="重新索引"></a>重新索引</h5><p>重新索引的作用是根据新的索引重新排序，若新的索引不存在则引入缺失值。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># .reindex将会根据索引重新排序，如果当前索引不存在，则引入缺失值</span></span><br><span class="line">s = pd.Series(np.random.rand(<span class="number">5</span>),index=[<span class="string">'a'</span>,<span class="string">'b'</span>,<span class="string">'c'</span>,<span class="string">'d'</span>,<span class="string">'e'</span>])</span><br><span class="line">print(s)</span><br><span class="line"><span class="comment"># 将索引值修改为['c','d','a','f']</span></span><br><span class="line">s1 =  s.reindex([<span class="string">'c'</span>,<span class="string">'d'</span>,<span class="string">'a'</span>,<span class="string">'f'</span>])</span><br><span class="line">print(s1)</span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line">a    <span class="number">0.972218</span></span><br><span class="line">b    <span class="number">0.820531</span></span><br><span class="line">c    <span class="number">0.940448</span></span><br><span class="line">d    <span class="number">0.009572</span></span><br><span class="line">e    <span class="number">0.462811</span></span><br><span class="line">dtype: float64</span><br><span class="line">c    <span class="number">0.940448</span></span><br><span class="line">d    <span class="number">0.009572</span></span><br><span class="line">a    <span class="number">0.972218</span></span><br><span class="line">f         NaN</span><br><span class="line">dtype: float64</span><br></pre></td></tr></table></figure></p>
-<p>如果不想引入缺失值可以使用<code>fill_value</code>指定不存在的索引值为0或其他值<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">s2 = s.reindex([<span class="string">'c'</span>,<span class="string">'d'</span>,<span class="string">'a'</span>,<span class="string">'f'</span>,<span class="string">'aaaaa'</span>], fill_value=<span class="number">0</span>)</span><br><span class="line">print(s2)</span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line">c        <span class="number">0.940448</span></span><br><span class="line">d        <span class="number">0.009572</span></span><br><span class="line">a        <span class="number">0.972218</span></span><br><span class="line">f        <span class="number">0.000000</span></span><br><span class="line">aaaaa    <span class="number">0.000000</span></span><br><span class="line">dtype: float64</span><br></pre></td></tr></table></figure></p>
+          
+          讲在前面本篇旨在简单总结js与Python加密的一些例子,文中演示的案例也是面向新手,如果有大佬很碰巧看到这篇文章,欢迎加我交流,咸鱼愿意付费学习。
+常用的加密有哪些？
+对称加密（加密解密密钥相同）：DES、DES3、AES
+非对称加密（分公钥私钥）：RSA
+信息摘要算法/签名算法：MD5、HMAC
+          ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/01/19/pandas2/#more" rel="contents">
+            <a class="btn" href="/2019/06/16/js加密学习01-des与base64/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1010,7 +1026,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2019/01/09/pandas1/">
+    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2019/05/16/js加密学习01-基础/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="煌金">
@@ -1029,8 +1045,8 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/01/09/pandas1/" itemprop="url">
-                  Pandas基础(一)
+                <a class="post-title-link" href="/2019/05/16/js加密学习01-基础/" itemprop="url">
+                  JS逆向-基础流程梳理 ( 一 )
                 </a>
               
             
@@ -1056,7 +1072,7 @@
                 
               
 
-              <time title="创建时间：2019-01-09 08:39:35" itemprop="dateCreated datePublished" datetime="2019-01-09T08:39:35+08:00">2019-01-09</time>
+              <time title="创建时间：2019-05-16 18:39:35" itemprop="dateCreated datePublished" datetime="2019-05-16T18:39:35+08:00">2019-05-16</time>
             
 
             
@@ -1073,7 +1089,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-04-06 19:43:22" itemprop="dateModified" datetime="2019-04-06T19:43:22+08:00">2019-04-06</time>
+                <time title="修改时间：2019-09-30 10:12:33" itemprop="dateModified" datetime="2019-09-30T10:12:33+08:00">2019-09-30</time>
               
             
           </span>
@@ -1090,7 +1106,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据科学/" itemprop="url" rel="index"><span itemprop="name">数据科学</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/js逆向/" itemprop="url" rel="index"><span itemprop="name">js逆向</span></a></span>
 
                 
                 
@@ -1105,8 +1121,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/01/09/pandas1/#comments" itemprop="discussionUrl">
-                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2019/01/09/pandas1/" itemprop="commentCount"></span>
+                <a href="/2019/05/16/js加密学习01-基础/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2019/05/16/js加密学习01-基础/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -1130,7 +1146,7 @@
                 
                   <span class="post-meta-item-text">本文字数：</span>
                 
-                <span title="本文字数">21k</span>
+                <span title="本文字数">1.3k</span>
               
 
               
@@ -1144,7 +1160,7 @@
                 
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
-                <span title="阅读时长">34 分钟</span>
+                <span title="阅读时长">2 分钟</span>
               
             </div>
           
@@ -1165,22 +1181,26 @@
 
       
         
-          <h4 id="Pandas是什么？"><a href="#Pandas是什么？" class="headerlink" title="Pandas是什么？"></a>Pandas是什么？</h4><p>Pandas是数据分析的核心工具包，基于Numpy创建，为数据分析而存在。</p>
-<ul>
-<li>一维数组Series + 二维数组Dataframe</li>
-<li>可直接读取数据并做处理(高效简单)</li>
-<li>兼容各种数据库</li>
-<li>支持各种分析方法
+          
+          基础流程
+如果网页有跳转，必须勾选 preservelog 防止丢包
+看一下有没有框架 右键查看框架源代码
+登陆的话尽量使用错误密码 防止跳转
+查看关键登陆包 分析哪些参数是加密的
+使用别的浏览器分析哪些参数是固定的值
+初步猜测加密方法
+搜索(md5,aes,des,tripedes,rsa,enc
+          ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/01/09/pandas1/#more" rel="contents">
+            <a class="btn" href="/2019/05/16/js加密学习01-基础/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
           <!--/noindex-->
         
       
-    </li></ul></div>
+    </div>
 
     
 
@@ -1229,7 +1249,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2018/12/29/learn-selenium/">
+    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2019/04/07/app_spider/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="煌金">
@@ -1248,8 +1268,8 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/12/29/learn-selenium/" itemprop="url">
-                  Selenium实例学习
+                <a class="post-title-link" href="/2019/04/07/app_spider/" itemprop="url">
+                  App爬虫环境搭建
                 </a>
               
             
@@ -1275,7 +1295,7 @@
                 
               
 
-              <time title="创建时间：2018-12-29 08:39:35" itemprop="dateCreated datePublished" datetime="2018-12-29T08:39:35+08:00">2018-12-29</time>
+              <time title="创建时间：2019-04-07 08:39:35" itemprop="dateCreated datePublished" datetime="2019-04-07T08:39:35+08:00">2019-04-07</time>
             
 
             
@@ -1292,7 +1312,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-08-22 15:37:34" itemprop="dateModified" datetime="2019-08-22T15:37:34+08:00">2019-08-22</time>
+                <time title="修改时间：2019-08-22 16:37:33" itemprop="dateModified" datetime="2019-08-22T16:37:33+08:00">2019-08-22</time>
               
             
           </span>
@@ -1324,8 +1344,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/12/29/learn-selenium/#comments" itemprop="discussionUrl">
-                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2018/12/29/learn-selenium/" itemprop="commentCount"></span>
+                <a href="/2019/04/07/app_spider/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2019/04/07/app_spider/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -1349,7 +1369,7 @@
                 
                   <span class="post-meta-item-text">本文字数：</span>
                 
-                <span title="本文字数">21k</span>
+                <span title="本文字数">8.1k</span>
               
 
               
@@ -1363,7 +1383,7 @@
                 
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
-                <span title="阅读时长">34 分钟</span>
+                <span title="阅读时长">13 分钟</span>
               
             </div>
           
@@ -1384,20 +1404,28 @@
 
       
         
-          <h4 id="安装selenium"><a href="#安装selenium" class="headerlink" title="安装selenium"></a>安装selenium</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install selenium</span><br></pre></td></tr></table></figure>
-<h4 id="下载驱动-chromedriver"><a href="#下载驱动-chromedriver" class="headerlink" title="下载驱动(chromedriver)"></a>下载驱动(chromedriver)</h4><p>下载前需要确认适配自己的浏览器版本<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://chromedriver.storage.googleapis.com/index.html</span><br></pre></td></tr></table></figure></p>
-<h4 id="selenium的基本用法"><a href="#selenium的基本用法" class="headerlink" title="selenium的基本用法"></a>selenium的基本用法</h4><p>基本用法看官方文档，讲述的很清楚了，推荐<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://selenium-python.readthedocs.io/installation.html</span><br></pre></td></tr></table></figure></p>
-<h4 id="常用的实例"><a href="#常用的实例" class="headerlink" title="常用的实例"></a>常用的实例</h4>
+          <p>本文来讲讲APP抓包环境搭建。<br>App抓包应该是每个爬虫工程师都避不开的话题,在之前我也写过关于自动参与「抽奖助手」<br>抽奖的文章,当时使用的抓包工具是Charles,有需要的朋友可以翻下之前的文章。</p>
+<h4 id="App抓包原理"><a href="#App抓包原理" class="headerlink" title="App抓包原理"></a>App抓包原理</h4><ol>
+<li>客户端向服务器发起HTTPS请求</li>
+<li>抓包工具拦截客户端的请求，伪装成客户端向服务器进行请求</li>
+<li>服务器向客户端（实际上是抓包工具）返回服务器的CA证书</li>
+<li>抓包工具拦截服务器的响应，获取服务器证书公钥，然后自己制作一张证书，<br>将服务器证书替换后发送给客户端。（这一步，抓包工具拿到了服务器证书的公钥）</li>
+<li>客户端接收到服务器（实际上是抓包工具）的证书后，生成一个对称密钥，<br>用抓包工具的公钥加密，发送给“服务器”（抓包工具）</li>
+<li>抓包工具拦截客户端的响应，用自己的私钥解密对称密钥，然后用服务器证书公钥加密，<br>发送给服务器。（这一步，抓包工具拿到了对称密钥）</li>
+<li>服务器用自己的私钥解密对称密钥，向客户端（抓包工具）发送响应</li>
+<li>抓包工具拦截服务器的响应，替换成自己的证书后发送给客户端</li>
+</ol>
+<p>爬虫的本质就是「骗」过服务器,各种反反爬手段就是增强信任的过程,不停的让服务器相信你是自己人<br>如果你被反爬了,就是你骗术不精,被发现了。<br>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/12/29/learn-selenium/#more" rel="contents">
+            <a class="btn" href="/2019/04/07/app_spider/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
           <!--/noindex-->
         
       
-    </div>
+    </p></div>
 
     
 
@@ -1435,7 +1463,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/12/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><span class="page-number current">13</span><a class="page-number" href="/page/14/">14</a><span class="space">&hellip;</span><a class="page-number" href="/page/20/">20</a><a class="extend next" rel="next" href="/page/14/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/12/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><span class="page-number current">13</span><a class="page-number" href="/page/14/">14</a><span class="space">&hellip;</span><a class="page-number" href="/page/24/">24</a><a class="extend next" rel="next" href="/page/14/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1480,7 +1508,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">97</span>
+                    <span class="site-state-item-count">120</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -1517,7 +1545,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">12</span>
+                      
+                    
+                    <span class="site-state-item-count">13</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -1776,7 +1806,7 @@
       <i class="fa fa-area-chart"></i>
     </span>
     
-    <span title="站点总字数">245k</span>
+    <span title="站点总字数">278k</span>
   
 
   
@@ -1785,7 +1815,7 @@
       <i class="fa fa-coffee"></i>
     </span>
     
-    <span title="站点阅读时长">6:48</span>
+    <span title="站点阅读时长">7:43</span>
   
 </div>
 
