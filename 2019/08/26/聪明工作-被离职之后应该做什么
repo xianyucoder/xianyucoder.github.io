@@ -653,8 +653,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/08/26/安卓逆向学习5-AndroidKiller简单使用和实战/" rel="next" title="App逆向实战和AndroidKiller简单使用">
-                <i class="fa fa-chevron-left"></i> App逆向实战和AndroidKiller简单使用
+              <a href="/2019/08/26/聪明工作-邮件礼仪/" rel="next" title="聪明工作-邮件礼仪">
+                <i class="fa fa-chevron-left"></i> 聪明工作-邮件礼仪
               </a>
             
           </div>
@@ -663,8 +663,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/08/26/聪明工作-邮件礼仪/" rel="prev" title="聪明工作-邮件礼仪">
-                聪明工作-邮件礼仪 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/08/26/聪明工作-知识记忆与知识内化/" rel="prev" title="聪明工作-知识记忆与知识内化">
+                聪明工作-知识记忆与知识内化 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -1009,6 +1009,10 @@
                 
                   <li class="links-of-blogroll-item">
                     <a href="https://iswbm.com/" title="王炳明的博客(iswbm)" target="_blank">王炳明的博客(iswbm)</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://geekmonkey.top/" title="猴哥的博客" target="_blank">猴哥的博客</a>
                   </li>
                 
               </ul>

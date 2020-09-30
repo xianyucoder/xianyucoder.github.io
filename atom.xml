@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.xianyucoder.cn/"/>
-  <updated>2020-09-30T02:02:49.963Z</updated>
+  <updated>2020-09-24T08:28:14.229Z</updated>
   <id>http://www.xianyucoder.cn/</id>
   
   <author>
@@ -15,32 +15,6 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
-  
-  <entry>
-    <title>JS逆向- 今日头条电商 token</title>
-    <link href="http://www.xianyucoder.cn/2020/07/16/Python%20%E7%88%AC%E8%99%AB%E8%BF%9B%E9%98%B6%E5%BF%85%E5%A4%87%20%7C%20%E5%85%B3%E4%BA%8E%E6%9F%90%E7%94%B5%E5%95%86%20token%20%E5%8F%82%E6%95%B0%E5%8A%A0%E5%AF%86%E9%80%BB%E8%BE%91%E5%88%86%E6%9E%90/"/>
-    <id>http://www.xianyucoder.cn/2020/07/16/Python 爬虫进阶必备 | 关于某电商 token 参数加密逻辑分析/</id>
-    <published>2020-07-16T10:39:35.000Z</published>
-    <updated>2020-09-30T02:02:49.963Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="今日网站"><a href="#今日网站" class="headerlink" title="今日网站"></a>今日网站</h1><p>下面这个例子比较简单，发布完之后才知道是某大厂。。</p><p>aHR0cHM6Ly9oYW9odW8uamlucml0ZW1haS5jb20vdmlld3MvcHJvZHVjdC9pdGVtP2lkPT</p><p>MzODAyODQ5MDY2NzU1MDM3NDAmcGFnZV9pZD0zMzgwMjg1NDczNTYx</p><p>MTMyMTA3Jm9yaWdpbl90eXBlPTE=</p><p>这个例子同样来自咸鱼的技术交流群</p><p><img src="http://tc.xianyucoder.cn/blog20200908220559.png" alt></p><h2 id="抓包分析与加密定位"><a href="#抓包分析与加密定位" class="headerlink" title="抓包分析与加密定位"></a>抓包分析与加密定位</h2><p>先打开网站，定位到需要分析的请求</p><p><img src="http://tc.xianyucoder.cn/blog20200908213412.png" alt></p><p>这个请求带着一个签名，而且这个值是一直不变的，位数一直保持的 32 位，可以大胆猜测他是 MD5 加密，之后的分析结果也同样验证了这一点。</p><p>先全局搜索一下，因为这个参数名在没有做混淆所以直接可以搜索到，不过这结果比较多，找起来还是比较耗费时间的。</p><p><img src="http://tc.xianyucoder.cn/blog20200908213916.png" alt></p><p>第一种方式是检索<code>token:</code>，结果只有两个，只要再次检索就能定位到了。</p><p><img src="http://tc.xianyucoder.cn/blog20200908214007.png" alt></p><p>第二种就是<code>XHR</code>断点这个之前讲过的，不过这里不推荐新手用 XHR 断点，新手分析一圈就懵了。</p><blockquote><p>这里提供一个思路，如果检索的结果很多，但是 XHR 断点又分析不出来是那个堆栈的话，可以在 XHR 断点的每个堆栈里面搜索关键词，然后再打上断点分析，算是一种过滤的手段吧。</p></blockquote><p>我们先打上 xhr 断点</p><p><img src="http://tc.xianyucoder.cn/blog20200908214448.png" alt></p><p>然后再经过的堆栈里逐个分析</p><p><img src="http://tc.xianyucoder.cn/blog20200908214912.png" alt></p><p>在这个位置就可以看到<code>token</code>了（上面的小技巧都没用到）</p><h2 id="加密分析"><a href="#加密分析" class="headerlink" title="加密分析"></a>加密分析</h2><p>打上断点，刷新</p><p><img src="http://tc.xianyucoder.cn/blog20200908215506.png" alt></p><p>这里的<code>s</code>就是传入的<code>id</code>值了</p><p>之后直接单步即可进入加密逻辑了<code>b.a</code></p><p><img src="http://tc.xianyucoder.cn/blog20200908215915.png" alt></p><p>这里可以看到这里主要的逻辑是<code>r()</code>，经过一次<code>r()</code>之后将结果与<code>s</code>拼接之后再传入<code>r()</code></p><p>所以探究一下<code>r()</code>就可以了，直接步入，可以看到下面的结果</p><p><img src="http://tc.xianyucoder.cn/blog20200908220112.png" alt></p><p>简单的有点明显，为了验证结果，把页面加密的结果和我们自己的加密对比一下</p><p>页面的结果：</p><p><img src="http://tc.xianyucoder.cn/blog20200908220308.png" alt></p><p>我们自己的测试结果：</p><p><img src="http://tc.xianyucoder.cn/blog20200908220254.png" alt></p><p>好吧，结果没有什么不一样的，就是先将<code>id</code>哈希一次，然后拼接上<code>zd2019@@1157</code>再哈希一次，就是这样。</p><p>好咯，以上就是今天的全部内容了，咱们下次再见~</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h1 id=&quot;今日网站&quot;&gt;&lt;a href=&quot;#今日网站&quot; class=&quot;headerlink&quot; title=&quot;今日网站&quot;&gt;&lt;/a&gt;今日网站&lt;/h1&gt;&lt;p&gt;下面这个例子比较简单，发布完之后才知道是某大厂。。&lt;/p&gt;
-&lt;p&gt;aHR0cHM6Ly9oYW9odW8uamlucml0Z
-      
-    
-    </summary>
-    
-      <category term="js逆向" scheme="http://www.xianyucoder.cn/categories/js%E9%80%86%E5%90%91/"/>
-    
-    
-      <category term="js逆向" scheme="http://www.xianyucoder.cn/tags/js%E9%80%86%E5%90%91/"/>
-    
-  </entry>
   
   <entry>
     <title>JS逆向- AES 案例解析汇总（一）</title>
@@ -58,6 +32,32 @@
         &lt;p&gt;上次咸鱼对关于 AES 的JS加密方法做了总结，这次把咸鱼遇到的 AES 的案例做了汇总，这个汇总系列会持续更新，攒到一定数量的网站就发一次。&lt;/p&gt;
 &lt;p&gt;关于 AES 的处理可以参考下面这篇文章：&lt;/p&gt;
 &lt;h4 id=&quot;XX-财险&quot;&gt;&lt;a href=&quot;#XX-财险&quot; 
+      
+    
+    </summary>
+    
+      <category term="js逆向" scheme="http://www.xianyucoder.cn/categories/js%E9%80%86%E5%90%91/"/>
+    
+    
+      <category term="js逆向" scheme="http://www.xianyucoder.cn/tags/js%E9%80%86%E5%90%91/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>JS逆向- 今日头条电商 token</title>
+    <link href="http://www.xianyucoder.cn/2020/07/16/Python%20%E7%88%AC%E8%99%AB%E8%BF%9B%E9%98%B6%E5%BF%85%E5%A4%87%20%7C%20%E5%85%B3%E4%BA%8E%E6%9F%90%E7%94%B5%E5%95%86%20token%20%E5%8F%82%E6%95%B0%E5%8A%A0%E5%AF%86%E9%80%BB%E8%BE%91%E5%88%86%E6%9E%90/"/>
+    <id>http://www.xianyucoder.cn/2020/07/16/Python 爬虫进阶必备 | 关于某电商 token 参数加密逻辑分析/</id>
+    <published>2020-07-16T10:39:35.000Z</published>
+    <updated>2020-09-30T02:02:49.963Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="今日网站"><a href="#今日网站" class="headerlink" title="今日网站"></a>今日网站</h1><p>下面这个例子比较简单，发布完之后才知道是某大厂。。</p><p>aHR0cHM6Ly9oYW9odW8uamlucml0ZW1haS5jb20vdmlld3MvcHJvZHVjdC9pdGVtP2lkPT</p><p>MzODAyODQ5MDY2NzU1MDM3NDAmcGFnZV9pZD0zMzgwMjg1NDczNTYx</p><p>MTMyMTA3Jm9yaWdpbl90eXBlPTE=</p><p>这个例子同样来自咸鱼的技术交流群</p><p><img src="http://tc.xianyucoder.cn/blog20200908220559.png" alt></p><h2 id="抓包分析与加密定位"><a href="#抓包分析与加密定位" class="headerlink" title="抓包分析与加密定位"></a>抓包分析与加密定位</h2><p>先打开网站，定位到需要分析的请求</p><p><img src="http://tc.xianyucoder.cn/blog20200908213412.png" alt></p><p>这个请求带着一个签名，而且这个值是一直不变的，位数一直保持的 32 位，可以大胆猜测他是 MD5 加密，之后的分析结果也同样验证了这一点。</p><p>先全局搜索一下，因为这个参数名在没有做混淆所以直接可以搜索到，不过这结果比较多，找起来还是比较耗费时间的。</p><p><img src="http://tc.xianyucoder.cn/blog20200908213916.png" alt></p><p>第一种方式是检索<code>token:</code>，结果只有两个，只要再次检索就能定位到了。</p><p><img src="http://tc.xianyucoder.cn/blog20200908214007.png" alt></p><p>第二种就是<code>XHR</code>断点这个之前讲过的，不过这里不推荐新手用 XHR 断点，新手分析一圈就懵了。</p><blockquote><p>这里提供一个思路，如果检索的结果很多，但是 XHR 断点又分析不出来是那个堆栈的话，可以在 XHR 断点的每个堆栈里面搜索关键词，然后再打上断点分析，算是一种过滤的手段吧。</p></blockquote><p>我们先打上 xhr 断点</p><p><img src="http://tc.xianyucoder.cn/blog20200908214448.png" alt></p><p>然后再经过的堆栈里逐个分析</p><p><img src="http://tc.xianyucoder.cn/blog20200908214912.png" alt></p><p>在这个位置就可以看到<code>token</code>了（上面的小技巧都没用到）</p><h2 id="加密分析"><a href="#加密分析" class="headerlink" title="加密分析"></a>加密分析</h2><p>打上断点，刷新</p><p><img src="http://tc.xianyucoder.cn/blog20200908215506.png" alt></p><p>这里的<code>s</code>就是传入的<code>id</code>值了</p><p>之后直接单步即可进入加密逻辑了<code>b.a</code></p><p><img src="http://tc.xianyucoder.cn/blog20200908215915.png" alt></p><p>这里可以看到这里主要的逻辑是<code>r()</code>，经过一次<code>r()</code>之后将结果与<code>s</code>拼接之后再传入<code>r()</code></p><p>所以探究一下<code>r()</code>就可以了，直接步入，可以看到下面的结果</p><p><img src="http://tc.xianyucoder.cn/blog20200908220112.png" alt></p><p>简单的有点明显，为了验证结果，把页面加密的结果和我们自己的加密对比一下</p><p>页面的结果：</p><p><img src="http://tc.xianyucoder.cn/blog20200908220308.png" alt></p><p>我们自己的测试结果：</p><p><img src="http://tc.xianyucoder.cn/blog20200908220254.png" alt></p><p>好吧，结果没有什么不一样的，就是先将<code>id</code>哈希一次，然后拼接上<code>zd2019@@1157</code>再哈希一次，就是这样。</p><p>好咯，以上就是今天的全部内容了，咱们下次再见~</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;今日网站&quot;&gt;&lt;a href=&quot;#今日网站&quot; class=&quot;headerlink&quot; title=&quot;今日网站&quot;&gt;&lt;/a&gt;今日网站&lt;/h1&gt;&lt;p&gt;下面这个例子比较简单，发布完之后才知道是某大厂。。&lt;/p&gt;
+&lt;p&gt;aHR0cHM6Ly9oYW9odW8uamlucml0Z
       
     
     </summary>
