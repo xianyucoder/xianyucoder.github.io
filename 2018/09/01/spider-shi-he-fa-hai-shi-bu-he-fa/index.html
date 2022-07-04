@@ -1,0 +1,1657 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="google-site-verification" content="e18gWCtevM12uoJ7Xy4CxJtI8ZUBaKRT-GnJT7aDIbk">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.3.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.3.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.3.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.3.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="爬虫究竟是合法还是违法的？随着大数据人工智能的火热，爬虫行业竞争不仅“蒸蒸日上”，也越发地激烈。一篇《你的爬虫会送老板进监狱吗？》在程序猿圈子里被大量转载，甚至有的程序员因为非法获取数据的新闻从而放弃了这一行当。那么，爬虫是什么，它会是悬在程序员头上的达摩克利斯之剑吗？">
+<meta name="keywords" content="爬虫">
+<meta property="og:type" content="article">
+<meta property="og:title" content="爬虫究竟是合法还是违法的？">
+<meta property="og:url" content="http://www.xianyucoder.cn/2018/09/01/spider-shi-he-fa-hai-shi-bu-he-fa/index.html">
+<meta property="og:site_name" content="咸鱼自我满足的日常">
+<meta property="og:description" content="爬虫究竟是合法还是违法的？随着大数据人工智能的火热，爬虫行业竞争不仅“蒸蒸日上”，也越发地激烈。一篇《你的爬虫会送老板进监狱吗？》在程序猿圈子里被大量转载，甚至有的程序员因为非法获取数据的新闻从而放弃了这一行当。那么，爬虫是什么，它会是悬在程序员头上的达摩克利斯之剑吗？">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://tc.xianyucoder.cn/blog/181003/dD24Gbm1kB.jpg?imageslim">
+<meta property="og:image" content="http://tc.xianyucoder.cn/blog/181003/5514l0l536.jpg?imageslim">
+<meta property="og:updated_time" content="2019-08-21T15:01:36.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="爬虫究竟是合法还是违法的？">
+<meta name="twitter:description" content="爬虫究竟是合法还是违法的？随着大数据人工智能的火热，爬虫行业竞争不仅“蒸蒸日上”，也越发地激烈。一篇《你的爬虫会送老板进监狱吗？》在程序猿圈子里被大量转载，甚至有的程序员因为非法获取数据的新闻从而放弃了这一行当。那么，爬虫是什么，它会是悬在程序员头上的达摩克利斯之剑吗？">
+<meta name="twitter:image" content="http://tc.xianyucoder.cn/blog/181003/dD24Gbm1kB.jpg?imageslim">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="咸鱼自我满足的日常" type="application/atom+xml">
+
+
+
+
+  <link rel="canonical" href="http://www.xianyucoder.cn/2018/09/01/spider-shi-he-fa-hai-shi-bu-he-fa/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>爬虫究竟是合法还是违法的？ | 咸鱼自我满足的日常</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">咸鱼自我满足的日常</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">You See See You, One Day Day.</p>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-sitemap">
+    <a href="/sitemap.xml" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>站点地图</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-commonweal">
+    <a href="/404/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>公益 404</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2018/09/01/spider-shi-he-fa-hai-shi-bu-he-fa/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="煌金">
+      <meta itemprop="description" content="Stay Hungry, Stay Foolish.">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="咸鱼自我满足的日常">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">爬虫究竟是合法还是违法的？
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-09-01 18:39:35" itemprop="dateCreated datePublished" datetime="2018-09-01T18:39:35+08:00">2018-09-01</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-08-21 23:01:36" itemprop="dateModified" datetime="2019-08-21T23:01:36+08:00">2019-08-21</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/爬虫/" itemprop="url" rel="index"><span itemprop="name">爬虫</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/09/01/spider-shi-he-fa-hai-shi-bu-he-fa/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2018/09/01/spider-shi-he-fa-hai-shi-bu-he-fa/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+		  
+		  
+			<span class="post-meta-divider">|</span>
+			<span id="busuanzi_value_page_pv"></span>次阅读
+		  
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">10k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">17 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="爬虫究竟是合法还是违法的？"><a href="#爬虫究竟是合法还是违法的？" class="headerlink" title="爬虫究竟是合法还是违法的？"></a>爬虫究竟是合法还是违法的？</h4><p>随着大数据人工智能的火热，爬虫行业竞争不仅“蒸蒸日上”，也越发地激烈。一篇《你的爬虫会送老板进监狱吗？》在程序猿圈子里被大量转载，甚至有的程序员因为非法获取数据的新闻从而放弃了这一行当。那么，爬虫是什么，它会是悬在程序员头上的达摩克利斯之剑吗？<br><a id="more"></a></p>
+<blockquote>
+<p>网络爬虫（英语：web crawler），也叫网络蜘蛛（spider），是一种用来自动浏览万维网的网络机器人。通俗来讲，爬虫就是一项计算机技术，方便用户自动化、高效率地浏览互联网并从互联网上获取数据。最早的爬虫程序是1994年休斯敦大学的Eichmann开发的RBSE。著名的谷歌公司使用的Google Crawler是当时还是斯坦福大学生Brin和Page在1998年用Python开发的。（见罗刚《网络爬虫全解析：技术、原理与实践》，电子工业出版社，第65-66页。）</p>
+</blockquote>
+<p>爬虫作为一种计算机技术就决定了它的中立性，因此爬虫本身在法律上并不被禁止，但是利用爬虫技术获取数据这一行为是具有违法甚至是犯罪的风险的。所谓具体问题具体分析，正如水果刀本身在法律上并不被禁止使用，但是用来捅人，就不被法律所容忍了。</p>
+<h4 id="详细分析"><a href="#详细分析" class="headerlink" title="详细分析"></a>详细分析</h4><p>既然我们说爬取数据是有可能触犯法律的，那么我们就需要拆开分析一下到底什么情况下会被法律所制裁。爬取数据操作分为<code>爬取的行为</code>和<code>爬取获得的数据</code>两方面，我们将分别论述。</p>
+<h4 id="1-爬取行为的法律风险"><a href="#1-爬取行为的法律风险" class="headerlink" title="1. 爬取行为的法律风险"></a>1. 爬取行为的法律风险</h4><h5 id="1-1-民事风险"><a href="#1-1-民事风险" class="headerlink" title="1.1 民事风险"></a>1.1 民事风险</h5><p>爬虫目前能造成的技术上影响在于野蛮爬取，即<code>多线程爬取</code>，从而导致<code>网站瘫痪</code>或不能访问，这也是大多数网络攻击所使用的方法之一。</p>
+<p>由于爬虫会批量访问网站，因此许多网站会采取反爬措施。例如：1.IP频率、流量限制；2.请求时间窗口过滤统计；3.识别爬虫等。</p>
+<p>但这些手段都无法阻止爬虫开发人员优化代码、使用多IP池等方式规避反爬措施，实现大批量的数据抓取。由于网络爬虫会根据特定的条件访问页面，因而爬虫的使用将占用被访问网站的网络带宽并增加网络服务器的处理开销，甚至无法正常提供服务。在<code>《反不正当竞争法》第十二条第二款</code>中我们可以发现，法律会对爬虫的这种行为进行规制。</p>
+<blockquote>
+<p>即经营者不得利用技术手段，通过影响用户选择或者其他方式，实施下列妨碍、破坏其他经营者合法提供的网络产品或者服务正常运行的行为：…（四）其他妨碍、破坏其他经营者合法提供的网络产品或者服务正常运行的行为。</p>
+</blockquote>
+<p>虽然上述规定是兜底条款，但其体现了法律禁止通过技术手段进行对他人非法干绕的总体原则。</p>
+<p>因此，如果网站运营者已经采取了一定的反扒措施，而爬虫开发人员基于经营的目的、强行突破网站运营者采取的反爬措施，并客观上导致了<code>网站无法正常运行</code>，则很有可能构成上述规定所表述的不正当竞争行为。</p>
+<p>但是在此种情况下鉴别爬虫者身份仍然是追责的一大阻碍，很多网站由于反爬机制落后，因而在法院诉讼中无法举证证明爬虫者因而得不到法院的支持。<em>（见北京知识产权法院 （2016）京73民终588号案件）</em></p>
+<h5 id="1-2-刑事风险"><a href="#1-2-刑事风险" class="headerlink" title="1.2 刑事风险"></a>1.2 刑事风险</h5><p>强行突破某些特定的反爬技术措施，还会构成形式犯罪的行为。</p>
+<blockquote>
+<p>《刑法》第二百八十五条规定，违反规定侵入国家事务、国防建设、尖端科学技术领域的计算机信息系统的，不论情节严重与否，构成非法侵入计算机信息系统罪。《刑法》第二百八十六条还规定，违反国家规定，对计算机信息系统功能进行删除、修改、增加、干扰，造成计算机信息系统不能正常运行，后果严重的，构成犯罪，处五年以下有期徒刑或者拘役；后果特别严重的，处五年以上有期徒刑。而违反国家规定，对计算机信息系统中存储、处理或者传输的数据和应用程序进行删除、修改、增加的操作，后果严重的，也构成犯罪，依照前款的规定处罚。</p>
+</blockquote>
+<p>如上所述规定，爬虫开发者在获取数据过程中，一旦突破某些技术防护措施并且操作不当，造成<code>严重后果</code>的，将会构成犯罪，面临牢狱之灾。</p>
+<h4 id="2-爬取特定类型的信息的法律风险"><a href="#2-爬取特定类型的信息的法律风险" class="headerlink" title="2. 爬取特定类型的信息的法律风险"></a>2. 爬取特定类型的信息的法律风险</h4><p>凡是能够被电子化记录的都是数据，数据分为两大类。</p>
+<blockquote>
+<p>第一类：非个人数据（non-PII，non-personally identifiable information）即此类数据与个人信息无关（此处需注意，与个人信息无关不代表与个人无关，而是说不涉及个人隐私或者不能识别到具体个人）。此类数据通常是公开数据（当然也有作为国家秘密、商业秘密而采取保密措施不公开的秘密数据和秘密信息），因此不适用个人信息保护方面的法律法规。如企业工商注册信息、裁判文书（因涉密或个人隐私不公开的除外）、天气气象数据、环境监测数据、地理测绘、总体性的人口数据、网站访问记录等。<br>第二类：个人数据（PII，personally identifiable information）。即此类数据与个人信息有关，数据的来源是个人信息，且能够或可能识别到个人。其中又包括两类：<br>1.已识别个人身份数据（personally identified information）。此类数据完全适用个人数据保护的相关法律法规。如姓名、家庭住址、电话号码等能够确定识别、关联到特定个人的数据，需符合个人数据保护法全部合规要求，包括知情同意、允许用户访问和更正、数据处理正当合法、目的限制、保障安全等。<br>2.可能识别个人身份的数据（personally identifiable information）。此类数据结合业务场景，灵活适用个人数据保护的相关法律法规。如业务场景中，识别风险较高，可按照第二类数据的合规性要求处理，需满足全部合规要求；如识别风险较低，则可选择部分适用。</p>
+</blockquote>
+<h5 id="2-1-个人信息（PII）的爬取"><a href="#2-1-个人信息（PII）的爬取" class="headerlink" title="2.1 个人信息（PII）的爬取"></a>2.1 个人信息（PII）的爬取</h5><p>对于PII信息，其关键点在于用户授权，用户未授权或者授权不充分带来的法律风险很大。</p>
+<h6 id="2-1-1-不正当竞争风险"><a href="#2-1-1-不正当竞争风险" class="headerlink" title="2.1.1 不正当竞争风险"></a>2.1.1 不正当竞争风险</h6><p>例如新浪微博和脉脉发生的案件，一个因为开放API爬取数据引发的案子。</p>
+<p>2014年8月，当时刚刚起步的职场社交软件“脉脉”与新浪微博微博闹掰了。脉脉上线之初，曾与新浪微博合作，脉脉的新用户可以通过微博帐号和个人帐号注册登录脉脉，用户注册时还要想陌陌上传手机通讯录联系人。随后，新浪微博发现，脉脉用户的“一度人脉”中，直接显示大量非脉脉用户的微博头像、名称、职业、教育等个人信息。2015年3月，微博主体公司将脉脉主体公司告上法庭。</p>
+<p>原来用户使用微博登录脉脉并上传个人通讯录之后，大量非脉脉用户的微博头条、昵称、职业、教育等信息出现在脉脉上，而这些信息并不在微博与脉脉开放API协议中，并且微博停止脉脉所有的接口权限后，脉脉依然在抓取相关数据，微博认为脉脉通过非法手段获取信息。最终法院判决脉脉停止<code>不正当竞争行为</code>，并赔偿损失。</p>
+<p>这个案件中，法院确立了一个原则，<code>即平台要获取用户信息必须获得授权，平台之间通过开放API获取数据必须经过“用户授权-网站授权-用户授权”的规则</code>。</p>
+<p><img src="http://tc.xianyucoder.cn/blog/181003/dD24Gbm1kB.jpg?imageslim" alt="mark"></p>
+<h6 id="2-1-2-侵犯隐私权风险"><a href="#2-1-2-侵犯隐私权风险" class="headerlink" title="2.1.2 侵犯隐私权风险"></a>2.1.2 侵犯隐私权风险</h6><p>例如<code>（2015）西民初字第28460号</code>：王刃与北京奇虎科技有限公司隐私权纠纷案件中，原告王刃因个人手机登记为所投资公司联系电话，被奇虎科技360手机卫士标记手机号码功能标记显示为公司号码，导致原告王刃手机被被叫方误认为是诈骗电话，因之以侵犯隐私权起诉360手机安全卫士所属公司奇虎科技。</p>
+<blockquote>
+<p>在该案件中，法院提出，“被告出示的证据可以证明原告所使用的号码已经在企业黄页被公开披露，原告在工商行政管理机关登记企业信息时，亦将该手机号码予以登记，以备信息查阅。被告通过大数据比对功能，确定该手机号码与浙江维特网络信息有限公司合肥分公司相对应，并进行标记，其信息并无错误，且软件标记的企业信息，而非公民个人信息。被告已证实其获取手机号码对应的标记信息均来源于公开渠道，因此亦不能认定被告标记号码的行为侵犯了其隐私权”。同时，法院还认为：“对于360手机卫士软件中主动标记企业信息的功能，本院认为仍存在一定改进之处，我国小微企业的业主为工作方便、节约资源，将私人电话作为办公电话使用是普遍情况，这并不意味着手机号码被登记在工商行政管理机关后，就专用于商务。如非号码所有人主动申请标记，建议针对被标记号码采取短信确认的方式，对所有人有所提示，有助于其获得相应知情权”。</p>
+</blockquote>
+<p>因而我们可以知道，本案确立了<code>公开获取数据的合法性</code>，但又要求数据服务方对个人信息标记使用应获得用户同意，也即重申了“默示同意”的许可方式，同时又强调了“用户同意”即用户授权的原则。</p>
+<h6 id="2-1-3-刑事风险"><a href="#2-1-3-刑事风险" class="headerlink" title="2.1.3 刑事风险"></a>2.1.3 刑事风险</h6><p>爬取个人信息还有可能会面临牢狱之灾，《中华人民共和国刑法》第二百五十三条之一所涉的<code>“侵犯公民个人信息罪”</code>及第二百八十六条之一所涉的<code>“拒不履行信息网络安全管理义务罪”</code>就是<code>爬虫在个人信息爬取过程中经常触碰到的“红线”</code>。</p>
+<p>同时，与《网络安全法》同日实施的最高人民法院、最高人民检察院《关于办理侵犯公民个人信息刑事案件适用法律若干问题的解释》也明确了情节严重的几种类型：</p>
+<blockquote>
+<ol>
+<li>非法获取、出售或者提供行踪轨迹信息、通信内容、征信信息、财产信息五十条以上的；——高度敏感信息</li>
+<li>非法获取、出售或者提供住宿信息、通信记录、健康生理信息、交易信息等其他可能影响人身、财产安全的公民个人信息五百条以上的；——敏感信息</li>
+<li>非法获取、出售或者提供第三项、第四项规定以外的公民个人信息五千条以上的便构成“侵犯公民个人信息罪”所要求的“情节严重”。</li>
+</ol>
+</blockquote>
+<p>此外，<code>未经被收集者同意，即使是将合法收集的公民个人信息向他人提供的</code>，也属于<code>刑法第二百五十三条</code>之一规定的<code>“提供公民个人信息”</code>，可能构成犯罪。<br>例如<code>（2016）浙0602刑初1145号</code>案中，当事人就采用非法手段获取淘宝和支付宝中的个人信息，并提供、转售给他人，非法获利了巨额的财产。</p>
+<h6 id="2-1-4-行政处罚风险"><a href="#2-1-4-行政处罚风险" class="headerlink" title="2.1.4 行政处罚风险"></a>2.1.4 行政处罚风险</h6><blockquote>
+<p>《网络安全法》第六十四条规定，违反本法第四十四条规定，窃取或者以其他非法方式获取、非法出售或者非法向他人提供个人信息，尚不构成犯罪的，由公安机关没收违法所得，并处违法所得一倍以上十倍以下罚款，没有违法所得的，处一百万元以下罚款。</p>
+</blockquote>
+<p>即便是非法获取数据的严重性没有达到入罪的标准，但是大概率上也会被行政机关进行处罚的，并且额度还不低，通常都以<code>“万”</code>来计，就算程序员收入高，也受不了这种程度的处罚吧。</p>
+<h6 id="2-1-5-总结"><a href="#2-1-5-总结" class="headerlink" title="2.1.5 总结"></a>2.1.5 总结</h6><p><code>爬取涉及个人信息的数据总体风险较高</code>，如果爬取数据<code>没有获得用户授权</code>（包括通过API接口爬取数据的情况）则存在侵犯人格权（民法总则已经明确个人信息权是一种人格权）的风险。<br>同时，爬取存在竞争关系平台上的数据时，还可能因实质替代获取不正当竞争优势、干扰或破坏他人网络服务的正常运行，涉嫌不正当竞争；<br><code>更严重的是</code>，还可能因非法获取公民个人信息、非法侵入计算机信息系统、非法获取计算机信息系统数据等涉嫌犯罪，招致刑罚。</p>
+<h5 id="2-2-non-PII的爬取"><a href="#2-2-non-PII的爬取" class="headerlink" title="2.2 non-PII的爬取"></a>2.2 non-PII的爬取</h5><p>对于这类数据的爬取，目前市面上通常的做法都是爬取公开数据，例如靠爬虫发家的“聚信立”公司。爬取这类数据的风险系数相对较低，毕竟通常不会涉及个人隐私与个人信息，但也并非毫无风险。可能会有哪些风险呢？</p>
+<h6 id="2-2-1-著作权侵权风险"><a href="#2-2-1-著作权侵权风险" class="headerlink" title="2.2.1 著作权侵权风险"></a>2.2.1 著作权侵权风险</h6><p>就著作权本身而言，无论是文章、图片、视频、用户评论以及网站自身的数据库，都有可能在具备独创性的情况下构成著作权法保护的作品。对这些信息的获取，是否构成著作权侵权需要拆分分析：</p>
+<blockquote>
+<p>1）在访问页面的行为下，由于爬虫是模仿人工访问机制进行页面访问操作的，因而该访问行为不会构成侵权，但如上述分析，如果该访问行为造成被访问页面反爬措施失效或者网站瘫痪，则会构成侵权。<br>2）对于数据保存而言，从著作权的角度上来说，抓取行为是对信息的复制，因此该行为有可能侵犯著作权人的复制权。<br>3）就数据提取和使用行为而言，如果爬取的数据被用于展示在公开的网站或者渠道，则会侵犯著作权人的信息网络传播权。</p>
+</blockquote>
+<p>大众点评网诉爱帮网的诉讼中，大众点评网在前两轮诉讼中就是以爱帮网侵犯原告享有著作权的商户介绍和点评为由，起诉了爱帮网，最终以爱帮网停止使用该作品胜诉。<em>（2010）海民初字第4253号</em></p>
+<h6 id="2-2-2-不正当竞争风险"><a href="#2-2-2-不正当竞争风险" class="headerlink" title="2.2.2 不正当竞争风险"></a>2.2.2 不正当竞争风险</h6><p>同样是大众点评网，在2016年还起诉了百度，原因是百度未经许可，使用爬虫技术从大众点评网上大量获取用户点评信息，用于自家的百度地图及百度知道产品。</p>
+<p>最终一审判决认定百度构成不正当竞争行为，<code>停止侵权并赔偿323万元</code>。有图有真相：<br><img src="http://tc.xianyucoder.cn/blog/181003/5514l0l536.jpg?imageslim" alt="mark"><br>也即，如果公司业务中存在可能爬取竞争对手数据的情况，要格外注意这项风险。法院会首先判断双方是否存在竞争关系，进而判断爬取数据的一方是否存在“不劳而获”和“搭便车”的行为。如果是，就是上面的结果。</p>
+<h6 id="2-2-3-刑事风险"><a href="#2-2-3-刑事风险" class="headerlink" title="2.2.3 刑事风险"></a>2.2.3 刑事风险</h6><h6 id="1-侵犯著作权罪"><a href="#1-侵犯著作权罪" class="headerlink" title="1 侵犯著作权罪"></a>1 侵犯著作权罪</h6><blockquote>
+<p>根据《中华人民共和国刑法》第二百一十七条规定，侵犯著作权罪是指以营利为目的，未经著作权人许可复制发行其文字、音像、计算机软件等作品，出版他人享有独占出版权的图书，未经制作者许可复制发行其制作的音像制品，制作、展览假冒他人署名的美术作品，违法所得数额较大或者有其他严重情节的行为。</p>
+</blockquote>
+<p>案例：2014年3月，被告人何某设立“车城小说”网站，其通过租赁海外服务器并运行其从互联网上下载的“关关采集”抓取软件，在<code>未获起点中文网许可</code>的情况下，擅自抓取、复制650部文字作品，存储于自己的服务器上，供“车城小说”网站用户免费阅读。</p>
+<p>何某通过在“车城小说”网站网页内刊登广告获取广告收益，非法营利数额达人民币19万余元。<code>法院认定，何某抓取并通过信息网络传播作品的数量高于法定追诉标准的500件，且营利数额超过5万元，构成侵犯著作权罪，判处有期徒刑1年，并处罚金10万元。</code> <em>（2015）闵刑（知）初字第59号</em></p>
+<h6 id="2-非法侵入计算机信息系统罪"><a href="#2-非法侵入计算机信息系统罪" class="headerlink" title="2 非法侵入计算机信息系统罪"></a>2 非法侵入计算机信息系统罪</h6><blockquote>
+<p>根据《刑法》第二百八十五条规定，违反规定侵入国家事务、国防建设、尖端科学技术领域的计算机信息系统的，不论情节严重与否，构成非法侵入计算机信息系统罪。</p>
+</blockquote>
+<p>案例：在严某犯非法侵入计算机信息系统罪一案中，严某是一位协警，通过侵入警局内网，获取并篡改数据，达到非法获利的目的，触犯了“非法侵入计算机信息系统罪”，锒铛入狱。<br><em>（2014）广利州刑初字第260号</em></p>
+<h6 id="3-非法获取计算机信息系统数据罪"><a href="#3-非法获取计算机信息系统数据罪" class="headerlink" title="3 非法获取计算机信息系统数据罪"></a>3 非法获取计算机信息系统数据罪</h6><blockquote>
+<p>《刑法》第二百八十五条还规定，违反规定侵入普通的计算机信息系统或者采用其他技术手段，获取该计算机信息系统中存储、处理或者传输的数据的，情节严重的，构成非法获取计算机信息系统数据罪。</p>
+</blockquote>
+<p>案例：南京同享网络法定代表人张某、副总经理沈某组织员工编写模拟程序，非法获取掌门科技“WIFI万能钥匙”数据库内的WIFI热点密码数据案，最终法院认定构成非法获取计算机信息系统数据罪，上述两人最终被判刑三年并处罚金。<br><em>（2015）杨刑初字第232号</em></p>
+<h6 id="4-总结"><a href="#4-总结" class="headerlink" title="4 总结"></a>4 总结</h6><p>爬取non-PII数据总体风险较低，但仍不要大意。</p>
+<p>轻则可能构成<code>侵犯著作权</code>（在被爬取的数据具有独创性构成作品的情况下），如果有竞争关系，还可能因实质替代获取不正当竞争优势、干扰或破坏他人网络服务的正常运行，涉嫌构成不正当竞争；</p>
+<p>重则可能因绕开技术措施非法获取数据，涉嫌侵犯商业秘密（严重情形涉及刑事责任），涉嫌构成<code>非法侵入计算机信息系统、非法获取计算机信息系统数据罪</code>等罪。</p>
+<h4 id="对于广大程序员来说，如何避免爬虫所带来的法律风险？"><a href="#对于广大程序员来说，如何避免爬虫所带来的法律风险？" class="headerlink" title="对于广大程序员来说，如何避免爬虫所带来的法律风险？"></a>对于广大程序员来说，如何避免爬虫所带来的法律风险？</h4><p>敲黑板！！重点来了！！！</p>
+<p>如前面所述，<code>爬虫所带来的风险</code>主要有：</p>
+<ol>
+<li>违反网站意愿，例如网站采取反爬措施后，强行突破其反爬措施；</li>
+<li>爬虫干扰了被访问网站的正常运营；</li>
+<li>爬虫抓取了受到法律保护的特定类型的数据或信息。</li>
+</ol>
+<p>其中，第（3）类风险主要来自于通过规避反爬虫措施抓取到了互联网上未被公开的信息。</p>
+<p>因此，<code>爬虫开发者在使用爬虫时应注意</code>：</p>
+<ol>
+<li>严格遵守网站设置的<code>robots</code>协议；</li>
+<li>在规避反爬虫措施的同时，需要优化自己的代码，避免干扰被访问网站的正常运行；</li>
+<li>在设置抓取策略时，应注意编码抓取视频、音乐等可能构成作品的数据，或者针对某些特定网站批量抓取其中的用户生成内容；</li>
+<li>在使用、传播抓取到的信息时，应审查所抓取的内容，如发现属于用户的个人信息、隐私或者他人的商业秘密的，应及时停止并删除。</li>
+</ol>
+<h4 id="答谢"><a href="#答谢" class="headerlink" title="答谢"></a>答谢</h4><p>大家都知道咸鱼也是一个爬虫爱好者，本文所论述的问题也是咸鱼关心的，对于这个问题，咸鱼在交流群里和群友讨论过也和其他的爬虫大佬交流过，但毕竟不是相关专业的难免害怕触碰红线心里有点虚，正好在咸鱼为数不多的读者中有一位从事法律行业的大佬，于是就有了这篇文章。</p>
+<p>本文由群友<code>不二辰</code>投稿，刚刚得知他的职业之后我第一个问的问题就是，爬虫合法吗？之后大佬发给我的这篇文章正好解决了咸鱼心中的疑虑，希望对学习爬虫的你们有所帮助，再次感谢<code>不二辰</code>的辛苦付出！</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/wechatsubscriber.jpg" alt="煌金 wechat" style="width: auto; height:250px; max-width: 100%;">
+    <div>扫描关注公众号,回复「1024」获取为你准备的特别推送~</div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="煌金 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="煌金 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    煌金  |  微信公众号【咸鱼学Python】
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://www.xianyucoder.cn/2018/09/01/spider-shi-he-fa-hai-shi-bu-he-fa/" title="爬虫究竟是合法还是违法的？">http://www.xianyucoder.cn/2018/09/01/spider-shi-he-fa-hai-shi-bu-he-fa/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用  许可协议。转载请注明出处！
+  </li>
+  <li class="post-copyright-license">
+    并保留本声明和上方二维码。感谢您的阅读和支持！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/爬虫/" rel="tag"># 爬虫</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/09/01/tongyong-spider/" rel="next" title="通用爬虫套路">
+                <i class="fa fa-chevron-left"></i> 通用爬虫套路
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/09/01/scrapy1/" rel="prev" title="初识Scrapy">
+                初识Scrapy <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.gif" alt="煌金">
+            
+              <p class="site-author-name" itemprop="name">煌金</p>
+              <p class="site-description motion-element" itemprop="description">Stay Hungry, Stay Foolish.</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">97</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">12</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">83</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/xianyucoder" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:daihuangj@gmail.com" target="_blank" title="E-Mail"><i class="fa fa-fw fa-E-Mail"></i>E-Mail</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#爬虫究竟是合法还是违法的？"><span class="nav-number">1.</span> <span class="nav-text">爬虫究竟是合法还是违法的？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#详细分析"><span class="nav-number">2.</span> <span class="nav-text">详细分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-爬取行为的法律风险"><span class="nav-number">3.</span> <span class="nav-text">1. 爬取行为的法律风险</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-1-民事风险"><span class="nav-number">3.1.</span> <span class="nav-text">1.1 民事风险</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-2-刑事风险"><span class="nav-number">3.2.</span> <span class="nav-text">1.2 刑事风险</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-爬取特定类型的信息的法律风险"><span class="nav-number">4.</span> <span class="nav-text">2. 爬取特定类型的信息的法律风险</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-1-个人信息（PII）的爬取"><span class="nav-number">4.1.</span> <span class="nav-text">2.1 个人信息（PII）的爬取</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#2-1-1-不正当竞争风险"><span class="nav-number">4.1.1.</span> <span class="nav-text">2.1.1 不正当竞争风险</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-1-2-侵犯隐私权风险"><span class="nav-number">4.1.2.</span> <span class="nav-text">2.1.2 侵犯隐私权风险</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-1-3-刑事风险"><span class="nav-number">4.1.3.</span> <span class="nav-text">2.1.3 刑事风险</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-1-4-行政处罚风险"><span class="nav-number">4.1.4.</span> <span class="nav-text">2.1.4 行政处罚风险</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-1-5-总结"><span class="nav-number">4.1.5.</span> <span class="nav-text">2.1.5 总结</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2-non-PII的爬取"><span class="nav-number">4.2.</span> <span class="nav-text">2.2 non-PII的爬取</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#2-2-1-著作权侵权风险"><span class="nav-number">4.2.1.</span> <span class="nav-text">2.2.1 著作权侵权风险</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-2-2-不正当竞争风险"><span class="nav-number">4.2.2.</span> <span class="nav-text">2.2.2 不正当竞争风险</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-2-3-刑事风险"><span class="nav-number">4.2.3.</span> <span class="nav-text">2.2.3 刑事风险</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#1-侵犯著作权罪"><span class="nav-number">4.2.4.</span> <span class="nav-text">1 侵犯著作权罪</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-非法侵入计算机信息系统罪"><span class="nav-number">4.2.5.</span> <span class="nav-text">2 非法侵入计算机信息系统罪</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#3-非法获取计算机信息系统数据罪"><span class="nav-number">4.2.6.</span> <span class="nav-text">3 非法获取计算机信息系统数据罪</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#4-总结"><span class="nav-number">4.2.7.</span> <span class="nav-text">4 总结</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#对于广大程序员来说，如何避免爬虫所带来的法律风险？"><span class="nav-number">5.</span> <span class="nav-text">对于广大程序员来说，如何避免爬虫所带来的法律风险？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#答谢"><span class="nav-number">6.</span> <span class="nav-text">答谢</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">煌金</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+    <span title="站点总字数">245k</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+    <span title="站点阅读时长">6:48</span>
+  
+</div>
+
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Gemini</a> v6.3.0</div>
+
+
+<div>
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<span id="busuanzi_container_site_pv" style="display:none">
+    本站总访问量 <span id="busuanzi_value_site_pv"></span> 次
+    <span class="post-meta-divider">|</span>
+</span>
+<span id="busuanzi_container_site_uv" style="display:none">
+    有<span id="busuanzi_value_site_uv"></span>人看过我的博客啦
+</span>
+</div>
+
+<div class="BbeiAn-info" ">
+  闽ICP备 -
+  <a href="http://fj.beian.miit.gov.cn/">19017235号</a>
+  
+</div>
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.3.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.3.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.3.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.3.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.3.0"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  
+  
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(function (item) {
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'TplsQ6G4eWnyg2kG4AVS2oAP-gzGzoHsz',
+        appKey: 'tmkt1Xqzl6hUoFcY059IjfYz',
+        placeholder: '请在此输入您的留言',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

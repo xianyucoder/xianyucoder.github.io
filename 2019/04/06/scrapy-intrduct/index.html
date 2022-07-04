@@ -1,0 +1,1734 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="google-site-verification" content="e18gWCtevM12uoJ7Xy4CxJtI8ZUBaKRT-GnJT7aDIbk">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.3.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.3.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.3.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.3.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="Scrapy工作流程与注意点 从spiders抓取请求requests经过爬虫中间件发送给引擎 引擎将请求发送给调度器，调度器对请求进行调度 调度器将调度排序好的请求发送给引擎(调度器维护的是一个LIFO的队列，广度优先) 引擎将请求经过下载中间件发送给下载器 下载器将请求返回的response经过下载中间件发送给引擎 引擎将下载器返回的response返回给爬虫中间件 爬虫中间件将解析的字段与r">
+<meta name="keywords" content="Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="scrapy要点复习与常用框架复习">
+<meta property="og:url" content="http://www.xianyucoder.cn/2019/04/06/scrapy-intrduct/index.html">
+<meta property="og:site_name" content="咸鱼自我满足的日常">
+<meta property="og:description" content="Scrapy工作流程与注意点 从spiders抓取请求requests经过爬虫中间件发送给引擎 引擎将请求发送给调度器，调度器对请求进行调度 调度器将调度排序好的请求发送给引擎(调度器维护的是一个LIFO的队列，广度优先) 引擎将请求经过下载中间件发送给下载器 下载器将请求返回的response经过下载中间件发送给引擎 引擎将下载器返回的response返回给爬虫中间件 爬虫中间件将解析的字段与r">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://tc.xianyucoder.cn/blog005MnFO1gy1g0zs8zdqd1j30sr0ckdkb.png">
+<meta property="og:image" content="http://tc.xianyucoder.cn/blog005MnFO1gy1g0zs9gbh7vj30pr09v434.png">
+<meta property="og:updated_time" content="2019-08-22T08:45:12.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="scrapy要点复习与常用框架复习">
+<meta name="twitter:description" content="Scrapy工作流程与注意点 从spiders抓取请求requests经过爬虫中间件发送给引擎 引擎将请求发送给调度器，调度器对请求进行调度 调度器将调度排序好的请求发送给引擎(调度器维护的是一个LIFO的队列，广度优先) 引擎将请求经过下载中间件发送给下载器 下载器将请求返回的response经过下载中间件发送给引擎 引擎将下载器返回的response返回给爬虫中间件 爬虫中间件将解析的字段与r">
+<meta name="twitter:image" content="http://tc.xianyucoder.cn/blog005MnFO1gy1g0zs8zdqd1j30sr0ckdkb.png">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="咸鱼自我满足的日常" type="application/atom+xml">
+
+
+
+
+  <link rel="canonical" href="http://www.xianyucoder.cn/2019/04/06/scrapy-intrduct/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>scrapy要点复习与常用框架复习 | 咸鱼自我满足的日常</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">咸鱼自我满足的日常</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">You See See You, One Day Day.</p>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-sitemap">
+    <a href="/sitemap.xml" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>站点地图</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-commonweal">
+    <a href="/404/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>公益 404</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2019/04/06/scrapy-intrduct/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="煌金">
+      <meta itemprop="description" content="Stay Hungry, Stay Foolish.">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="咸鱼自我满足的日常">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">scrapy要点复习与常用框架复习
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-04-06 08:39:35" itemprop="dateCreated datePublished" datetime="2019-04-06T08:39:35+08:00">2019-04-06</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-08-22 16:45:12" itemprop="dateModified" datetime="2019-08-22T16:45:12+08:00">2019-08-22</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/04/06/scrapy-intrduct/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2019/04/06/scrapy-intrduct/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+		  
+		  
+			<span class="post-meta-divider">|</span>
+			<span id="busuanzi_value_page_pv"></span>次阅读
+		  
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">12k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">19 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="Scrapy工作流程与注意点"><a href="#Scrapy工作流程与注意点" class="headerlink" title="Scrapy工作流程与注意点"></a>Scrapy工作流程与注意点</h4><ol>
+<li>从spiders抓取请求requests经过爬虫中间件发送给引擎</li>
+<li>引擎将请求发送给调度器，调度器对请求进行调度</li>
+<li>调度器将调度排序好的请求发送给引擎(调度器维护的是一个LIFO的队列，广度优先)</li>
+<li>引擎将请求经过下载中间件发送给下载器</li>
+<li>下载器将请求返回的response经过下载中间件发送给引擎</li>
+<li>引擎将下载器返回的response返回给爬虫中间件</li>
+<li>爬虫中间件将解析的字段与request返回给引擎</li>
+<li>引擎将解析的字段发送给项目管道，将新的request发送给调度器</li>
+</ol>
+<ul>
+<li>注意点</li>
+<li>第四点是我们能应对反爬的最后一步，换代理，加cookie，换ua等等</li>
+<li>第五点最好是能在这里校验数据，不是正确的数据不传给spider</li>
+</ul>
+<p><img src="http://tc.xianyucoder.cn/blog005MnFO1gy1g0zs8zdqd1j30sr0ckdkb.png" alt><br><a id="more"></a></p>
+<h4 id="Scrapy的基本方法"><a href="#Scrapy的基本方法" class="headerlink" title="Scrapy的基本方法"></a>Scrapy的基本方法</h4><p>基本流程:</p>
+<ul>
+<li>命令行<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">scrapy startproject projectname</span><br><span class="line">scrapy genspider spidername hostname</span><br><span class="line">scrapy crawl spidername</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>这里注意爬虫名称不要和项目名称相同</p>
+<ul>
+<li>最简化的scrapy爬虫的执行流程</li>
+</ul>
+<ol>
+<li>scrapy的name是用来标识是哪个爬虫的</li>
+<li>不重写start_requests(),默认scrapy调用的是start_requests()获取start_url中的url</li>
+<li>在执行第二步就默认回调parse()默认解析器</li>
+</ol>
+<h4 id="item主要函数"><a href="#item主要函数" class="headerlink" title="item主要函数"></a>item主要函数</h4><ol>
+<li>process_item(self,item,spider)必须实现的函数，用来处理item,常用的就是处理items,需要这个item就返回，不需要就Dropitem</li>
+<li>open_spider(self,spider)不是必须实现的函数,当爬虫运行的时候调用</li>
+<li>close_spider(self,spider)不是必须实现的函数，当爬虫结束的时候调用</li>
+<li>from_crawler(cls,crawler)不是必须实现的函数，当爬虫运行时调用，比open_spider()还早，常用于初始化爬虫的一些属性。</li>
+</ol>
+<ul>
+<li>注意</li>
+<li>yield管道里的时候就是yield item</li>
+<li>yield调度器里就是yield requests</li>
+</ul>
+<h4 id="中间件"><a href="#中间件" class="headerlink" title="中间件"></a>中间件</h4><p>中间件最重要的作用就是拦截</p>
+<h5 id="下载中间件三大函数"><a href="#下载中间件三大函数" class="headerlink" title="下载中间件三大函数"></a>下载中间件三大函数</h5><ol>
+<li>process_request(request,spider)处理拦截</li>
+<li>process_response(request,response,spider)处理拦截</li>
+<li>process_exception(request,exception,spider)常用来处理process_request的异常</li>
+</ol>
+<h6 id="process-request"><a href="#process-request" class="headerlink" title="process_request"></a>process_request</h6><ul>
+<li>返回None,默认返回这个值,表示当前这层的下载中间件过了,去往下一层的下载中间件</li>
+<li>返回request,返回这个值就是把当前请求重新丢回调度器队列，相当于重试</li>
+<li>返回response,直接伪造一个返回值,把这个值丢到爬虫中解析</li>
+<li>raises IgnoreRequest,抛弃当前的请求</li>
+</ul>
+<h6 id="process-response"><a href="#process-response" class="headerlink" title="process_response"></a>process_response</h6><ul>
+<li>返回response,默认返回到了下载中间件当中。</li>
+<li>返回request,返回到队列当中，重新请求</li>
+<li>返回raises IgnoreRequest,忽略了之前的请求也要忽略它对应的response</li>
+</ul>
+<h6 id="process-exception"><a href="#process-exception" class="headerlink" title="process_exception"></a>process_exception</h6><ul>
+<li>返回None,就是不处理传给下一个中间件</li>
+<li>返回response,错误被纠正了,进入正常的流程</li>
+<li>返回request，返回给队列重新请求</li>
+</ul>
+<h6 id="CookieMiddleware"><a href="#CookieMiddleware" class="headerlink" title="CookieMiddleware"></a>CookieMiddleware</h6><ul>
+<li><p>单spider多cookie session</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i,url <span class="keyword">in</span> enumerate(url):</span><br><span class="line">  <span class="keyword">yield</span> scrapy.Request(<span class="string">"xxxx.com"</span>,meta=&#123;<span class="string">'cookiejar'</span>:i&#125;,callback=self.parse_page)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>注意<br>需要注意的是 cookiejar meta key 不是“黏性的”，需要再之后的request请求中接着传递</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">parse_page</span><span class="params">(self,response)</span>:</span></span><br><span class="line">  <span class="comment"># do some processing</span></span><br><span class="line">  <span class="keyword">return</span> scrapy.Request(<span class="string">"xxxx.com"</span>,meta=&#123;<span class="string">'cookiejar'</span>:response.meta[<span class="string">'cookiejar'</span>]&#125;,callback=self.parse_other_page)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h6 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h6><ul>
+<li>中间件后面的数字越小越远离下载器，数字越大越靠近下载器</li>
+<li>数字越小的request越先通过，数字越大的response越先通过</li>
+<li>这里比较重要的是retry模块还有CookieMiddleware模块</li>
+</ul>
+<h5 id="爬虫中间件"><a href="#爬虫中间件" class="headerlink" title="爬虫中间件"></a>爬虫中间件</h5><h6 id="爬虫中间件的函数"><a href="#爬虫中间件的函数" class="headerlink" title="爬虫中间件的函数"></a>爬虫中间件的函数</h6><ol>
+<li>from_crawler</li>
+<li>process_spider_input</li>
+<li>process_spider_output</li>
+<li>process_spider_exception</li>
+<li>process_start_request</li>
+</ol>
+<h6 id="from-crawler-必须的"><a href="#from-crawler-必须的" class="headerlink" title="from_crawler(必须的)"></a>from_crawler(必须的)</h6><p>会被manager调用</p>
+<h6 id="process-start-request"><a href="#process-start-request" class="headerlink" title="process_start_request"></a>process_start_request</h6><p>和process_spider_output很像，只能返回request</p>
+<h6 id="scrapy-middleware的实例DepthMiddleware"><a href="#scrapy-middleware的实例DepthMiddleware" class="headerlink" title="scrapy middleware的实例DepthMiddleware"></a>scrapy middleware的实例DepthMiddleware</h6><h4 id="scrapy的数据收集"><a href="#scrapy的数据收集" class="headerlink" title="scrapy的数据收集"></a>scrapy的数据收集</h4><h5 id="收集404的页面demo"><a href="#收集404的页面demo" class="headerlink" title="收集404的页面demo"></a>收集404的页面demo</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">handle_httpstatus_list = [<span class="number">404</span>]</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">  self.fail_urls = []</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">parse</span><span class="params">(self, response)</span>:</span></span><br><span class="line">  <span class="keyword">if</span> response.status == <span class="number">404</span>:</span><br><span class="line">    self.fail_urls.append(response.url)</span><br><span class="line">    self.crawler.stats.inc_value(<span class="string">"failed_url"</span>)</span><br></pre></td></tr></table></figure>
+<h4 id="Request和Response"><a href="#Request和Response" class="headerlink" title="Request和Response"></a>Request和Response</h4><h5 id="Reuqests对象"><a href="#Reuqests对象" class="headerlink" title="Reuqests对象"></a>Reuqests对象</h5><p>基础参数:</p>
+<ul>
+<li>url 请求的网址</li>
+<li>meta 用来在页面之间传递的参数</li>
+<li>callback 请求回来的response处理函数</li>
+<li>header 设置页面的请求头</li>
+<li>cookie 请求页面cookie</li>
+</ul>
+<p>高级参数:</p>
+<ul>
+<li>encoding 请求的转换编码</li>
+<li>priority 链接优先级</li>
+<li>dont_filter 强制不过滤</li>
+<li>errback 和callback一对，当请求成功时调用callback，请求失败调用errback</li>
+</ul>
+<p>方法:</p>
+<ul>
+<li>copy() 复制一个一模一样的对象，常用是deepcopy()</li>
+<li>replace() 对对象参数进行替换</li>
+</ul>
+<p>meta中常用的key:</p>
+<p><img src="http://tc.xianyucoder.cn/blog005MnFO1gy1g0zs9gbh7vj30pr09v434.png" alt></p>
+<h5 id="Response对象"><a href="#Response对象" class="headerlink" title="Response对象"></a>Response对象</h5><p>基础参数:</p>
+<ul>
+<li>url 请求的url</li>
+<li>body 请求回来的html</li>
+<li>meta 用来在页面之间传递数据</li>
+<li>headers 页面的headers数据</li>
+<li>cookies 设置页面的cookie</li>
+<li>Request 发出这个response对应的request对象</li>
+</ul>
+<p>方法:</p>
+<ul>
+<li>copy() 与request相同</li>
+<li>replace() 与request相同</li>
+<li>urljoin() 将页面的相对路劲传入，返回绝对路径</li>
+<li>follow() 传入一个相对路径直接返回一个request对象</li>
+</ul>
+<h4 id="scrapy的暂停和重启"><a href="#scrapy的暂停和重启" class="headerlink" title="scrapy的暂停和重启"></a>scrapy的暂停和重启</h4><ul>
+<li>暂停实例<br>scrapy crawl spider lagou -s JOBDIR=job_info/001</li>
+</ul>
+<p>spidername = lagou<br>workfilename = job_info<br>且每次请求都要求不一样的</p>
+<ul>
+<li>启动实例<br>再次运行暂停的命令</li>
+</ul>
+<h4 id="自定义扩展"><a href="#自定义扩展" class="headerlink" title="自定义扩展"></a>自定义扩展</h4><p>参考scrapy源码中的extensions这个包，可以查看corestats这个文件的源码</p>
+<h4 id="去重与入库"><a href="#去重与入库" class="headerlink" title="去重与入库"></a>去重与入库</h4><h5 id="url去重"><a href="#url去重" class="headerlink" title="url去重"></a>url去重</h5><ul>
+<li>用造好的轮子</li>
+<li>scrapy-deltafetch(前两个原理相同)</li>
+<li>scrapy-crawl-once</li>
+<li>scrapy-redis</li>
+<li><p>scrapy-redis-bloomfilters</p>
+</li>
+<li><p>自己造轮子</p>
+</li>
+<li>自己写的init_add_request方法实现轻量级的去重</li>
+</ul>
+<h5 id="scrapy-redis"><a href="#scrapy-redis" class="headerlink" title="scrapy_redis"></a>scrapy_redis</h5><ol>
+<li>运行爬虫:scrapy crawl 爬虫</li>
+<li>redis-cli lpush myspider:start_urls xxx.com<br>redis-cli sadd myspider:start_urls xxx.com</li>
+</ol>
+<h5 id="scrapy-rabbitmq-link"><a href="#scrapy-rabbitmq-link" class="headerlink" title="scrapy-rabbitmq-link"></a>scrapy-rabbitmq-link</h5><p>SCHEDULR = “scrapy_rabbitmq_link.scheduler.SaaS”<br>RABBITMQ_CONNECTION_PARAMETERS=’amqp://guest:guest@localhost:5672/‘<br>SCHEDULR_REQUEUE_ON_STATUS=[500]<br>DOWNLOADER_MIDDLEWARES = {<br>  ‘scrapy_rabbitmq_link.middleware.RabbitMQMiddleware’:999<br>}</p>
+<h5 id="celery"><a href="#celery" class="headerlink" title="celery"></a>celery</h5><p>from celery import Celery<br>app = Celery(‘hello’,broker=’amqp://guest@localhost//‘)<br>@app.task<br>def hello():<br>  return ‘hello worlds’</p>
+<h4 id="编写代码中的小tip"><a href="#编写代码中的小tip" class="headerlink" title="编写代码中的小tip"></a>编写代码中的小tip</h4><ul>
+<li>错误回调函数</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> traceback <span class="keyword">import</span> format_exc</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">error_back</span><span class="params">(self,e)</span>:</span></span><br><span class="line">  _ = e</span><br><span class="line">  self.logger.error(format_exc())</span><br></pre></td></tr></table></figure>
+<h4 id="通用爬虫-CrawlSpider"><a href="#通用爬虫-CrawlSpider" class="headerlink" title="通用爬虫-CrawlSpider"></a>通用爬虫-CrawlSpider</h4><h5 id="class-scrapy-spiders-CrawlSpider"><a href="#class-scrapy-spiders-CrawlSpider" class="headerlink" title="class scrapy.spiders.CrawlSpider"></a>class scrapy.spiders.CrawlSpider</h5><ul>
+<li>爬取一般网站常用的spider</li>
+<li>定义一些规则来提供跟进link的方便机制</li>
+</ul>
+<h5 id="链接提取器-link-extractors"><a href="#链接提取器-link-extractors" class="headerlink" title="链接提取器(link extractors)"></a>链接提取器(link extractors)</h5><ul>
+<li>导入scrapy.linkextractors import LinkExtractor</li>
+<li>每个link extractor 有唯一的公共方法是extract_links,他接收一个Response对象，返回scrapy.link.Link对象</li>
+</ul>
+<h5 id="常用参数"><a href="#常用参数" class="headerlink" title="常用参数"></a>常用参数</h5><p>class scrapy.linkextractors.lxmlhtml.LxmlLinkExtractor()</p>
+<ul>
+<li>allow() -正则</li>
+<li>deny() - 正则</li>
+<li>allow_domains() - 域名</li>
+<li>deny_domains() - 域名</li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/wechatsubscriber.jpg" alt="煌金 wechat" style="width: auto; height:250px; max-width: 100%;">
+    <div>扫描关注公众号,回复「1024」获取为你准备的特别推送~</div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="煌金 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="煌金 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    煌金  |  微信公众号【咸鱼学Python】
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://www.xianyucoder.cn/2019/04/06/scrapy-intrduct/" title="scrapy要点复习与常用框架复习">http://www.xianyucoder.cn/2019/04/06/scrapy-intrduct/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用  许可协议。转载请注明出处！
+  </li>
+  <li class="post-copyright-license">
+    并保留本声明和上方二维码。感谢您的阅读和支持！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/04/06/scrapy-splash_and_splash/" rel="next" title="scrapy-splash与splash">
+                <i class="fa fa-chevron-left"></i> scrapy-splash与splash
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/04/07/app_spider/" rel="prev" title="App爬虫环境搭建">
+                App爬虫环境搭建 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.gif" alt="煌金">
+            
+              <p class="site-author-name" itemprop="name">煌金</p>
+              <p class="site-description motion-element" itemprop="description">Stay Hungry, Stay Foolish.</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">97</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">12</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">83</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/xianyucoder" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:daihuangj@gmail.com" target="_blank" title="E-Mail"><i class="fa fa-fw fa-E-Mail"></i>E-Mail</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Scrapy工作流程与注意点"><span class="nav-number">1.</span> <span class="nav-text">Scrapy工作流程与注意点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Scrapy的基本方法"><span class="nav-number">2.</span> <span class="nav-text">Scrapy的基本方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#item主要函数"><span class="nav-number">3.</span> <span class="nav-text">item主要函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#中间件"><span class="nav-number">4.</span> <span class="nav-text">中间件</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#下载中间件三大函数"><span class="nav-number">4.1.</span> <span class="nav-text">下载中间件三大函数</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#process-request"><span class="nav-number">4.1.1.</span> <span class="nav-text">process_request</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#process-response"><span class="nav-number">4.1.2.</span> <span class="nav-text">process_response</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#process-exception"><span class="nav-number">4.1.3.</span> <span class="nav-text">process_exception</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#CookieMiddleware"><span class="nav-number">4.1.4.</span> <span class="nav-text">CookieMiddleware</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#注意事项"><span class="nav-number">4.1.5.</span> <span class="nav-text">注意事项</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#爬虫中间件"><span class="nav-number">4.2.</span> <span class="nav-text">爬虫中间件</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#爬虫中间件的函数"><span class="nav-number">4.2.1.</span> <span class="nav-text">爬虫中间件的函数</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#from-crawler-必须的"><span class="nav-number">4.2.2.</span> <span class="nav-text">from_crawler(必须的)</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#process-start-request"><span class="nav-number">4.2.3.</span> <span class="nav-text">process_start_request</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#scrapy-middleware的实例DepthMiddleware"><span class="nav-number">4.2.4.</span> <span class="nav-text">scrapy middleware的实例DepthMiddleware</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#scrapy的数据收集"><span class="nav-number">5.</span> <span class="nav-text">scrapy的数据收集</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#收集404的页面demo"><span class="nav-number">5.1.</span> <span class="nav-text">收集404的页面demo</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Request和Response"><span class="nav-number">6.</span> <span class="nav-text">Request和Response</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Reuqests对象"><span class="nav-number">6.1.</span> <span class="nav-text">Reuqests对象</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Response对象"><span class="nav-number">6.2.</span> <span class="nav-text">Response对象</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#scrapy的暂停和重启"><span class="nav-number">7.</span> <span class="nav-text">scrapy的暂停和重启</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#自定义扩展"><span class="nav-number">8.</span> <span class="nav-text">自定义扩展</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#去重与入库"><span class="nav-number">9.</span> <span class="nav-text">去重与入库</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#url去重"><span class="nav-number">9.1.</span> <span class="nav-text">url去重</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#scrapy-redis"><span class="nav-number">9.2.</span> <span class="nav-text">scrapy_redis</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#scrapy-rabbitmq-link"><span class="nav-number">9.3.</span> <span class="nav-text">scrapy-rabbitmq-link</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#celery"><span class="nav-number">9.4.</span> <span class="nav-text">celery</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#编写代码中的小tip"><span class="nav-number">10.</span> <span class="nav-text">编写代码中的小tip</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#通用爬虫-CrawlSpider"><span class="nav-number">11.</span> <span class="nav-text">通用爬虫-CrawlSpider</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#class-scrapy-spiders-CrawlSpider"><span class="nav-number">11.1.</span> <span class="nav-text">class scrapy.spiders.CrawlSpider</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#链接提取器-link-extractors"><span class="nav-number">11.2.</span> <span class="nav-text">链接提取器(link extractors)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#常用参数"><span class="nav-number">11.3.</span> <span class="nav-text">常用参数</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">煌金</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+    <span title="站点总字数">245k</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+    <span title="站点阅读时长">6:48</span>
+  
+</div>
+
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Gemini</a> v6.3.0</div>
+
+
+<div>
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<span id="busuanzi_container_site_pv" style="display:none">
+    本站总访问量 <span id="busuanzi_value_site_pv"></span> 次
+    <span class="post-meta-divider">|</span>
+</span>
+<span id="busuanzi_container_site_uv" style="display:none">
+    有<span id="busuanzi_value_site_uv"></span>人看过我的博客啦
+</span>
+</div>
+
+<div class="BbeiAn-info" ">
+  闽ICP备 -
+  <a href="http://fj.beian.miit.gov.cn/">19017235号</a>
+  
+</div>
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.3.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.3.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.3.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.3.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.3.0"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  
+  
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(function (item) {
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'TplsQ6G4eWnyg2kG4AVS2oAP-gzGzoHsz',
+        appKey: 'tmkt1Xqzl6hUoFcY059IjfYz',
+        placeholder: '请在此输入您的留言',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

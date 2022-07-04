@@ -1,0 +1,1631 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="google-site-verification" content="e18gWCtevM12uoJ7Xy4CxJtI8ZUBaKRT-GnJT7aDIbk">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.3.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.3.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.3.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.3.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="什么是scrapy-redisredis-based components for scrapy ###为什么要学习scrapy-redis？scrapy redis能够实现requests去重，爬虫持久化，能够轻松实现分布式。 scrapy-redis 详解流程图 scrapy-redis example-projectscrapy-redis的源码中提供了scrapy-redis的示例项目,我">
+<meta name="keywords" content="爬虫">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Scrapy-redis 详解">
+<meta property="og:url" content="http://www.xianyucoder.cn/2018/11/09/scrapy-redis/index.html">
+<meta property="og:site_name" content="咸鱼自我满足的日常">
+<meta property="og:description" content="什么是scrapy-redisredis-based components for scrapy ###为什么要学习scrapy-redis？scrapy redis能够实现requests去重，爬虫持久化，能够轻松实现分布式。 scrapy-redis 详解流程图 scrapy-redis example-projectscrapy-redis的源码中提供了scrapy-redis的示例项目,我">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/jqCHqBaKLl3qFicg5cmrLXpbUehXwF4dnLURHIGxng4gxIkEe1qc3z92y8TiaU9j82b2Wiaia7SCfIKJG3lRzE0mjw/0?wx_fmt=png">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/jqCHqBaKLl27lHRicurHsz0j2oBCStS4AeFX64iczZsoygHTlicWaEaE5kP22K0RBBdeGPcpskH0ekS8ptjAiahXRg/0?wx_fmt=png">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/jqCHqBaKLl27lHRicurHsz0j2oBCStS4AwBTAvALO28ibc2zC2ny1LEibMY9II5e42xlpFTDSztxrQicqqYokjDd0Q/0?wx_fmt=png">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/jqCHqBaKLl27lHRicurHsz0j2oBCStS4AQGhictNlCvIp5NNpLc6LSTKVLgDWicPO9edvlAlf5icLt4maGQL7vvBLA/0?wx_fmt=png">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/jqCHqBaKLl27lHRicurHsz0j2oBCStS4AabayMSFVnOnzPFAlaXDMpicyjQC4SPmyFliaApBbmdibStwTibmZlEm0jw/0?wx_fmt=png">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/jqCHqBaKLl27lHRicurHsz0j2oBCStS4AZa4ggegyxMLRRgWQN6t5Bb4ywD3EeIibiajM6Icz2MyOJV32f6V56dcg/0?wx_fmt=png">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/jqCHqBaKLl27lHRicurHsz0j2oBCStS4Ad4yTdrO1CicqhVQtsRDLxDGl2esagGgEe9eibIeuoeHFeIzNIgnxJZ0A/0?wx_fmt=png">
+<meta property="og:updated_time" content="2019-08-22T07:37:58.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Scrapy-redis 详解">
+<meta name="twitter:description" content="什么是scrapy-redisredis-based components for scrapy ###为什么要学习scrapy-redis？scrapy redis能够实现requests去重，爬虫持久化，能够轻松实现分布式。 scrapy-redis 详解流程图 scrapy-redis example-projectscrapy-redis的源码中提供了scrapy-redis的示例项目,我">
+<meta name="twitter:image" content="https://mmbiz.qpic.cn/mmbiz_png/jqCHqBaKLl3qFicg5cmrLXpbUehXwF4dnLURHIGxng4gxIkEe1qc3z92y8TiaU9j82b2Wiaia7SCfIKJG3lRzE0mjw/0?wx_fmt=png">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="咸鱼自我满足的日常" type="application/atom+xml">
+
+
+
+
+  <link rel="canonical" href="http://www.xianyucoder.cn/2018/11/09/scrapy-redis/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Scrapy-redis 详解 | 咸鱼自我满足的日常</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">咸鱼自我满足的日常</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">You See See You, One Day Day.</p>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-sitemap">
+    <a href="/sitemap.xml" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>站点地图</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-commonweal">
+    <a href="/404/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>公益 404</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2018/11/09/scrapy-redis/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="煌金">
+      <meta itemprop="description" content="Stay Hungry, Stay Foolish.">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="咸鱼自我满足的日常">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Scrapy-redis 详解
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-11-09 08:39:35" itemprop="dateCreated datePublished" datetime="2018-11-09T08:39:35+08:00">2018-11-09</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-08-22 15:37:58" itemprop="dateModified" datetime="2019-08-22T15:37:58+08:00">2019-08-22</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/爬虫/" itemprop="url" rel="index"><span itemprop="name">爬虫</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/11/09/scrapy-redis/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2018/11/09/scrapy-redis/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+		  
+		  
+			<span class="post-meta-divider">|</span>
+			<span id="busuanzi_value_page_pv"></span>次阅读
+		  
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">23k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">39 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="什么是scrapy-redis"><a href="#什么是scrapy-redis" class="headerlink" title="什么是scrapy-redis"></a>什么是scrapy-redis</h4><p>redis-based components for scrapy</p>
+<p>###为什么要学习scrapy-redis？<br>scrapy redis能够实现requests去重，爬虫持久化，能够轻松实现分布式。</p>
+<h4 id="scrapy-redis-详解"><a href="#scrapy-redis-详解" class="headerlink" title="scrapy-redis 详解"></a>scrapy-redis 详解</h4><h4 id="流程图"><a href="#流程图" class="headerlink" title="流程图"></a>流程图</h4><p><img src="https://mmbiz.qpic.cn/mmbiz_png/jqCHqBaKLl3qFicg5cmrLXpbUehXwF4dnLURHIGxng4gxIkEe1qc3z92y8TiaU9j82b2Wiaia7SCfIKJG3lRzE0mjw/0?wx_fmt=png" alt></p>
+<h4 id="scrapy-redis-example-project"><a href="#scrapy-redis-example-project" class="headerlink" title="scrapy-redis example-project"></a>scrapy-redis example-project</h4><p>scrapy-redis的源码中提供了scrapy-redis的示例项目,我们下载下来学习一下。</p>
+<blockquote>
+<p><a href="https://github.com/rmax/scrapy-redis/tree/master/example-project" target="_blank" rel="noopener">https://github.com/rmax/scrapy-redis/tree/master/example-project</a></p>
+</blockquote>
+<p>在<code>example-project</code>中有三个demo,分别是<code>dmoz</code>,<code>myspider_redis</code>,以及<code>mycrawler_redis</code>。</p>
+<p>本次主要是对<code>dmoz</code>这个demo进行学习和实战练习。</p>
+<a id="more"></a>
+<h5 id="dmoz-spider文件解析"><a href="#dmoz-spider文件解析" class="headerlink" title="dmoz spider文件解析"></a>dmoz spider文件解析</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> scrapy.linkextractors <span class="keyword">import</span> LinkExtractor</span><br><span class="line"><span class="keyword">from</span> scrapy.spiders <span class="keyword">import</span> CrawlSpider, Rule</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DmozSpider</span><span class="params">(CrawlSpider)</span>:</span></span><br><span class="line">    <span class="string">"""Follow categories and extract links."""</span></span><br><span class="line">    name = <span class="string">'dmoz'</span></span><br><span class="line">    allowed_domains = [<span class="string">'dmoztools.net'</span>]</span><br><span class="line">    start_urls = [<span class="string">'http://dmoztools.net/'</span>]</span><br><span class="line"></span><br><span class="line">    rules = [</span><br><span class="line">        Rule(LinkExtractor(</span><br><span class="line">            restrict_css=(<span class="string">'.top-cat'</span>, <span class="string">'.sub-cat'</span>, <span class="string">'.cat-item'</span>)</span><br><span class="line">        ), callback=<span class="string">'parse_directory'</span>, follow=<span class="literal">True</span>),</span><br><span class="line">    ]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parse_directory</span><span class="params">(self, response)</span>:</span></span><br><span class="line">        <span class="keyword">for</span> div <span class="keyword">in</span> response.css(<span class="string">'.title-and-desc'</span>):</span><br><span class="line">            <span class="keyword">yield</span> &#123;</span><br><span class="line">                <span class="string">'name'</span>: div.css(<span class="string">'.site-title::text'</span>).extract_first(),</span><br><span class="line">                <span class="string">'description'</span>: div.css(<span class="string">'.site-descr::text'</span>).extract_first().strip(),</span><br><span class="line">                <span class="string">'link'</span>: div.css(<span class="string">'a::attr(href)'</span>).extract_first(),</span><br><span class="line">            &#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到,dmoz项目和我们平时创建的scrapy项目并没有太大的区别,之所以能够实现持久化爬虫主要的不同之处在setting中设置了去重类和scheduler队列。</p>
+<h5 id="dmoz-setting文件解析"><a href="#dmoz-setting文件解析" class="headerlink" title="dmoz setting文件解析"></a>dmoz setting文件解析</h5><p>上面提到的setting中设置了去重类和scheduler队列的操作主要就是在setting文件中添加下面这些代码。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 去重类--指定哪个去重方法给request对象去重</span></span><br><span class="line">DUPEFILTER_CLASS = <span class="string">"scrapy_redis.dupefilter.RFPDupeFilter"</span></span><br><span class="line"><span class="comment"># 队列--指定scheduler队列，调度器内存的是待爬取链接和已爬取对象指纹。</span></span><br><span class="line">SCHEDULER = <span class="string">"scrapy_redis.scheduler.Scheduler"</span></span><br><span class="line"><span class="comment"># 队列内容是否持久化保存--为False的时候，关闭redis的时候清空redis</span></span><br><span class="line">SCHEDULER_PERSIST = <span class="literal">True</span></span><br><span class="line">REDIS_URL=<span class="string">"redis://127.0.0.1:6379"</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="dmoz-redis-数据库存取项"><a href="#dmoz-redis-数据库存取项" class="headerlink" title="dmoz redis 数据库存取项"></a>dmoz redis 数据库存取项</h4><p>我们运行一下这个示例项目,并打开redis数据库,查看爬取到的结果。redis数据库中出现以下三个键，分别是：</p>
+<p>dmoz request： 待爬取项(先把爬取对象序列化存入数据库，再反序列化成爬取对，Scheduler队列，存放的待请求的request对象，获取的过程是pop操作，即获取一个会去除一个)</p>
+<p>dmoz items：爬取的内容(通过scrapy_redis.pipelines.RedisPipeline保存,屏蔽之后可以实现自定义对象存取位置,存放的获取到的item信息，在pipeline中开启RedisPipeline才会存入)</p>
+<p>dmoz dumpfilter：抓到过的request对象指纹(指纹集合，存放的是已经进入scheduler队列的request对象的指纹，指纹默认由请求方法，url和请求体组成)</p>
+<p>dumpfilter的数量减去request的数量是已经抓爬取过的数量</p>
+<p>关闭redispipeline之后,redis数据库中数据量变化：</p>
+<ul>
+<li>dmoz:requests 有变化(变多或者变少或者不变)</li>
+<li>dmoz:dupefilter 变多</li>
+<li>dmoz:items 不变</li>
+</ul>
+<p>redispipeline中仅仅实现了item数据存储到redis的过程,我们可以新建一个pipeline（或者修改默认的ExamplePipeline）,让数据存储到任意地方,但是权重应该小于redis存储的pipline。</p>
+<h4 id="scrapy-redis-源码详解"><a href="#scrapy-redis-源码详解" class="headerlink" title="scrapy-redis 源码详解"></a>scrapy-redis 源码详解</h4><h5 id="scrapy-redis-如何生成指纹的？"><a href="#scrapy-redis-如何生成指纹的？" class="headerlink" title="scrapy redis 如何生成指纹的？"></a>scrapy redis 如何生成指纹的？</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line">f = hashlib.hsa1()</span><br><span class="line">f.update(url.encode())</span><br><span class="line">f.hexdigest()</span><br></pre></td></tr></table></figure>
+<p>#####scrapy-redis 判断request对象是否入队<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">enqueue_request</span><span class="params">(self, request)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> request.dont_filter <span class="keyword">and</span> self.df.request_seen(request):</span><br><span class="line">      <span class="comment"># dont_filter=False Ture  True request指纹已经存在  #不会入队</span></span><br><span class="line">      <span class="comment"># dont_filter=False Ture  False  request指纹已经存在 全新的url  #会入队</span></span><br><span class="line">      <span class="comment"># dont_filter=Ture False  #会入队</span></span><br><span class="line">        self.df.log(request, self.spider)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    <span class="keyword">if</span> self.stats:</span><br><span class="line">        self.stats.inc_value(<span class="string">'scheduler/enqueued/redis'</span>, spider=self.spider)</span><br><span class="line">    self.queue.push(request)</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">True</span></span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>dont_filter = True ,构造请求的时候，把dont_filter置为True，该url会被反复抓取（url地址对应的内容会更新的情况）</li>
+<li>一个全新的url地址被抓到的时候，构造request请求</li>
+<li>url地址在start_urls中的时候，会入队，不管之前是否请求过<ul>
+<li>构造start_url地址的请求时候，dont_filter = True</li>
+</ul>
+</li>
+</ul>
+<h5 id="scrapy-redis如何去重"><a href="#scrapy-redis如何去重" class="headerlink" title="scrapy-redis如何去重"></a>scrapy-redis如何去重</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">fp = hashlib.sha1()</span><br><span class="line">fp.update(to_bytes(request.method)) <span class="comment">#请求方法</span></span><br><span class="line">fp.update(to_bytes(canonicalize_url(request.url)))  <span class="comment">#请求链接</span></span><br><span class="line">fp.update(request.body <span class="keyword">or</span> <span class="string">b''</span>)  <span class="comment"># 请求体</span></span><br><span class="line"><span class="keyword">return</span> fp.hexdigest()</span><br></pre></td></tr></table></figure>
+<ul>
+<li>使用sha1加密request得到指纹</li>
+<li>把指纹存在redis的集合中</li>
+<li>下一次新来一个request，同样的方式生成指纹，判断指纹是否存在reids的集合中</li>
+</ul>
+<h5 id="判断数据是否存在redis的集合中，不存在插入"><a href="#判断数据是否存在redis的集合中，不存在插入" class="headerlink" title="判断数据是否存在redis的集合中，不存在插入"></a>判断数据是否存在redis的集合中，不存在插入</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">added = self.server.sadd(self.key, fp)</span><br><span class="line"><span class="keyword">return</span> added != <span class="number">0</span></span><br></pre></td></tr></table></figure>
+<h4 id="scrapy-redis实战京东图书"><a href="#scrapy-redis实战京东图书" class="headerlink" title="scrapy-redis实战京东图书"></a>scrapy-redis实战京东图书</h4><h4 id="爬取结果截图"><a href="#爬取结果截图" class="headerlink" title="爬取结果截图"></a>爬取结果截图</h4><p><img src="https://mmbiz.qpic.cn/mmbiz_png/jqCHqBaKLl27lHRicurHsz0j2oBCStS4AeFX64iczZsoygHTlicWaEaE5kP22K0RBBdeGPcpskH0ekS8ptjAiahXRg/0?wx_fmt=png" alt></p>
+<h4 id="页面分析"><a href="#页面分析" class="headerlink" title="页面分析"></a>页面分析</h4><h5 id="分析分类聚合页"><a href="#分析分类聚合页" class="headerlink" title="分析分类聚合页"></a>分析分类聚合页</h5><p>打开待爬取页面：<code>https://book.jd.com/booksort.html</code></p>
+<p>如下图：<br><img src="https://mmbiz.qpic.cn/mmbiz_png/jqCHqBaKLl27lHRicurHsz0j2oBCStS4AwBTAvALO28ibc2zC2ny1LEibMY9II5e42xlpFTDSztxrQicqqYokjDd0Q/0?wx_fmt=png" alt></p>
+<p>查看页面源代码,发现待爬取的内容存在其中,所以我们可以通过分析源码写出提取相应字段的xpath。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">parse</span><span class="params">(self, response)</span>:</span></span><br><span class="line">  dl_list = response.xpath(<span class="string">"//div[@class='mc']/dl/dt"</span>)</span><br><span class="line">  <span class="keyword">for</span> dl <span class="keyword">in</span> dl_list:</span><br><span class="line">    item = JdbookspiderItem()</span><br><span class="line">    item[<span class="string">'book_sort'</span>] = dl.xpath(<span class="string">"./a/text()"</span>).extract_first()</span><br><span class="line">    em_list = dl.xpath(<span class="string">"./following-sibling::dd/em"</span>)</span><br><span class="line">    <span class="keyword">for</span> em <span class="keyword">in</span> em_list:</span><br><span class="line">      item[<span class="string">'book_cate'</span>] = em.xpath(<span class="string">"./a/text()"</span>).extract_first()</span><br><span class="line">      item[<span class="string">'book_cate_url'</span>] = em.xpath(<span class="string">"./a/@href"</span>).extract_first()</span><br><span class="line">      <span class="keyword">if</span> item[<span class="string">'book_cate_url'</span>] <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">        item[<span class="string">'book_cate_url'</span>] = <span class="string">'https:'</span> + item[<span class="string">'book_cate_url'</span>]</span><br><span class="line">      <span class="keyword">yield</span> scrapy.Request(</span><br><span class="line">        item[<span class="string">'book_cate_url'</span>],</span><br><span class="line">        callback=self.parse_cate_url,</span><br><span class="line">        meta=&#123;<span class="string">"item"</span>: deepcopy(item)&#125;</span><br><span class="line">      )</span><br></pre></td></tr></table></figure></p>
+<p>通过抓取分类页面分类链接,我们可以爬取到分类下的书籍列表页,这个页面包含书籍的全部信息,同样是可以使用xpath解析出来的。</p>
+<h5 id="分析书籍列表页"><a href="#分析书籍列表页" class="headerlink" title="分析书籍列表页"></a>分析书籍列表页</h5><p>通过分析列表页的请求,可以发下列表页的请求重定向到了一个新的链接,所以我们只需要分析新请求链接的响应即可,scrapy可以自动帮我们执行重定向的操作。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/jqCHqBaKLl27lHRicurHsz0j2oBCStS4AQGhictNlCvIp5NNpLc6LSTKVLgDWicPO9edvlAlf5icLt4maGQL7vvBLA/0?wx_fmt=png" alt></p>
+<p>分析书籍列表页,可以发现列表页除了价格字段外其余字段都可以在链接的响应中提取到。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/jqCHqBaKLl27lHRicurHsz0j2oBCStS4AabayMSFVnOnzPFAlaXDMpicyjQC4SPmyFliaApBbmdibStwTibmZlEm0jw/0?wx_fmt=png" alt></p>
+<p>所以我们只需要找到价格字段的请求,就可以爬取到书籍的全部字段了。我们可以直接在相应中查找价格以查看是否有相关的响应。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/jqCHqBaKLl27lHRicurHsz0j2oBCStS4AZa4ggegyxMLRRgWQN6t5Bb4ywD3EeIibiajM6Icz2MyOJV32f6V56dcg/0?wx_fmt=png" alt></p>
+<p>查找结果如上所示,根据我们查找到的结果,我试着请求一下对应的链接,很幸运这里返回的是json字符串。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/jqCHqBaKLl27lHRicurHsz0j2oBCStS4Ad4yTdrO1CicqhVQtsRDLxDGl2esagGgEe9eibIeuoeHFeIzNIgnxJZ0A/0?wx_fmt=png" alt></p>
+<p>根据以上分析我们可以写出相应的分析代码：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">parse_cate_url</span><span class="params">(self, response)</span>:</span></span><br><span class="line">  item = response.meta[<span class="string">"item"</span>]</span><br><span class="line">  li_list = response.xpath(<span class="string">"//div[@id='plist']/ul/li"</span>)</span><br><span class="line">  <span class="keyword">for</span> li <span class="keyword">in</span> li_list:</span><br><span class="line">    item[<span class="string">'book_img'</span>] = li.xpath(<span class="string">".//div[@class='p-img']//img/@src"</span>).extract_first()</span><br><span class="line">    <span class="keyword">if</span> item[<span class="string">'book_img'</span>] <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">      item[<span class="string">'book_img'</span>] = li.xpath(<span class="string">".//div[@class='p-img']//img/@data-lazy-img"</span>).extract_first()</span><br><span class="line">    item[<span class="string">'book_img'</span>] = <span class="string">"https:"</span> + item[<span class="string">'book_img'</span>] <span class="keyword">if</span> item[<span class="string">'book_img'</span>] <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span> <span class="keyword">else</span> <span class="literal">None</span></span><br><span class="line">    item[<span class="string">'book_name'</span>] = li.xpath(<span class="string">".//div[@class='p-name']/a/em/text()"</span>).extract_first().strip()</span><br><span class="line">    item[<span class="string">'book_author'</span>] = li.xpath(<span class="string">".//span[@class='author_type_1']/a/text()"</span>).extract_first()</span><br><span class="line">    item[<span class="string">'publish_time'</span>] = li.xpath(<span class="string">".//span[@class='p-bi-date']/text()"</span>).extract_first().strip()</span><br><span class="line">    item[<span class="string">'book_store'</span>] = li.xpath(<span class="string">".//span[@class='p-bi-store']/a/@title"</span>).extract_first().strip()</span><br><span class="line">    item[<span class="string">'book_sku'</span>] = li.xpath(<span class="string">"./div/@data-sku"</span>).extract_first()</span><br><span class="line">    <span class="keyword">yield</span> scrapy.Request(</span><br><span class="line">      <span class="string">'https://p.3.cn/prices/mgets?skuIds=J_&#123;&#125;'</span>.format(item[<span class="string">'book_sku'</span>]),</span><br><span class="line">      callback=self.parse_book_price,</span><br><span class="line">      meta=&#123;<span class="string">"item"</span>: deepcopy(item)&#125;</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">parse_book_price</span><span class="params">(self, response)</span>:</span></span><br><span class="line">  item = response.meta[<span class="string">"item"</span>]</span><br><span class="line">  item[<span class="string">'book_price'</span>] = json.loads(response.body.decode())[<span class="number">0</span>][<span class="string">"op"</span>]</span><br><span class="line">  <span class="keyword">yield</span> item</span><br></pre></td></tr></table></figure></p>
+<h5 id="建下一页请求"><a href="#建下一页请求" class="headerlink" title="建下一页请求"></a>建下一页请求</h5><p>这里就比较简单,对比最后一页与其他页,发现最后一页是没有下一页链接的,根据以上分析可以成功构建相应代码：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 下一页地址构建</span></span><br><span class="line">next_url = response.xpath(<span class="string">"//a[@class='pn-next']/@href"</span>)</span><br><span class="line"><span class="keyword">if</span> next_url:</span><br><span class="line">  next_url = urllib.parse.join(response.url, next_url)</span><br><span class="line">  <span class="keyword">yield</span> scrapy.Request(</span><br><span class="line">    next_url,</span><br><span class="line">    callback=self.parse_cate_url,</span><br><span class="line">    meta=&#123;<span class="string">"item"</span>: item&#125;</span><br><span class="line">  )</span><br></pre></td></tr></table></figure></p>
+<h5 id="数据入库"><a href="#数据入库" class="headerlink" title="数据入库"></a>数据入库</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">JdbookspiderPipeline</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">process_item</span><span class="params">(self, item, spider)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> isinstance(item, JdbookspiderItem):</span><br><span class="line">            print(item)</span><br><span class="line">            collection.insert(dict(item))</span><br><span class="line">        <span class="keyword">return</span> item</span><br></pre></td></tr></table></figure>
+<h4 id="实现持久化爬虫"><a href="#实现持久化爬虫" class="headerlink" title="实现持久化爬虫"></a>实现持久化爬虫</h4><p>在setting文件中添加去重类和scheduler队列,同时修改redis数据库链接,并保证数据库是可用的。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">DUPEFILTER_CLASS = <span class="string">"scrapy_redis.dupefilter.RFPDupeFilter"</span></span><br><span class="line">SCHEDULER = <span class="string">"scrapy_redis.scheduler.Scheduler"</span></span><br><span class="line">SCHEDULER_PERSIST = <span class="literal">True</span></span><br><span class="line">REDIS_URL = <span class="string">"redis://127.0.0.1:6379"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 同时为保证能够把数据同时存储到mongodb中我们还要设置相关pipline</span></span><br><span class="line">ITEM_PIPELINES = &#123;</span><br><span class="line">   <span class="string">'jdbookSpider.pipelines.JdbookspiderPipeline'</span>: <span class="number">500</span>,</span><br><span class="line">   <span class="string">'scrapy_redis.pipelines.RedisPipeline'</span>: <span class="number">400</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>以上就是主要部分的代码,全部代码已经上传github,点击阅读原文即可获取。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/wechatsubscriber.jpg" alt="煌金 wechat" style="width: auto; height:250px; max-width: 100%;">
+    <div>扫描关注公众号,回复「1024」获取为你准备的特别推送~</div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="煌金 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="煌金 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    煌金  |  微信公众号【咸鱼学Python】
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://www.xianyucoder.cn/2018/11/09/scrapy-redis/" title="Scrapy-redis 详解">http://www.xianyucoder.cn/2018/11/09/scrapy-redis/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用  许可协议。转载请注明出处！
+  </li>
+  <li class="post-copyright-license">
+    并保留本声明和上方二维码。感谢您的阅读和支持！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/爬虫/" rel="tag"># 爬虫</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/10/29/password_proxy_use/" rel="next" title="带密码的代理怎么使用">
+                <i class="fa fa-chevron-left"></i> 带密码的代理怎么使用
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/11/09/numpy3/" rel="prev" title="Numpy基础(三)">
+                Numpy基础(三) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.gif" alt="煌金">
+            
+              <p class="site-author-name" itemprop="name">煌金</p>
+              <p class="site-description motion-element" itemprop="description">Stay Hungry, Stay Foolish.</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">97</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">12</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">83</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/xianyucoder" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:daihuangj@gmail.com" target="_blank" title="E-Mail"><i class="fa fa-fw fa-E-Mail"></i>E-Mail</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#什么是scrapy-redis"><span class="nav-number">1.</span> <span class="nav-text">什么是scrapy-redis</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#scrapy-redis-详解"><span class="nav-number">2.</span> <span class="nav-text">scrapy-redis 详解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#流程图"><span class="nav-number">3.</span> <span class="nav-text">流程图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#scrapy-redis-example-project"><span class="nav-number">4.</span> <span class="nav-text">scrapy-redis example-project</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#dmoz-spider文件解析"><span class="nav-number">4.1.</span> <span class="nav-text">dmoz spider文件解析</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#dmoz-setting文件解析"><span class="nav-number">4.2.</span> <span class="nav-text">dmoz setting文件解析</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#dmoz-redis-数据库存取项"><span class="nav-number">5.</span> <span class="nav-text">dmoz redis 数据库存取项</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#scrapy-redis-源码详解"><span class="nav-number">6.</span> <span class="nav-text">scrapy-redis 源码详解</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#scrapy-redis-如何生成指纹的？"><span class="nav-number">6.1.</span> <span class="nav-text">scrapy redis 如何生成指纹的？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#scrapy-redis如何去重"><span class="nav-number">6.2.</span> <span class="nav-text">scrapy-redis如何去重</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#判断数据是否存在redis的集合中，不存在插入"><span class="nav-number">6.3.</span> <span class="nav-text">判断数据是否存在redis的集合中，不存在插入</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#scrapy-redis实战京东图书"><span class="nav-number">7.</span> <span class="nav-text">scrapy-redis实战京东图书</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#爬取结果截图"><span class="nav-number">8.</span> <span class="nav-text">爬取结果截图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#页面分析"><span class="nav-number">9.</span> <span class="nav-text">页面分析</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#分析分类聚合页"><span class="nav-number">9.1.</span> <span class="nav-text">分析分类聚合页</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#分析书籍列表页"><span class="nav-number">9.2.</span> <span class="nav-text">分析书籍列表页</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#建下一页请求"><span class="nav-number">9.3.</span> <span class="nav-text">建下一页请求</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#数据入库"><span class="nav-number">9.4.</span> <span class="nav-text">数据入库</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实现持久化爬虫"><span class="nav-number">10.</span> <span class="nav-text">实现持久化爬虫</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">煌金</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+    <span title="站点总字数">245k</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+    <span title="站点阅读时长">6:48</span>
+  
+</div>
+
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Gemini</a> v6.3.0</div>
+
+
+<div>
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<span id="busuanzi_container_site_pv" style="display:none">
+    本站总访问量 <span id="busuanzi_value_site_pv"></span> 次
+    <span class="post-meta-divider">|</span>
+</span>
+<span id="busuanzi_container_site_uv" style="display:none">
+    有<span id="busuanzi_value_site_uv"></span>人看过我的博客啦
+</span>
+</div>
+
+<div class="BbeiAn-info" ">
+  闽ICP备 -
+  <a href="http://fj.beian.miit.gov.cn/">19017235号</a>
+  
+</div>
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.3.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.3.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.3.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.3.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.3.0"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  
+  
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(function (item) {
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'TplsQ6G4eWnyg2kG4AVS2oAP-gzGzoHsz',
+        appKey: 'tmkt1Xqzl6hUoFcY059IjfYz',
+        placeholder: '请在此输入您的留言',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

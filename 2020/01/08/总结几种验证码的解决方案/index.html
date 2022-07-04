@@ -1,0 +1,1684 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="google-site-verification" content="e18gWCtevM12uoJ7Xy4CxJtI8ZUBaKRT-GnJT7aDIbk">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.3.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.3.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.3.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.3.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="截止到今天咸鱼以及写了很多期关于 Js 逆向的文章了，不过这么多的文章都有一个共通点，都是关于加密参数或者密码加密的解析，很多读者在后台私信希望能够出一些关于滑动验证或者人机验证的分析教程。 于是咸鱼总结了目前遇到过的的验证码类型以及总结出来的相关处理方式和大家聊一聊。 现在市面上的验证码的类型大致有下面几种类型。 图形验证码比较常见的英文数字组合成的图形验证码，常常辅以各类干扰线和扭曲图片中的内">
+<meta name="keywords" content="验证码,TensorFlow">
+<meta property="og:type" content="article">
+<meta property="og:title" content="怼就完事了，总结几种验证码的解决方案">
+<meta property="og:url" content="http://www.xianyucoder.cn/2020/01/08/总结几种验证码的解决方案/index.html">
+<meta property="og:site_name" content="咸鱼自我满足的日常">
+<meta property="og:description" content="截止到今天咸鱼以及写了很多期关于 Js 逆向的文章了，不过这么多的文章都有一个共通点，都是关于加密参数或者密码加密的解析，很多读者在后台私信希望能够出一些关于滑动验证或者人机验证的分析教程。 于是咸鱼总结了目前遇到过的的验证码类型以及总结出来的相关处理方式和大家聊一聊。 现在市面上的验证码的类型大致有下面几种类型。 图形验证码比较常见的英文数字组合成的图形验证码，常常辅以各类干扰线和扭曲图片中的内">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://tc.xianyucoder.cn/blog20200104203024.png">
+<meta property="og:image" content="http://tc.xianyucoder.cn/blog20200104203424.png">
+<meta property="og:image" content="http://tc.xianyucoder.cn/blog20200104203507.png">
+<meta property="og:image" content="http://tc.xianyucoder.cn/blog20200104213004.png">
+<meta property="og:image" content="http://tc.xianyucoder.cn/blog20200104230400.png">
+<meta property="og:image" content="http://tc.xianyucoder.cn/blog20200104230932.png">
+<meta property="og:image" content="http://tc.xianyucoder.cn/blog20200104231538.png">
+<meta property="og:image" content="http://tc.xianyucoder.cn/blog20200104234230.png">
+<meta property="og:image" content="http://tc.xianyucoder.cn/blog20200104235425.png">
+<meta property="og:updated_time" content="2020-01-08T07:20:32.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="怼就完事了，总结几种验证码的解决方案">
+<meta name="twitter:description" content="截止到今天咸鱼以及写了很多期关于 Js 逆向的文章了，不过这么多的文章都有一个共通点，都是关于加密参数或者密码加密的解析，很多读者在后台私信希望能够出一些关于滑动验证或者人机验证的分析教程。 于是咸鱼总结了目前遇到过的的验证码类型以及总结出来的相关处理方式和大家聊一聊。 现在市面上的验证码的类型大致有下面几种类型。 图形验证码比较常见的英文数字组合成的图形验证码，常常辅以各类干扰线和扭曲图片中的内">
+<meta name="twitter:image" content="http://tc.xianyucoder.cn/blog20200104203024.png">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="咸鱼自我满足的日常" type="application/atom+xml">
+
+
+
+
+  <link rel="canonical" href="http://www.xianyucoder.cn/2020/01/08/总结几种验证码的解决方案/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>怼就完事了，总结几种验证码的解决方案 | 咸鱼自我满足的日常</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">咸鱼自我满足的日常</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">You See See You, One Day Day.</p>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-sitemap">
+    <a href="/sitemap.xml" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>站点地图</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-commonweal">
+    <a href="/404/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>公益 404</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2020/01/08/总结几种验证码的解决方案/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="煌金">
+      <meta itemprop="description" content="Stay Hungry, Stay Foolish.">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="咸鱼自我满足的日常">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">怼就完事了，总结几种验证码的解决方案
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-01-08 08:39:35 / 修改时间：15:20:32" itemprop="dateCreated datePublished" datetime="2020-01-08T08:39:35+08:00">2020-01-08</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/验证码/" itemprop="url" rel="index"><span itemprop="name">验证码</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/01/08/总结几种验证码的解决方案/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2020/01/08/总结几种验证码的解决方案/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+		  
+		  
+			<span class="post-meta-divider">|</span>
+			<span id="busuanzi_value_page_pv"></span>次阅读
+		  
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">23k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">38 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>截止到今天咸鱼以及写了很多期关于 Js 逆向的文章了，不过这么多的文章都有一个共通点，都是关于加密参数或者密码加密的解析，很多读者在后台私信希望能够出一些关于滑动验证或者人机验证的分析教程。</p>
+<p>于是咸鱼总结了目前遇到过的的验证码类型以及总结出来的相关处理方式和大家聊一聊。</p>
+<p>现在市面上的验证码的类型大致有下面几种类型。</p>
+<h3 id="图形验证码"><a href="#图形验证码" class="headerlink" title="图形验证码"></a>图形验证码</h3><p>比较常见的英文数字组合成的图形验证码，常常辅以各类干扰线和扭曲图片中的内容达到提高混淆难度的目的，并且通过加长图片中的文字长度提升识别成本。</p>
+<p><img src="http://tc.xianyucoder.cn/blog20200104203024.png" alt="7位英数-难度高"></p>
+<p><img src="http://tc.xianyucoder.cn/blog20200104203424.png" alt="4位英数-难度中等"></p>
+<p><img src="http://tc.xianyucoder.cn/blog20200104203507.png" alt="4位英数-难度低"></p>
+<p>像这类验证码的处理方案有很多种，简单给大家概括一下。</p>
+<p>难度中低的两类验证码，安装 <code>tesserocr</code>，通过 OCR 技术结合 Python 的 <code>tesserocr</code> 库可以就可以完成识别。如果验证码中带有简单干扰线同样可以使用灰度和二值化的方法提高代码的识别率。</p>
+<p>常用示例代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tesserocr</span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line">image = Image.open(<span class="string">'code2.jpg'</span>)</span><br><span class="line">image = image.convert(<span class="string">'L'</span>)</span><br><span class="line">threshold = <span class="number">127</span></span><br><span class="line">table = []</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">256</span>):</span><br><span class="line">    <span class="keyword">if</span> i &lt; threshold:</span><br><span class="line">        table.append(<span class="number">0</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        table.append(<span class="number">1</span>)</span><br><span class="line">image = image.point(table, <span class="string">'1'</span>)</span><br><span class="line">result = tesserocr.image_to_text(image)</span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure>
+<p>难度较高的多位英数+扭曲图形验证码包括上面总结的中低难度的图形验证码，可以通过 Tensorflow 训练的方式达到识别验证码的目的。</p>
+<p>之前我有一个系列文章介绍了整个训练流程，大家可以点击参考。</p>
+<p><a href="https://mp.weixin.qq.com/s/-BfjGC6KZNe2PJ47H85LIQ" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/-BfjGC6KZNe2PJ47H85LIQ</a></p>
+<p><a href="https://mp.weixin.qq.com/s/qVZtKveH8h2BQn2OjsXZYQ" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/qVZtKveH8h2BQn2OjsXZYQ</a></p>
+<p><a href="https://mp.weixin.qq.com/s/AfefH4b5HqNtxTVOjZ-XvA" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/AfefH4b5HqNtxTVOjZ-XvA</a></p>
+<p>使用这个方式的朋友记得要先准备好足够用的验证码的样本，只要你的模型不是太差，通过足量的样本，不断调优是可以达到一个较为可观的是识别率的。</p>
+<p>目前体验过最好的程序是冷月的四位英数识别成功率高达 99.99% ，不过据知情人透露整个训练的样本达到了 6000 W ，耗费的时间精力可想而知。</p>
+<p>还有一类解决方法是使用打码服务，这个之后再说。</p>
+<h3 id="旋转验证码"><a href="#旋转验证码" class="headerlink" title="旋转验证码"></a>旋转验证码</h3><p>这类验证码是将验证码的图片旋转并且需要用户拖动下方滑块完成将图片摆正的操作才可以完成验证。</p>
+<p><img src="http://tc.xianyucoder.cn/blog20200104213004.png" alt="旋转验证码"></p>
+<p>目前国内市面的服务商还没有一个好的解决方案，不过某家的验证码有一些小小的 bug，依靠劳苦大众的智慧在 GitHub 上我发现了一个很 Nice 的项目。</p>
+<p>项目地址：<a href="https://github.com/scupte/xuanzhaunyanz" target="_blank" rel="noopener">https://github.com/scupte/xuanzhaunyanz</a></p>
+<p>因为图库的容量问题，没有超大的图库作为后盾，将全部的原图抓取下来对比完全可以得到旋转的角度了。</p>
+<p>部分对比代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">imagepath = <span class="string">'9_1.png'</span></span><br><span class="line">img = cv2.imread(imagepath)</span><br><span class="line">gray = cv2.cvtColor ( img , cv2.COLOR_BGR2GRAY )</span><br><span class="line">ret, binary = cv2.threshold(gray,<span class="number">127</span>,<span class="number">255</span>,cv2.THRESH_BINARY)  </span><br><span class="line">  </span><br><span class="line">contours, hierarchy = cv2.findContours(binary,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)  </span><br><span class="line"><span class="comment">#cv2.drawContours(img,contours,-1,(0,0,255),1)  </span></span><br><span class="line"><span class="keyword">for</span> cnt <span class="keyword">in</span> contours:</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 最小外界矩形的宽度和高度</span></span><br><span class="line">    width, height = cv2.minAreaRect(cnt)[<span class="number">1</span>]</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> width* height &gt; <span class="number">100</span>:</span><br><span class="line">        <span class="comment"># 最小的外接矩形</span></span><br><span class="line">        rect = cv2.minAreaRect(cnt)</span><br><span class="line">        box = cv2.boxPoints(rect)  <span class="comment"># 获取最小外接矩形的4个顶点</span></span><br><span class="line">        </span><br><span class="line">        box = np.int0(box)</span><br><span class="line">        <span class="keyword">print</span> box</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> <span class="number">0</span> <span class="keyword">not</span> <span class="keyword">in</span> box.ravel():</span><br><span class="line"></span><br><span class="line">            <span class="comment">#绘制最小外界矩形</span></span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">4</span>):</span><br><span class="line">                cv2.line(img, tuple(box[i]), tuple(box[(i+<span class="number">1</span>)%<span class="number">4</span>]), <span class="number">0</span>)  <span class="comment"># 5</span></span><br><span class="line">            theta = cv2.minAreaRect(cnt)[<span class="number">2</span>]</span><br><span class="line">            <span class="keyword">if</span> abs(theta) &lt;= <span class="number">45</span>:</span><br><span class="line">                print(<span class="string">'图片的旋转角度为%s.'</span>%theta)</span><br><span class="line"></span><br><span class="line">             </span><br><span class="line">            <span class="comment">#     angle = theta</span></span><br><span class="line"><span class="keyword">print</span> theta            </span><br><span class="line">cv2.imshow(<span class="string">"img"</span>, img)  </span><br><span class="line">cv2.waitKey(<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="滑动验证码"><a href="#滑动验证码" class="headerlink" title="滑动验证码"></a>滑动验证码</h3><p>说到滑动验证码，一定一定要提某验，虽然说市面上关于滑动验证码的产品有很多，但是某验的地位就像10年前脑白金在保健品市场的地位一样，业界标杆啊。</p>
+<p>不过它越牛逼，市场上用它做防护的网站也越多，像国家企业信用信息公示系统、B 站、狗东等等。</p>
+<p>像某验的解决方案也有很多，不过大同小异。</p>
+<h4 id="selenium-模拟滑动"><a href="#selenium-模拟滑动" class="headerlink" title="selenium 模拟滑动"></a>selenium 模拟滑动</h4><p>使用 selenium 这个大家都听过，步骤大致是将缺口图和原图进行对比获取缺口的横坐标，并使用一定的计算完成轨迹模拟，之后再使用 selenium 滑动完成缺口的拼接。</p>
+<p>这一类方法的优点是门槛低，原理简单，缺点是完成滑动耗时较长，成功率无法估计（同一轨迹计算使用多次后成功率迅速下降）</p>
+<p>常见的轨迹生成代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> math</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">ease_out_expo</span><span class="params">(x)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    曲线函数</span></span><br><span class="line"><span class="string">    :param x:</span></span><br><span class="line"><span class="string">    :return:</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="keyword">if</span> x == <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span> - pow(<span class="number">2</span>, <span class="number">-10</span> * x)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_tracks</span><span class="params">(distance, seconds)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    轨迹生成函数</span></span><br><span class="line"><span class="string">    :param distance: 滑动总距离</span></span><br><span class="line"><span class="string">    :param seconds: 滑动总时间</span></span><br><span class="line"><span class="string">    :return:</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    tracks = [<span class="number">0</span>]  <span class="comment"># 存放轨迹的数组</span></span><br><span class="line">    offsets = [<span class="number">0</span>]  <span class="comment"># 存放滑动总距离的记录数组</span></span><br><span class="line">    <span class="keyword">for</span> t <span class="keyword">in</span> np.arange(<span class="number">0.0</span>, seconds, <span class="number">0.1</span>):  <span class="comment"># 产生一个数列如[0.0, 0.1, 0.2, 0.3]</span></span><br><span class="line">        offset = round(ease_out_expo(t/seconds) * distance)  <span class="comment"># 根据时间t计算在曲线上的滑动距离</span></span><br><span class="line">        tracks.append(offset - offsets[<span class="number">-1</span>])  <span class="comment"># 本次计算的距离减去上一次移动的距离，得到本次的轨迹</span></span><br><span class="line">        offsets.append(offset)  <span class="comment"># 至本次滑动了的总距离</span></span><br><span class="line">    <span class="keyword">return</span> offsets, tracks</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">a, b = get_tracks(<span class="number">138</span>, <span class="number">3</span>)</span><br><span class="line">print(a, b)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_tracksb</span><span class="params">(distance)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    根据物理的先加速再减速规律计算</span></span><br><span class="line"><span class="string">    :param distance:</span></span><br><span class="line"><span class="string">    :return:</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    distance += <span class="number">20</span>  <span class="comment"># 加上20是为了滑动超过缺口再回滑</span></span><br><span class="line">    v = <span class="number">0</span>  <span class="comment"># 初速度</span></span><br><span class="line">    t = <span class="number">0.2</span>  <span class="comment"># 以0.2秒为一个计算周期</span></span><br><span class="line">    forward_tracks = []  <span class="comment"># 轨迹记录数组</span></span><br><span class="line">    current = <span class="number">0</span>  <span class="comment"># 初始移动距离</span></span><br><span class="line">    mid = distance * <span class="number">3</span> / <span class="number">5</span>  <span class="comment"># 减速阀值即五分之三的距离加速剩下距离减速</span></span><br><span class="line">    <span class="keyword">while</span> current &lt; distance:  <span class="comment"># 总移动距离等于输入距离时结束</span></span><br><span class="line">        <span class="keyword">if</span> current &lt; mid:  <span class="comment"># 加速状态</span></span><br><span class="line">            a = <span class="number">2</span>  <span class="comment"># 加速度为+2</span></span><br><span class="line">        <span class="keyword">else</span>:  <span class="comment"># 减速状态</span></span><br><span class="line">            a = <span class="number">-3</span>  <span class="comment"># 加速度-3</span></span><br><span class="line">            </span><br><span class="line">        s = v * t + <span class="number">0.5</span> * a * (t ** <span class="number">2</span>)  <span class="comment"># 计算0.2秒周期内的位移</span></span><br><span class="line">        v = v + a * t  <span class="comment"># 计算本次周期后的速度</span></span><br><span class="line">        current += s  <span class="comment"># 将之前移动的总距离，加上本次0.2秒周期内移动的距离</span></span><br><span class="line">        forward_tracks.append(round(s))  <span class="comment"># 记录本次0.2秒周期内的移动距离为轨迹</span></span><br><span class="line"></span><br><span class="line">    back_tracks = [<span class="number">-3</span>, <span class="number">-3</span>, <span class="number">-2</span>, <span class="number">-2</span>, <span class="number">-2</span>, <span class="number">-2</span>, <span class="number">-2</span>, <span class="number">-1</span>, <span class="number">-1</span>, <span class="number">-1</span>]  <span class="comment"># 手动将开头加上的20，生成减去轨迹，即回滑轨迹</span></span><br><span class="line">    <span class="keyword">return</span> &#123;<span class="string">'forward_tracks'</span>: forward_tracks, <span class="string">'back_tracks'</span>: back_tracks&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="Js-破解关键的参数"><a href="#Js-破解关键的参数" class="headerlink" title="Js 破解关键的参数"></a>Js 破解关键的参数</h4><p>这类方法的门槛就比较高了，通过断点调试 Js，逆向分析滑动后提交的参数的生成逻辑完成参数的生成，之后构造请求完成提交，当然这中间也是需要分析图片的缺口位置与模拟轨迹，不过没有使用到模拟所以速度快成功率高。</p>
+<p>缺点是风险高，代码维护成本高，更新一个新版本就要重新分析而且逆向相关产品的代码是有一定的法律风险的，免费包吃住也不是开玩笑的，所以很多能够商业化的大佬们都闷声发大财不会到处张扬。</p>
+<h4 id="使用现有的服务"><a href="#使用现有的服务" class="headerlink" title="使用现有的服务"></a>使用现有的服务</h4><p>上面两种方法各有各的优缺，很多人就想把这一块的工作量与风险分出去，这就要使用到第三方的服务商了。</p>
+<p>不过目前国内市场上的服务商并没有这类服务，目前咸鱼在使用的是一家俄罗斯的服务商 - 2Captcha</p>
+<p>这个服务商提供的验证码服务有很多种，其中包含了我们比较关心的  GeeTest 。</p>
+<p><img src="http://tc.xianyucoder.cn/blog20200104230400.png" alt="每1000次的价格"></p>
+<p>下面咸鱼给大家简单介绍下如何使用服务。（不要问为啥收费，人家服务商也要吃饭，况且这个价格实在很便宜了）</p>
+<p>首先，注册一个账号，官网是 <a href="http://2captcha.com/zh" target="_blank" rel="noopener">http://2captcha.com/zh</a></p>
+<p><img src="http://tc.xianyucoder.cn/blog20200104230932.png" alt="首页"></p>
+<p>完成注册之后会跳转到控制台界面，这里最重要的是获取到属于你的 API Key 。</p>
+<p><img src="http://tc.xianyucoder.cn/blog20200104231538.png" alt="API KEY"></p>
+<p>好，拿到这个 API Key 之后就可以上手使用服务完成滑动的破解了。</p>
+<p>通过参考官方的 API 文档，我们只需要构建 Get 请求就可以了。</p>
+<p>第一个 Get 请求的组成是这样的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">https://<span class="number">2</span>captcha.com/<span class="keyword">in</span>.php</span><br><span class="line">?key= 上面获取的API KEY </span><br><span class="line">&amp;method=geetest</span><br><span class="line">&amp;gt= 极验参数</span><br><span class="line">&amp;challenge= 极验参数</span><br><span class="line">&amp;api_server=api-na.geetest.com(可选)</span><br><span class="line">&amp;pageurl= 滑动验证码所在的网页地址</span><br></pre></td></tr></table></figure>
+<p>参数列表：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数介绍</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">key</td>
+<td style="text-align:center">API KEY</td>
+</tr>
+<tr>
+<td style="text-align:center">method</td>
+<td style="text-align:center">表示验证码类型</td>
+</tr>
+<tr>
+<td style="text-align:center">gt</td>
+<td style="text-align:center">极验参数1</td>
+</tr>
+<tr>
+<td style="text-align:center">challenge</td>
+<td style="text-align:center">极验参数2</td>
+</tr>
+<tr>
+<td style="text-align:center">api_server</td>
+<td style="text-align:center">api-na.geetest.com(选填)</td>
+</tr>
+<tr>
+<td style="text-align:center">pageurl</td>
+<td style="text-align:center">滑动验证码所在的网页地址</td>
+</tr>
+</tbody>
+</table>
+<p>这里解释下关于 <code>gt</code> 与 <code>challenge</code> 这两个参数的获取。</p>
+<p>第一个请求中这两个参数其中 <code>gt</code>这个参数是固定的，找一个使用某验的网站就可以获取。例如：</p>
+<p><img src="http://tc.xianyucoder.cn/blog20200104234230.png" alt></p>
+<p><code>challenge</code>这个参数是有一个 Get 请求返回，你找到这个请求之后按照请求重新获取一次，如果是 XHR 的话也可以直接 reply XHR 。</p>
+<p><img src="http://tc.xianyucoder.cn/blog20200104235425.png" alt></p>
+<p>提交完第一个请求之后，会返回类似下面的结果。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">OK|<span class="number">2122988149</span> <span class="keyword">or</span> <span class="keyword">as</span> JSON &#123;<span class="string">"status"</span>:<span class="number">1</span>,<span class="string">"request"</span>:<span class="string">"2122988149"</span>&#125;</span><br></pre></td></tr></table></figure>
+<p>这里面的一串数字就是会话 ID。</p>
+<p>有了这个会话 ID 之后我们就可以构建下一个请求了，这中间需要等待一些时间。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">https://<span class="number">2</span>captcha.com/res.php</span><br><span class="line">?key=API KEY</span><br><span class="line">&amp;action=get</span><br><span class="line">&amp;id=<span class="number">2122988149</span></span><br></pre></td></tr></table></figure>
+<p>参数列表：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数介绍</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">key</td>
+<td style="text-align:center">API KEY</td>
+</tr>
+<tr>
+<td style="text-align:center">action</td>
+<td style="text-align:center">Get</td>
+</tr>
+<tr>
+<td style="text-align:center">id</td>
+<td style="text-align:center">上一个请求返回的会话ID</td>
+</tr>
+</tbody>
+</table>
+<p>这个请求返回的结果就是我们需要的加密参数了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">      <span class="string">"challenge"</span>:<span class="string">"1a2b3456cd67890e12345fab678901c2de"</span>,</span><br><span class="line">      <span class="string">"validate"</span>:<span class="string">"09fe8d7c6ba54f32e1dcb0a9fedc8765"</span>,</span><br><span class="line">      <span class="string">"seccode"</span>:<span class="string">"12fe3d4c56789ba01f2e345d6789c012|jordan"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>常见的几类验证码，已经全部介绍完了。</p>
+<p>肯定有有人问像 google 家的 ReCaptcha 以及和他相似的 hCaptcha 的解决方案没有提到啊？</p>
+<p>像以上两类验证码，刚刚提到的服务商也同样有提供接口打码，至于其他的解决方案，目前咸鱼还没有接触过，毕竟这两类验证码，咸鱼手动点击都没办法做到一次通过，目前也只能依赖服务商了。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/wechatsubscriber.jpg" alt="煌金 wechat" style="width: auto; height:250px; max-width: 100%;">
+    <div>扫描关注公众号,回复「1024」获取为你准备的特别推送~</div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="煌金 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="煌金 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    煌金  |  微信公众号【咸鱼学Python】
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://www.xianyucoder.cn/2020/01/08/总结几种验证码的解决方案/" title="怼就完事了，总结几种验证码的解决方案">http://www.xianyucoder.cn/2020/01/08/总结几种验证码的解决方案/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用  许可协议。转载请注明出处！
+  </li>
+  <li class="post-copyright-license">
+    并保留本声明和上方二维码。感谢您的阅读和支持！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/验证码/" rel="tag"># 验证码</a>
+          
+            <a href="/tags/TensorFlow/" rel="tag"># TensorFlow</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/09/17/每日JS-裁判文书网-190902版/" rel="next" title="JS逆向-裁判文书网加密分析20190902版">
+                <i class="fa fa-chevron-left"></i> JS逆向-裁判文书网加密分析20190902版
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/02/28/解锁服务器的新姿势/" rel="prev" title="解锁服务器新姿势">
+                解锁服务器新姿势 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.gif" alt="煌金">
+            
+              <p class="site-author-name" itemprop="name">煌金</p>
+              <p class="site-description motion-element" itemprop="description">Stay Hungry, Stay Foolish.</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">97</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">12</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">83</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/xianyucoder" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:daihuangj@gmail.com" target="_blank" title="E-Mail"><i class="fa fa-fw fa-E-Mail"></i>E-Mail</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#图形验证码"><span class="nav-number">1.</span> <span class="nav-text">图形验证码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#旋转验证码"><span class="nav-number">2.</span> <span class="nav-text">旋转验证码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#滑动验证码"><span class="nav-number">3.</span> <span class="nav-text">滑动验证码</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#selenium-模拟滑动"><span class="nav-number">3.1.</span> <span class="nav-text">selenium 模拟滑动</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Js-破解关键的参数"><span class="nav-number">3.2.</span> <span class="nav-text">Js 破解关键的参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用现有的服务"><span class="nav-number">3.3.</span> <span class="nav-text">使用现有的服务</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">煌金</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+    <span title="站点总字数">245k</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+    <span title="站点阅读时长">6:48</span>
+  
+</div>
+
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Gemini</a> v6.3.0</div>
+
+
+<div>
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<span id="busuanzi_container_site_pv" style="display:none">
+    本站总访问量 <span id="busuanzi_value_site_pv"></span> 次
+    <span class="post-meta-divider">|</span>
+</span>
+<span id="busuanzi_container_site_uv" style="display:none">
+    有<span id="busuanzi_value_site_uv"></span>人看过我的博客啦
+</span>
+</div>
+
+<div class="BbeiAn-info" ">
+  闽ICP备 -
+  <a href="http://fj.beian.miit.gov.cn/">19017235号</a>
+  
+</div>
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.3.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.3.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.3.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.3.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.3.0"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  
+  
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(function (item) {
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'TplsQ6G4eWnyg2kG4AVS2oAP-gzGzoHsz',
+        appKey: 'tmkt1Xqzl6hUoFcY059IjfYz',
+        placeholder: '请在此输入您的留言',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

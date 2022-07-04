@@ -1,0 +1,1695 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="google-site-verification" content="e18gWCtevM12uoJ7Xy4CxJtI8ZUBaKRT-GnJT7aDIbk">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.3.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.3.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.3.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.3.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="mongoDB的优势 易扩展 大数据量,高性能 灵活的数据模型###安装与启动安装mongodb：sudo apt-get install -y mongodb-org  安装可视化管理界面：https://robomongo.org/download 查看帮助：mongod –help 启动服务：sudo service mongod start 停止服务：sudo service mongod">
+<meta name="keywords" content="Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python与MongoDB交互">
+<meta property="og:url" content="http://www.xianyucoder.cn/2018/12/19/database-mongo/index.html">
+<meta property="og:site_name" content="咸鱼自我满足的日常">
+<meta property="og:description" content="mongoDB的优势 易扩展 大数据量,高性能 灵活的数据模型###安装与启动安装mongodb：sudo apt-get install -y mongodb-org  安装可视化管理界面：https://robomongo.org/download 查看帮助：mongod –help 启动服务：sudo service mongod start 停止服务：sudo service mongod">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-08-22T07:38:02.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python与MongoDB交互">
+<meta name="twitter:description" content="mongoDB的优势 易扩展 大数据量,高性能 灵活的数据模型###安装与启动安装mongodb：sudo apt-get install -y mongodb-org  安装可视化管理界面：https://robomongo.org/download 查看帮助：mongod –help 启动服务：sudo service mongod start 停止服务：sudo service mongod">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="咸鱼自我满足的日常" type="application/atom+xml">
+
+
+
+
+  <link rel="canonical" href="http://www.xianyucoder.cn/2018/12/19/database-mongo/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Python与MongoDB交互 | 咸鱼自我满足的日常</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">咸鱼自我满足的日常</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">You See See You, One Day Day.</p>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-sitemap">
+    <a href="/sitemap.xml" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>站点地图</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-commonweal">
+    <a href="/404/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>公益 404</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2018/12/19/database-mongo/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="煌金">
+      <meta itemprop="description" content="Stay Hungry, Stay Foolish.">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="咸鱼自我满足的日常">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Python与MongoDB交互
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-12-19 08:39:35" itemprop="dateCreated datePublished" datetime="2018-12-19T08:39:35+08:00">2018-12-19</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-08-22 15:38:02" itemprop="dateModified" datetime="2019-08-22T15:38:02+08:00">2019-08-22</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/12/19/database-mongo/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2018/12/19/database-mongo/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+		  
+		  
+			<span class="post-meta-divider">|</span>
+			<span id="busuanzi_value_page_pv"></span>次阅读
+		  
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">40k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">1:07</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="mongoDB的优势"><a href="#mongoDB的优势" class="headerlink" title="mongoDB的优势"></a>mongoDB的优势</h4><ul>
+<li>易扩展</li>
+<li>大数据量,高性能</li>
+<li>灵活的数据模型<br>###安装与启动<br>安装mongodb：<code>sudo apt-get install -y mongodb-org</code></li>
+</ul>
+<p>安装可视化管理界面：<code>https://robomongo.org/download</code></p>
+<p>查看帮助：<code>mongod –help</code></p>
+<p>启动服务：<code>sudo service mongod start</code></p>
+<p>停止服务：<code>sudo service mongod stop</code></p>
+<p>重启服务：<code>sudo service mongod restart</code></p>
+<p>查看进程：<code>ps ajx|grep mongod</code></p>
+<p>配置文件的位置：<code>/etc/mongod.conf</code></p>
+<p>默认端口：27017</p>
+<p>日志的位置：<code>/var/log/mongodb/mongod.log</code><br><a id="more"></a></p>
+<h4 id="mongodb数据库操作"><a href="#mongodb数据库操作" class="headerlink" title="mongodb数据库操作"></a>mongodb数据库操作</h4><h4 id="数据库操作"><a href="#数据库操作" class="headerlink" title="数据库操作"></a>数据库操作</h4><p>查看当前的数据库：<code>db</code></p>
+<p>查看所有的数据库：<code>show dbs  /show databases</code></p>
+<p>切换数据库：<code>use db_name</code></p>
+<p>删除当前的数据库：<code>db.dropDatabase()</code></p>
+<h4 id="集合操作"><a href="#集合操作" class="headerlink" title="集合操作"></a>集合操作</h4><p>当集合不存在时，插入任何一条数据集合自动创建。</p>
+<p>或者手动创建集合：<code>db.createCollection(name,[options])</code></p>
+<p>其中options：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">参数capped： 默认值为false表示不设置上限,值为true表示设置上限</span><br><span class="line">参数size： 当capped值为true时,需要指定此参数,表示上限大小,当文档达到上限时,会将之前的数据覆盖,单位为字节</span><br></pre></td></tr></table></figure></p>
+<p>当集合存在时：</p>
+<p>查看集合：<code>show collections</code></p>
+<p>删除集合：<code>db.集合名称.drop()</code></p>
+<h4 id="mongodb数据类型"><a href="#mongodb数据类型" class="headerlink" title="mongodb数据类型"></a>mongodb数据类型</h4><p>Object ID：<code>文档ID</code></p>
+<p>String： <code>字符串,最常使用,必须是有效的UTF-8</code></p>
+<p>Boolean： <code>存储一个布尔值,true或false</code></p>
+<p>Integer： <code>整数可以是32位或64位,这取决于服务器</code></p>
+<p>Double： <code>存储浮点值</code></p>
+<p>Arrays： <code>数组或列表， 多个值存储到一个键</code></p>
+<p>Object： <code>用于嵌入式的文档， 即一个值为一个文档</code></p>
+<p>Null： <code>存储Null值</code></p>
+<p>Timestamp： <code>时间戳,表示从1970-1-1到现在的总秒数</code></p>
+<p>Date： <code>存储当前日期或时间的UNIX时间格式</code></p>
+<p>注意点：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">创建日期语句如下 ：参数的格式为YYYY-MM-DD</span><br><span class="line">                new Date(&apos;2017-12-20&apos;)</span><br><span class="line"></span><br><span class="line">每个文档都有一个属性,为_id,保证每个文档的唯一性</span><br><span class="line">可以自己去设置_id插入文档,如果没有提供,那么MongoDB为每个⽂档提供了一个独特的_id,类型为objectID</span><br><span class="line"></span><br><span class="line">objectID是一个12字节的十六进制数：</span><br><span class="line">    前4个字节为当前时间戳</span><br><span class="line">    接下来3个字节的机器ID</span><br><span class="line">    接下来的2个字节中MongoDB的服务进程id</span><br><span class="line">    最后3个字节是简单的增量值</span><br></pre></td></tr></table></figure></p>
+<h4 id="mongodb数据操作"><a href="#mongodb数据操作" class="headerlink" title="mongodb数据操作"></a>mongodb数据操作</h4><h4 id="新增"><a href="#新增" class="headerlink" title="新增"></a>新增</h4><p>插入数据(字段_id存在就报错)：<code>db.集合名称.insert(document)</code></p>
+<p>插入数据(字段_id存在就更新)：<code>db.集合名称.save(document)</code></p>
+<p>举个栗子：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#插入文档时,如果不指定_id参数,MongoDB会为文档分配一个唯一的ObjectId</span></span><br><span class="line">db.xianyu.insert(&#123;name:<span class="string">"xianyuplus"</span>,age:<span class="string">"3"</span>&#125;)</span><br><span class="line"><span class="comment">#插入文档时,可以指定_id参数</span></span><br><span class="line">db.xianyu.insert(&#123;_id:<span class="string">"10001"</span>,name:<span class="string">"xianyuplus"</span>,age:<span class="string">"30"</span>&#125;)</span><br><span class="line"><span class="comment">#更新了上面_id为1001的文档</span></span><br><span class="line">db.xianyu.save(&#123;_id:<span class="string">"10001"</span>,name:<span class="string">"xianyuplus"</span>,age:<span class="string">"40"</span>&#125;)</span><br></pre></td></tr></table></figure></p>
+<h4 id="查询"><a href="#查询" class="headerlink" title="查询"></a>查询</h4><p>查询数据：<code>db.集合名称.find()</code></p>
+<p>举个栗子：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.xianyu.find()</span><br></pre></td></tr></table></figure></p>
+<h4 id="更新"><a href="#更新" class="headerlink" title="更新"></a>更新</h4><p>更新数据：<code>db.集合名称.update(&lt;query&gt; ,&lt;update&gt;,{multi: &lt;boolean&gt;})</code><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">参数query:查询条件</span><br><span class="line">参数update:更新操作符</span><br><span class="line">参数multi:可选,默认是false,表示只更新找到的第一条记录,值为true表示把满足条件的文档全部更新</span><br></pre></td></tr></table></figure></p>
+<p>举个栗子：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">原有内容：</span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">"_id"</span> : ObjectId(<span class="string">"5b66f05f1194e110103bc283"</span>),</span><br><span class="line">    <span class="string">"name"</span>: <span class="string">"xianyuplus"</span>,</span><br><span class="line">    <span class="string">"age"</span>: <span class="string">"40"</span></span><br><span class="line">    &#125;</span><br><span class="line"><span class="comment"># 将name为xianyuplus的值替换为xianyuplus1</span></span><br><span class="line">db.xianyu.update(&#123;name:<span class="string">"xianyuplus"</span>&#125;,&#123;name:<span class="string">"xianyuplus1"</span>&#125;)</span><br><span class="line"></span><br><span class="line">操作后内容：</span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">"_id"</span> : ObjectId(<span class="string">"5b66f05f1194e110103bc283"</span>),</span><br><span class="line">    <span class="string">"name"</span>: <span class="string">"xianyuplus1"</span></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>可以看到单单使用<code>update</code>更新数据会导致原有数据被新数据替换，所以我们应该搭配<code>$set</code>使用,指定更新对应的键值。<br>举个栗子：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">原有内容：</span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">"_id"</span> : ObjectId(<span class="string">"5b66f05f1194e110103bc283"</span>),</span><br><span class="line">    <span class="string">"name"</span>: <span class="string">"xianyuplus"</span>,</span><br><span class="line">    <span class="string">"age"</span>: <span class="string">"40"</span></span><br><span class="line">    &#125;</span><br><span class="line"><span class="comment"># 将name为xianyuplus的值更新为xianyuplus1</span></span><br><span class="line">db.xianyu.update(&#123;name:<span class="string">"xianyuplus"</span>&#125;,&#123;$set:&#123;name:<span class="string">"xianyuplus1"</span>&#125;&#125;)</span><br><span class="line"></span><br><span class="line">操作后内容：</span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">"_id"</span> : ObjectId(<span class="string">"5b66f05f1194e110103bc283"</span>),</span><br><span class="line">    <span class="string">"name"</span>: <span class="string">"xianyuplus1"</span>,</span><br><span class="line">    <span class="string">"age"</span>: <span class="string">"40"</span></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>更新多条数据：<code>使用参数multi:true</code></p>
+<p>举个栗子：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 更新全部数据的name值为xianyuplus1</span></span><br><span class="line">db.stu.update(&#123;&#125;,&#123;$set:&#123;name:<span class="string">"xianyuplus1"</span>&#125;&#125;,&#123;multi:true&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>注意：<code>multi update only works with $ operators</code> 即<code>multi</code>只要和<code>$</code>搭配使用时才能起效。</p>
+<h4 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h4><p>删除数据：<code>db.集合名称.remove(&lt;query&gt;,{justOne: &lt;boolean&gt;})</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">参数query:可选,删除的文档的条件</span><br><span class="line">参数justOne:可选,如果设为true或<span class="number">1</span>,则只删除一条,默认fals,表示删除多条</span><br></pre></td></tr></table></figure>
+<p>举个栗子：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 把name值为xianyuplus的数据全部删掉</span></span><br><span class="line">db.xianyu.remove(&#123;name:<span class="string">"xianyuplus"</span>&#125;)</span><br></pre></td></tr></table></figure></p>
+<h4 id="mongodb高级查询"><a href="#mongodb高级查询" class="headerlink" title="mongodb高级查询"></a>mongodb高级查询</h4><h4 id="mongodb查询方法"><a href="#mongodb查询方法" class="headerlink" title="mongodb查询方法"></a>mongodb查询方法</h4><p>查询文档：<code>db.集合名称.find({条件文档})</code></p>
+<p>查询一条数据:<code>db.集合名称.findOne({条件文档})</code></p>
+<p>格式化查询：<code>db.集合名称.find({条件文档}).pretty()</code></p>
+<p>举个栗子：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查询name为xianyuplus的数据</span></span><br><span class="line">db.xianyu.find(&#123;name:<span class="string">"xianyuplus"</span>&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查询一条name为xianyuplus的数据</span></span><br><span class="line">db.xianyu.findOne(&#123;name:<span class="string">"xianyuplus"</span>&#125;)</span><br></pre></td></tr></table></figure></p>
+<h4 id="mongodb的比较运算符"><a href="#mongodb的比较运算符" class="headerlink" title="mongodb的比较运算符"></a>mongodb的比较运算符</h4><p>等于：如上述栗子</p>
+<p>大于：<code>$gt</code> ( greater than )</p>
+<p>大于等于：<code>$gte</code> ( greater than equal )</p>
+<p>小于：<code>$lt</code> ( less than )</p>
+<p>小于等于：<code>$lte</code> ( less than equal )</p>
+<p>不等于：<code>$nt</code> ( not equal )</p>
+<p>举个栗子：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查询age大于20的数据</span></span><br><span class="line">db.xianyu.find(&#123;age:&#123;$gt:<span class="number">20</span>&#125;&#125;)</span><br><span class="line"><span class="comment"># 查询age大于等于20的数据</span></span><br><span class="line">db.xianyu.find(&#123;age:&#123;$gte:<span class="number">20</span>&#125;&#125;)</span><br><span class="line"><span class="comment"># 查询age小于20的数据</span></span><br><span class="line">db.xianyu.find(&#123;age:&#123;$lt:<span class="number">20</span>&#125;&#125;)</span><br><span class="line"><span class="comment"># 查询age小于等于20的数据</span></span><br><span class="line">db.xianyu.find(&#123;age:&#123;$lte:<span class="number">20</span>&#125;&#125;)</span><br><span class="line"><span class="comment"># 查询age不等于20的数据</span></span><br><span class="line">db.xianyu.find(&#123;age:&#123;$ne:<span class="number">20</span>&#125;&#125;)</span><br></pre></td></tr></table></figure></p>
+<h4 id="mongodb逻辑运算符"><a href="#mongodb逻辑运算符" class="headerlink" title="mongodb逻辑运算符"></a>mongodb逻辑运算符</h4><p>and：在find条件文档中写入多个字段条件即可</p>
+<p>or：使用<code>$or</code></p>
+<p>举个栗子：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#查找name为xianyuplus且age为20的数据</span></span><br><span class="line">db.xianyu.find(&#123;name:<span class="string">"xianyuplus"</span>,age:<span class="number">20</span>&#125;)</span><br><span class="line"><span class="comment">#查找name为xianyuplus或age为20的数据</span></span><br><span class="line">db.xianyu.find(&#123;$<span class="keyword">or</span>:[&#123;name:<span class="string">"xianyuplus"</span>&#125;,&#123;age:<span class="number">20</span>&#125;]&#125;)</span><br><span class="line"><span class="comment">#查找name为xianyuplus或age大于20的数据</span></span><br><span class="line">db.xianyu.find(&#123;$<span class="keyword">or</span>:[&#123;age:&#123;$gt:<span class="number">20</span>&#125;&#125;,&#123;name:<span class="string">"xianyuplus"</span>&#125;]&#125;)</span><br><span class="line"><span class="comment">#查找age大于等于20或gender为男并且name为xianyuplus的数据</span></span><br><span class="line">db.xianyu.find(&#123;$<span class="keyword">or</span>:[&#123;gender:<span class="string">"true"</span>&#125;,&#123;age:&#123;$gte:<span class="number">18</span>&#125;&#125;],name:<span class="string">"xianyuplus"</span>&#125;)</span><br></pre></td></tr></table></figure></p>
+<h4 id="mongodb范围运算符"><a href="#mongodb范围运算符" class="headerlink" title="mongodb范围运算符"></a>mongodb范围运算符</h4><p>使用<code>$in</code>与<code>$nin</code>判断是否在某一范围内</p>
+<p>举个栗子：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#查询年龄为18、28的数据</span></span><br><span class="line">db.xianyu.find(&#123;age:&#123;$<span class="keyword">in</span>:[]<span class="number">18</span>,<span class="number">28</span>&#125;&#125;)</span><br></pre></td></tr></table></figure></p>
+<h4 id="mongodb使用正则表达式"><a href="#mongodb使用正则表达式" class="headerlink" title="mongodb使用正则表达式"></a>mongodb使用正则表达式</h4><p>使用<code>//</code>或<code>$regex</code>编写正则表达式</p>
+<p>举个栗子：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查询name以xian开头的数据</span></span><br><span class="line">db.xianyu.find(&#123;name:/^xianyu/&#125;)</span><br><span class="line">db.xianyu.find(&#123;name:&#123;$regex:<span class="string">'^xianyu'</span>&#125;&#125;)</span><br></pre></td></tr></table></figure></p>
+<h4 id="mongodb分页与跳过"><a href="#mongodb分页与跳过" class="headerlink" title="mongodb分页与跳过"></a>mongodb分页与跳过</h4><p>查询前n条数据：<code>db.集合名称.find().limit(NUMBER)</code></p>
+<p>跳过n条数据：<code>db.集合名称.find().skip(NUMBER)</code></p>
+<p>举个栗子：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#查询前3条数据</span></span><br><span class="line">db.xianyu.find().limit(<span class="number">3</span>)</span><br><span class="line"><span class="comment">#查询3条后的数据</span></span><br><span class="line">db.xianyu.find().skip(<span class="number">3</span>)</span><br><span class="line"><span class="comment">#skip和limit可以搭配使用,查询4,5,6条数据</span></span><br><span class="line">db.xianyu.find().skip(<span class="number">3</span>).limit(<span class="number">3</span>)</span><br></pre></td></tr></table></figure></p>
+<h4 id="mongodb自定义查询"><a href="#mongodb自定义查询" class="headerlink" title="mongodb自定义查询"></a>mongodb自定义查询</h4><p>使用<code>$where</code>自定义查询,这里使用的是js语法</p>
+<p>举个栗子：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//查询age大于30的数据</span></span><br><span class="line">db.xianyu.find(&#123;</span><br><span class="line">    $where:<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.age&gt;<span class="number">30</span>;&#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
+<h4 id="mongodb投影"><a href="#mongodb投影" class="headerlink" title="mongodb投影"></a>mongodb投影</h4><p>投影：在查询结果中只显示你想要看到的数据字段内容。</p>
+<p><code>db.集合名称.find({},{字段名称:1,...})</code></p>
+<p>想显示的字段设置为1,不想显示的字段不设置,而_id这个字段比较特殊,想要他不显示需要设置_id为0。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#查询结果中只显示name字段，不显示age</span></span><br><span class="line">db.xianyu.find(&#123;&#125;,&#123;name:<span class="number">1</span>&#125;)</span><br></pre></td></tr></table></figure>
+<h4 id="mongodb排序"><a href="#mongodb排序" class="headerlink" title="mongodb排序"></a>mongodb排序</h4><p>排序：<code>db.集合名称.find().sort({字段:1,...})</code></p>
+<p>将需要排序的字段设置值：升序为1,降序为-1</p>
+<p>举个栗子：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#先按照性别降序排列再按照年龄升序排列</span></span><br><span class="line">db.xianyu.find().sort(&#123;gender:<span class="number">-1</span>,age:<span class="number">1</span>&#125;)</span><br></pre></td></tr></table></figure></p>
+<h4 id="mongodb计数"><a href="#mongodb计数" class="headerlink" title="mongodb计数"></a>mongodb计数</h4><p>统计数目：<code>db.集合名称.find({条件}).count()</code><br><code>db.集合名称.count({条件})</code></p>
+<p>举个栗子：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#查询age为20的数据个数</span></span><br><span class="line">db.xianyu.find(&#123;age:<span class="number">20</span>&#125;).count()</span><br><span class="line"><span class="comment">#查询age大于20，且性别为nan的数据个数</span></span><br><span class="line">db.xianyu.count(&#123;age:&#123;$gt:<span class="number">20</span>&#125;,gender:true&#125;)</span><br></pre></td></tr></table></figure></p>
+<h4 id="mongodb去重"><a href="#mongodb去重" class="headerlink" title="mongodb去重"></a>mongodb去重</h4><p>去重：<code>db.集合名称.distinct(&#39;去重字段&#39;,{条件})</code></p>
+<p>举个栗子：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#去除家乡相同，且年龄大于18的数据</span></span><br><span class="line">db.xianyu.distinct(<span class="string">'hometown'</span>,&#123;age:&#123;$gt:<span class="number">18</span>&#125;&#125;)</span><br></pre></td></tr></table></figure></p>
+<h4 id="mongodb管道与聚合"><a href="#mongodb管道与聚合" class="headerlink" title="mongodb管道与聚合"></a>mongodb管道与聚合</h4><p>聚合(aggregate)是基于数据处理的聚合管道，每个文档通过一个由多个阶段（stage）组成的管道，可以对每个阶段的管道进行分组、过滤等功能，然后经过一系列的处理，输出相应的结果。</p>
+<p>用法：<code>db.集合名称.aggregate({管道:{表达式}})</code></p>
+<p>常用管道：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$group： 将集合中的文档分组， 可用于统计结果</span><br><span class="line">$match： 过滤数据， 只输出符合条件的文档</span><br><span class="line">$project： 修改输出文档的结构， 如重命名、 增加、 删除字段、 创建计算结果</span><br><span class="line">$sort： 将输出文档排序后输出</span><br><span class="line">$limit： 限制聚合管道返回的文档数</span><br><span class="line">$skip： 跳过指定数量的文档， 并返回余下的文档</span><br><span class="line">$unwind： 将数组类型的字段进行拆分</span><br></pre></td></tr></table></figure></p>
+<p>常用表达式：<code>表达式：&quot;列名&quot;</code><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$sum： 计算总和， $sum:<span class="number">1</span> 表示以一倍计数</span><br><span class="line">$avg： 计算平均值</span><br><span class="line">$min： 获取最小值</span><br><span class="line">$max： 获取最大值</span><br><span class="line">$push： 在结果文档中插入值到一个数组中</span><br><span class="line">$first： 根据资源文档的排序获取第一个文档数据</span><br><span class="line">$last： 根据资源文档的排序获取最后一个文档数据</span><br></pre></td></tr></table></figure></p>
+<h4 id="聚合之-group"><a href="#聚合之-group" class="headerlink" title="聚合之$group"></a>聚合之$group</h4><p>$group:将文档进行分组以便于统计数目</p>
+<p>用法：<code>_id</code>表示分组依据,<code>_id:&quot;$字段名&quot;</code></p>
+<p>举个栗子：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#按照hometown分组，并计数</span></span><br><span class="line">db.xianyu.aggregate(&#123;$group:&#123;_id:<span class="string">"$hometown"</span>, count:&#123;$sum:<span class="number">1</span>&#125;&#125;&#125;)</span><br><span class="line"><span class="comment">#将集合中所有的内容分为一组，统计个数</span></span><br><span class="line">db.xianyu.aggregate(&#123;$group:&#123;_id:null, count:&#123;$sum:<span class="number">1</span>&#125;&#125;&#125;)</span><br></pre></td></tr></table></figure></p>
+<h4 id="聚合之-project"><a href="#聚合之-project" class="headerlink" title="聚合之$project"></a>聚合之$project</h4><p>$project：修改输入文档的结构,如：重命名,增加、删除字段等</p>
+<p>举个栗子：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#按照hometown分组，并计数</span></span><br><span class="line"><span class="comment">#分组输出，只显示count字段</span></span><br><span class="line"> db.xianyu.aggregate(</span><br><span class="line">        &#123;$group:&#123;_id:<span class="string">"$hometown"</span>, count:&#123;$sum:<span class="number">1</span>&#125;&#125;&#125;,</span><br><span class="line">        &#123;$project:&#123;_id:<span class="number">0</span>,count:<span class="number">1</span>&#125;&#125;</span><br><span class="line"> )</span><br></pre></td></tr></table></figure></p>
+<h4 id="聚合之-match"><a href="#聚合之-match" class="headerlink" title="聚合之$match"></a>聚合之$match</h4><p>$match:用于过滤数据,只输出符合条件的文档,功能和find类似,但是match是管道命令，能将结果交给后一个管道，但是find不可以。</p>
+<p>举个栗子：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#查询age大于20</span></span><br><span class="line"><span class="comment">#按照hometown分组，并计数</span></span><br><span class="line"><span class="comment">#分组输出，只显示count字段</span></span><br><span class="line"> db.xianyu.aggregate(</span><br><span class="line">        &#123;$match:&#123;age:&#123;$gte:<span class="number">20</span>&#125;&#125;&#125;,</span><br><span class="line">        &#123;$group:&#123;_id:<span class="string">"$hometown"</span>, count:&#123;$sum:<span class="number">1</span>&#125;&#125;&#125;,</span><br><span class="line">        &#123;$project:&#123;_id:<span class="number">0</span>,count:<span class="number">1</span>&#125;&#125;</span><br><span class="line"> )</span><br></pre></td></tr></table></figure></p>
+<h4 id="聚合之-sort"><a href="#聚合之-sort" class="headerlink" title="聚合之$sort"></a>聚合之$sort</h4><p>$sort:将输入文档排序后输出</p>
+<p>举个栗子:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#查询age大于20</span></span><br><span class="line"><span class="comment">#按照hometown分组，并计数</span></span><br><span class="line"><span class="comment">#分组输出，只显示count字段</span></span><br><span class="line"><span class="comment">#按照计数升序排序</span></span><br><span class="line"> db.xianyu.aggregate(</span><br><span class="line">        &#123;$match:&#123;age:&#123;$gte:<span class="number">20</span>&#125;&#125;&#125;,</span><br><span class="line">        &#123;$group:&#123;_id:<span class="string">"$hometown"</span>, count:&#123;$sum:<span class="number">1</span>&#125;&#125;&#125;,</span><br><span class="line">        &#123;$project:&#123;_id:<span class="number">0</span>,count:<span class="number">1</span>&#125;&#125;,</span><br><span class="line">        &#123;$sort:&#123;count:<span class="number">1</span>&#125;&#125;</span><br><span class="line"> )</span><br></pre></td></tr></table></figure></p>
+<h4 id="聚合之-limit与-skip"><a href="#聚合之-limit与-skip" class="headerlink" title="聚合之$limit与$skip"></a>聚合之$limit与$skip</h4><p>$limit:限制聚合管道返回的文档数</p>
+<p>$skip:跳过指定数量的文档数,返回剩下的文档</p>
+<p>举个栗子：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#查询age大于20</span></span><br><span class="line"><span class="comment">#按照hometown分组，并计数</span></span><br><span class="line"><span class="comment">#按照计数升序排序</span></span><br><span class="line"><span class="comment">#跳过前一个文档,返回第二个</span></span><br><span class="line"> db.xianyu.aggregate(</span><br><span class="line">        &#123;$match:&#123;age:&#123;$gte:<span class="number">20</span>&#125;&#125;&#125;,</span><br><span class="line">        &#123;$group:&#123;_id:<span class="string">"$hometown"</span>, count:&#123;$sum:<span class="number">1</span>&#125;&#125;&#125;,</span><br><span class="line">        &#123;$sort:&#123;count:<span class="number">1</span>&#125;&#125;,</span><br><span class="line">        &#123;$skip:<span class="number">1</span>&#125;,</span><br><span class="line">        &#123;$limit:<span class="number">1</span>&#125;</span><br><span class="line"> )</span><br></pre></td></tr></table></figure></p>
+<h4 id="聚合之-unwind"><a href="#聚合之-unwind" class="headerlink" title="聚合之$unwind"></a>聚合之$unwind</h4><p>$unwind：将文档中的某一个数组类型字段拆分成多条， 每条包含数组中的一个值</p>
+<p><code>db.集合名称.aggregate({$unwind:&#39;$字段名称&#39;})</code></p>
+<p>举个栗子：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">db.xianyu.insert(&#123;_id:<span class="number">1</span>,item:<span class="string">'t-shirt'</span>,size:[<span class="string">'S'</span>,<span class="string">'M'</span>,<span class="string">'L'</span>]&#125;)</span><br><span class="line">db.xianyu.aggregate(&#123;$unwind:<span class="string">'$size'</span>&#125;)</span><br><span class="line">输出：</span><br><span class="line">&#123; <span class="string">"_id"</span> : <span class="number">1</span>, <span class="string">"item"</span> : <span class="string">"t-shirt"</span>, <span class="string">"size"</span> : <span class="string">"S"</span> &#125;</span><br><span class="line">&#123; <span class="string">"_id"</span> : <span class="number">1</span>, <span class="string">"item"</span> : <span class="string">"t-shirt"</span>, <span class="string">"size"</span> : <span class="string">"M"</span> &#125;</span><br><span class="line">&#123; <span class="string">"_id"</span> : <span class="number">1</span>, <span class="string">"item"</span> : <span class="string">"t-shirt"</span>, <span class="string">"size"</span> : <span class="string">"L"</span> &#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="聚合使用注意事项"><a href="#聚合使用注意事项" class="headerlink" title="聚合使用注意事项"></a>聚合使用注意事项</h4><ul>
+<li><code>$group</code>对应的字典中有几个键，结果中就有几个键</li>
+<li>分组依据需要放到<code>_id</code>后面</li>
+<li>取不同的字段的值需要使用$,<code>$gender</code>,<code>$age</code></li>
+<li>取字典嵌套的字典中的值的时候<code>$_id.country</code></li>
+<li>能够同时按照多个键进行分组<br><code>{$group:{_id:{country:&quot;$字段&quot;,province:&quot;$字段&quot;}}}</code><ul>
+<li>结果是：<code>{_id:{country:&quot;&quot;,province:&quot;&quot;}</code></li>
+</ul>
+</li>
+</ul>
+<h4 id="mongodb索引"><a href="#mongodb索引" class="headerlink" title="mongodb索引"></a>mongodb索引</h4><p>用法：<code>db.集合.ensureIndex({属性:1})，1表示升序， -1表示降序</code></p>
+<p>创建唯一索引:<code>db.集合.ensureIndex({&quot;属性&quot;:1},{&quot;unique&quot;:true})</code></p>
+<p>创建唯一索引并消除：<br><code>db.集合.ensureIndex({&quot;属性&quot;:1},{&quot;unique&quot;:true,&quot;dropDups&quot;:true})</code></p>
+<p>建立联合索引：<code>db.集合.ensureIndex({属性:1,age:1})</code></p>
+<p>查看当前集合的所有索引：<code>db.集合.getIndexes()</code></p>
+<p>删除索引：<code>db.集合.dropIndex(&#39;索引名称&#39;)</code></p>
+<h4 id="mongodb数据备份与恢复"><a href="#mongodb数据备份与恢复" class="headerlink" title="mongodb数据备份与恢复"></a>mongodb数据备份与恢复</h4><h4 id="mongodb数据备份"><a href="#mongodb数据备份" class="headerlink" title="mongodb数据备份"></a>mongodb数据备份</h4><p>备份：<code>mongodump -h dbhost -d dbname -o dbdirectory</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-h： 服务器地址,也可以指定端口号</span><br><span class="line">-d： 需要备份的数据库名称</span><br><span class="line">-o： 备份的数据存放位置,此目录中存放着备份出来的数据</span><br></pre></td></tr></table></figure>
+<h4 id="mongodb数据恢复"><a href="#mongodb数据恢复" class="headerlink" title="mongodb数据恢复"></a>mongodb数据恢复</h4><p>恢复：<code>mongorestore -h dbhost -d dbname --dir dbdirectory</code><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-h： 服务器地址</span><br><span class="line">-d： 需要恢复的数据库实例</span><br><span class="line">--dir： 备份数据所在位置</span><br></pre></td></tr></table></figure></p>
+<h4 id="mongodb与python交互"><a href="#mongodb与python交互" class="headerlink" title="mongodb与python交互"></a>mongodb与python交互</h4><h5 id="安装与导入"><a href="#安装与导入" class="headerlink" title="安装与导入"></a>安装与导入</h5><p>安装：<code>pip install pymongo</code></p>
+<p>导入模块：<code>from pymongo import MongoClient</code></p>
+<h4 id="实例化"><a href="#实例化" class="headerlink" title="实例化"></a>实例化</h4><p>实例化对象以链接数据库,连接对象有host,port两个参数。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pymongo <span class="keyword">import</span> MongoClient</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">clientMongo</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">      client = MongoClient(host=<span class="string">"127.0.0.1"</span>, port=<span class="number">27017</span>)</span><br><span class="line">      <span class="comment">#使用[]括号的形式选择数据库和集合</span></span><br><span class="line">      self.cliention = client[<span class="string">"xianyu"</span>][<span class="string">"xianyuplus"</span>]</span><br></pre></td></tr></table></figure></p>
+<h4 id="插入数据"><a href="#插入数据" class="headerlink" title="插入数据"></a>插入数据</h4><p>插入单条数据：返回ObjectId<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">item_inser_one</span><span class="params">(self)</span>:</span></span><br><span class="line">  ret = self.cliention.insert(&#123;<span class="string">"xianyu"</span>:<span class="string">"xianyuplus"</span>,<span class="string">"age"</span>:<span class="number">20</span>&#125;)</span><br><span class="line">  print(ret)</span><br></pre></td></tr></table></figure></p>
+<p>插入多条数据：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">item_insert_many</span><span class="params">(self)</span>:</span></span><br><span class="line">  item_list = [&#123;<span class="string">"name"</span>:<span class="string">"xianyuplus&#123;&#125;"</span>.format(i)&#125; <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">10000</span>)]</span><br><span class="line">  items = self.cliention.insert_many(item_list)</span><br></pre></td></tr></table></figure></p>
+<h4 id="查询数据"><a href="#查询数据" class="headerlink" title="查询数据"></a>查询数据</h4><p>查询单条数据：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">item_find_one</span><span class="params">(self)</span>:</span></span><br><span class="line">  ret = self.cliention.find_one(&#123;<span class="string">"xianyu"</span>:<span class="string">"xianyuplus"</span>&#125;)</span><br><span class="line">  print(ret)</span><br></pre></td></tr></table></figure></p>
+<p>查询多条数据：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">item_find_many</span><span class="params">(self)</span>:</span></span><br><span class="line">  ret = self.cliention.find(&#123;<span class="string">"xianyu"</span>:<span class="string">"xianyuplus"</span>&#125;)</span><br><span class="line">  <span class="keyword">for</span> i <span class="keyword">in</span> ret:</span><br><span class="line">    print(i)</span><br></pre></td></tr></table></figure></p>
+<h4 id="更新数据"><a href="#更新数据" class="headerlink" title="更新数据"></a>更新数据</h4><p>更新一条数据：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">item_update_one</span><span class="params">(self)</span>:</span></span><br><span class="line">  self.cliention.update_one(&#123;<span class="string">"xianyu"</span>:<span class="string">"xianyuplus"</span>&#125;,&#123;<span class="string">"$set"</span>:&#123;<span class="string">"xianyu"</span>:<span class="string">"xianyu"</span>&#125;&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>更新全部数据：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">item_update</span><span class="params">(self)</span>:</span></span><br><span class="line">  self.cliention.update_many(&#123;<span class="string">"xianyu"</span>:<span class="string">"xianyuplus"</span>&#125;,&#123;<span class="string">"$set"</span>:&#123;<span class="string">"xianyu"</span>:<span class="string">"xianyu"</span>&#125;&#125;)</span><br></pre></td></tr></table></figure></p>
+<h4 id="删除数据"><a href="#删除数据" class="headerlink" title="删除数据"></a>删除数据</h4><p>删除一条数据：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">item_delete_one</span><span class="params">(self)</span>:</span></span><br><span class="line">  self.cliention.delete_one(&#123;<span class="string">"xianyu"</span>:<span class="string">"xianyuplus"</span>&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>删除符合条件的数据：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">item_delete_many</span><span class="params">(self)</span>:</span></span><br><span class="line">  self.cliention.delete_many(&#123;<span class="string">"xianyu"</span>:<span class="string">"xianyuplus"</span>&#125;)</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/wechatsubscriber.jpg" alt="煌金 wechat" style="width: auto; height:250px; max-width: 100%;">
+    <div>扫描关注公众号,回复「1024」获取为你准备的特别推送~</div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="煌金 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="煌金 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    煌金  |  微信公众号【咸鱼学Python】
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://www.xianyucoder.cn/2018/12/19/database-mongo/" title="Python与MongoDB交互">http://www.xianyucoder.cn/2018/12/19/database-mongo/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用  许可协议。转载请注明出处！
+  </li>
+  <li class="post-copyright-license">
+    并保留本声明和上方二维码。感谢您的阅读和支持！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/12/19/numpy-shizhan3/" rel="next" title="Numpy实战 - 分析单车数据中用户类别的占比">
+                <i class="fa fa-chevron-left"></i> Numpy实战 - 分析单车数据中用户类别的占比
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/12/29/learn-selenium/" rel="prev" title="Selenium实例学习">
+                Selenium实例学习 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.gif" alt="煌金">
+            
+              <p class="site-author-name" itemprop="name">煌金</p>
+              <p class="site-description motion-element" itemprop="description">Stay Hungry, Stay Foolish.</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">97</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">12</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">83</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/xianyucoder" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:daihuangj@gmail.com" target="_blank" title="E-Mail"><i class="fa fa-fw fa-E-Mail"></i>E-Mail</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#mongoDB的优势"><span class="nav-number">1.</span> <span class="nav-text">mongoDB的优势</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mongodb数据库操作"><span class="nav-number">2.</span> <span class="nav-text">mongodb数据库操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据库操作"><span class="nav-number">3.</span> <span class="nav-text">数据库操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#集合操作"><span class="nav-number">4.</span> <span class="nav-text">集合操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mongodb数据类型"><span class="nav-number">5.</span> <span class="nav-text">mongodb数据类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mongodb数据操作"><span class="nav-number">6.</span> <span class="nav-text">mongodb数据操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#新增"><span class="nav-number">7.</span> <span class="nav-text">新增</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查询"><span class="nav-number">8.</span> <span class="nav-text">查询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新"><span class="nav-number">9.</span> <span class="nav-text">更新</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#删除"><span class="nav-number">10.</span> <span class="nav-text">删除</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mongodb高级查询"><span class="nav-number">11.</span> <span class="nav-text">mongodb高级查询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mongodb查询方法"><span class="nav-number">12.</span> <span class="nav-text">mongodb查询方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mongodb的比较运算符"><span class="nav-number">13.</span> <span class="nav-text">mongodb的比较运算符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mongodb逻辑运算符"><span class="nav-number">14.</span> <span class="nav-text">mongodb逻辑运算符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mongodb范围运算符"><span class="nav-number">15.</span> <span class="nav-text">mongodb范围运算符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mongodb使用正则表达式"><span class="nav-number">16.</span> <span class="nav-text">mongodb使用正则表达式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mongodb分页与跳过"><span class="nav-number">17.</span> <span class="nav-text">mongodb分页与跳过</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mongodb自定义查询"><span class="nav-number">18.</span> <span class="nav-text">mongodb自定义查询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mongodb投影"><span class="nav-number">19.</span> <span class="nav-text">mongodb投影</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mongodb排序"><span class="nav-number">20.</span> <span class="nav-text">mongodb排序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mongodb计数"><span class="nav-number">21.</span> <span class="nav-text">mongodb计数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mongodb去重"><span class="nav-number">22.</span> <span class="nav-text">mongodb去重</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mongodb管道与聚合"><span class="nav-number">23.</span> <span class="nav-text">mongodb管道与聚合</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#聚合之-group"><span class="nav-number">24.</span> <span class="nav-text">聚合之$group</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#聚合之-project"><span class="nav-number">25.</span> <span class="nav-text">聚合之$project</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#聚合之-match"><span class="nav-number">26.</span> <span class="nav-text">聚合之$match</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#聚合之-sort"><span class="nav-number">27.</span> <span class="nav-text">聚合之$sort</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#聚合之-limit与-skip"><span class="nav-number">28.</span> <span class="nav-text">聚合之$limit与$skip</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#聚合之-unwind"><span class="nav-number">29.</span> <span class="nav-text">聚合之$unwind</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#聚合使用注意事项"><span class="nav-number">30.</span> <span class="nav-text">聚合使用注意事项</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mongodb索引"><span class="nav-number">31.</span> <span class="nav-text">mongodb索引</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mongodb数据备份与恢复"><span class="nav-number">32.</span> <span class="nav-text">mongodb数据备份与恢复</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mongodb数据备份"><span class="nav-number">33.</span> <span class="nav-text">mongodb数据备份</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mongodb数据恢复"><span class="nav-number">34.</span> <span class="nav-text">mongodb数据恢复</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mongodb与python交互"><span class="nav-number">35.</span> <span class="nav-text">mongodb与python交互</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#安装与导入"><span class="nav-number">35.1.</span> <span class="nav-text">安装与导入</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实例化"><span class="nav-number">36.</span> <span class="nav-text">实例化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#插入数据"><span class="nav-number">37.</span> <span class="nav-text">插入数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查询数据"><span class="nav-number">38.</span> <span class="nav-text">查询数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新数据"><span class="nav-number">39.</span> <span class="nav-text">更新数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#删除数据"><span class="nav-number">40.</span> <span class="nav-text">删除数据</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">煌金</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+    <span title="站点总字数">245k</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+    <span title="站点阅读时长">6:48</span>
+  
+</div>
+
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Gemini</a> v6.3.0</div>
+
+
+<div>
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<span id="busuanzi_container_site_pv" style="display:none">
+    本站总访问量 <span id="busuanzi_value_site_pv"></span> 次
+    <span class="post-meta-divider">|</span>
+</span>
+<span id="busuanzi_container_site_uv" style="display:none">
+    有<span id="busuanzi_value_site_uv"></span>人看过我的博客啦
+</span>
+</div>
+
+<div class="BbeiAn-info" ">
+  闽ICP备 -
+  <a href="http://fj.beian.miit.gov.cn/">19017235号</a>
+  
+</div>
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.3.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.3.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.3.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.3.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.3.0"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  
+  
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(function (item) {
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'TplsQ6G4eWnyg2kG4AVS2oAP-gzGzoHsz',
+        appKey: 'tmkt1Xqzl6hUoFcY059IjfYz',
+        placeholder: '请在此输入您的留言',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

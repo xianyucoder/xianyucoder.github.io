@@ -1,0 +1,1655 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="google-site-verification" content="e18gWCtevM12uoJ7Xy4CxJtI8ZUBaKRT-GnJT7aDIbk">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.3.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.3.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.3.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.3.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="讲在前面本篇旨在简单总结js与Python加密的一些例子,文中演示的案例也是面向新手,如果有大佬很碰巧看到这篇文章,欢迎加我交流,咸鱼愿意付费学习。 常用的加密有哪些？ 对称加密（加密解密密钥相同）：DES、DES3、AES 非对称加密（分公钥私钥）：RSA 信息摘要算法/签名算法：MD5、HMAC、SHA  学习资源推荐冷月大佬的博客:https://lengyue.me/ 突破前端反调试–阻止">
+<meta name="keywords" content="js逆向,基础,DES,BASE64">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JS逆向-基础-DES加密与Base64编码实例">
+<meta property="og:url" content="http://www.xianyucoder.cn/2019/06/16/js加密学习01-des与base64/index.html">
+<meta property="og:site_name" content="咸鱼自我满足的日常">
+<meta property="og:description" content="讲在前面本篇旨在简单总结js与Python加密的一些例子,文中演示的案例也是面向新手,如果有大佬很碰巧看到这篇文章,欢迎加我交流,咸鱼愿意付费学习。 常用的加密有哪些？ 对称加密（加密解密密钥相同）：DES、DES3、AES 非对称加密（分公钥私钥）：RSA 信息摘要算法/签名算法：MD5、HMAC、SHA  学习资源推荐冷月大佬的博客:https://lengyue.me/ 突破前端反调试–阻止">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://ws1.sinaimg.cn/mw690/005MnFO1gy1g2g2dbnp9mj327u0rr15e.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/mw690/005MnFO1gy1g2g2quojigj311o0hwq7f.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/mw690/005MnFO1gy1g2g2uj0o71j310i068di8.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/mw690/005MnFO1gy1g2g2winjhcj30zs0aiq56.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/mw690/005MnFO1gy1g2g3dr0lf5j313c09aq4x.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/mw690/005MnFO1gy1g2g5zjze0zj30ze0kw79n.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/mw690/005MnFO1gy1g2g65ed94ej30zk05i40q.jpg">
+<meta property="og:updated_time" content="2019-09-30T02:12:26.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JS逆向-基础-DES加密与Base64编码实例">
+<meta name="twitter:description" content="讲在前面本篇旨在简单总结js与Python加密的一些例子,文中演示的案例也是面向新手,如果有大佬很碰巧看到这篇文章,欢迎加我交流,咸鱼愿意付费学习。 常用的加密有哪些？ 对称加密（加密解密密钥相同）：DES、DES3、AES 非对称加密（分公钥私钥）：RSA 信息摘要算法/签名算法：MD5、HMAC、SHA  学习资源推荐冷月大佬的博客:https://lengyue.me/ 突破前端反调试–阻止">
+<meta name="twitter:image" content="https://ws1.sinaimg.cn/mw690/005MnFO1gy1g2g2dbnp9mj327u0rr15e.jpg">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="咸鱼自我满足的日常" type="application/atom+xml">
+
+
+
+
+  <link rel="canonical" href="http://www.xianyucoder.cn/2019/06/16/js加密学习01-des与base64/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>JS逆向-基础-DES加密与Base64编码实例 | 咸鱼自我满足的日常</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">咸鱼自我满足的日常</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">You See See You, One Day Day.</p>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-sitemap">
+    <a href="/sitemap.xml" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>站点地图</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-commonweal">
+    <a href="/404/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>公益 404</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2019/06/16/js加密学习01-des与base64/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="煌金">
+      <meta itemprop="description" content="Stay Hungry, Stay Foolish.">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="咸鱼自我满足的日常">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">JS逆向-基础-DES加密与Base64编码实例
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-06-16 18:39:35" itemprop="dateCreated datePublished" datetime="2019-06-16T18:39:35+08:00">2019-06-16</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-09-30 10:12:26" itemprop="dateModified" datetime="2019-09-30T10:12:26+08:00">2019-09-30</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/js逆向/" itemprop="url" rel="index"><span itemprop="name">js逆向</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/06/16/js加密学习01-des与base64/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2019/06/16/js加密学习01-des与base64/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+		  
+		  
+			<span class="post-meta-divider">|</span>
+			<span id="busuanzi_value_page_pv"></span>次阅读
+		  
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">36k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">1:01</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="讲在前面"><a href="#讲在前面" class="headerlink" title="讲在前面"></a>讲在前面</h4><p>本篇旨在简单总结js与Python加密的一些例子,文中演示的案例也是面向新手,如果有大佬很碰巧看到这篇文章,欢迎加我交流,咸鱼愿意付费学习。</p>
+<h4 id="常用的加密有哪些？"><a href="#常用的加密有哪些？" class="headerlink" title="常用的加密有哪些？"></a>常用的加密有哪些？</h4><ul>
+<li>对称加密（加密解密密钥相同）：DES、DES3、AES</li>
+<li>非对称加密（分公钥私钥）：RSA</li>
+<li>信息摘要算法/签名算法：MD5、HMAC、SHA</li>
+</ul>
+<h4 id="学习资源推荐"><a href="#学习资源推荐" class="headerlink" title="学习资源推荐"></a>学习资源推荐</h4><p>冷月大佬的博客:<a href="https://lengyue.me/" target="_blank" rel="noopener">https://lengyue.me/</a></p>
+<p>突破前端反调试–阻止页面不断debugger:<a href="https://segmentfault.com/a/1190000012359015" target="_blank" rel="noopener">https://segmentfault.com/a/1190000012359015</a></p>
+<p>岚光的JavaScript反调试和混淆:<a href="https://0x0d.im/archives/javascript-anti-debug-and-obfuscator.html" target="_blank" rel="noopener">https://0x0d.im/archives/javascript-anti-debug-and-obfuscator.html</a></p>
+<h4 id="常用调试流程"><a href="#常用调试流程" class="headerlink" title="常用调试流程"></a>常用调试流程</h4><p>以下是可以参考的调试流程(面向新手):</p>
+<ol>
+<li>如果网页有跳转，必须勾选 preservelog 防止丢包</li>
+<li>看一下有没有框架 右键查看框架源代码(弹出式登陆界面)</li>
+<li>登陆尽量使用错误密码 防止跳转</li>
+<li>查看关键登陆包 分析哪些参数是加密的</li>
+<li>使用别的浏览器分析哪些参数是固定的值</li>
+<li>初步猜测加密方法</li>
+<li>搜索<ul>
+<li>直接搜索参数<ul>
+<li>pwd=</li>
+<li>pwd =</li>
+<li>pwd:</li>
+<li>pwd :</li>
+<li>密码框地方右键 检查 查看 id name type</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>找到加密的地方(重点)</li>
+<li>调试</li>
+<li><p>找出所有的加密代码</p>
+<ul>
+<li>从最后一步开始写起，缺啥找啥<ul>
+<li>如果找的是函数的话 search 要带上 function xxx</li>
+<li>如果看到加密的地方有个类，并且之后是用 prototype 把方法加在原生对象上的话，要把<br>所有加在原生对象上的方法都找出来</li>
+<li>函数找多了没关系，只要不报错不会影响结果，但是不能找少了</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h4 id="DES加密"><a href="#DES加密" class="headerlink" title="DES加密"></a>DES加密</h4><h5 id="js调试实战案例"><a href="#js调试实战案例" class="headerlink" title="js调试实战案例"></a>js调试实战案例</h5><ul>
+<li>为了避免被删文,所以这里就不说是哪个网站了,有需要可私信</li>
+<li>我们先参照上面的调试流程抓包,搜索加密参数’password’,经过测试通过’password=’这关键字找到了加密所在的js。</li>
+</ul>
+<p><img src="https://ws1.sinaimg.cn/mw690/005MnFO1gy1g2g2dbnp9mj327u0rr15e.jpg" alt></p>
+<ul>
+<li>经过测试(步骤7)在文件内搜索’password:’找到加密位置,并通过断点确认了猜测。</li>
+</ul>
+<p><img src="https://ws1.sinaimg.cn/mw690/005MnFO1gy1g2g2quojigj311o0hwq7f.jpg" alt></p>
+<p><img src="https://ws1.sinaimg.cn/mw690/005MnFO1gy1g2g2uj0o71j310i068di8.jpg" alt></p>
+<ul>
+<li>通过点击提示的路径,我们找到以下代码:</li>
+</ul>
+<p><img src="https://ws1.sinaimg.cn/mw690/005MnFO1gy1g2g2winjhcj30zs0aiq56.jpg" alt></p>
+<ul>
+<li><p>找到这里就可以把需要的js代码扣出来,然后一步步调试了,通过补齐缺失的代码,得到以下js加密代码并运行:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>输出运行结果’+g64648uhmWlN9eoU3Tszw==’,与我们抓包的结果相同。</p>
+</li>
+</ul>
+<p><img src="https://ws1.sinaimg.cn/mw690/005MnFO1gy1g2g3dr0lf5j313c09aq4x.jpg" alt></p>
+<h4 id="Base64编码"><a href="#Base64编码" class="headerlink" title="Base64编码"></a>Base64编码</h4><h5 id="js调试实战案例-1"><a href="#js调试实战案例-1" class="headerlink" title="js调试实战案例"></a>js调试实战案例</h5><ul>
+<li>同样参照上面的调试流程,搜索加密参数’encodePassword’,经过测试通过’encodePassword =’这关键字找到了加密所在的js,并通过断点验证</li>
+</ul>
+<p><img src="https://ws1.sinaimg.cn/mw690/005MnFO1gy1g2g5zjze0zj30ze0kw79n.jpg" alt></p>
+<ul>
+<li>找到关键加密位置后,查看加密的js文件,直接复制出来即可</li>
+</ul>
+<p><img src="https://ws1.sinaimg.cn/mw690/005MnFO1gy1g2g65ed94ej30zk05i40q.jpg" alt></p>
+<ul>
+<li>base64编码比较简单,直接复制补上我们的密码,输出的就是编码后的字段了</li>
+</ul>
+<h4 id="Python实现加密方法合集"><a href="#Python实现加密方法合集" class="headerlink" title="Python实现加密方法合集"></a>Python实现加密方法合集</h4><p>这里给大家推荐一个大佬写的代码(我就不献丑了),记得给大佬来个star<br>GitHub地址:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br></pre></td><td class="code"><pre><span class="line">https://github.com/dhfjcuff/R-A-M-D-D3-S-M-H/blob/master/RSA-AES-MD5-DES-DES3-MD5-SHA-HMAC.py</span><br><span class="line"></span><br><span class="line"><span class="comment"># -*- coding：utf-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"><span class="keyword">import</span> rsa</span><br><span class="line"><span class="keyword">from</span> Crypto.Cipher <span class="keyword">import</span> AES</span><br><span class="line"><span class="keyword">from</span> Crypto.PublicKey <span class="keyword">import</span> RSA</span><br><span class="line"><span class="keyword">from</span> pyDes <span class="keyword">import</span> des, CBC, PAD_PKCS5</span><br><span class="line"><span class="keyword">from</span> Crypto.Cipher <span class="keyword">import</span> DES3</span><br><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line"><span class="keyword">import</span> hmac</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">USE_AES</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    AES</span></span><br><span class="line"><span class="string">    除了MODE_SIV模式key长度为：32, 48, or 64,</span></span><br><span class="line"><span class="string">    其余key长度为16, 24 or 32</span></span><br><span class="line"><span class="string">    详细见AES内部文档</span></span><br><span class="line"><span class="string">    CBC模式传入iv参数</span></span><br><span class="line"><span class="string">    本例使用常用的ECB模式</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, key)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> len(key) &gt; <span class="number">32</span>:</span><br><span class="line">            key = key[:<span class="number">32</span>]</span><br><span class="line">        self.key = self.to_16(key)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">to_16</span><span class="params">(self, key)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        转为16倍数的bytes数据</span></span><br><span class="line"><span class="string">        :param key:</span></span><br><span class="line"><span class="string">        :return:</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        key = bytes(key, encoding=<span class="string">"utf8"</span>)</span><br><span class="line">        <span class="keyword">while</span> len(key) % <span class="number">16</span> != <span class="number">0</span>:</span><br><span class="line">            key += <span class="string">b'\0'</span></span><br><span class="line">        <span class="keyword">return</span> key  <span class="comment"># 返回bytes</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">aes</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> AES.new(self.key, AES.MODE_ECB) <span class="comment"># 初始化加密器</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">encrypt</span><span class="params">(self, text)</span>:</span></span><br><span class="line">        aes = self.aes()</span><br><span class="line">        <span class="keyword">return</span> str(base64.encodebytes(aes.encrypt(self.to_16(text))),</span><br><span class="line">                   encoding=<span class="string">'utf8'</span>).replace(<span class="string">'\n'</span>, <span class="string">''</span>)  <span class="comment"># 加密</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">decodebytes</span><span class="params">(self, text)</span>:</span></span><br><span class="line">        aes = self.aes()</span><br><span class="line">        <span class="keyword">return</span> str(aes.decrypt(base64.decodebytes(bytes(</span><br><span class="line">            text, encoding=<span class="string">'utf8'</span>))).rstrip(<span class="string">b'\0'</span>).decode(<span class="string">"utf8"</span>))  <span class="comment"># 解密</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">USE_RSA</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    生成密钥可保存.pem格式文件</span></span><br><span class="line"><span class="string">    1024位的证书，加密时最大支持117个字节，解密时为128；</span></span><br><span class="line"><span class="string">    2048位的证书，加密时最大支持245个字节，解密时为256。</span></span><br><span class="line"><span class="string">    加密大文件时需要先用AES或者DES加密，再用RSA加密密钥，详细见文档</span></span><br><span class="line"><span class="string">    文档:https://stuvel.eu/files/python-rsa-doc/usage.html#generating-keys</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, number=<span class="number">1024</span>)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :param number: 公钥、私钥</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        self.pubkey, self.privkey = rsa.newkeys(number)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">rsaEncrypt</span><span class="params">(self, text)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :param test: str</span></span><br><span class="line"><span class="string">        :return: bytes</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        content = text.encode(<span class="string">'utf-8'</span>)</span><br><span class="line">        crypto = rsa.encrypt(content, self.pubkey)</span><br><span class="line">        <span class="keyword">return</span> crypto</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">rsaDecrypt</span><span class="params">(self, text)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :param text:bytes</span></span><br><span class="line"><span class="string">        :return: str</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        content = rsa.decrypt(text, self.privkey)</span><br><span class="line">        con = content.decode(<span class="string">'utf-8'</span>)</span><br><span class="line">        <span class="keyword">return</span> con</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">savePem</span><span class="params">(self, path_name, text)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :param path_name: 保存路径</span></span><br><span class="line"><span class="string">        :param text: str</span></span><br><span class="line"><span class="string">        :return:bytes</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> <span class="string">"PEM"</span> <span class="keyword">in</span> path_name.upper():</span><br><span class="line">            path_name = path_name[:<span class="number">-4</span>]</span><br><span class="line">        <span class="keyword">with</span> open(<span class="string">'&#123;&#125;.pem'</span>.format(path_name), <span class="string">'bw'</span>) <span class="keyword">as</span> f:</span><br><span class="line">            f.write(text.save_pkcs1())</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">readPem</span><span class="params">(self, path_name, key_type)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :param path_name: 密钥文件</span></span><br><span class="line"><span class="string">        :param key_type:类型</span></span><br><span class="line"><span class="string">        :return:</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> <span class="string">'pubkey'</span> <span class="keyword">in</span> key_type:</span><br><span class="line">            self.pubkey = rsa.PublicKey.load_pkcs1(path_name)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            self.privkey = rsa.PublicKey.load_pkcs1(path_name)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">sign</span><span class="params">(self, message, priv_key=None, hash_method=<span class="string">'SHA-1'</span>)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        生成明文的哈希签名以便还原后对照</span></span><br><span class="line"><span class="string">        :param message: str</span></span><br><span class="line"><span class="string">        :param priv_key:</span></span><br><span class="line"><span class="string">        :param hash_method: 哈希的模式</span></span><br><span class="line"><span class="string">        :return:</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> <span class="literal">None</span> == priv_key:</span><br><span class="line">            priv_key = self.privkey</span><br><span class="line">        <span class="keyword">return</span> rsa.sign(message.encode(), priv_key, hash_method)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">checkSign</span><span class="params">(self, mess, result, pubkey=None)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        验证签名：传入解密后明文、签名、公钥，验证成功返回哈希方法，失败则报错</span></span><br><span class="line"><span class="string">        :param mess: str</span></span><br><span class="line"><span class="string">        :param result: bytes</span></span><br><span class="line"><span class="string">        :param pubkey:</span></span><br><span class="line"><span class="string">        :return: str</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> <span class="literal">None</span> == pubkey:</span><br><span class="line">            pubkey = self.privkey</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            result = rsa.verify(mess, result, pubkey)</span><br><span class="line">            <span class="keyword">return</span> result</span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">USE_DES</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    des(key,[mode], [IV], [pad], [pad mode])</span></span><br><span class="line"><span class="string">    key:必须正好8字节</span></span><br><span class="line"><span class="string">    mode（模式）：ECB、CBC</span></span><br><span class="line"><span class="string">    iv:CBC模式中必须提供长8字节</span></span><br><span class="line"><span class="string">    pad:填充字符</span></span><br><span class="line"><span class="string">    padmode:加密填充模式PAD_NORMAL or PAD_PKCS5</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, key, iv)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> isinstance(key, bytes):</span><br><span class="line">            key = bytes(key, encoding=<span class="string">"utf8"</span>)</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> isinstance(iv, bytes):</span><br><span class="line">            iv = bytes(iv, encoding=<span class="string">"utf8"</span>)</span><br><span class="line">        self.key = key</span><br><span class="line">        self.iv = iv</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">encrypt</span><span class="params">(self, text)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        DES 加密</span></span><br><span class="line"><span class="string">        :param text: 原始字符串</span></span><br><span class="line"><span class="string">        :return: 加密后字符串，bytes</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> isinstance(text, bytes):</span><br><span class="line">            text = bytes(text, <span class="string">"utf-8"</span>)</span><br><span class="line">        secret_key = self.key</span><br><span class="line">        iv = self.iv</span><br><span class="line">        k = des(secret_key, CBC, iv, pad=<span class="literal">None</span>, padmode=PAD_PKCS5)</span><br><span class="line">        en = k.encrypt(text, padmode=PAD_PKCS5)</span><br><span class="line">        <span class="keyword">return</span> en</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">descrypt</span><span class="params">(self, text)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        DES 解密</span></span><br><span class="line"><span class="string">        :param text: 加密后的字符串，bytes</span></span><br><span class="line"><span class="string">        :return:  解密后的字符串</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        secret_key = self.key</span><br><span class="line">        iv = self.iv</span><br><span class="line">        k = des(secret_key, CBC, iv, pad=<span class="literal">None</span>, padmode=PAD_PKCS5)</span><br><span class="line">        de = k.decrypt(text, padmode=PAD_PKCS5)</span><br><span class="line">        <span class="keyword">return</span> de.decode()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">USE_DES3</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    new(key, mode, *args, **kwargs)</span></span><br><span class="line"><span class="string">    key:必须8bytes倍数介于16-24</span></span><br><span class="line"><span class="string">    mode：</span></span><br><span class="line"><span class="string">    iv:初始化向量适用于MODE_CBC、MODE_CFB、MODE_OFB、MODE_OPENPGP，4种模式</span></span><br><span class="line"><span class="string">        ``MODE_CBC``, ``MODE_CFB``, and ``MODE_OFB``长度为8bytes</span></span><br><span class="line"><span class="string">        ```MODE_OPENPGP```加密时8bytes解密时10bytes</span></span><br><span class="line"><span class="string">        未提供默认随机生成</span></span><br><span class="line"><span class="string">    nonce：仅在 ``MODE_EAX`` and ``MODE_CTR``模式中使用</span></span><br><span class="line"><span class="string">            ``MODE_EAX``建议16bytes</span></span><br><span class="line"><span class="string">            ``MODE_CTR``建议[0, 7]长度</span></span><br><span class="line"><span class="string">            未提供则随机生成</span></span><br><span class="line"><span class="string">    segment_size：分段大小，仅在 ``MODE_CFB``模式中使用，长度为8倍数，未指定则默认为8</span></span><br><span class="line"><span class="string">    mac_len： 适用``MODE_EAX``模式，身份验证标记的长度（字节），它不能超过8（默认值）</span></span><br><span class="line"><span class="string">    initial_value：适用```MODE_CTR```，计数器的初始值计数器块。默认为**0**。</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, key)</span>:</span></span><br><span class="line">        self.key = key</span><br><span class="line">        self.mode = DES3.MODE_ECB</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">encrypt</span><span class="params">(self, text)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        传入明文</span></span><br><span class="line"><span class="string">        :param text:bytes类型，长度是KEY的倍数</span></span><br><span class="line"><span class="string">        :return:</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> isinstance(text, bytes):</span><br><span class="line">            text = bytes(text, <span class="string">'utf-8'</span>)</span><br><span class="line">        x = len(text) % <span class="number">8</span></span><br><span class="line">        text = text+<span class="string">b'\0'</span>*x</span><br><span class="line">        cryptor = DES3.new(self.key, self.mode)</span><br><span class="line">        ciphertext = cryptor.encrypt(text)</span><br><span class="line">        <span class="keyword">return</span> ciphertext</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">decrypt</span><span class="params">(self, text)</span>:</span></span><br><span class="line">        cryptor = DES3.new(self.key, self.mode)</span><br><span class="line">        plain_text = cryptor.decrypt(text)</span><br><span class="line">        st = str(plain_text.decode(<span class="string">"utf-8"</span>)).rstrip(<span class="string">'\0'</span>)</span><br><span class="line">        <span class="keyword">return</span> st</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">USE_MD5</span><span class="params">(test)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> isinstance(test, bytes):</span><br><span class="line">        test = bytes(test, <span class="string">'utf-8'</span>)</span><br><span class="line">    m = hashlib.md5()</span><br><span class="line">    m.update(test)</span><br><span class="line">    <span class="keyword">return</span> m.hexdigest()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">USE_HMAC</span><span class="params">(key, text)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> isinstance(key, bytes):</span><br><span class="line">        key = bytes(key, <span class="string">'utf-8'</span>)</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> isinstance(text, bytes):</span><br><span class="line">        text = bytes(text, <span class="string">'utf-8'</span>)</span><br><span class="line">    h = hmac.new(key, text, digestmod=<span class="string">'MD5'</span>)</span><br><span class="line">    <span class="keyword">return</span> h.hexdigest()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">USE_SHA</span><span class="params">(text)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> isinstance(text, bytes):</span><br><span class="line">        text = bytes(text, <span class="string">'utf-8'</span>)</span><br><span class="line">    sha = hashlib.sha1(text)</span><br><span class="line">    encrypts = sha.hexdigest()</span><br><span class="line">    <span class="keyword">return</span> encrypts</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    aes_test = USE_AES(<span class="string">"assssssssdfasasasasa"</span>)</span><br><span class="line">    a = aes_test.encrypt(<span class="string">"测试"</span>)</span><br><span class="line">    b = aes_test.decodebytes(a)</span><br><span class="line">    rsa_test = USE_RSA()</span><br><span class="line">    a = rsa_test.rsaEncrypt(<span class="string">"测试加密"</span>)</span><br><span class="line">    b = rsa_test.rsaDecrypt(a)</span><br><span class="line">    des_test = USE_DES(<span class="string">b"12345678"</span>, <span class="string">b"12345678"</span>)</span><br><span class="line">    a = des_test.encrypt(<span class="string">"测试加密"</span>)</span><br><span class="line">    b = des_test.descrypt(a)</span><br><span class="line">    des3_test = USE_DES3(<span class="string">b"123456789qazxswe"</span>)</span><br><span class="line">    a = des3_test.encrypt(<span class="string">"测试加密"</span>)</span><br><span class="line">    b = des3_test.decrypt(a)</span><br><span class="line">    md5_test = USE_MD5(<span class="string">"测试签名"</span>)</span><br><span class="line">    hmac_test = USE_HMAC(<span class="string">"123456"</span>, <span class="string">"测试"</span>)</span><br><span class="line">    sha_test = USE_SHA(<span class="string">"测试加密"</span>)</span><br></pre></td></tr></table></figure>
+<h4 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h4><p>本文简单介绍了关于js调试加密字段的流程,并且分别调试了关于DES与Base64加密的两个案例。</p>
+<p>文中举例的案例属于菜鸟级别,但是千万因为这样就小瞧js逆向这门学问,因为上面写的案例其实连JS逆向入门的门槛都没跨过。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/wechatsubscriber.jpg" alt="煌金 wechat" style="width: auto; height:250px; max-width: 100%;">
+    <div>扫描关注公众号,回复「1024」获取为你准备的特别推送~</div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="煌金 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="煌金 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    煌金  |  微信公众号【咸鱼学Python】
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://www.xianyucoder.cn/2019/06/16/js加密学习01-des与base64/" title="JS逆向-基础-DES加密与Base64编码实例">http://www.xianyucoder.cn/2019/06/16/js加密学习01-des与base64/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用  许可协议。转载请注明出处！
+  </li>
+  <li class="post-copyright-license">
+    并保留本声明和上方二维码。感谢您的阅读和支持！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/js逆向/" rel="tag"># js逆向</a>
+          
+            <a href="/tags/基础/" rel="tag"># 基础</a>
+          
+            <a href="/tags/DES/" rel="tag"># DES</a>
+          
+            <a href="/tags/BASE64/" rel="tag"># BASE64</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/06/16/js加密学习04-一次群聊引发的的js破解教学/" rel="next" title="JS逆向-企名片加密分析">
+                <i class="fa fa-chevron-left"></i> JS逆向-企名片加密分析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/06/16/js加密学习01-chrome调试工具常用功能整理/" rel="prev" title="JS逆向-基础整理 ( 二 )">
+                JS逆向-基础整理 ( 二 ) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.gif" alt="煌金">
+            
+              <p class="site-author-name" itemprop="name">煌金</p>
+              <p class="site-description motion-element" itemprop="description">Stay Hungry, Stay Foolish.</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">97</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">12</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">83</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/xianyucoder" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:daihuangj@gmail.com" target="_blank" title="E-Mail"><i class="fa fa-fw fa-E-Mail"></i>E-Mail</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#讲在前面"><span class="nav-number">1.</span> <span class="nav-text">讲在前面</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#常用的加密有哪些？"><span class="nav-number">2.</span> <span class="nav-text">常用的加密有哪些？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#学习资源推荐"><span class="nav-number">3.</span> <span class="nav-text">学习资源推荐</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#常用调试流程"><span class="nav-number">4.</span> <span class="nav-text">常用调试流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#DES加密"><span class="nav-number">5.</span> <span class="nav-text">DES加密</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#js调试实战案例"><span class="nav-number">5.1.</span> <span class="nav-text">js调试实战案例</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Base64编码"><span class="nav-number">6.</span> <span class="nav-text">Base64编码</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#js调试实战案例-1"><span class="nav-number">6.1.</span> <span class="nav-text">js调试实战案例</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Python实现加密方法合集"><span class="nav-number">7.</span> <span class="nav-text">Python实现加密方法合集</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#小结"><span class="nav-number">8.</span> <span class="nav-text">小结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">煌金</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+    <span title="站点总字数">245k</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+    <span title="站点阅读时长">6:48</span>
+  
+</div>
+
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Gemini</a> v6.3.0</div>
+
+
+<div>
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<span id="busuanzi_container_site_pv" style="display:none">
+    本站总访问量 <span id="busuanzi_value_site_pv"></span> 次
+    <span class="post-meta-divider">|</span>
+</span>
+<span id="busuanzi_container_site_uv" style="display:none">
+    有<span id="busuanzi_value_site_uv"></span>人看过我的博客啦
+</span>
+</div>
+
+<div class="BbeiAn-info" ">
+  闽ICP备 -
+  <a href="http://fj.beian.miit.gov.cn/">19017235号</a>
+  
+</div>
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.3.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.3.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.3.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.3.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.3.0"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  
+  
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(function (item) {
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'TplsQ6G4eWnyg2kG4AVS2oAP-gzGzoHsz',
+        appKey: 'tmkt1Xqzl6hUoFcY059IjfYz',
+        placeholder: '请在此输入您的留言',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
