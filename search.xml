@@ -331,8 +331,8 @@
       </categories>
       <tags>
         <tag>js逆向</tag>
-        <tag>基础</tag>
         <tag>RSA</tag>
+        <tag>基础</tag>
       </tags>
   </entry>
   <entry>
@@ -344,8 +344,8 @@
       </categories>
       <tags>
         <tag>js逆向</tag>
-        <tag>基础</tag>
         <tag>RSA</tag>
+        <tag>基础</tag>
       </tags>
   </entry>
   <entry>
@@ -400,6 +400,19 @@
       </tags>
   </entry>
   <entry>
+    <title><![CDATA[JS逆向-犀牛数据加密分析]]></title>
+    <url>%2F2019%2F07%2F16%2Fjs%E5%8A%A0%E5%AF%86%E5%AD%A6%E4%B9%A011-%E7%8A%80%E7%89%9B%E6%95%B0%E6%8D%AE%2F</url>
+    <content type="text"><![CDATA[咸鱼又来练手了,这次来研究下在搜索参数搜不到的情况下怎么办？ 有点经验的朋友肯定知道这次要用的就是 XHR BreakPoint。 关于XHR BreakPoint在很多文档中都有提及，咸鱼就不啰嗦了,还不是很了解的可以看下面的文档。 https://developers.google.com/web/tools/chrome-devtools/ 【大宝贝】 在分析请求之前,咸鱼分享一个调试小技巧。 今天在交流群划水的时候有几个群友比较纠结于如何判断数据是不是由js生成或异步加载的。 我常用的方法有两种: 第一种,右键查看「网页源代码」,之后在打开的网页源码的界面搜索我们想要得数据是否在其中就可以判断了。 第二种,关闭网页的js加载功能,查看网页我们需要的数据是否能够顺利加载或者查看数据是否完整,步骤也非常简单。 第一步: 点击地址栏前端的图示位置,选择网站设置。 第二步: 在权限位置将JavaScript选择为禁止,返回刷新网页,查看数据是否顺利加载。 以上两个小技巧可以大大方便我们的调试,就不用猜来猜去了。 分析请求用上面的方法我们判断,数据是通过js加载的,并且请求的参数和返回的参数都是经过加密的。 到这里就需要 XHR 断点帮助我们定位加密了。 定位加密位置我们先添加一个XHR断点。 重新刷新页面。 可以看到断点的位置上已经有了我们需要的参数加密。 加密分析参数加密我们先找到参数还没有加密的地方。往上找很快就看到参数还没有加密的地方。 可以看到上图1,2两个断点的位置还只是对数据进行序列化等操作,到了第3,4断点的位置参数就被加密了。所以我们可以重新刷新一下看看数据是怎么被加密的。 到这个位置就可以追进去分析了,接下来就比较简单了。 可以看到这里就是参数的主要加密逻辑: 还有就是关于 sig 参数,逻辑也被分析出来了。 接下来就是分析返回的参数解密的位置了。 数据解密数据解密的位置很快也被定位到了,我们看到 l 就是返回的密文. 我现在断点端的位置也就是解密的位置。按照参数加密的方法追进去就可以看到解密的方法了. 把解密和解密的方法扣出来就是我们需要的js代码了。 本文完。]]></content>
+      <categories>
+        <category>js逆向</category>
+      </categories>
+      <tags>
+        <tag>js逆向</tag>
+        <tag>密文解密</tag>
+        <tag>犀牛数据</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[JS逆向-工信系统加速乐]]></title>
     <url>%2F2019%2F07%2F16%2Fjs%E5%8A%A0%E5%AF%86%E5%AD%A6%E4%B9%A012-gsxt_gg%2F</url>
     <content type="text"><![CDATA[本周练手加一 上次分享了两个练手喂饭教程，朋友好奇喂饭是啥意思？就是把知识当成饭，喂到嘴里。 【表情】 同时咸鱼整理了一下过往所有关于JS逆向文章的代码，希望附上代码能让你学( 记 )的( 得 )更( star )快： https://github.com/xianyucoder/Crack-JS 【nice】 接下来继续练手，上次的项目二有读者反映讲的不是很明白，这次找了同类型的网站再来一次。 分析请求打开 开发者模式 抓包 很快就可以看到下面这个请求返回的是我们需要的数据： 我们先根据这里的请求，写一份代码测试一下哪些是我们必须的参数： 类似这样： 1234567891011121314151617import requestsurl = "http://www.gsxt.gov.cn/affiche-query-area-info-paperall.html"querystring = &#123;"noticeType":"11","areaid":"100000","noticeTitle":"","regOrg":""&#125;payload = "draw=1&amp;start=0&amp;length=10"headers = &#123; 'Cookie': "__jsluid_h=aa1c7a0fc461a8ea63747a4b02956b38; __jsl_clearance=1565006542.706|0|D0rZ6Fm9vgqQ2QyKbNgIlZRkMsw%3D; SECTOKEN=6968716378603526401; UM_distinctid=16c61a8e0d03f5-01bbcf42e0196a-37647c02-13c680-16c61a8e0d17c1; CNZZDATA1261033118=2135658768-1565002015-http%253A%252F%252Fwww.gsxt.gov.cn%252F%7C1565002015; JSESSIONID=40B833BC895E78C1A2E6C2D74C1DE6F8-n2:2; tlb_cookie=S172.16.12.42", 'Origin': "http://www.gsxt.gov.cn", 'Accept-Encoding': "gzip, deflate", 'Accept-Language': "zh-CN,zh;q=0.9", 'User-Agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36", &#125;response = requests.post(url, data=payload, headers=headers, params=querystring)print(response.text) 通过不断删除 headers 中的参数并观察返回值，来判断哪些是必须携带的参数，哪些是无关紧要的参数。 测试过程比较繁琐就不一一截图演示，同时建议放慢测试请求速度，否则会触发网站的反爬措施。 经过测试可以发现 UA 以及 Cookie 中的 __jsluid_h __jsl_clearance SECTOKEN or JSESSIONID 都是不可缺少的参数。 分析参数的生成现在就需要一一找齐参数是怎样生成的： 这里的 UA 就不需要分析了，直接复制浏览器的即可，这里需要注意的是这里的 UA 与 Cookie 还有 IP 是对应的，所以出现更换 UA 的情况那么 Cookie 就需要重新生成，这样的设置对于批量爬取的兄die是个难度不小的点，我们抱着学习的态度就不用考虑太多了。 【有点厉害】 接下来分析 Cookie 的生成，先看看 __jsluid_h 通过用浏览器抓包 可以看到 __jsluid_h 是通过请求 Set 进来的，我们照着来一遍就行。 接下来看看 SECTOKEN or JSESSIONID 和上面的参数套路一样，区别在于这个请求的 Cookie 中必须带上 __jsl_clearance 接下来需要关注的就只有 Cookie 值 __jsl_clearance 在这几个请求包里反复筛选都没有发现这个值是怎么写入的（怕漏掉的可以用 Fiddler 抓），那么就只可能是 js 生成的了。 通过不带 Cookie 的方式请求一次，可以看到网页返回了和上次文章中加密二类似的 js 代码 ，按照上次文章的套路，我们复制到 Console 中测试一下。 测试流程： 先把 eval 改成 console.log 让结果打印出来。 把测试结果复制出来格式化，可以看到格式化后的代码分为两个部分，主要的是上面的 Cookie 生成代码。 所以单独把上半部分代码复制出来调试即可，需要注意的是通过 Python 调用的 Node 环境不支持 document 这类浏览器属性所以调试的时候需要将它去除或在 Node 下执行不报错即可。 通过调试我们生成了下面这个字符串。 运用至 Python 中，即可请求到需要的数据了。 丢个效果图，溜了。 后台回复「js逆向」获取完整代码。]]></content>
@@ -410,19 +423,6 @@
         <tag>js逆向</tag>
         <tag>工信系统</tag>
         <tag>加速乐</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[JS逆向-66ip加速乐]]></title>
-    <url>%2F2019%2F07%2F16%2Fjs%E5%8A%A0%E5%AF%86%E5%AD%A6%E4%B9%A014-66ip%2F</url>
-    <content type="text"><![CDATA[练手系列来喽~ 这周在读者群顺手搞了个小活动,在群里摸鱼的时候有水友说练手系列能不能来点简单的写详细点,所以我这次准备了两个比较简单的练手加密,简单到我一度怀疑自己在水文。 加密一 分析请求先打开受害网站 -&gt; 打开控制台 -&gt; 切换至 XHR 完美,刷新就看到了。 这里要解决的只有两个: 返回的密文 请求中的token 接下来定位加解密位置 定位加密位置与分析加密按照之前的套路，我们第一步是要搜索加密参数名 token 打开search ,搜索参数名就找到我们要的 token 了。 按照搜索的结果文件名,猜也猜到是第二个结果,点击打开就可以看到token 的生成代码了。 1var token = md5(String(page) + String(num) + String(timestamp)); 这段代码我们可以用 js 实现也可以用 python。 偷懒一点用 python 实现 token加密算法: 按照请求里看到的参数生成 token 试试 现在有了 token 参数之后接下来看看这个解密怎么搞: 右键 查看源代码 发现了这个: 图中ip 列表的位置是没有数据的,只有 id ip_list ,这是个唯一值,所以值得再搜索一下: 追进去之后就可以看到下面的代码了: 打上断点,执行两步可以看到大 decode_str 后就开始出现我们需要的数据了,所以这里的decode_str 就是我们要的解密方法: 我们复制到编辑器里调试运行一下: 可以看到提示Base64 未定义, 我们追进去把 Base64 的算法赋值出来: 再次运行,根据提示缺失 window 对象, 根据之前的方式是缺啥补啥,但我们先接下来分析一下这里调用的方法: 这里调用的是 String.fromCharCode 方法,我们替换下再次运行: 可以看到这里就解出来了。 加密一，完。 加密二 分析请求这次要分析的网站不同上一个的是,这次网站使用的是 cookie 加密, cookie的有效期过了之后就会返回一段 js 。 使用有效的 cookie 请求我们需要的数据就在返回的网页中,所以我们只要解决这段 js 就好了。 分析加密把返回的 js 复制到编辑器里格式化,可以看到代码分为两个部分: 参数定义部分: 函数执行部分: 直接执行没得出结果,为了方便知道这段代码发生了什么,我们复制到 浏览器 console 里看看: 为了方便观察,我们把第二段的 eval 修改为 console.log 可以看到这段代码写入了 cookie: 继续分析,我们把这段cookie 相关的代码复制出来执行一下: 可以看到这里成功生成了一段 cookie 值 和我们在网页上看到的一样！ 到这里加密就分析结束了。 加密二，完。]]></content>
-      <categories>
-        <category>js逆向</category>
-      </categories>
-      <tags>
-        <tag>js逆向</tag>
-        <tag>加速乐</tag>
-        <tag>66ip</tag>
       </tags>
   </entry>
   <entry>
@@ -439,6 +439,19 @@
       </tags>
   </entry>
   <entry>
+    <title><![CDATA[JS逆向-66ip加速乐]]></title>
+    <url>%2F2019%2F07%2F16%2Fjs%E5%8A%A0%E5%AF%86%E5%AD%A6%E4%B9%A014-66ip%2F</url>
+    <content type="text"><![CDATA[练手系列来喽~ 这周在读者群顺手搞了个小活动,在群里摸鱼的时候有水友说练手系列能不能来点简单的写详细点,所以我这次准备了两个比较简单的练手加密,简单到我一度怀疑自己在水文。 加密一 分析请求先打开受害网站 -&gt; 打开控制台 -&gt; 切换至 XHR 完美,刷新就看到了。 这里要解决的只有两个: 返回的密文 请求中的token 接下来定位加解密位置 定位加密位置与分析加密按照之前的套路，我们第一步是要搜索加密参数名 token 打开search ,搜索参数名就找到我们要的 token 了。 按照搜索的结果文件名,猜也猜到是第二个结果,点击打开就可以看到token 的生成代码了。 1var token = md5(String(page) + String(num) + String(timestamp)); 这段代码我们可以用 js 实现也可以用 python。 偷懒一点用 python 实现 token加密算法: 按照请求里看到的参数生成 token 试试 现在有了 token 参数之后接下来看看这个解密怎么搞: 右键 查看源代码 发现了这个: 图中ip 列表的位置是没有数据的,只有 id ip_list ,这是个唯一值,所以值得再搜索一下: 追进去之后就可以看到下面的代码了: 打上断点,执行两步可以看到大 decode_str 后就开始出现我们需要的数据了,所以这里的decode_str 就是我们要的解密方法: 我们复制到编辑器里调试运行一下: 可以看到提示Base64 未定义, 我们追进去把 Base64 的算法赋值出来: 再次运行,根据提示缺失 window 对象, 根据之前的方式是缺啥补啥,但我们先接下来分析一下这里调用的方法: 这里调用的是 String.fromCharCode 方法,我们替换下再次运行: 可以看到这里就解出来了。 加密一，完。 加密二 分析请求这次要分析的网站不同上一个的是,这次网站使用的是 cookie 加密, cookie的有效期过了之后就会返回一段 js 。 使用有效的 cookie 请求我们需要的数据就在返回的网页中,所以我们只要解决这段 js 就好了。 分析加密把返回的 js 复制到编辑器里格式化,可以看到代码分为两个部分: 参数定义部分: 函数执行部分: 直接执行没得出结果,为了方便知道这段代码发生了什么,我们复制到 浏览器 console 里看看: 为了方便观察,我们把第二段的 eval 修改为 console.log 可以看到这段代码写入了 cookie: 继续分析,我们把这段cookie 相关的代码复制出来执行一下: 可以看到这里成功生成了一段 cookie 值 和我们在网页上看到的一样！ 到这里加密就分析结束了。 加密二，完。]]></content>
+      <categories>
+        <category>js逆向</category>
+      </categories>
+      <tags>
+        <tag>js逆向</tag>
+        <tag>加速乐</tag>
+        <tag>66ip</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[JS逆向-关于jsfuck的处理]]></title>
     <url>%2F2019%2F07%2F16%2Fjs%E5%8A%A0%E5%AF%86%E5%AD%A6%E4%B9%A015-jsfuck%2F</url>
     <content type="text"><![CDATA[文章开始我本想和大家用 JSFuck 打个招呼，结果发现是我天真了，简单的一句 hello world 转换后有近 5 W 字符。 所以大家将就看看下面的图： 【表情】 JSFuck是什么？下面这个网站是 JSFuck 的官网： http://www.jsfuck.com/ 我们可以使用它对我们原有的 JS 代码进行编码风格上的转换。 JSFuck 是使用 [、]、(、)、! 和 + 六种字符来表示原有的字符的，就像下面这样的对应关系： 123456789101112131415false =&gt; ![]true =&gt; !![]undefined =&gt; [][[]]NaN =&gt; +[![]]0 =&gt; +[]1 =&gt; +!+[]2 =&gt; !+[]+!+[]10 =&gt; [+!+[]]+[+[]]Array =&gt; []Number =&gt; +[]String =&gt; []+[]Boolean =&gt; ![]Function =&gt; []["filter"]eval =&gt; []["filter"]["constructor"]( CODE )()window =&gt; []["filter"]["constructor"]("return this")() 当然还有更多的对应关系没有列出来，但是这并不重要，我们只需要知道 JSFuck 是什么就可以了，接下来我们实战走一波。 如何在实战中处理 JSFuck?JSFuck 的处理方法有以下几种： 123document.write(xxx)alert(xxx)console.log(xxx) 这里的 xxx 指的就是 JSFuck 的内容，解决方法很简单，我们拿个例子测试一下。 这里本来想拿某文书网的 JSFuck 实战的，但是自从某文书网下了瑞数之后，整个网站频繁瘫痪。 猝。 所以这里用另一个例子测试一下，因为处理的方法是通用的： 复制 JSFuck ，打开 开发者模式，切换至 Console 选项卡，输入下面的内容并执行： 1console.log(xxx) 执行结果如下： 这里看到提示Cannot read property &#39;attr&#39; of null 我们不管他，我们注意到右手边的vm87:1,点进去看看： 这里就是浏览器为我们还原的代码了，用其他的方法也是同样的效果。 欢迎大家提供更多 JSFuck 的案例，本文测试的 JS 已经上传至 Github , 后台回复「js逆向」即可获取地址。 本文完。]]></content>
@@ -449,19 +462,6 @@
         <tag>js逆向</tag>
         <tag>密文解密</tag>
         <tag>jsfuck</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[JS逆向-犀牛数据加密分析]]></title>
-    <url>%2F2019%2F07%2F16%2Fjs%E5%8A%A0%E5%AF%86%E5%AD%A6%E4%B9%A011-%E7%8A%80%E7%89%9B%E6%95%B0%E6%8D%AE%2F</url>
-    <content type="text"><![CDATA[咸鱼又来练手了,这次来研究下在搜索参数搜不到的情况下怎么办？ 有点经验的朋友肯定知道这次要用的就是 XHR BreakPoint。 关于XHR BreakPoint在很多文档中都有提及，咸鱼就不啰嗦了,还不是很了解的可以看下面的文档。 https://developers.google.com/web/tools/chrome-devtools/ 【大宝贝】 在分析请求之前,咸鱼分享一个调试小技巧。 今天在交流群划水的时候有几个群友比较纠结于如何判断数据是不是由js生成或异步加载的。 我常用的方法有两种: 第一种,右键查看「网页源代码」,之后在打开的网页源码的界面搜索我们想要得数据是否在其中就可以判断了。 第二种,关闭网页的js加载功能,查看网页我们需要的数据是否能够顺利加载或者查看数据是否完整,步骤也非常简单。 第一步: 点击地址栏前端的图示位置,选择网站设置。 第二步: 在权限位置将JavaScript选择为禁止,返回刷新网页,查看数据是否顺利加载。 以上两个小技巧可以大大方便我们的调试,就不用猜来猜去了。 分析请求用上面的方法我们判断,数据是通过js加载的,并且请求的参数和返回的参数都是经过加密的。 到这里就需要 XHR 断点帮助我们定位加密了。 定位加密位置我们先添加一个XHR断点。 重新刷新页面。 可以看到断点的位置上已经有了我们需要的参数加密。 加密分析参数加密我们先找到参数还没有加密的地方。往上找很快就看到参数还没有加密的地方。 可以看到上图1,2两个断点的位置还只是对数据进行序列化等操作,到了第3,4断点的位置参数就被加密了。所以我们可以重新刷新一下看看数据是怎么被加密的。 到这个位置就可以追进去分析了,接下来就比较简单了。 可以看到这里就是参数的主要加密逻辑: 还有就是关于 sig 参数,逻辑也被分析出来了。 接下来就是分析返回的参数解密的位置了。 数据解密数据解密的位置很快也被定位到了,我们看到 l 就是返回的密文. 我现在断点端的位置也就是解密的位置。按照参数加密的方法追进去就可以看到解密的方法了. 把解密和解密的方法扣出来就是我们需要的js代码了。 本文完。]]></content>
-      <categories>
-        <category>js逆向</category>
-      </categories>
-      <tags>
-        <tag>js逆向</tag>
-        <tag>密文解密</tag>
-        <tag>犀牛数据</tag>
       </tags>
   </entry>
   <entry>
@@ -651,9 +651,9 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[Docker网络]]></title>
-    <url>%2F2019%2F03%2F19%2FDocker-network%2F</url>
-    <content type="text"><![CDATA[为什么需要容器的网络管理？容器的网络默认与宿主机、与其他容器相互隔离，且容器中可以运行一些网络应用，比如nginx、web应用、数据库等，如果需要让外部也可以访问这些容器中运行的网络应用，那么就需要配置网络来实现。 同样的，不同需求下，容器与宿主机的通信有不同的业务状态这时候就需要容器网络管理以达成管理不同业务下相关的网络配置。 Docker中的网络驱动模式有那些？bridge network(网桥)模式:默认的网络模式，类似虚拟机的nat模式 host network(主机)模式:容器与宿主机之间的网络无隔离，即容器直接使用宿主机网络 none network模式:容器禁用所有网络 overlay network(覆盖)模式:利用vxlan实现的bridge模式 macvlan network模式:容器具备MAC地址，使其在外部看来是一台真实的网络设备 Docker网络管理命令浅析查看网络(docker network ls)命令格式: docker network ls [参数] 常用参数: 1-q 只显示网络对象的ID 注意: docker安装之后，会自动创建bridge、host、none三种网络驱动。 创建网络(docker network create)命令格式:docker network create [参数] 网络 常用参数:1234-d 指定网络的驱动，不指定默认为bridge-- subnet 指定子网网段(192.168.0.0/16)-- ip-range 指定容器的IP范围-- gateway 子网的网关 注意: 创建网络部分参数，涉及到网络工程师相关的知识，这里不做详细介绍有需要可以参考「计算机网络」这本书，内有详解。 host、none模式的网络只能存在一个，再次创建会报错。 overlay网络创建依赖于docker swarm(集群负载均衡)服务 网络删除(docker network rm)删除一个或多个网络 命令格式:docker network rm 网络[网络..] 查看网络详细信息(docker network inspect)命令格式: docker network inspect [参数] 网络 docker inspect [参数] 网络 常用参数:1-f 根据format输出结果 使用网络(docker run)命令格式:docker run/create –network 网络 注意:默认情况下，docker创建或启动容器时，会默认使用名为bridge的网络 网络连接与断开(docker network connect /disconnect)命令格式: docker network connect/disconnect [参数] 网络 容器 常用参数:1-f 强制断开连接 Docker网络模式简介bridge网络模式 bridge网络模式的特点： 宿主机上需要单独的bridge网卡，如默认docker默认创建的docker0。 容器之间、容器与主机之间的网络通信，是借助为每一个容器生成的一对veth pair虚拟网络设备对，进行通信的。一个在容器上，另一个在宿主机上。（这是网桥） 每创建一个基于bridge网络的容器，都会自动在宿主机上创建一个veth**虚拟网络设备。外部无法直接访问容器。需要建立端口映射才能访问。(可以理解为网卡) 容器借由veth虚拟设备通过如docker0这种bridge网络设备进行通信。 每一容器具有单独的IP bridge网络模式下宿主机与容器服务使用的端口可以重复 bridge网络模式下的端口映射根据上面关于bridge的特点我们可以知道访问bridge网络模式的设备，需要端口映射。 端口映射的命令格式:docker run/create -P/-p 命令参数:12-P 将容器内部所有暴露端口进行随机映射-p 手动指定端口映射 (-p [宿主机IP] : [宿主机端口] : 容器端口) 关于-p参数的举例:12-p ::80 将容器的80端口随机映射到宿主机的随机IP上-p :8000:6379 将容器的6379端口映射到宿主机的任意IP的8000端口上 host网络模式host网络模式的特点: 容器完全共享宿主机的网络，网络没有隔离。宿主机的网络就是容器的网络。 容器、主机上的应用所使用的端口不能重复。 外部可以直接访问容器，不需要端口映射 容器IP就是宿主机的IP 除了普通的host网络模式外，同样还有特殊版本的host网络模式(container网络模式)。 container网络模式的特点: 其实就是容器共享其他容器的网络,相当于该容器,在网络层面上，将其他容器作为“主机”。它们之间的网络没有隔离。 container网络模式的使用: docker run/create –network container:容器 none、overlay与macvlan网络模式none网络模式的特点: 容器上没有网络，也无需任何网络设备 如果需要使用网络，需要用户自行安装与配置 overlay网络模式的特点: overlay网络模式实现方案有很多种，在Docker自身集成了一种，基于VXLAN隧道技术实现 overlay网络主要用于实现跨主机容器之间的通信 macvlan网络模式的特点: macvlan的主要特点就是通信直接基于mac地址进行转发 在macvlan中宿主机担任的角色是一台二层交换机，docker会维护一张mac地址表，当宿主机收到数据包时，直接根据mac地址找到对应的容器 而在容器内部互相通信的时候，容器直接使用IP互通，所以每个容器对于外面的网络都是一台真实的网络设备 总结这次文章主要复习了docker的网络管理的内容，其中host,bridge,container是主要的复习内容，且在三种网络模式中建议优先选用host网络模式，其使用性能最优。]]></content>
+    <title><![CDATA[Docker容器]]></title>
+    <url>%2F2019%2F03%2F19%2FDocker-rong-qi%2F</url>
+    <content type="text"><![CDATA[什么是容器？容器（Container）：容器是一种轻量级、可移植、并将应用程序进行的打包的技术，使应用程序可以在几乎任何地方以相同的方式运行，Docker将镜像文件运行起来后，产生的对象就是容器。容器相当于是镜像运行起来的一个实例且容器具备一定的生命周期。 Docker容器和虚拟机的区别相同点： 容器和虚拟机一样，都会对物理硬件资源进行共享使用。 容器和虚拟机的生命周期比较相似（创建、运行、暂停、关闭等等）。 容器中或虚拟机中都可以安装各种应用，如redis、mysql、nginx等。也就是说，在容器中的操作，如同在一个虚拟机(操作系统)中操作一样。 同虚拟机一样，容器创建后，会存储在宿主机上：linux上位于/var/lib/docker/containers下 不同点： 虚拟机的创建、启动和关闭都是基于一个完整的操作系统。一个虚拟机就是一个完整的操作系统。而容器直接运行在宿主机的内核上，其本质上以一系列进程的结合。 容器是轻量级的，虚拟机是重量级的。首先容器不需要额外的资源来管理(不需要Hypervisor、Guest OS)，虚拟机额外更多的性能消耗；其次创建、启动或关闭容器，如同创建、启动或者关闭进程那么轻松，而创建、启动、关闭一个操作系统就没那么方便了。也因此，意味着在给定的硬件上能运行更多数量的容器，甚至可以直接把Docker运行在虚拟机上。 容器的生命周期管理先来看一张容器生命周期示意图： 下面咸鱼会对容器管理的部分命令简要学习： 容器创建(docker create)命令格式：docker create [参数] 镜像名称[容器执行命令][执行命令时需要提供的参数] 常用参数：123-t 分配一个虚拟终端-i 提供一个模拟输入，不提供则无法输入默认命令--name 为创建好的容器提供一个容器名，不提供的话随机分配一个 容器启动(docker start)启动一个或多个容器。 命令格式：docker start [参数] 容器[容器..] 常用参数：12-a 将当前的输入/输出连接到容器-i 将当前的输入连接到容器上 容器创建并启动(docker run)命令格式：docker run [参数] 镜像 [容器执行命令] [执行命令提供的参数] 常用参数：1234-t 分配一个虚拟终端-i 保持输入打开-d 容器后台运行，并打印容器id--rm 容器结束后自动删除容器 注意：因为我们学习docker主要还是为我们之后基于docker的Python开发服务的，所以关于docker run 以及 docker create/start 的一些参数的具体的区别就不在文章里赘述，有疑问的朋友可以参考官方文档，当然也欢迎和咸鱼在留言区讨论，大家在这里简单记两个公式就好： 12docker run = doker create + docker start -adocker run -d = docker create + docker start 这里咸鱼推荐大家使用docker run -dti来启动所需容器。 容器暂停(docker pause/unpause)docker pause 暂停一个或多个容器 docker unpause 启动一个或多个暂停中的容器 命令格式：docker pause/unpause 容器[容器..] 容器关闭(docker stop)关闭一个或多个容器。 docker stop 关闭一个或多个容器 命令格式：docker stop 容器[容器..]常用参数：1-t 关闭前的等待时间，默认是10秒 容器终止(docker kill)强制并立即关闭一个或多个处于暂停或运行状态的容器。 命令格式：docker kill [参数] 容器[容器..] 常用参数：-s 指定发给容器的关闭信号，默认为“kill” 容器重启(docker restart)重启一个或多个处于运行状态、暂停状态、关闭状态或创建状态的容器。 命令格式：docker restart [参数] 容器[容器..] 常用参数：1-t 关闭前的等待时间，默认是10秒，实则是关闭前的等待时间 容器删除(docker container rm / docker rm )命令格式：docker container rm [参数] 容器[容器..] 常用参数：12-f 强制删除-v 删除容器的同时删除容器的数据卷 docker kill 和 docker stop 区别在上面关于docker容器生命周期管理中stop 和 kill 都是关闭容器，但是其中的kill是怎么实现强制杀死运行中的容器的呢？ 这里需要说明下关linux下关于终止进程的信号:SIGTERM 和 SIGKILL SIGKILL信号：无条件终止进程信号。进程接收到该信号会立即终止，不进行清理和暂存工作。该信号不能被忽略、处理和阻塞，它向系统管理员提供了可以杀死任何进程的方法。 SIGTERM信号：程序终结信号，可以由kill命令产生。与SIGKILL不同的是，SIGTERM信号可以被阻塞和终止，以便程序在退出前可以保存工作或清理临时文件等。 docker stop 会先发出SIGTERM信号给进程，告诉进程即将会被关闭。在-t指定的等待时间过了之后，将会立即发出SIGKILL信号，直接关闭容器。 docker kill 直接发出SIGKILL信号关闭容器。但也可以通过-s参数修改发出的信号。 docker restart 中同样可以设置 -t 等待时间，当等待时间过后会立刻发送SIGKILL信号，直接关闭容器。 因此会发现在docker stop的等待过程中，如果终止docker stop的执行，容器最终没有被关闭。而docker kill几乎是立刻发生，无法撤销。 总结关于docker容器的生命周期管理，咸鱼踩坑之后认为需要加深理解的部分是关于docker run/start/create 以及 docker kill/stop/restart这两大部分。 关于docker kill 和 docker stop 区别希望大家能着重看下上面docker kill/stop区别部分，至于docker run/start/create最好能够动手敲一下感受下不同参数创建的后容器区别。 以上就是咸鱼关于容器生命周期管理部分的踩坑总结。]]></content>
       <categories>
         <category>Docker</category>
       </categories>
@@ -662,9 +662,9 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[Docker容器]]></title>
-    <url>%2F2019%2F03%2F19%2FDocker-rong-qi%2F</url>
-    <content type="text"><![CDATA[什么是容器？容器（Container）：容器是一种轻量级、可移植、并将应用程序进行的打包的技术，使应用程序可以在几乎任何地方以相同的方式运行，Docker将镜像文件运行起来后，产生的对象就是容器。容器相当于是镜像运行起来的一个实例且容器具备一定的生命周期。 Docker容器和虚拟机的区别相同点： 容器和虚拟机一样，都会对物理硬件资源进行共享使用。 容器和虚拟机的生命周期比较相似（创建、运行、暂停、关闭等等）。 容器中或虚拟机中都可以安装各种应用，如redis、mysql、nginx等。也就是说，在容器中的操作，如同在一个虚拟机(操作系统)中操作一样。 同虚拟机一样，容器创建后，会存储在宿主机上：linux上位于/var/lib/docker/containers下 不同点： 虚拟机的创建、启动和关闭都是基于一个完整的操作系统。一个虚拟机就是一个完整的操作系统。而容器直接运行在宿主机的内核上，其本质上以一系列进程的结合。 容器是轻量级的，虚拟机是重量级的。首先容器不需要额外的资源来管理(不需要Hypervisor、Guest OS)，虚拟机额外更多的性能消耗；其次创建、启动或关闭容器，如同创建、启动或者关闭进程那么轻松，而创建、启动、关闭一个操作系统就没那么方便了。也因此，意味着在给定的硬件上能运行更多数量的容器，甚至可以直接把Docker运行在虚拟机上。 容器的生命周期管理先来看一张容器生命周期示意图： 下面咸鱼会对容器管理的部分命令简要学习： 容器创建(docker create)命令格式：docker create [参数] 镜像名称[容器执行命令][执行命令时需要提供的参数] 常用参数：123-t 分配一个虚拟终端-i 提供一个模拟输入，不提供则无法输入默认命令--name 为创建好的容器提供一个容器名，不提供的话随机分配一个 容器启动(docker start)启动一个或多个容器。 命令格式：docker start [参数] 容器[容器..] 常用参数：12-a 将当前的输入/输出连接到容器-i 将当前的输入连接到容器上 容器创建并启动(docker run)命令格式：docker run [参数] 镜像 [容器执行命令] [执行命令提供的参数] 常用参数：1234-t 分配一个虚拟终端-i 保持输入打开-d 容器后台运行，并打印容器id--rm 容器结束后自动删除容器 注意：因为我们学习docker主要还是为我们之后基于docker的Python开发服务的，所以关于docker run 以及 docker create/start 的一些参数的具体的区别就不在文章里赘述，有疑问的朋友可以参考官方文档，当然也欢迎和咸鱼在留言区讨论，大家在这里简单记两个公式就好： 12docker run = doker create + docker start -adocker run -d = docker create + docker start 这里咸鱼推荐大家使用docker run -dti来启动所需容器。 容器暂停(docker pause/unpause)docker pause 暂停一个或多个容器 docker unpause 启动一个或多个暂停中的容器 命令格式：docker pause/unpause 容器[容器..] 容器关闭(docker stop)关闭一个或多个容器。 docker stop 关闭一个或多个容器 命令格式：docker stop 容器[容器..]常用参数：1-t 关闭前的等待时间，默认是10秒 容器终止(docker kill)强制并立即关闭一个或多个处于暂停或运行状态的容器。 命令格式：docker kill [参数] 容器[容器..] 常用参数：-s 指定发给容器的关闭信号，默认为“kill” 容器重启(docker restart)重启一个或多个处于运行状态、暂停状态、关闭状态或创建状态的容器。 命令格式：docker restart [参数] 容器[容器..] 常用参数：1-t 关闭前的等待时间，默认是10秒，实则是关闭前的等待时间 容器删除(docker container rm / docker rm )命令格式：docker container rm [参数] 容器[容器..] 常用参数：12-f 强制删除-v 删除容器的同时删除容器的数据卷 docker kill 和 docker stop 区别在上面关于docker容器生命周期管理中stop 和 kill 都是关闭容器，但是其中的kill是怎么实现强制杀死运行中的容器的呢？ 这里需要说明下关linux下关于终止进程的信号:SIGTERM 和 SIGKILL SIGKILL信号：无条件终止进程信号。进程接收到该信号会立即终止，不进行清理和暂存工作。该信号不能被忽略、处理和阻塞，它向系统管理员提供了可以杀死任何进程的方法。 SIGTERM信号：程序终结信号，可以由kill命令产生。与SIGKILL不同的是，SIGTERM信号可以被阻塞和终止，以便程序在退出前可以保存工作或清理临时文件等。 docker stop 会先发出SIGTERM信号给进程，告诉进程即将会被关闭。在-t指定的等待时间过了之后，将会立即发出SIGKILL信号，直接关闭容器。 docker kill 直接发出SIGKILL信号关闭容器。但也可以通过-s参数修改发出的信号。 docker restart 中同样可以设置 -t 等待时间，当等待时间过后会立刻发送SIGKILL信号，直接关闭容器。 因此会发现在docker stop的等待过程中，如果终止docker stop的执行，容器最终没有被关闭。而docker kill几乎是立刻发生，无法撤销。 总结关于docker容器的生命周期管理，咸鱼踩坑之后认为需要加深理解的部分是关于docker run/start/create 以及 docker kill/stop/restart这两大部分。 关于docker kill 和 docker stop 区别希望大家能着重看下上面docker kill/stop区别部分，至于docker run/start/create最好能够动手敲一下感受下不同参数创建的后容器区别。 以上就是咸鱼关于容器生命周期管理部分的踩坑总结。]]></content>
+    <title><![CDATA[Docker网络]]></title>
+    <url>%2F2019%2F03%2F19%2FDocker-network%2F</url>
+    <content type="text"><![CDATA[为什么需要容器的网络管理？容器的网络默认与宿主机、与其他容器相互隔离，且容器中可以运行一些网络应用，比如nginx、web应用、数据库等，如果需要让外部也可以访问这些容器中运行的网络应用，那么就需要配置网络来实现。 同样的，不同需求下，容器与宿主机的通信有不同的业务状态这时候就需要容器网络管理以达成管理不同业务下相关的网络配置。 Docker中的网络驱动模式有那些？bridge network(网桥)模式:默认的网络模式，类似虚拟机的nat模式 host network(主机)模式:容器与宿主机之间的网络无隔离，即容器直接使用宿主机网络 none network模式:容器禁用所有网络 overlay network(覆盖)模式:利用vxlan实现的bridge模式 macvlan network模式:容器具备MAC地址，使其在外部看来是一台真实的网络设备 Docker网络管理命令浅析查看网络(docker network ls)命令格式: docker network ls [参数] 常用参数: 1-q 只显示网络对象的ID 注意: docker安装之后，会自动创建bridge、host、none三种网络驱动。 创建网络(docker network create)命令格式:docker network create [参数] 网络 常用参数:1234-d 指定网络的驱动，不指定默认为bridge-- subnet 指定子网网段(192.168.0.0/16)-- ip-range 指定容器的IP范围-- gateway 子网的网关 注意: 创建网络部分参数，涉及到网络工程师相关的知识，这里不做详细介绍有需要可以参考「计算机网络」这本书，内有详解。 host、none模式的网络只能存在一个，再次创建会报错。 overlay网络创建依赖于docker swarm(集群负载均衡)服务 网络删除(docker network rm)删除一个或多个网络 命令格式:docker network rm 网络[网络..] 查看网络详细信息(docker network inspect)命令格式: docker network inspect [参数] 网络 docker inspect [参数] 网络 常用参数:1-f 根据format输出结果 使用网络(docker run)命令格式:docker run/create –network 网络 注意:默认情况下，docker创建或启动容器时，会默认使用名为bridge的网络 网络连接与断开(docker network connect /disconnect)命令格式: docker network connect/disconnect [参数] 网络 容器 常用参数:1-f 强制断开连接 Docker网络模式简介bridge网络模式 bridge网络模式的特点： 宿主机上需要单独的bridge网卡，如默认docker默认创建的docker0。 容器之间、容器与主机之间的网络通信，是借助为每一个容器生成的一对veth pair虚拟网络设备对，进行通信的。一个在容器上，另一个在宿主机上。（这是网桥） 每创建一个基于bridge网络的容器，都会自动在宿主机上创建一个veth**虚拟网络设备。外部无法直接访问容器。需要建立端口映射才能访问。(可以理解为网卡) 容器借由veth虚拟设备通过如docker0这种bridge网络设备进行通信。 每一容器具有单独的IP bridge网络模式下宿主机与容器服务使用的端口可以重复 bridge网络模式下的端口映射根据上面关于bridge的特点我们可以知道访问bridge网络模式的设备，需要端口映射。 端口映射的命令格式:docker run/create -P/-p 命令参数:12-P 将容器内部所有暴露端口进行随机映射-p 手动指定端口映射 (-p [宿主机IP] : [宿主机端口] : 容器端口) 关于-p参数的举例:12-p ::80 将容器的80端口随机映射到宿主机的随机IP上-p :8000:6379 将容器的6379端口映射到宿主机的任意IP的8000端口上 host网络模式host网络模式的特点: 容器完全共享宿主机的网络，网络没有隔离。宿主机的网络就是容器的网络。 容器、主机上的应用所使用的端口不能重复。 外部可以直接访问容器，不需要端口映射 容器IP就是宿主机的IP 除了普通的host网络模式外，同样还有特殊版本的host网络模式(container网络模式)。 container网络模式的特点: 其实就是容器共享其他容器的网络,相当于该容器,在网络层面上，将其他容器作为“主机”。它们之间的网络没有隔离。 container网络模式的使用: docker run/create –network container:容器 none、overlay与macvlan网络模式none网络模式的特点: 容器上没有网络，也无需任何网络设备 如果需要使用网络，需要用户自行安装与配置 overlay网络模式的特点: overlay网络模式实现方案有很多种，在Docker自身集成了一种，基于VXLAN隧道技术实现 overlay网络主要用于实现跨主机容器之间的通信 macvlan网络模式的特点: macvlan的主要特点就是通信直接基于mac地址进行转发 在macvlan中宿主机担任的角色是一台二层交换机，docker会维护一张mac地址表，当宿主机收到数据包时，直接根据mac地址找到对应的容器 而在容器内部互相通信的时候，容器直接使用IP互通，所以每个容器对于外面的网络都是一台真实的网络设备 总结这次文章主要复习了docker的网络管理的内容，其中host,bridge,container是主要的复习内容，且在三种网络模式中建议优先选用host网络模式，其使用性能最优。]]></content>
       <categories>
         <category>Docker</category>
       </categories>
@@ -684,9 +684,9 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[Python笔试题(一)]]></title>
-    <url>%2F2019%2F02%2F09%2Fexma2%2F</url>
-    <content type="text"><![CDATA[题目 以下两段代码，运行结束后的结果是什么？是否相同？原因是什么？ 4G内存怎么读取一个5G的数据？ 浅述深浅拷贝 答案1.不相同 第一段结果为:1[&#123;'num':0&#125;,&#123;'num':1&#125;,&#123;'num':2&#125;,&#123;'num':3&#125;,&#123;'num':4&#125;,&#123;'num':5&#125;,&#123;'num':6&#125;,&#123;'num':7&#125;,&#123;'num':8&#125;,&#123;'num':9&#125;] 第二段结果为:1[&#123;'num':9&#125;,&#123;'num':9&#125;,&#123;'num':9&#125;,&#123;'num':9&#125;,&#123;'num':9&#125;,&#123;'num':9&#125;,&#123;'num':9&#125;,&#123;'num':9&#125;,&#123;'num':9&#125;,&#123;'num':9&#125;] 字典是可变类型，这里l.append(a)相当于执行了浅拷贝,每改变一次a中num的值,所有a的值都将改变 2.实现方法有两种。 实现方法一: 方法一的实现思路是通过生成器,一次读取少量数据,标准答案是根据文件实现，这里给出的例子是咸鱼学习bobby老师的课程时记录的例子,不知道如何使用生成器完成这个需求的朋友可以参考: 实现方法二: 在linux系统下使用split可以分割文件,对于多行文件可以使用按行分割的方式,对于单行的大文件可以采用按文件大小分割。 按文件行数分割:split -l 300 large_file.log smallfile_prefix 按文件大小分割:split -b 10m large_file.log smallfile_prefix 之后再按文件读取即可。 3.这个之前的文章讲过,直接点下面的直通车即可。]]></content>
+    <title><![CDATA[Python笔试题(二)]]></title>
+    <url>%2F2019%2F02%2F09%2Fexam1%2F</url>
+    <content type="text"><![CDATA[本系列文章素材，题目来源于真实企业笔试题,具体哪来的？平时多水群就好 第一题下图中的打印结果分别是什么？ 第二题Python中静态方法、类方法、成员函数作用是什么？ 第三题说说对缺省参数的理解？* args是什么？** kwargs是什么？ 答案第一题前三个是True,最后一个会报错。 具前三个为什么输出True,不了解的可以参考下图: 最后一个为什么报错，我们可以先看下issubclass的用法: 123456789101112issubclass方法用于判断参数 class 是否是类型参数 classinfo 的子类issubclass(class, classinfo)参数class -- 类。classinfo -- 类。返回值如果 class 是 classinfo 的子类返回 True，否则返回 False。以上内容参考:菜鸟教程 - http://www.runoob.com/python/python-func-issubclass.html 而在题目中b并不是一个类,所以报错。 第二题我们先理清楚静态函数、类函数分别是什么？ 静态方法是一种普通函数，就位于类定义的命名空间中，它不会对任何实例类型进行操作。使用装饰器@staticmethod定义静态方法。类对象和实例都可以调用静态方法。 类方法是将类本身作为对象进行操作的方法。类方法使用@classmethod装饰器定义，其第一个参数是类，约定写为cls。 代码实例可以参考:https://blog.csdn.net/baidu_20351223/article/details/80160868 第三题缺省参数是指在调用函数的时候没有传入参数的情况下，调用默认的参数，在调用函数的同时赋值时，所传入的参数会替代默认参数。 *args 是不定长参数，可以表示输入参数是不确定的，可以任意多个 ** kwargs 是关键词参数，赋值的时候是以键 = 值 的方式，参数是可以任意多对。 以上两个的使用是在定义函数的时候不确定会传入多少参数时使用。 小结有读者朋友在后台留言，面试题怎么这么简单，说实话，我认真翻了10几份面试题，每一份的题量都不多，其中大部分都是这类基础题，少部分是专业导向比较强的题目和面试的岗位相关，剩下一部分就是算法与数据结构相关的题目。所以咸鱼觉的打好基础才是通关笔试的第一步，当然像宇宙条那种通篇算法题的笔试题也有，这里就刨除这些另谈了。]]></content>
       <categories>
         <category>Python笔试题</category>
       </categories>
@@ -695,9 +695,9 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[Python笔试题(二)]]></title>
-    <url>%2F2019%2F02%2F09%2Fexam1%2F</url>
-    <content type="text"><![CDATA[本系列文章素材，题目来源于真实企业笔试题,具体哪来的？平时多水群就好 第一题下图中的打印结果分别是什么？ 第二题Python中静态方法、类方法、成员函数作用是什么？ 第三题说说对缺省参数的理解？* args是什么？** kwargs是什么？ 答案第一题前三个是True,最后一个会报错。 具前三个为什么输出True,不了解的可以参考下图: 最后一个为什么报错，我们可以先看下issubclass的用法: 123456789101112issubclass方法用于判断参数 class 是否是类型参数 classinfo 的子类issubclass(class, classinfo)参数class -- 类。classinfo -- 类。返回值如果 class 是 classinfo 的子类返回 True，否则返回 False。以上内容参考:菜鸟教程 - http://www.runoob.com/python/python-func-issubclass.html 而在题目中b并不是一个类,所以报错。 第二题我们先理清楚静态函数、类函数分别是什么？ 静态方法是一种普通函数，就位于类定义的命名空间中，它不会对任何实例类型进行操作。使用装饰器@staticmethod定义静态方法。类对象和实例都可以调用静态方法。 类方法是将类本身作为对象进行操作的方法。类方法使用@classmethod装饰器定义，其第一个参数是类，约定写为cls。 代码实例可以参考:https://blog.csdn.net/baidu_20351223/article/details/80160868 第三题缺省参数是指在调用函数的时候没有传入参数的情况下，调用默认的参数，在调用函数的同时赋值时，所传入的参数会替代默认参数。 *args 是不定长参数，可以表示输入参数是不确定的，可以任意多个 ** kwargs 是关键词参数，赋值的时候是以键 = 值 的方式，参数是可以任意多对。 以上两个的使用是在定义函数的时候不确定会传入多少参数时使用。 小结有读者朋友在后台留言，面试题怎么这么简单，说实话，我认真翻了10几份面试题，每一份的题量都不多，其中大部分都是这类基础题，少部分是专业导向比较强的题目和面试的岗位相关，剩下一部分就是算法与数据结构相关的题目。所以咸鱼觉的打好基础才是通关笔试的第一步，当然像宇宙条那种通篇算法题的笔试题也有，这里就刨除这些另谈了。]]></content>
+    <title><![CDATA[Python笔试题(一)]]></title>
+    <url>%2F2019%2F02%2F09%2Fexma2%2F</url>
+    <content type="text"><![CDATA[题目 以下两段代码，运行结束后的结果是什么？是否相同？原因是什么？ 4G内存怎么读取一个5G的数据？ 浅述深浅拷贝 答案1.不相同 第一段结果为:1[&#123;'num':0&#125;,&#123;'num':1&#125;,&#123;'num':2&#125;,&#123;'num':3&#125;,&#123;'num':4&#125;,&#123;'num':5&#125;,&#123;'num':6&#125;,&#123;'num':7&#125;,&#123;'num':8&#125;,&#123;'num':9&#125;] 第二段结果为:1[&#123;'num':9&#125;,&#123;'num':9&#125;,&#123;'num':9&#125;,&#123;'num':9&#125;,&#123;'num':9&#125;,&#123;'num':9&#125;,&#123;'num':9&#125;,&#123;'num':9&#125;,&#123;'num':9&#125;,&#123;'num':9&#125;] 字典是可变类型，这里l.append(a)相当于执行了浅拷贝,每改变一次a中num的值,所有a的值都将改变 2.实现方法有两种。 实现方法一: 方法一的实现思路是通过生成器,一次读取少量数据,标准答案是根据文件实现，这里给出的例子是咸鱼学习bobby老师的课程时记录的例子,不知道如何使用生成器完成这个需求的朋友可以参考: 实现方法二: 在linux系统下使用split可以分割文件,对于多行文件可以使用按行分割的方式,对于单行的大文件可以采用按文件大小分割。 按文件行数分割:split -l 300 large_file.log smallfile_prefix 按文件大小分割:split -b 10m large_file.log smallfile_prefix 之后再按文件读取即可。 3.这个之前的文章讲过,直接点下面的直通车即可。]]></content>
       <categories>
         <category>Python笔试题</category>
       </categories>
@@ -1021,8 +1021,8 @@
         <category>爬虫</category>
       </categories>
       <tags>
-        <tag>爬虫</tag>
         <tag>Python</tag>
+        <tag>爬虫</tag>
       </tags>
   </entry>
   <entry>
@@ -1055,8 +1055,8 @@
         <category>爬虫</category>
       </categories>
       <tags>
-        <tag>爬虫</tag>
         <tag>Python</tag>
+        <tag>爬虫</tag>
       </tags>
   </entry>
   <entry>
@@ -1067,8 +1067,8 @@
         <category>爬虫</category>
       </categories>
       <tags>
-        <tag>爬虫</tag>
         <tag>Python</tag>
+        <tag>爬虫</tag>
       </tags>
   </entry>
   <entry>
@@ -1090,8 +1090,8 @@
         <category>爬虫</category>
       </categories>
       <tags>
-        <tag>爬虫</tag>
         <tag>Python</tag>
+        <tag>爬虫</tag>
       </tags>
   </entry>
   <entry>

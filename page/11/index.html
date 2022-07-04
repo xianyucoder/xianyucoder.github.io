@@ -808,227 +808,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2019/03/19/Docker-network/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="煌金">
-      <meta itemprop="description" content="Stay Hungry, Stay Foolish.">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="咸鱼自我满足的日常">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/03/19/Docker-network/" itemprop="url">
-                  Docker网络
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-03-19 08:39:35" itemprop="dateCreated datePublished" datetime="2019-03-19T08:39:35+08:00">2019-03-19</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-08-21 22:49:08" itemprop="dateModified" datetime="2019-08-21T22:49:08+08:00">2019-08-21</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2019/03/19/Docker-network/#comments" itemprop="discussionUrl">
-                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2019/03/19/Docker-network/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-		  
-		  
-
-          
-            <div class="post-symbolscount">
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">本文字数：</span>
-                
-                <span title="本文字数">6.9k</span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">11 分钟</span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p><img src="http://tc.xianyucoder.cn/blog20190821223443.png" alt></p>
-<h4 id="为什么需要容器的网络管理？"><a href="#为什么需要容器的网络管理？" class="headerlink" title="为什么需要容器的网络管理？"></a>为什么需要容器的网络管理？</h4><p>容器的网络默认与宿主机、与其他容器相互隔离，且容器中可以运行一些网络应用，比如nginx、web应用、数据库等，如果需要让外部也可以访问这些容器中运行的网络应用，那么就需要配置网络来实现。</p>
-<p>同样的，不同需求下，容器与宿主机的通信有不同的业务状态这时候就需要容器网络管理以达成管理不同业务下相关的网络配置。</p>
-<h4 id="Docker中的网络驱动模式有那些？"><a href="#Docker中的网络驱动模式有那些？" class="headerlink" title="Docker中的网络驱动模式有那些？"></a>Docker中的网络驱动模式有那些？</h4><p>bridge network(网桥)模式:默认的网络模式，类似虚拟机的nat模式</p>
-<p>host network(主机)模式:容器与宿主机之间的网络无隔离，即容器直接使用宿主机网络</p>
-<p>none network模式:容器禁用所有网络</p>
-<p>overlay network(覆盖)模式:利用vxlan实现的bridge模式</p>
-<p>macvlan network模式:容器具备MAC地址，使其在外部看来是一台真实的网络设备<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/03/19/Docker-network/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </p></div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2019/03/19/Docker-rong-qi/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1207,6 +986,227 @@
         
       
     </li></ul></div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xianyucoder.cn/2019/03/19/Docker-network/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="煌金">
+      <meta itemprop="description" content="Stay Hungry, Stay Foolish.">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="咸鱼自我满足的日常">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/19/Docker-network/" itemprop="url">
+                  Docker网络
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-03-19 08:39:35" itemprop="dateCreated datePublished" datetime="2019-03-19T08:39:35+08:00">2019-03-19</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-08-21 22:49:08" itemprop="dateModified" datetime="2019-08-21T22:49:08+08:00">2019-08-21</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/03/19/Docker-network/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2019/03/19/Docker-network/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+		  
+		  
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">6.9k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">11 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p><img src="http://tc.xianyucoder.cn/blog20190821223443.png" alt></p>
+<h4 id="为什么需要容器的网络管理？"><a href="#为什么需要容器的网络管理？" class="headerlink" title="为什么需要容器的网络管理？"></a>为什么需要容器的网络管理？</h4><p>容器的网络默认与宿主机、与其他容器相互隔离，且容器中可以运行一些网络应用，比如nginx、web应用、数据库等，如果需要让外部也可以访问这些容器中运行的网络应用，那么就需要配置网络来实现。</p>
+<p>同样的，不同需求下，容器与宿主机的通信有不同的业务状态这时候就需要容器网络管理以达成管理不同业务下相关的网络配置。</p>
+<h4 id="Docker中的网络驱动模式有那些？"><a href="#Docker中的网络驱动模式有那些？" class="headerlink" title="Docker中的网络驱动模式有那些？"></a>Docker中的网络驱动模式有那些？</h4><p>bridge network(网桥)模式:默认的网络模式，类似虚拟机的nat模式</p>
+<p>host network(主机)模式:容器与宿主机之间的网络无隔离，即容器直接使用宿主机网络</p>
+<p>none network模式:容器禁用所有网络</p>
+<p>overlay network(覆盖)模式:利用vxlan实现的bridge模式</p>
+<p>macvlan network模式:容器具备MAC地址，使其在外部看来是一台真实的网络设备<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/03/19/Docker-network/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </p></div>
 
     
 
