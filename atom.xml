@@ -126,36 +126,6 @@
   </entry>
   
   <entry>
-    <title>JS逆向-58同城密码加密分析</title>
-    <link href="http://www.xianyucoder.cn/2019/09/16/%E6%AF%8F%E6%97%A5JS-58%E5%90%8C%E5%9F%8E%E5%AF%86%E7%A0%81%E5%8A%A0%E5%AF%86%E4%B8%8E%E6%8C%87%E7%BA%B9%E5%88%86%E6%9E%90-RSA/"/>
-    <id>http://www.xianyucoder.cn/2019/09/16/每日JS-58同城密码加密与指纹分析-RSA/</id>
-    <published>2019-09-16T10:39:35.000Z</published>
-    <updated>2019-09-30T02:49:24.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>目标网站：</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">aHR0cHM6Ly9wYXNzcG9ydC41OC5jb20vbG9naW4vP3BhdGg</span><br><span class="line"><span class="number">9</span>aHR0cHMlM0EvL2Z6LjU4LmNvbS8mUEdUSUQ9MGQxMDAwMDAtMDAx</span><br><span class="line">My0wMjk0LTFjZWItYjU3NTBiZDIwNmU5JkNsaWNrSUQ9Mg==</span><br></pre></td></tr></table></figure><h4 id="抓包分析与加密定位"><a href="#抓包分析与加密定位" class="headerlink" title="抓包分析与加密定位"></a>抓包分析与加密定位</h4><p>老规矩先抓包看看【图1-1】</p><p><img src="http://tc.xianyucoder.cn/blog20190925190359.png" alt="图1-1"></p><p>今天主要分析的是划线的三个参数，先一个一个来研究一下。</p><p>先看看密码的加密，按照之前的思路我们测试了<code>password</code>的相关搜索项，但是搜索出来的结果都不尽如人意。【图1-2】</p><p>同时这个请求也不是<code>XHR</code>请求，所以<code>xhr</code>断点也用不上了。</p><p><img src="http://tc.xianyucoder.cn/blog20190925190753.png" alt="图1-2"></p><p>搜索的结果中比较有相关性的是【图1-2】标注的部分，但是在文件的搜索项里搜索<code>password</code>是找不到加密位置的。</p><p>我简单总结了几种办法，虽然并不一定适用于其他网站的加密，算是提供一种新的思路。</p><p>第一、搜索相关的的提示语，就像在之前的我做的第一个 APP 逆向的项目中，我就是搜索相关的提示语找到了扣费逻辑的代码，这里也可以按照这样的思路。</p><p>在这个网站的加密里点击登陆，点击后按钮变为<code>登录中...</code>，搜索相关提示语再逐步打断点一直追下去是可以找到加密位置的，不过这是个下下策，耗时太长，很容易追丢了，为了这个不值当。（不推荐使用）</p><p>第二、参考开头的搜索关键字的方法，这里搜索的是<code>encrypt</code>，经常遇到加密的变量或方法是<code>encrypt(XX)</code>这样的形式。</p><p>第三、试试从网页中找找答案，之前做过一些简单的例子是将 js 的代码直接写到页面中自执行或者采用隐藏域传递值的方式，比如：像<code>PublicKey</code>这类比较有特色的值，如果能找到对我们的帮助是很大的。</p><p>按照上面总结的几种方法，我们再次搜索【图1-3】</p><p><img src="http://tc.xianyucoder.cn/blog20190925193129.png" alt="图1-3"></p><p>又搜索到这个熟悉的文件，这次我们进去搜索一次，这次找到了好多类似加密的地方，为了省事我把所有相关的值都打上了断点，再次登录。【图1-4】</p><p><img src="http://tc.xianyucoder.cn/blog20190925193706.png" alt="图1-4"></p><p>到这里就定位到加密的地方了。</p><p>继续追进去可以看到进入的是一个<code>VM</code>【图1-5】</p><p><img src="http://tc.xianyucoder.cn/blog20190925193948.png" alt="图1-5"></p><p>到这里就没有什么难度了，密码的加密就是 <code>RSA</code> + <code>eval</code>。</p><p>如果你很幸运先找到了<code>eval</code>加密的地方，但是不知道怎么解决，可以参考之前一篇关于<code>js</code>混淆的文章。</p><p>—-&gt; 点我看文章</p><p>或者直接打开浏览器的<code>开发者工具</code>切换到<code>console</code>选项卡，把相关的<code>eval</code>代码粘贴进去，将代码开头的<code>eval</code>替换为<code>console.log</code>，就可以得到原来的代码了。【图1-6】</p><p><img src="http://tc.xianyucoder.cn/blog20190925194535.png" alt="图1-6"></p><p>接下来看的是两个指纹相关的参数，这里就比较简单了，直接搜索<code>fingerprint</code>就可以找到相关加密文件，直接在里面打断点就可以了。【图1-7】</p><p><img src="http://tc.xianyucoder.cn/blog20190925194830.png" alt></p><p>这里的注意点是想要重新生成指纹，记得要刷新页面才可以。</p><h4 id="尾"><a href="#尾" class="headerlink" title="尾"></a>尾</h4><p>关于指纹的加密生成讲的比较简单，需要学习案例的朋友可以访问下面的网址。</p><p><a href="https://lengyue.me/" target="_blank" rel="noopener">https://lengyue.me/</a></p><p>也可以看看冷月打来之前的关于某个网站指纹加密的视频教程。</p><p>链接 : <a href="https://pan.baidu.com/s/1Y8pcacZbHF1DXW0znzmZKQ" target="_blank" rel="noopener">https://pan.baidu.com/s/1Y8pcacZbHF1DXW0znzmZKQ</a>  密码:vkmf</p><p>失效请留言。</p><p>EOF</p><p><img src="http://tc.xianyucoder.cn/blogWechatIMG1956.jpeg" alt></p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;目标网站：&lt;/p&gt;
-&lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;
-      
-    
-    </summary>
-    
-      <category term="js逆向" scheme="http://www.xianyucoder.cn/categories/js%E9%80%86%E5%90%91/"/>
-    
-    
-      <category term="js逆向" scheme="http://www.xianyucoder.cn/tags/js%E9%80%86%E5%90%91/"/>
-    
-      <category term="密码加密" scheme="http://www.xianyucoder.cn/tags/%E5%AF%86%E7%A0%81%E5%8A%A0%E5%AF%86/"/>
-    
-      <category term="58同城" scheme="http://www.xianyucoder.cn/tags/58%E5%90%8C%E5%9F%8E/"/>
-    
-  </entry>
-  
-  <entry>
     <title>JS逆向-叮当快药 sign 加密分析</title>
     <link href="http://www.xianyucoder.cn/2019/09/16/%E6%AF%8F%E6%97%A5JS-%E5%8F%AE%E5%BD%93%E5%BF%AB%E8%8D%AF-MD5/"/>
     <id>http://www.xianyucoder.cn/2019/09/16/每日JS-叮当快药-MD5/</id>
@@ -182,6 +152,36 @@
       <category term="sign" scheme="http://www.xianyucoder.cn/tags/sign/"/>
     
       <category term="叮当快药" scheme="http://www.xianyucoder.cn/tags/%E5%8F%AE%E5%BD%93%E5%BF%AB%E8%8D%AF/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>JS逆向-58同城密码加密分析</title>
+    <link href="http://www.xianyucoder.cn/2019/09/16/%E6%AF%8F%E6%97%A5JS-58%E5%90%8C%E5%9F%8E%E5%AF%86%E7%A0%81%E5%8A%A0%E5%AF%86%E4%B8%8E%E6%8C%87%E7%BA%B9%E5%88%86%E6%9E%90-RSA/"/>
+    <id>http://www.xianyucoder.cn/2019/09/16/每日JS-58同城密码加密与指纹分析-RSA/</id>
+    <published>2019-09-16T10:39:35.000Z</published>
+    <updated>2019-09-30T02:49:24.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>目标网站：</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">aHR0cHM6Ly9wYXNzcG9ydC41OC5jb20vbG9naW4vP3BhdGg</span><br><span class="line"><span class="number">9</span>aHR0cHMlM0EvL2Z6LjU4LmNvbS8mUEdUSUQ9MGQxMDAwMDAtMDAx</span><br><span class="line">My0wMjk0LTFjZWItYjU3NTBiZDIwNmU5JkNsaWNrSUQ9Mg==</span><br></pre></td></tr></table></figure><h4 id="抓包分析与加密定位"><a href="#抓包分析与加密定位" class="headerlink" title="抓包分析与加密定位"></a>抓包分析与加密定位</h4><p>老规矩先抓包看看【图1-1】</p><p><img src="http://tc.xianyucoder.cn/blog20190925190359.png" alt="图1-1"></p><p>今天主要分析的是划线的三个参数，先一个一个来研究一下。</p><p>先看看密码的加密，按照之前的思路我们测试了<code>password</code>的相关搜索项，但是搜索出来的结果都不尽如人意。【图1-2】</p><p>同时这个请求也不是<code>XHR</code>请求，所以<code>xhr</code>断点也用不上了。</p><p><img src="http://tc.xianyucoder.cn/blog20190925190753.png" alt="图1-2"></p><p>搜索的结果中比较有相关性的是【图1-2】标注的部分，但是在文件的搜索项里搜索<code>password</code>是找不到加密位置的。</p><p>我简单总结了几种办法，虽然并不一定适用于其他网站的加密，算是提供一种新的思路。</p><p>第一、搜索相关的的提示语，就像在之前的我做的第一个 APP 逆向的项目中，我就是搜索相关的提示语找到了扣费逻辑的代码，这里也可以按照这样的思路。</p><p>在这个网站的加密里点击登陆，点击后按钮变为<code>登录中...</code>，搜索相关提示语再逐步打断点一直追下去是可以找到加密位置的，不过这是个下下策，耗时太长，很容易追丢了，为了这个不值当。（不推荐使用）</p><p>第二、参考开头的搜索关键字的方法，这里搜索的是<code>encrypt</code>，经常遇到加密的变量或方法是<code>encrypt(XX)</code>这样的形式。</p><p>第三、试试从网页中找找答案，之前做过一些简单的例子是将 js 的代码直接写到页面中自执行或者采用隐藏域传递值的方式，比如：像<code>PublicKey</code>这类比较有特色的值，如果能找到对我们的帮助是很大的。</p><p>按照上面总结的几种方法，我们再次搜索【图1-3】</p><p><img src="http://tc.xianyucoder.cn/blog20190925193129.png" alt="图1-3"></p><p>又搜索到这个熟悉的文件，这次我们进去搜索一次，这次找到了好多类似加密的地方，为了省事我把所有相关的值都打上了断点，再次登录。【图1-4】</p><p><img src="http://tc.xianyucoder.cn/blog20190925193706.png" alt="图1-4"></p><p>到这里就定位到加密的地方了。</p><p>继续追进去可以看到进入的是一个<code>VM</code>【图1-5】</p><p><img src="http://tc.xianyucoder.cn/blog20190925193948.png" alt="图1-5"></p><p>到这里就没有什么难度了，密码的加密就是 <code>RSA</code> + <code>eval</code>。</p><p>如果你很幸运先找到了<code>eval</code>加密的地方，但是不知道怎么解决，可以参考之前一篇关于<code>js</code>混淆的文章。</p><p>—-&gt; 点我看文章</p><p>或者直接打开浏览器的<code>开发者工具</code>切换到<code>console</code>选项卡，把相关的<code>eval</code>代码粘贴进去，将代码开头的<code>eval</code>替换为<code>console.log</code>，就可以得到原来的代码了。【图1-6】</p><p><img src="http://tc.xianyucoder.cn/blog20190925194535.png" alt="图1-6"></p><p>接下来看的是两个指纹相关的参数，这里就比较简单了，直接搜索<code>fingerprint</code>就可以找到相关加密文件，直接在里面打断点就可以了。【图1-7】</p><p><img src="http://tc.xianyucoder.cn/blog20190925194830.png" alt></p><p>这里的注意点是想要重新生成指纹，记得要刷新页面才可以。</p><h4 id="尾"><a href="#尾" class="headerlink" title="尾"></a>尾</h4><p>关于指纹的加密生成讲的比较简单，需要学习案例的朋友可以访问下面的网址。</p><p><a href="https://lengyue.me/" target="_blank" rel="noopener">https://lengyue.me/</a></p><p>也可以看看冷月打来之前的关于某个网站指纹加密的视频教程。</p><p>链接 : <a href="https://pan.baidu.com/s/1Y8pcacZbHF1DXW0znzmZKQ" target="_blank" rel="noopener">https://pan.baidu.com/s/1Y8pcacZbHF1DXW0znzmZKQ</a>  密码:vkmf</p><p>失效请留言。</p><p>EOF</p><p><img src="http://tc.xianyucoder.cn/blogWechatIMG1956.jpeg" alt></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;目标网站：&lt;/p&gt;
+&lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;
+      
+    
+    </summary>
+    
+      <category term="js逆向" scheme="http://www.xianyucoder.cn/categories/js%E9%80%86%E5%90%91/"/>
+    
+    
+      <category term="js逆向" scheme="http://www.xianyucoder.cn/tags/js%E9%80%86%E5%90%91/"/>
+    
+      <category term="密码加密" scheme="http://www.xianyucoder.cn/tags/%E5%AF%86%E7%A0%81%E5%8A%A0%E5%AF%86/"/>
+    
+      <category term="58同城" scheme="http://www.xianyucoder.cn/tags/58%E5%90%8C%E5%9F%8E/"/>
     
   </entry>
   
@@ -513,19 +513,22 @@
   </entry>
   
   <entry>
-    <title>聪明工作-如何从互联网中高效摄取信息？</title>
-    <link href="http://www.xianyucoder.cn/2019/08/26/%E8%81%AA%E6%95%8F%E5%B7%A5%E4%BD%9C-%E5%A6%82%E4%BD%95%E4%BB%8E%E4%BA%92%E8%81%94%E7%BD%91%E4%B8%AD%E6%9C%89%E9%AB%98%E6%95%88%E6%91%84%E5%8F%96%E4%BF%A1%E6%81%AF%EF%BC%9F/"/>
-    <id>http://www.xianyucoder.cn/2019/08/26/聪敏工作-如何从互联网中有高效摄取信息？/</id>
+    <title>聪明工作-如何做好文件管理？</title>
+    <link href="http://www.xianyucoder.cn/2019/08/26/%E8%81%AA%E6%98%8E%E5%B7%A5%E4%BD%9C-%E5%A6%82%E4%BD%95%E5%81%9A%E5%A5%BD%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86%EF%BC%9F/"/>
+    <id>http://www.xianyucoder.cn/2019/08/26/聪明工作-如何做好文件管理？/</id>
     <published>2019-08-26T10:39:35.000Z</published>
-    <updated>2019-08-26T10:55:20.000Z</updated>
+    <updated>2019-08-26T10:59:32.000Z</updated>
     
-    <content type="html"><![CDATA[<h4 id="如何从互联网中有高效摄取信息？"><a href="#如何从互联网中有高效摄取信息？" class="headerlink" title="如何从互联网中有高效摄取信息？"></a>如何从互联网中有高效摄取信息？</h4><h5 id="信息源检查清单"><a href="#信息源检查清单" class="headerlink" title="信息源检查清单"></a>信息源检查清单</h5><ul><li>信息源的目的（想学什么？）</li><li>信息源的质量<ul><li>信息源的半衰期 = 信息的有效时间</li><li>信息源的稀缺程度 = 价值高低</li><li>信息的半衰期越久，稀缺程度越高，价值越大</li></ul></li><li>对于信息源掌握主动权<ul><li>（区分 push 和 pull ) = 人人喜闻乐见的，终会趋于庸俗。</li></ul></li><li>警惕回声效应，应该从多角度获取信息</li></ul><h5 id="处理信息的能力"><a href="#处理信息的能力" class="headerlink" title="处理信息的能力"></a>处理信息的能力</h5><ul><li>速读<ul><li>通过关键词快速判读信息的价值</li></ul></li><li>溯源<ul><li>知道自己读过什么 = 稍后读</li><li>保留信息来源，随时进行回顾</li></ul></li><li>吸纳<ul><li>记录下来后应该对信息进行自我归纳，才能吸收成为自己的东西</li></ul></li></ul>]]></content>
+    <content type="html"><![CDATA[<h4 id="文件管理"><a href="#文件管理" class="headerlink" title="文件管理"></a>文件管理</h4><p>文件的「生命周期」 = 新建 + 修改 + 移动 +删除</p><ul><li>桌面文件整理<ul><li>给新建文件好好取个名字<ul><li>时间 + 类型 + 文件内容 + 版本号</li></ul></li><li>做好桌面文件的关联和归档</li><li>合理安排桌面的文件夹</li></ul></li><li>下载目录整理</li></ul><p>推荐工具：Everything，Droplt，Total Commander</p>]]></content>
     
     <summary type="html">
     
       
       
-        &lt;h4 id=&quot;如何从互联网中有高效摄取信息？&quot;&gt;&lt;a href=&quot;#如何从互联网中有高效摄取信息？&quot; class=&quot;headerlink&quot; title=&quot;如何从互联网中有高效摄取信息？&quot;&gt;&lt;/a&gt;如何从互联网中有高效摄取信息？&lt;/h4&gt;&lt;h5 id=&quot;信息源检查清单&quot;&gt;&lt;a h
+        &lt;h4 id=&quot;文件管理&quot;&gt;&lt;a href=&quot;#文件管理&quot; class=&quot;headerlink&quot; title=&quot;文件管理&quot;&gt;&lt;/a&gt;文件管理&lt;/h4&gt;&lt;p&gt;文件的「生命周期」 = 新建 + 修改 + 移动 +删除&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;桌面文件整理&lt;ul&gt;
+&lt;li&gt;给新建文件
       
     
     </summary>
@@ -533,9 +536,7 @@
       <category term="聪明工作" scheme="http://www.xianyucoder.cn/categories/%E8%81%AA%E6%98%8E%E5%B7%A5%E4%BD%9C/"/>
     
     
-      <category term="信息摄取" scheme="http://www.xianyucoder.cn/tags/%E4%BF%A1%E6%81%AF%E6%91%84%E5%8F%96/"/>
-    
-      <category term="互联网" scheme="http://www.xianyucoder.cn/tags/%E4%BA%92%E8%81%94%E7%BD%91/"/>
+      <category term="文件管理" scheme="http://www.xianyucoder.cn/tags/%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86/"/>
     
   </entry>
   
@@ -572,22 +573,19 @@
   </entry>
   
   <entry>
-    <title>聪明工作-如何做好文件管理？</title>
-    <link href="http://www.xianyucoder.cn/2019/08/26/%E8%81%AA%E6%98%8E%E5%B7%A5%E4%BD%9C-%E5%A6%82%E4%BD%95%E5%81%9A%E5%A5%BD%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86%EF%BC%9F/"/>
-    <id>http://www.xianyucoder.cn/2019/08/26/聪明工作-如何做好文件管理？/</id>
+    <title>聪明工作-如何做好笔记整理和思维导图？</title>
+    <link href="http://www.xianyucoder.cn/2019/08/26/%E8%81%AA%E6%98%8E%E5%B7%A5%E4%BD%9C-%E5%A6%82%E4%BD%95%E5%81%9A%E5%A5%BD%E7%AC%94%E8%AE%B0%E6%95%B4%E7%90%86%EF%BC%9F/"/>
+    <id>http://www.xianyucoder.cn/2019/08/26/聪明工作-如何做好笔记整理？/</id>
     <published>2019-08-26T10:39:35.000Z</published>
-    <updated>2019-08-26T10:59:32.000Z</updated>
+    <updated>2019-08-26T10:57:06.000Z</updated>
     
-    <content type="html"><![CDATA[<h4 id="文件管理"><a href="#文件管理" class="headerlink" title="文件管理"></a>文件管理</h4><p>文件的「生命周期」 = 新建 + 修改 + 移动 +删除</p><ul><li>桌面文件整理<ul><li>给新建文件好好取个名字<ul><li>时间 + 类型 + 文件内容 + 版本号</li></ul></li><li>做好桌面文件的关联和归档</li><li>合理安排桌面的文件夹</li></ul></li><li>下载目录整理</li></ul><p>推荐工具：Everything，Droplt，Total Commander</p>]]></content>
+    <content type="html"><![CDATA[<h4 id="笔记整理"><a href="#笔记整理" class="headerlink" title="笔记整理"></a>笔记整理</h4><h5 id="了解笔记整理的基本原则"><a href="#了解笔记整理的基本原则" class="headerlink" title="了解笔记整理的基本原则"></a>了解笔记整理的基本原则</h5><ul><li>记重点<ul><li>过于详细的记录反而拉低效率，只记关键字</li></ul></li><li>先收集<ul><li>把笔记变成收集箱，关键字要记成</li></ul></li><li>可回溯<ul><li>记下来的笔记以后要能找到</li></ul></li></ul><h4 id="不同类型笔记工具的优缺"><a href="#不同类型笔记工具的优缺" class="headerlink" title="不同类型笔记工具的优缺"></a>不同类型笔记工具的优缺</h4><ul><li>电子笔记整理更方便，可编辑，已分享</li><li>纸笔更自然</li></ul><h4 id="选择适合自己的笔记APP"><a href="#选择适合自己的笔记APP" class="headerlink" title="选择适合自己的笔记APP"></a>选择适合自己的笔记APP</h4><p>记完笔记推荐使用费曼学习法</p><p><img src="http://tc.xianyucoder.cn/blog20190825235300.png" alt></p><h4 id="思维导图"><a href="#思维导图" class="headerlink" title="思维导图"></a>思维导图</h4><h5 id="为什么使用思维导图"><a href="#为什么使用思维导图" class="headerlink" title="为什么使用思维导图"></a>为什么使用思维导图</h5><p>信息接受速度太快，导致「消化不良」</p><ul><li>思维导图的逻辑简单理解</li><li>节约时间和精力</li><li>应用范围很广泛<ul><li>头脑风暴</li><li>书摘</li><li>决策</li><li>商务提案</li><li>目标设定</li></ul></li></ul><h4 id="思维导图的通用技巧"><a href="#思维导图的通用技巧" class="headerlink" title="思维导图的通用技巧"></a>思维导图的通用技巧</h4><p>最重要就是敢记，思维导图就是为了帮助我们整理思路，所以不要怕记错记杂</p><ul><li>内容：多记，速记</li><li>形式：注意结构，清晰简明</li></ul><p>只记关键词，避免整句记录</p><p>自创常用字标签，提高记录速度</p><h4 id="如何选择思维导图"><a href="#如何选择思维导图" class="headerlink" title="如何选择思维导图"></a>如何选择思维导图</h4><ul><li>iThoughtsX</li><li>Xmind</li><li>MindNode（多文件导入导出）</li></ul>]]></content>
     
     <summary type="html">
     
       
       
-        &lt;h4 id=&quot;文件管理&quot;&gt;&lt;a href=&quot;#文件管理&quot; class=&quot;headerlink&quot; title=&quot;文件管理&quot;&gt;&lt;/a&gt;文件管理&lt;/h4&gt;&lt;p&gt;文件的「生命周期」 = 新建 + 修改 + 移动 +删除&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;桌面文件整理&lt;ul&gt;
-&lt;li&gt;给新建文件
+        &lt;h4 id=&quot;笔记整理&quot;&gt;&lt;a href=&quot;#笔记整理&quot; class=&quot;headerlink&quot; title=&quot;笔记整理&quot;&gt;&lt;/a&gt;笔记整理&lt;/h4&gt;&lt;h5 id=&quot;了解笔记整理的基本原则&quot;&gt;&lt;a href=&quot;#了解笔记整理的基本原则&quot; class=&quot;headerlink&quot; ti
       
     
     </summary>
@@ -595,7 +593,11 @@
       <category term="聪明工作" scheme="http://www.xianyucoder.cn/categories/%E8%81%AA%E6%98%8E%E5%B7%A5%E4%BD%9C/"/>
     
     
-      <category term="文件管理" scheme="http://www.xianyucoder.cn/tags/%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86/"/>
+      <category term="笔记整理" scheme="http://www.xianyucoder.cn/tags/%E7%AC%94%E8%AE%B0%E6%95%B4%E7%90%86/"/>
+    
+      <category term="思维导图" scheme="http://www.xianyucoder.cn/tags/%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE/"/>
+    
+      <category term="通用技巧" scheme="http://www.xianyucoder.cn/tags/%E9%80%9A%E7%94%A8%E6%8A%80%E5%B7%A7/"/>
     
   </entry>
   
